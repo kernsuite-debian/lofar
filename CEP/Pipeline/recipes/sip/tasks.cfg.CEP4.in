@@ -1,0 +1,61 @@
+[ndppp]
+nproc = 0
+nthreads = 10
+
+[setupparmdb]
+nproc = 0
+
+[setupsourcedb]
+nproc = 0
+
+[vdsmaker]
+nproc = 0
+
+[rficonsole]
+nproc = 0
+
+[imager_prepare]
+nthreads = 10
+
+[long_baseline]
+nproc = 0
+rficonsole_executable = /opt/aoflagger/bin/aoflagger
+nthreads = 10
+
+[dppp]
+max_per_node = 0 
+nthreads = 10
+
+[awimager]
+max_per_node = 0 
+nthreads = 10
+
+[rficonsole]
+executable = /opt/aoflagger/bin/aoflagger
+max_per_node = 0 
+nthreads = 10
+
+[imager_prepare]
+rficonsole_executable = /opt/aoflagger/bin/aoflagger
+nthreads = 10
+
+[imager_bbs]
+nthreads = 10
+
+[bbs_reducer]
+nthreads = 10
+
+[executable_args]
+nthreads = 10
+
+[casapy-imager]
+nthreads = 10
+
+[pythonplugin]
+nthreads = 10
+
+[python-calibrate-stand-alone]
+nthreads = 10
+
+[calibrate-stand-alone]
+nthreads = 10

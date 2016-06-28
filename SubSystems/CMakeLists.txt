@@ -1,0 +1,15 @@
+# $Id: CMakeLists.txt 34754 2016-06-20 10:56:00Z schaap $
+
+lofar_add_package(CCU_MAC)
+lofar_add_package(LCU_MAC)
+lofar_add_package(MCU_MAC)
+lofar_add_package(CN_MAC)
+lofar_add_package(Online_Cobalt)
+lofar_add_package(Online_OutputProc)
+lofar_add_package(ST_MAC)
+lofar_add_package(Offline)
+lofar_add_package(SAS_OTDB)
+lofar_add_package(SAS_Tools)
+lofar_add_package(PVSS_DB)
+lofar_add_package(LAPS_CEP)
+lofar_add_package(RAServices)

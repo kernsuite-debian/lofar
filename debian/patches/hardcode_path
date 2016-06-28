@@ -1,0 +1,20 @@
+Description: hardcode python path
+
+--- lofar-2.15.0.orig/CEP/PyBDSM/src/apps/pybdsm.in
++++ lofar-2.15.0/CEP/PyBDSM/src/apps/pybdsm.in
+@@ -9,12 +9,12 @@ if [ `uname` == "Darwin" ]; then
+ else
+     LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}@CMAKE_INSTALL_PREFIX@/@LOFAR_LIBDIR@
+ fi
+-PYTHONPATH=${PYTHONPATH:+${PYTHONPATH}:}@PYTHON_INSTALL_DIR@
++PYTHONPATH=${PYTHONPATH:+${PYTHONPATH}:}/usr/lib/python2.7/dist-packages
+ 
+ # And execute pybdsm.py. On a Mac, use pythonw if it exists instead of python
+ # to avoid problems with the matplotlib OS X backend.
+ if [ `uname` == "Darwin" ] && [ -f @PYTHON_EXECUTABLE@w ]; then
+-    exec @PYTHON_EXECUTABLE@w -W ignore @PYTHON_INSTALL_DIR@/lofar/bdsm/pybdsm.py
++    exec @PYTHON_EXECUTABLE@w -W ignore /usr/lib/python2.7/dist-packages/lofar/bdsm/pybdsm.py
+ else
+-    exec @PYTHON_EXECUTABLE@ -W ignore @PYTHON_INSTALL_DIR@/lofar/bdsm/pybdsm.py
++    exec @PYTHON_EXECUTABLE@ -W ignore /usr/lib/python2.7/dist-packages/lofar/bdsm/pybdsm.py
+ fi

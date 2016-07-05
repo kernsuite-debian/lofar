@@ -2,7 +2,7 @@ Source: lofar
 Section: science
 Priority: extra
 Maintainer: Gijs Molenaar <gijs@pythonic.nl>
-Build-Depends: debhelper (>= 8.0.0), cmake, casarest, bison, libcasacore2-dev,
+Build-Depends: debhelper (>= 8.0.0), cmake, casarest, bison, casacore-dev,
  libboost-dev, libreadline-dev, libblitz0-dev, flex, wcslib-dev,
  libcfitsio3-dev, gfortran, libboost-thread-dev, libfftw3-dev,
  libhdf5-dev, python-casacore, libboost-python-dev, python-all,

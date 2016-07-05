@@ -1,4 +1,4 @@
-lofar (2.16.6-1kern) xenial; urgency=medium
+lofar (2.16.6-1kern1) xenial; urgency=medium
 
   * new upstream release
   * first KERN release

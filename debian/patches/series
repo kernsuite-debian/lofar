@@ -1,2 +1,3 @@
 #not_aoflagger
 #hardcode_path
+find-numpy-multiarray-name-and-f2py-ldflags

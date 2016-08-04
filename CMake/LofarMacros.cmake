@@ -15,7 +15,7 @@
 #
 # Please refer to the module source for documentation of these macros.
 
-#  $Id: LofarMacros.cmake 34754 2016-06-20 10:56:00Z schaap $
+#  $Id: LofarMacros.cmake 34637 2016-06-08 16:23:52Z loose $
 #
 #  Copyright (C) 2008-2009
 #  ASTRON (Netherlands Foundation for Research in Astronomy)

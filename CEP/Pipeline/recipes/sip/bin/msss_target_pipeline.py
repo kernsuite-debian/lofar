@@ -146,7 +146,8 @@ class msss_target_pipeline(control):
                       mapfile_source=source_path,
                       mapfile_target=target_path,
                       mapfiles_dir=copier_map_path,
-                      mapfile=copied_files_path)['mapfile_target_copied']
+                      mapfile=copied_files_path,
+                      allow_move=False)['mapfile_target_copied']
 
         # Some copy action might fail; the skip fields in the other map-files
         # need to be updated these to reflect this.
@@ -308,7 +309,8 @@ class msss_target_pipeline(control):
                 mapfile_source=bbs_mapfile,
                 mapfile_target=corrected_mapfile,
                 mapfiles_dir=mapfile_dir,
-                mapfile=corrected_mapfile
+                mapfile=corrected_mapfile,
+                allow_move=True
             )
 
         # *********************************************************************

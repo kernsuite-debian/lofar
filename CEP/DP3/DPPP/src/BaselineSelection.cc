@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BaselineSelection.cc 34754 2016-06-20 10:56:00Z schaap $
+//# $Id: BaselineSelection.cc 34753 2016-06-20 10:43:42Z schaap $
 //#
 //# @author Ger van Diepen
 

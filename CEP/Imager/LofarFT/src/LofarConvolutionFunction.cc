@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarConvolutionFunction.cc 34754 2016-06-20 10:56:00Z schaap $
+//# $Id: LofarConvolutionFunction.cc 34546 2016-05-27 13:39:38Z mol $
 
 #include <lofar_config.h>
 #include <LofarFT/LofarConvolutionFunction.h>

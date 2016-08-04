@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34621 2016-06-07 13:10:23Z mol $
+# $Id: CMakeLists.txt 34482 2016-05-17 12:21:59Z dijkema $
 
 include(LofarPackageVersion)
 include(PythonInstall)

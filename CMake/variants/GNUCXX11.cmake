@@ -1,6 +1,6 @@
 # Definitions file for the GNUCXX11 compiler suite.
 #
-# $Id: GNUCXX11.cmake 34754 2016-06-20 10:56:00Z schaap $
+# $Id: GNUCXX11.cmake 34753 2016-06-20 10:43:42Z schaap $
 
 
 # Compiler suite

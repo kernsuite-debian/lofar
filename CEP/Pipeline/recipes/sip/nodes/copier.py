@@ -21,15 +21,15 @@ class copier(LOFARnodeTCP):
     """
     Node script for copying files between nodes. See master script for full public interface
     """
-    def run(self, source_node, source_path, target_path, globalfs):
+    def run(self, source_node, source_path, target_path, globalfs, allow_move):
         self.globalfs = globalfs
         # Time execution of this job
         with log_time(self.logger):
             return self._copy_single_file_using_rsync(
-                source_node, source_path, target_path)
+                source_node, source_path, target_path, allow_move)
 
     def _copy_single_file_using_rsync(self, source_node, source_path,
-                                      target_path):
+                                      target_path, allow_move):
         # assure that target dir exists (rsync creates it but..
         # an error in the python code will throw a nicer error
         message = "No write acces to target path: {0}".format(
@@ -51,9 +51,12 @@ class copier(LOFARnodeTCP):
 
 
         # construct copy command: Copy to the dir
-        # if process runs on local host use a simple copy command.
-        if self.globalfs or source_node=="localhost":
-            command = ["cp", "-r","{0}".format(source_path),"{0}".format(target_path)]
+        # if process runs on local host use a simple copy or move command.
+        if self.globalfs or source_node == "localhost":
+            if allow_move:
+                command = ["mv", "{0}".format(source_path), "{0}".format(target_path)]
+            else:
+                command = ["cp", "-r", "{0}".format(source_path), "{0}".format(target_path)]
         else:
             command = ["rsync", "-r", 
                    "{0}:{1}/".format(source_node, source_path),

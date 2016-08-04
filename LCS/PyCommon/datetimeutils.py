@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: datetimeutils.py 34234 2016-04-13 12:44:15Z mol $
+# $Id: datetimeutils.py 34012 2016-03-29 13:22:00Z schaap $
 
 from datetime import datetime, timedelta
 import sys

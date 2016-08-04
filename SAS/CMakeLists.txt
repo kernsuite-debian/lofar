@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34754 2016-06-20 10:56:00Z schaap $
+# $Id: CMakeLists.txt 35029 2016-07-21 11:42:59Z schaap $
 
 lofar_add_package(OTDB)
 lofar_add_package(OTB)
@@ -12,3 +12,4 @@ lofar_add_package(XML_generator)
 
 add_subdirectory(MoM)
 add_subdirectory(ResourceAssignment)
+add_subdirectory(DataManagement)

@@ -57,7 +57,17 @@ class SubProcessGroupTest(unittest.TestCase):
         process_group.wait_for_finish()
         end_time = time.time()
         self.assertTrue((end_time - start_time) > 3)
-        
+
+
+    def test_fd_bigger_than_1024(self):
+        process_group = SubProcessGroup(polling_interval=1, max_concurrent_processes=1000)
+
+        cmd = "sleep 2"
+        for idx in range(513): # each process uses 2 fds, so we only need 513 processes to ensure fds > 1024
+            process_group.run(cmd)
+
+        process_group.wait_for_finish()
+
 
     def test_start_without_jobs(self):
         process_group = SubProcessGroup(polling_interval=1)

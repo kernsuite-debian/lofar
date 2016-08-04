@@ -58,6 +58,8 @@ class long_baseline(LOFARnodeTCP):
             # I. Create the directories used in this recipe
             create_directory(processed_ms_dir)
             create_directory(working_dir)
+            create_directory(os.path.dirname(output_measurement_set))
+            create_directory(os.path.dirname(final_output_path))
 
             # time slice dir_to_remove: assure empty directory: Stale data
             # is problematic for dppp
@@ -197,8 +199,9 @@ class long_baseline(LOFARnodeTCP):
                               input_item.host, input_item.file),
                                  "{0}".format(processed_ms_dir)]
               if self.globalfs or input_item.host == "localhost":
-                  command = ["cp", "-r", "{0}".format(input_item.file),
-                                         "{0}".format(processed_ms_dir)]
+                  # symlinking is enough
+                  command = ["ln", "-sf", "{0}".format(input_item.file),
+                                    "-t", "{0}".format(processed_ms_dir)]
 
               self.logger.debug("executing: " + " ".join(command))
 
@@ -498,12 +501,6 @@ class long_baseline(LOFARnodeTCP):
         ##################################
 
         table = pt.table(output_measurement_set)
-
-        try:
-          os.makedirs(os.path.dirname(final_output_path))
-        except:
-          pass # do nothing, the path already exists, we can output to this
-               # location
 
         table.copy(final_output_path, deep=True)
 

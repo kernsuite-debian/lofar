@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MeasurementAIPS.cc 34504 2016-05-19 09:46:38Z mol $
+//# $Id: MeasurementAIPS.cc 33984 2016-03-25 10:24:25Z dijkema $
 
 #include <lofar_config.h>
 #include <BBSKernel/MeasurementAIPS.h>

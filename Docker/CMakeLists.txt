@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34754 2016-06-20 10:56:00Z schaap $
+# $Id: CMakeLists.txt 34819 2016-06-29 04:58:50Z mol $
 
 lofar_package(Docker 1.0 DEPENDS Common)
 
@@ -60,6 +60,7 @@ install(DIRECTORY
   lofar-base
   lofar-pipeline
   lofar-outputproc
+  lofar-tbbwriter
   DESTINATION share/docker
   USE_SOURCE_PERMISSIONS
   PATTERN Dockerfile.tmpl EXCLUDE)

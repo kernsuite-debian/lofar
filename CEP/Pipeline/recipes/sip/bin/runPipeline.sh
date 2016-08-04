@@ -25,6 +25,9 @@ PARSET=
 # Location of pipeline-framework configuration file
 PIPELINE_CONFIG=$LOFARROOT/share/pipeline/pipeline.cfg
 
+# Directory for parset and feedback files
+PARSET_DIR=$LOFARROOT/var/run
+
 # ======= Parse command-line parameters
 
 function usage() {
@@ -33,10 +36,11 @@ function usage() {
   echo "  -o OBSID           Task identifier"
   echo "  -c pipeline.cfg    Override pipeline configuration file (default: $PIPELINE_CONFIG)"
   echo "  -p pipeline.parset Provide parset (default: request through QPID)"
+  echo "  -P dir             Directory to which to save parset and feedback files (default: $PARSET_DIR)"
   exit 1
 }
 
-while getopts "ho:c:p:" opt; do
+while getopts "ho:c:p:P:" opt; do
   case $opt in
     h)  usage
         ;;
@@ -45,6 +49,8 @@ while getopts "ho:c:p:" opt; do
     c)  PIPELINE_CONFIG="$OPTARG"
         ;;
     p)  PARSET="$OPTARG"
+        ;;
+    P)  PARSET_DIR="$OPTARG"
         ;;
     \?) error "Invalid option: -$OPTARG"
         ;;
@@ -58,7 +64,7 @@ done
 
 if [ -z "$PARSET" ]; then
   # Fetch parset
-  PARSET=${LOFARROOT}/var/run/Observation${OBSID}.parset
+  PARSET=${PARSET_DIR}/Observation${OBSID}.parset
   getOTDBParset -o $OBSID >$PARSET
 fi
 

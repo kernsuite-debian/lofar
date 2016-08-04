@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: dbcredentials.py 34234 2016-04-13 12:44:15Z mol $
+# $Id: dbcredentials.py 34233 2016-04-13 12:26:52Z schaap $
 
 from glob import glob
 import os

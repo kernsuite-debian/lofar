@@ -1,6 +1,6 @@
 [ndppp]
 nproc = 0
-nthreads = 10
+nthreads = 2
 
 [setupparmdb]
 nproc = 0
@@ -24,7 +24,7 @@ nthreads = 10
 
 [dppp]
 max_per_node = 0 
-nthreads = 10
+nthreads = 2
 
 [awimager]
 max_per_node = 0 

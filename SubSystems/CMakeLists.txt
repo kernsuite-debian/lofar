@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34754 2016-06-20 10:56:00Z schaap $
+# $Id: CMakeLists.txt 35029 2016-07-21 11:42:59Z schaap $
 
 lofar_add_package(CCU_MAC)
 lofar_add_package(LCU_MAC)
@@ -13,3 +13,4 @@ lofar_add_package(SAS_Tools)
 lofar_add_package(PVSS_DB)
 lofar_add_package(LAPS_CEP)
 lofar_add_package(RAServices)
+lofar_add_package(DataManagement)

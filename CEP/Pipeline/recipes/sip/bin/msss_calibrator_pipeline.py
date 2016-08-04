@@ -273,7 +273,8 @@ class msss_calibrator_pipeline(control):
                 mapfile_source=bbs_mapfile,
                 mapfile_target=output_correlated_mapfile,
                 mapfiles_dir=mapfile_dir,
-                mapfile=output_correlated_mapfile
+                mapfile=output_correlated_mapfile,
+                allow_move=True
             )
 
         # *********************************************************************

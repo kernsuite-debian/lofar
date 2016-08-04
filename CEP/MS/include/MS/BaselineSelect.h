@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: BaselineSelect.h 34754 2016-06-20 10:56:00Z schaap $
+//#  $Id: BaselineSelect.h 34753 2016-06-20 10:43:42Z schaap $
 
 #ifndef MS_BASELINESELECT_H
 #define MS_BASELINESELECT_H

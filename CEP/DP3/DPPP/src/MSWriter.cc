@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSWriter.cc 31487 2015-04-16 11:28:17Z dijkema $
+//# $Id: MSWriter.cc 34867 2016-07-04 09:00:01Z mol $
 //#
 //# @author Ger van Diepen
 
@@ -508,6 +508,11 @@ namespace LOFAR {
       ArrayColumn<Complex> dataCol(out, itsDataColName);
       ArrayColumn<Bool>    flagCol(out, "FLAG");
       ScalarColumn<Bool>   flagRowCol(out, "FLAG_ROW");
+
+      if (buf.getData().empty()) {
+        return;
+      }
+
       dataCol.putColumn (buf.getData());
       flagCol.putColumn (buf.getFlags());
       // A row is flagged if no flags in the row are False.

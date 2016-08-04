@@ -181,8 +181,9 @@ class imager_prepare(LOFARnodeTCP):
                                 input_item.host, input_item.file),
                                    "{0}".format(processed_ms_dir)]
                 if self.globalfs or input_item.host == "localhost":
-                    command = ["cp", "-r", "{0}".format(input_item.file),
-                                           "{0}".format(processed_ms_dir)]
+                    # symlinking is enough
+                    command = ["ln", "-sf", "{0}".format(input_item.file),
+                                      "-t", "{0}".format(processed_ms_dir)]
 
                 self.logger.debug("executing: " + " ".join(command))
 

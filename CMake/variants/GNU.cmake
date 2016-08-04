@@ -1,6 +1,6 @@
 # Definitions file for the GNU compiler suite.
 #
-# $Id: GNU.cmake 34754 2016-06-20 10:56:00Z schaap $
+# $Id: GNU.cmake 34529 2016-05-24 17:00:41Z mol $
 
 
 # Compiler suite

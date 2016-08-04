@@ -250,7 +250,8 @@ class calibration_pipeline(control):
                 mapfile_source=bbs_mapfile,
                 mapfile_target=output_correlated_mapfile,
                 mapfiles_dir=mapfile_dir,
-                mapfile=output_correlated_mapfile
+                mapfile=output_correlated_mapfile,
+                allow_move=True
             )
 
         with duration(self, "copier"):
@@ -258,7 +259,8 @@ class calibration_pipeline(control):
                 mapfile_source=parmdb_mapfile,
                 mapfile_target=output_instrument_mapfile,
                 mapfiles_dir=mapfile_dir,
-                mapfile=output_instrument_mapfile
+                mapfile=output_instrument_mapfile,
+                allow_move=True
             )
 
         # *********************************************************************

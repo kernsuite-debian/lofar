@@ -18,7 +18,7 @@ __version__ = '1.8.7'
 # from the LOFAR directory. Then, the revision number is
 # added automatically with each update to this file. The line below does not
 # need to be edited by hand.
-__revision__ = filter(str.isdigit, "$Revision: 34754 $")
+__revision__ = filter(str.isdigit, "$Revision: 34639 $")
 
 
 # Changelog

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FlagCounter.cc 23223 2012-12-07 14:09:42Z schoenmakers $
+//# $Id: FlagCounter.cc 34867 2016-07-04 09:00:01Z mol $
 //#
 //# @author Ger van Diepen
 
@@ -265,6 +265,10 @@ namespace LOFAR {
         os << endl;
       }
       int64 totalnpoints = npoints * itsChanCounts.size();
+      // Prevent division by zero
+      if (totalnpoints == 0) {
+        totalnpoints = 1;
+      }
       os << "Total flagged: ";
       showPerc3 (os, nflagged, totalnpoints);
       os << "   (" << nflagged << " out of " << totalnpoints
@@ -287,6 +291,10 @@ namespace LOFAR {
     void FlagCounter::showCorrelation (ostream& os, int64 ntimes) const
     {
       int64 ntotal = ntimes * itsBLCounts.size() * itsChanCounts.size();
+      // Prevent division by zero
+      if (ntotal == 0) {
+        ntotal = 1;
+      }
       os << endl
          << "Percentage of flagged visibilities detected per correlation:"
          << endl;

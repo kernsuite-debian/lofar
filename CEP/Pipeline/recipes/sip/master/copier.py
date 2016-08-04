@@ -142,6 +142,11 @@ class copier(MasterNodeInterface):
             default=True,
             help="Allow renaming of basename at target location"
         ),
+        'allow_move': ingredient.BoolField(
+            '--allow-move',
+            default=True,
+            help="Allow moving files instead of copying them"
+        ),
         'mapfiles_dir': ingredient.StringField(
             '--mapfiles-dir',
             help="Path of directory, shared by all nodes, which will be used"
@@ -248,7 +253,7 @@ class copier(MasterNodeInterface):
 
         # Run the compute nodes with the node specific mapfiles
         for source, target in zip(self.source_map, self.target_map):
-            args = [source.host, source.file, target.file, globalfs]
+            args = [source.host, source.file, target.file, globalfs, self.inputs['allow_move']]
             self.append_job(target.host, args)
 
         # start the jobs, return the exit status.

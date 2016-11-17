@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Message.h 31882 2015-06-22 07:50:04Z mol $
+//# $Id: Message.h 35890 2016-11-03 13:16:09Z schoenmakers $
 
 #ifndef LOFAR_MESSAGEBUS_MESSAGE_H
 #define LOFAR_MESSAGEBUS_MESSAGE_H
@@ -192,10 +192,12 @@ inline std::ostream &operator<<(std::ostream &os, const MessageContent::Property
 class Message
 {
 public:
-  Message() {}
+  Message();
+
+  ~Message();
 
   // Wrap a received meessage
-  Message(const qpid::messaging::Message &qpidMsg) : itsQpidMsg(qpidMsg) {}
+  Message(const qpid::messaging::Message &qpidMsg);
 
   // Create a new message
   Message(const MessageContent &content);

@@ -37,18 +37,18 @@ logger = logging.getLogger(__name__)
 
 def do_rpc_catch_exception(exc_text, rpc_instance, arg_dict):
     try:
-        print "** Executing {}({})...".format(rpc_instance.ServiceName,arg_dict)
+        print "** Executing {0}({1})...".format(rpc_instance.ServiceName,arg_dict)
         (data, status) = (rpc_instance)(**arg_dict)
-        raise Exception("Expected an exception {}, didn't get any".format(exc_text))
+        raise Exception("Expected an exception {0}, didn't get any".format(exc_text))
     except Exception:
-        print "Caught expected exception {}".format(exc_text)
+        print "Caught expected exception {0}".format(exc_text)
     print "======"
 
 def do_rpc(rpc_instance, arg_dict):
-    print "** Executing {}({})...".format(rpc_instance.ServiceName,arg_dict)
+    print "** Executing {0}({1})...".format(rpc_instance.ServiceName,arg_dict)
     (data, status) = (rpc_instance)(**arg_dict)
     if status != "OK":
-        raise Exception("Status returned is {}".format(status))
+        raise Exception("Status returned is {0}".format(status))
 #    if isinstance(data, dict):
 #        for key in sorted(data):
 #            print "%s ==> %s" % (key, data[key])

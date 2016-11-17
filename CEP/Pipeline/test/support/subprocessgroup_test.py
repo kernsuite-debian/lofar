@@ -26,7 +26,7 @@ class SubProcessGroupTest(unittest.TestCase):
 
 
     def test_alternating_output(self):
-        process_group = SubProcessGroup(polling_interval=1)
+        process_group = SubProcessGroup(polling_interval=10)
 
         # print a lot of numbers
         cmd = '%s/output_stderr_stdout.sh' % (os.path.dirname(__file__) or ".",)
@@ -38,7 +38,7 @@ class SubProcessGroupTest(unittest.TestCase):
 
         process_group.wait_for_finish()
         end_time = time.time()
-        self.assertTrue((end_time - start_time) < 1)
+        self.assertTrue((end_time - start_time) < 10)
 
     def test_limit_number_of_proc(self):
         process_group = SubProcessGroup(polling_interval=1)
@@ -70,16 +70,14 @@ class SubProcessGroupTest(unittest.TestCase):
 
 
     def test_start_without_jobs(self):
-        process_group = SubProcessGroup(polling_interval=1)
+        process_group = SubProcessGroup(polling_interval=10)
 
-        # wait for 5 seconds
         start_time = time.time()
-
         process_group.wait_for_finish()
         end_time = time.time()
         
         # The wait should complete without a polling interfal
-        self.assertTrue((end_time - start_time) < 1)
+        self.assertTrue((end_time - start_time) < 10)
 
 if __name__ == '__main__':
     import xmlrunner

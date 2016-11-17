@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35029 2016-07-21 11:42:59Z schaap $
+# $Id: CMakeLists.txt 35890 2016-11-03 13:16:09Z schoenmakers $
 
 lofar_add_package(Calibration)
 lofar_add_package(DP3)

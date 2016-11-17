@@ -14,9 +14,11 @@ Supported Systems
 Install from Ubuntu Packages
 ----------------------------
 
-To install LOFAR Offline processing tools the easy way for a specific Ubuntu version, see:
+To install LOFAR Offline processing tools (and many more radio astro packages)
+the easy way for Ubuntu LTS version(s), see:
 
-	https://launchpad.net/~radio-astro/+archive/ubuntu/main
+	KERN: The Radio Astronomy Software Suite
+	http://kernsuite.info/
 
 
 Install using Docker Scripts
@@ -25,6 +27,10 @@ Install using Docker Scripts
 To create a Docker container with Ubuntu or CentOS and LOFAR Offline processing tools, see:
 
 	https://github.com/lofar-astron/lofar-deploy
+
+or, again for Ubuntu LTS:
+
+	http://kernsuite.info/
 
 
 Dependencies for Manual Build from Source
@@ -37,11 +43,9 @@ package manager. For almost all cases, you also need the development packages
 For Debian/Ubuntu (likely incomplete list, but goes a long way):
 
 	apt-get install subversion cmake make g++ gfortran python-dev python-numpy
-	apt-get install libboost-dev libblitz0-dev libfftw3-dev libcfitsio3-dev libxml2-dev
-	apt-get install libpng-dev                           # for AOFlagger
+	apt-get install libboost-dev libblitz0-dev libfftw3-dev libcfitsio3-dev libxml2-dev liblog4cplus-dev
+	apt-get install libpng12-dev                         # or latest version; for AOFlagger
 	apt-get install libreadline-dev libpqxx-dev doxygen  # optional
-	apt-get install libgsl0-dev                          # optional, for AOFlagger's RayleighFitter
-	apt-get install libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev  # optional, for AOFlagger's rficonsole
 	apt-get install libunittest++-dev                    # optional, for tests that use UnitTest++
 
 
@@ -49,10 +53,7 @@ For CentOS/Fedora (likely incomplete list, but goes a long way):
 
 	yum install subversion cmake make gcc python-devel numpy
 	yum install boost-devel fftw-devel cfitsio-devel libxml2-devel libpng-devel
-
 	yum install readline-devel libpqxx-devel doxygen     # optional
-	yum install gsl-devel                                # optional, for AOFlagger's RayleighFitter
-	yum install gtkmm[24|30]-devel libsigc++20-devel     # optional, for AOFlagger's rficonsole
 
 	The blitz and blitz-devel pkgs are available on some distros, but not on e.g. CentOS 7.
 	If required for your build, but not in your repo, take the two RPMs from CentOS 6 (or build from source).
@@ -62,14 +63,17 @@ For CentOS/Fedora (likely incomplete list, but goes a long way):
 
 
 
-NOTE (any OS): For manual builds, the most prominent dependency you likely need to build is casacore (+ friends):
+NOTE (any OS): For manual builds, the most prominent dependencies you likely need to build are casacore (+ friends) and AOFlagger:
 
 	casacore:                  https://github.com/casacore/casacore
 	python-casacore ('pyrap'): https://github.com/casacore/python-casacore
-	IERS/measures tables:      https://github.com/casacore/casacore-data-update
-	casarest:                  https://svn.astron.nl/casarest
+	IERS/measures tables:      ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar (auto-updated weekly),
+                                       also see https://github.com/casacore/casacore-data-update
+	casarest:                  https://github.com/casacore/casarest
 
-	AOFlagger:                 http://sourceforge.net/projects/aoflagger/
+	AOFlagger:                 https://sourceforge.net/projects/aoflagger/
+            which may need: Debian/Ubuntu: libgsl0-dev libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev
+                            CentOS/Fedora: gsl-devel gtkmm[24|30]-devel libsigc++20-devel
 
 
 Instructions for Manual Build from Source
@@ -102,8 +106,8 @@ Instructions for Manual Build from Source
   All tests should pass, however, a few packages (not selected above) require
   GPU hardware or a database to pass all tests.
 
-- You may want to add the installation path bin/ to your PATH:
+- You may want to add the installation path bin/ to your PATH by sourcing (not executing!) the lofarinit script:
 
-	source "$HOME/local/$LOFAR_RELEASE/lofarinit.sh"  # for Bourne-like shells, or
-	source "$HOME/local/$LOFAR_RELEASE/lofarinit.csh" # for C-like shells
+	. "$HOME/local/$LOFAR_RELEASE/lofarinit.sh"  # for Bourne-like shells, or
+	. "$HOME/local/$LOFAR_RELEASE/lofarinit.csh" # for C-like shells
 

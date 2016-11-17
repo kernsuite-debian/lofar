@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationInfo.cc 29572 2014-06-19 12:07:04Z amesfoort $
+//# $Id: StationInfo.cc 35890 2016-11-03 13:16:09Z schoenmakers $
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -117,9 +117,10 @@ string	PVSSDatabaseName(const string&	someName)
 //
 string	realHostname(const string&	someName)
 {
-	// if given name ends in a char assume the name is correct.
+  // if given name ends in a char (C, T, or N), 
+  // assume the name is correct.
 	char	someLastChar(*(--(someName.end())));
-	if (someLastChar == 'C' || someLastChar == 'T') {
+	if (someLastChar == 'C' || someLastChar == 'T' || someLastChar == 'N') {
 		return (someName);
 	}
 
@@ -130,11 +131,14 @@ string	realHostname(const string&	someName)
 	}
 
 	// given name must be a stationname. When myhostname ends in a T
-	// add the T else assume production and add the C
+	// add the T, if it ends with a'N' add the 'N' (new 2016 LCUs),  
+	// else assume production and add the C
 	string	hostname(toUpper(myHostname(false)));
 	char	myLastChar(*(--(hostname.end())));
 	if (myLastChar == 'T') {
 		return (string(someName+'T'));
+	} else if (myLastChar == 'N') {
+		return (string(someName+'N'));
 	}
 	return (someName+'C');
 }

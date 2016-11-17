@@ -6,7 +6,6 @@ FROM ubuntu:16.04
 #
 # common-environment
 #
-ENV USER=lofar
 ENV INSTALLDIR=/opt
 
 #
@@ -24,11 +23,6 @@ ENV CASACORE_VERSION=latest \
     BOOST_VERSION=1.58
 
 #
-# set-uid
-#
-ENV UID=${BUILD_UID}
-
-#
 # set-build-options
 #
 ENV J=6
@@ -43,8 +37,8 @@ RUN apt-get update && \
     apt-get install -y python-pip && \
     pip install numpy && \
     apt-get purge -y python-pip && \
-    apt-get autoremove -y && \
-    apt-get install -y nano
+    apt-get autoremove -y --purge && \
+    apt-get install -y nano sudo
 
 #
 # open security holes (allow smooth user switching, allow sudo)
@@ -76,7 +70,7 @@ RUN apt-get update && apt-get install -y wget git cmake g++ gfortran flex bison 
     bash -c "strip ${INSTALLDIR}/casacore/{lib,bin}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/casacore/{build,src}" && \
     apt-get purge -y wget git cmake g++ gfortran flex bison libopenblas-dev libfftw3-dev libhdf5-dev libboost-python-dev libcfitsio-dev wcslib-dev && \
-    apt-get autoremove -y
+    apt-get autoremove -y --purge
 
 #
 # *******************
@@ -93,7 +87,7 @@ RUN apt-get update && apt-get install -y git cmake g++ gfortran libboost-system-
     bash -c "strip ${INSTALLDIR}/casarest/{lib,bin}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/casarest/{build,src}" && \
     apt-get purge -y git cmake g++ gfortran libboost-system-dev libboost-thread-dev libhdf5-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
-    apt-get autoremove -y
+    apt-get autoremove -y --purge
 
 #
 # *******************
@@ -111,7 +105,7 @@ RUN apt-get update && apt-get install -y git make g++ python-setuptools libboost
     bash -c "find ${INSTALLDIR}/python-casacore/lib -name '*.so' | xargs strip || true" && \
     bash -c "rm -rf ${INSTALLDIR}/python-casacore/python-casacore" && \
     apt-get purge -y git make g++ python-setuptools libboost-python-dev libcfitsio3-dev wcslib-dev && \
-    apt-get autoremove -y
+    apt-get autoremove -y --purge
 
 #
 # *******************
@@ -132,7 +126,7 @@ RUN apt-get update && apt-get install -y subversion swig ruby ruby-dev python-de
     bash -c "strip /opt/qpid/{bin,lib}/* || true" && \
     bash -c "rm -rf ~/sources" && \
     apt-get purge -y subversion swig ruby ruby-dev python-dev libsasl2-dev pkg-config cmake libtool uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man fakeroot build-essential debhelper libsslcommon2-dev libxqilla-dev python-setuptools libboost-program-options${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev && \
-    apt-get autoremove -y
+    apt-get autoremove -y --purge
 #
 # *******************
 #   DAL
@@ -147,7 +141,7 @@ RUN apt-get update && apt-get install -y git cmake g++ swig python-dev libhdf5-d
     bash -c "find ${INSTALLDIR}/DAL/lib -name '*.so' | xargs strip || true" && \
     bash -c "rm -rf ${INSTALLDIR}/DAL/{src,build}" && \
     apt-get purge -y git cmake g++ swig python-dev libhdf5-dev && \
-    apt-get autoremove -y
+    apt-get autoremove -y --purge
 
 #
 # entry

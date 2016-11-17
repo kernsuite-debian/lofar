@@ -59,7 +59,7 @@ if(NOT NUMPY_FOUND)
     endif(NOT NUMPY_INCLUDE_DIR)
 
     if(NOT NUMPY_MULTIARRAY_LIBRARY)
-      find_library(NUMPY_MULTIARRAY_LIBRARY multiarray
+      find_library(NUMPY_MULTIARRAY_LIBRARY NAME multiarray multiarray.${CMAKE_LIBRARY_ARCHITECTURE}
         HINTS ${NUMPY_PATH}
         PATH_SUFFIXES core)
     endif(NOT NUMPY_MULTIARRAY_LIBRARY)
@@ -171,9 +171,9 @@ macro (add_f2py_module _name)
   # Define the command to generate the Fortran to Python interface module. The
   # output will be a shared library that can be imported by python.
   add_custom_command(OUTPUT ${_name}.so
-    COMMAND ${F2PY_EXECUTABLE} --quiet -m ${_name} -h ${_name}.pyf
+    COMMAND /usr/bin/env -u LDFLAGS ${F2PY_EXECUTABLE} --quiet -m ${_name} -h ${_name}.pyf
             --include_paths ${_inc_paths} --overwrite-signature ${_abs_srcs}
-    COMMAND ${F2PY_EXECUTABLE} --quiet -m ${_name} -c ${_name}.pyf
+    COMMAND /usr/bin/env -u LDFLAGS ${F2PY_EXECUTABLE} --quiet -m ${_name} -c ${_name}.pyf
             ${_fcompiler_opts} ${_inc_opts} ${_abs_srcs}
     DEPENDS ${_srcs}
     COMMENT "[F2PY] Building Fortran to Python interface module ${_name}")

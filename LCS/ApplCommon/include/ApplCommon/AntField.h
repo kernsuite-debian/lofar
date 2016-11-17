@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: AntField.h 30919 2015-02-05 15:26:22Z amesfoort $
+//#  $Id: AntField.h 35890 2016-11-03 13:16:09Z schoenmakers $
 
 #ifndef LOFAR_APPLCOMMON_ANTFIELD_H
 #define LOFAR_APPLCOMMON_ANTFIELD_H
@@ -32,6 +32,9 @@
 #include <Common/lofar_string.h>
 #include <Common/lofar_map.h>
 #include <Common/LofarLogger.h>
+#include <Common/StringUtil.h>
+#include <sstream>
+
 
 //# Avoid 'using namespace' in headerfiles
 
@@ -135,32 +138,66 @@ namespace LOFAR {
       vector<double>& data  = AntField::getData(array);
       shape.resize (NDIM);
       // Read the extent vector (shape): this is separated by 'x's, e.g.
-      //   3 x 4 x 5
+      //   (0,1) x (0,3) x (0,7) [
       size_t sz = 1;
-      for (uint i=0; i<NDIM; ++i) {
-        if (i > 0) {
-          is >> sep;
-          ASSERTSTR(sep == 'x', "Format error while scanning input array"
-                    << endl << " (expected 'x' between array extents)");
-        }
-        is >> shape[i];
-        ASSERTSTR(!is.bad(), "Premature end of input while scanning array");
-        sz *= shape[i];
-      }
-      is >> sep;
-      ASSERTSTR(sep == '[', "Format error while scanning input array"
-                << endl << " (expected '[' before beginning of array data)");
+
+      // First read in the part until and including the "[". Note, that the 
+      // "["-char will not be part of string 'line', but will be contained 
+      // in string 'field'. Whitespace is removed automatically here.
+      string line;
+      string field;
+      is >> field;
+      while (field != "[" )
+	{ 
+	  line += field;
+	  is >> field;
+	  ASSERTSTR(!is.bad(), "Premature end of line containing array dimensions while scanning file");
+	}
+
+      // Then  find the number of dimensional entries (i.e. "(0,2)" or "3")
+      // The entries are separated by 'x' chars; any whitespace has been 
+      // removed already while reading the line earlier.
+      vector<string> linefields = StringUtil::tokenize(line, "x");
+      uint nrFields = linefields.size();
+      ASSERTSTR(nrFields == NDIM, "Number of dimensional entries in file (" << nrFields << ") not like expected (" << NDIM ); 
+
+      // Extract the dimension entries
+      for (uint i = 0; i < nrFields; i++)
+	{
+	  string dimension = linefields[i]; // looks like "(0,2) or "3"
+	  if ( isdigit(dimension[0]) ) 
+	    {
+	      // It is a number, so use it
+	      shape[i]=strToInt(dimension);
+	    } else
+	    {
+	      // It is a range looking like "(0,2)", extract dimension size.
+	      dimension.erase(0,1);
+	      dimension.erase(dimension.length()-1,1); // Now looks like "0,2"
+	      int first, last;
+	      vector<string> dimensionFields = StringUtil::tokenize(dimension, ",");
+	      ASSERTSTR(dimensionFields.size() == 2, "Array dimension entry in file (" << dimensionFields.size() << ") does not equal 2"); 
+	      first = strToInt(dimensionFields[0]);
+	      last = strToInt(dimensionFields[1]);
+	      shape[i] = last - first + 1;
+	    }
+	  sz *= shape[i];
+	}
+      // Remember the last value read in string 'field' was the "["-char
+      sep = field[0];
+
+      // Now read in the calculated number of values (until the "]"-char).
       data.resize (sz);
       for (vector<double>::iterator iter=data.begin();
-           iter!=data.end(); ++iter) {
+           iter!=data.end(); ++iter) 
+	{
         ASSERTSTR(!is.bad(), "Premature end of input while scanning array");
         is >> *iter;
-      }
+	}
       is >> sep;
       ASSERTSTR(sep == ']', "Format error while scanning input array"
-                << endl << " (expected ']' after end of array data)");
+                << endl << " (expected ']' after end of array data but found:" << sep);
     }
-
 
   private:
     // Copying is not allowed.

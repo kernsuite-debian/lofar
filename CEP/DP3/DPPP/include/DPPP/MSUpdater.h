@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSUpdater.h 31423 2015-04-03 14:06:21Z dijkema $
+//# $Id: MSUpdater.h 35533 2016-10-04 12:12:01Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -28,6 +28,8 @@
 // @brief DPPP step writing to an MS
 
 #include <DPPP/DPStep.h>
+#include <DPPP/StManParsetKeys.h>
+
 #include <Common/LofarTypes.h>
 #include <tables/Tables/ColumnDesc.h>
 #include <tables/Tables/RefRows.h>
@@ -122,6 +124,8 @@ namespace LOFAR {
       bool         itsWeightColAdded; //# has weight column been added?
       bool         itsWriteHistory; //# Should history be written?
       NSTimer      itsTimer;
+      uint itsTileSize;
+      StManParsetKeys itsStManKeys;
     };
 
   } //# end namespace

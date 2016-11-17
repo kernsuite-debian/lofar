@@ -1,0 +1,62 @@
+#
+# base
+#
+FROM pulp:latest
+
+COPY ["sudoers", "/etc/"]
+
+# Run-time dependencies
+RUN sudo apt-get update && sudo apt-get install -y python-xmlrunner liblog4cplus-1.0-4 libxml2 libxml++2.6-2 openssh-client gettext-base rsync python-matplotlib
+#
+# *******************
+#   QPID client
+# *******************
+#
+
+ENV BOOST_VERSION=1.54
+
+# Run-time dependencies
+# QPID daemon legacy store would require: libaio1 libdb5.1++
+RUN sudo apt-get update && sudo apt-get install -y sasl2-bin libuuid1 libnss3 libnspr4 xqilla
+
+# Install
+# QPID daemon legacy store would require: libaio-dev libdb5.1++-dev
+RUN sudo apt-get update && sudo apt-get install -y ruby ruby-dev libsasl2-dev uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man libsslcommon2-dev libxqilla-dev && \
+    mkdir /opt/qpid && \
+    svn --non-interactive -q co https://svn.astron.nl/LOFAR/trunk/LCS/MessageBus/qpid/ /opt/qpid; \
+    bash -c "HOME=/tmp /opt/qpid/local/sbin/build_qpid" && \
+    bash -c "strip /opt/qpid/{bin,lib}/* || true" && \
+    bash -c "rm -rf /tmp/sources" && \
+    sudo apt-get purge -y ruby ruby-dev libsasl2-dev uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man libsslcommon2-dev libxqilla-dev && \
+    sudo apt-get autoremove -y
+
+#
+# *******************
+#   LOFAR
+# *******************
+#
+
+# Tell image build information
+ENV LOFAR_BRANCH=${LOFAR_BRANCH_NAME} \
+    LOFAR_TAG=${LOFAR_TAG} \
+    LOFAR_REVISION=${LOFAR_REVISION} \
+    LOFAR_BUILDVARIANT=gnu_optarch
+
+# Install
+#some are already installed, but we need boost, and RUN sudo apt-get update && sudo apt-get install -y subversion cmake g++ gfortran bison flex liblog4cplus-dev libhdf5-dev libblitz0-dev python-dev libxml2-dev pkg-config libunittest++-dev libxml++2.6-dev binutils-dev && \
+RUN sudo apt-get update && sudo apt-get install -y liblog4cplus-dev libhdf5-dev libblitz0-dev libunittest++-dev libxml++2.6-dev binutils-dev && \
+    mkdir -p ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
+    cd ${INSTALLDIR}/lofar && \
+    svn --non-interactive -q co -r ${LOFAR_REVISION} -N ${LOFAR_BRANCH_URL} src; \
+    svn --non-interactive -q up src/CMake && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && cmake -DBUILD_PACKAGES="Pipeline MessageBus OTDB_Services" -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DQPID_ROOT_DIR=/opt/qpid/ -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make -j ${J} && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make install && \
+    bash -c "mkdir -p ${INSTALLDIR}/lofar/var/{log,run}" && \
+    bash -c "chmod a+rwx  ${INSTALLDIR}/lofar/var/{log,run}" && \
+    bash -c "strip ${INSTALLDIR}/lofar/{bin,sbin,lib64}/* || true" && \
+    bash -c "rm -rf ${INSTALLDIR}/lofar/{build,src}" && \
+    sudo apt-get purge -y liblog4cplus-dev libhdf5-dev libblitz0-dev libunittest++-dev libxml++2.6-dev binutils-dev && \
+    sudo apt-get autoremove -y
+
+COPY ["bashrc", "/opt/"]

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tQueue.cc 27153 2013-10-30 18:07:49Z amesfoort $
+//# $Id: tQueue.cc 35309 2016-09-08 09:57:51Z schoenmakers $
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -63,7 +63,7 @@ public:
   void mainLoop() {
     sleep(1); // make "sure" B blocks on q.remove()
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 1024*1024; i++)
       q.append(i);
   }
 };
@@ -71,7 +71,7 @@ public:
 class B {
 public:
   void mainLoop() {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 1024*1024; i++)
       ASSERT( q.remove() == i );
   }
 };

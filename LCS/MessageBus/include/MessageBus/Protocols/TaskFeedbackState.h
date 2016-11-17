@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TaskFeedbackState.h 31882 2015-06-22 07:50:04Z mol $
+//# $Id: TaskFeedbackState.h 35890 2016-11-03 13:16:09Z schoenmakers $
 
 #ifndef LOFAR_MESSAGEBUS_TASK_FEEDBACK_STATUS_H
 #define LOFAR_MESSAGEBUS_TASK_FEEDBACK_STATUS_H
@@ -33,7 +33,7 @@ namespace Protocols {
 
 class TaskFeedbackState: public MessageContent
 {
-public:
+public: 
   Property type;
   Property state;
 
@@ -74,12 +74,7 @@ public:
   }
 
   // Parse a message
-  TaskFeedbackState(const qpid::messaging::Message qpidMsg)
-  :
-    MessageContent(qpidMsg)
-  {
-    addPayloadProperties();
-  }
+  TaskFeedbackState(const Message& msg);
 
   void addPayloadProperties()
   {

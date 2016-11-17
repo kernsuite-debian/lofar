@@ -97,6 +97,9 @@ class imager_source_finding(LOFARnodeTCP):
                     pass  #do nothing
                 bdsm_parameters[key] = parameter_value
 
+            # pybdsm needs its filename here, to derive the log location
+            bdsm_parameters["filename"] = input_image_local
+
 
             # *****************************************************************
             # 3. Start pybdsm
@@ -104,8 +107,7 @@ class imager_source_finding(LOFARnodeTCP):
                 "Starting sourcefinder bdsm on {0} using parameters:".format(
                                                         input_image_local))
             self.logger.debug(repr(bdsm_parameters))
-            img = bdsm.process_image(bdsm_parameters,
-                        filename = input_image_local, frequency = frequency)
+            img = bdsm.process_image(bdsm_parameters, frequency = frequency)
 
             # Always export the catalog 
             img.write_catalog(

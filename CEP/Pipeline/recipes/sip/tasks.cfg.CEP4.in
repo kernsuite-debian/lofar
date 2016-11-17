@@ -15,12 +15,12 @@ nproc = 0
 nproc = 0
 
 [imager_prepare]
-nthreads = 10
+nthreads = 2
 
 [long_baseline]
 nproc = 0
 rficonsole_executable = /opt/aoflagger/bin/aoflagger
-nthreads = 10
+nthreads = 2
 
 [dppp]
 max_per_node = 0 
@@ -28,34 +28,34 @@ nthreads = 2
 
 [awimager]
 max_per_node = 0 
-nthreads = 10
+nthreads = 2
 
 [rficonsole]
 executable = /opt/aoflagger/bin/aoflagger
 max_per_node = 0 
-nthreads = 10
+nthreads = 2
 
 [imager_prepare]
 rficonsole_executable = /opt/aoflagger/bin/aoflagger
-nthreads = 10
+nthreads = 2
 
 [imager_bbs]
-nthreads = 10
+nthreads = 2
 
 [bbs_reducer]
-nthreads = 10
+nthreads = 2
 
 [executable_args]
-nthreads = 10
+nthreads = 2
 
 [casapy-imager]
-nthreads = 10
+nthreads = 2
 
 [pythonplugin]
-nthreads = 10
+nthreads = 2
 
 [python-calibrate-stand-alone]
-nthreads = 10
+nthreads = 2
 
 [calibrate-stand-alone]
-nthreads = 10
+nthreads = 2

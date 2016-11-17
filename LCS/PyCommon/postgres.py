@@ -33,60 +33,34 @@ import psycopg2.extensions
 
 logger = logging.getLogger(__name__)
 
-def makePostgresNotificationQueries(schema, table, action, view_for_row=None, view_selection_id=None):
+def makePostgresNotificationQueries(schema, table, action, column_name='id'):
     action = action.upper()
     if action not in ('INSERT', 'UPDATE', 'DELETE'):
         raise ValueError('''trigger_type '%s' not in ('INSERT', 'UPDATE', 'DELETE')''' % action)
 
-    if view_for_row and action == 'DELETE':
-        raise ValueError('You cannot use a view for results on action DELETE')
-
-    if view_for_row:
-        change_name = '''{table}_{action}_with_{view_for_row}'''.format(schema=schema,
-                                                                        table=table,
-                                                                        action=action,
-                                                                        view_for_row=view_for_row)
-        function_name = '''NOTIFY_{change_name}'''.format(change_name=change_name)
-        function_sql = '''
-        CREATE OR REPLACE FUNCTION {schema}.{function_name}()
-        RETURNS TRIGGER AS $$
-        DECLARE
-        new_row_from_view {schema}.{view_for_row}%ROWTYPE;
-        BEGIN
-        select * into new_row_from_view from {schema}.{view_for_row} where {view_selection_id} = NEW.id LIMIT 1;
-        PERFORM pg_notify(CAST('{change_name}' AS text),
-        '{{"old":' || {old} || ',"new":' || row_to_json(new_row_from_view)::text || '}}');
-        RETURN NEW;
-        END;
-        $$ LANGUAGE plpgsql;
-        '''.format(schema=schema,
-                   function_name=function_name,
-                   table=table,
-                   action=action,
-                   old='row_to_json(OLD)::text' if action == 'UPDATE' or action == 'DELETE' else '\'null\'',
-                   view_for_row=view_for_row,
-                   view_selection_id=view_selection_id if view_selection_id else 'id',
-                   change_name=change_name.lower())
-    else:
-        change_name = '''{table}_{action}'''.format(table=table, action=action)
-        function_name = '''NOTIFY_{change_name}'''.format(change_name=change_name)
-        function_sql = '''
-        CREATE OR REPLACE FUNCTION {schema}.{function_name}()
-        RETURNS TRIGGER AS $$
-        BEGIN
-        PERFORM pg_notify(CAST('{change_name}' AS text),
-        '{{"old":' || {old} || ',"new":' || {new} || '}}');
-        RETURN {value};
-        END;
-        $$ LANGUAGE plpgsql;
-        '''.format(schema=schema,
-                   function_name=function_name,
-                   table=table,
-                   action=action,
-                   old='row_to_json(OLD)::text' if action == 'UPDATE' or action == 'DELETE' else '\'null\'',
-                   new='row_to_json(NEW)::text' if action == 'UPDATE' or action == 'INSERT' else '\'null\'',
-                   value='OLD' if action == 'DELETE' else 'NEW',
-                   change_name=change_name.lower())
+    change_name = '''{table}_{action}'''.format(table=table, action=action)
+    if column_name != 'id':
+        change_name += '_column_' + column_name
+    function_name = '''NOTIFY_{change_name}'''.format(change_name=change_name)
+    function_sql = '''
+    CREATE OR REPLACE FUNCTION {schema}.{function_name}()
+    RETURNS TRIGGER AS $$
+    DECLARE payload text;
+    BEGIN
+    {begin_update_check}SELECT CAST({column_value} AS text) INTO payload;
+    PERFORM pg_notify(CAST('{change_name}' AS text), payload);{end_update_check}
+    RETURN {value};
+    END;
+    $$ LANGUAGE plpgsql;
+    '''.format(schema=schema,
+                function_name=function_name,
+                table=table,
+                action=action,
+                column_value=('OLD' if action == 'DELETE' else 'NEW') + '.' + column_name,
+                value='OLD' if action == 'DELETE' else 'NEW',
+                change_name=change_name.lower(),
+                begin_update_check='IF ROW(NEW.*) IS DISTINCT FROM ROW(OLD.*) THEN\n' if action == 'UPDATE' else '',
+                end_update_check='\nEND IF;' if action == 'UPDATE' else '')
 
     trigger_name = 'TRIGGER_NOTIFY_%s' % function_name
 

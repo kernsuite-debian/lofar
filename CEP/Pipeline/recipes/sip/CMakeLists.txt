@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34753 2016-06-20 10:43:42Z schaap $
+# $Id: CMakeLists.txt 35180 2016-08-25 11:35:32Z dijkema $
 
 include(PythonInstall)
 
@@ -64,24 +64,8 @@ python_install(
   plugins/PipelineStep_combineParsets.py
   DESTINATION lofarpipe/recipes)
 
-lofar_add_bin_scripts(
-  bin/calibration_pipeline.py
-  bin/msss_calibrator_pipeline.py
-  bin/msss_imager_pipeline.py
-  bin/msss_target_pipeline.py
-  bin/preprocessing_pipeline.py
-  bin/imaging_pipeline.py
-  bin/pulsar_pipeline.py
-  bin/long_baseline_pipeline.py
-  bin/selfcal_imager_pipeline.py
-  bin/runPipeline.sh
-  bin/startPython.sh
-  bin/startPythonVersion.sh
-  bin/stopPython.sh
-  bin/genericpipeline.py
-  bin/loader.py
-  external/bad_station_detection/asciistats.py
-  external/bad_station_detection/statsplot.py)
+add_subdirectory(bin)
+add_subdirectory(external/bad_station_detection)
 
 install(FILES
   demixing/bbs_CasA.parset

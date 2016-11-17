@@ -1,10 +1,17 @@
-import subprocess
 import select
 import os
-import signal
+import sys
 import fcntl
 import time
 from lofarpipe.support.lofarexceptions import PipelineException
+
+# subprocess is broken in python <=2.6. It does not work for fds > 1024 for example.
+try:
+    import subprocess27 as subprocess
+    print >> sys.stderr, __file__, ": Using Python 2.7 subprocess module!"
+except ImportError:
+    import subprocess
+    print >> sys.stderr, __file__, ": Using default subprocess module!"
 
 class SubProcess(object):
     STDOUT = 1
@@ -70,7 +77,7 @@ class SubProcess(object):
         if self.completed:
             return True
 
-        if self.process.poll() is None:
+        if self.output_streams:
             return False
 
         # Process is finished, read remaining data and exit code
@@ -90,7 +97,7 @@ class SubProcess(object):
         if self.killed:
             return
 
-        os.signal(self.pid, signal.SIGTERM)
+        self.process.kill() # sends SIGKILL
         self.killed = True
 
     def fds(self):
@@ -219,7 +226,7 @@ class SubProcessGroup(object):
                 fd_lookup = {}
                 for process in processes:
                     for fd in process.fds():
-                        poller.register(fd, select.POLLIN)
+                        poller.register(fd, select.POLLIN | select.POLLPRI)
                         fd_lookup[fd.fileno()] = process
 
                 # poll for data

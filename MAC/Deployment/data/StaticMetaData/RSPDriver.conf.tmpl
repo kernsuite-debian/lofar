@@ -243,8 +243,8 @@ RSPDriver.FB_ENABLE=1
 #
 # Ethernet interface on which to contact the RSP boards.
 # This interface would normally be connected to the switch.
-#
-RSPDriver.IF_NAME=eth1
+# Old LCUs (RHEL52) this is eth1, new LCUs (CentOS7) this is eno2
+RSPDriver.IF_NAME=@ETHPORT@
 
 #
 # Make sure that initially the

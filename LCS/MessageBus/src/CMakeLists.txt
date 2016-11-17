@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 31882 2015-06-22 07:50:04Z mol $
+# $Id: CMakeLists.txt 35890 2016-11-03 13:16:09Z schoenmakers $
 
 include(LofarPackageVersion)
 include(PythonInstall)
@@ -12,7 +12,8 @@ set(messagebus_LIB_SRCS
   NoQpidFallback.cc
   ToBus.cc
   Util.cc
-  XMLDoc.cc)
+  XMLDoc.cc
+  Protocols/TaskFeedbackState.cc)
 
 set(messagebus_PROGRAMS
 )
@@ -30,4 +31,4 @@ python_install(
   noqpidfallback.py
   DESTINATION lofar/messagebus)
 
-add_subdirectory(protocols)
+add_subdirectory(Protocols)

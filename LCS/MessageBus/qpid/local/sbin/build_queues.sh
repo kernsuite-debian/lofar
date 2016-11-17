@@ -6,10 +6,11 @@
 # Dependning on the system, it will set up the queues for prod or test
 #
 
-# Run this on CCU001 or CCU099
-host=`hostname -s`
-if [[ "$host" != "CCU001" && "$host" != "CCU099" ]]; then 
-  echo "Run $0 on CCU001 or CCU099!!!"
+# Run this on CCU001, CCU002, or CCU099
+host=`hostname -s | tr [a-z] [A-Z]`
+hosttype=`hostname -s | tr [a-z] [A-Z] | awk '{print substr($1,0,3)}'`
+if [[ "$hosttype" != "CCU" || "$hosttype" != "MCU" ]]; then 
+  echo "Run $0 on a CCU or MCU system"
   exit
 fi
 
@@ -25,6 +26,18 @@ if [ "$host" == "CCU001" ]; then
   head="lhn001.cep2.lofar"
   node_start=1
   node_end=94
+elif [ "$host" == "CCU002" ]; then
+  # Host definitions: PRODUCTION READY TEST
+  ccu="ccu002.control.lofar"
+  mcu="mcu002.control.lofar" 
+  sas="SAS099.control.lofar"
+  cobalt_root="cbm00" 
+  cobalt_start=9
+  cobalt_end=9
+  mom="LCS028.control.lofar"
+  head="locus102.cep2.lofar"
+  node_start=98
+  node_end=99
 else
   # Host definitions: TEST
   ccu="CCU099.control.lofar"

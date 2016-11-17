@@ -299,3 +299,29 @@ def catch_segfaults(cmd, cwd, env, logger, max = 1, cleanup = lambda: None,
         logger.error("Too many segfaults from %s; aborted" % (cmd[0]))
         raise subprocess.CalledProcessError(process.returncode, cmd[0])
     return process
+
+def socket_recv(socket, numbytes):
+    """
+    Read numbytes from the given socket.
+    
+    Raises IOError if connection has closed before all data could be read.
+    """
+
+    data = ""
+    while numbytes > 0:
+        try:
+            chunk = socket.recv(numbytes)
+        except IOError, e:
+            if e.errno == errno.EINTR:
+                continue
+            else:
+                raise
+
+        if not chunk:
+             raise IOError("Connection closed. Received '%s', need %d more bytes" % (data,numbytes))
+
+        data += chunk
+        numbytes -= len(chunk)
+
+    return data
+

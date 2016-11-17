@@ -27,6 +27,7 @@ CMake/			CMake configuration & build helper scripts
 CMake/variants/		compiler- and hostname-specific build configurations
 CMakeLists.txt		Top-level CMake configuration & build script
 COPYING			License text
+Docker/			Docker container templates and build scripts
 INSTALL			Build and installation instructions
 LCS/			LOFAR Common Software: frequently used LOFAR libraries
 LCS/LofarStMan/		LOFAR Storage Manager for casacore MeasurementSets

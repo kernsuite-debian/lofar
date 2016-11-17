@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BaselineSelection.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id: BaselineSelection.cc 34902 2016-07-07 08:56:26Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -43,7 +43,7 @@ namespace LOFAR {
     BaselineSelection::BaselineSelection (const ParameterSet& parset,
                                           const string& prefix,
                                           bool minmax,
-					  const string& defaultCorrType,
+                                          const string& defaultCorrType,
                                           const string& defaultBaseline)
       : itsStrBL    (parset.getString (prefix + "baseline", defaultBaseline)),
         itsCorrType (parset.getString (prefix + "corrtype", defaultCorrType)),

@@ -3,19 +3,20 @@
 DBHOST=10.149.32.21 # sas099.control.lofar
 
 #cleanup on normal exit and on SIGHUP, SIGINT, SIGQUIT, and SIGTERM
-trap 'qpid-config del exchange --force $queue ; kill ${SERVER_PID}' 0 1 2 3 15
+trap 'qpid-config del exchange --force $queue ; kill ${SERVICE_PID} ; dropdb -U postgres -h ${DBHOST} ${DBNAME}' 0 1 2 3 15
 
 # Generate randome queue name
-queue=$(< /dev/urandom tr -dc [:alnum:] | head -c16)
+queue=$(< /dev/urandom tr -dc [:alnum:] | head -c10)
+DBNAME=unittest_$queue
 
 # Create the queue
 qpid-config add exchange topic $queue
 
 # Setup a clean database with predefined content
-dropdb -U postgres -h ${DBHOST} unittest_db
-gzip -dc $srcdir/unittest_db.dump.gz | psql -U postgres -h ${DBHOST} -f -
-TreeService.py -B $queue -D unittest_db -H ${DBHOST} -U postgres &
-SERVER_PID=$!
+createdb -U postgres -h ${DBHOST} ${DBNAME}
+gzip -dc $srcdir/unittest_db.dump.gz | psql -U postgres -h ${DBHOST} ${DBNAME} -f -
+TreeService.py -B $queue -D ${DBNAME} -H ${DBHOST} -U postgres &
+SERVICE_PID=$!
 # Starting up takes a while
 sleep 3
 

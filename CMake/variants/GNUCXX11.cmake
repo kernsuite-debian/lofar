@@ -1,6 +1,6 @@
 # Definitions file for the GNUCXX11 compiler suite.
 #
-# $Id: GNUCXX11.cmake 34753 2016-06-20 10:43:42Z schaap $
+# $Id: GNUCXX11.cmake 35708 2016-10-14 13:57:51Z loose $
 
 
 # Compiler suite
@@ -21,7 +21,7 @@ set(GNUCXX11_C_FLAGS_DEBUG    "-g")
 set(GNUCXX11_C_FLAGS_OPT      "-g -O2")
 set(GNUCXX11_C_FLAGS_OPT3     "-g -O3")
 set(GNUCXX11_C_FLAGS_OPTARCH  "-g -O3 -march=native")
-set(GNUCXX11_CXX_FLAGS        "-std=c++11 -fext-numeric-literals -W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
+set(GNUCXX11_CXX_FLAGS        "-std=gnu++11 -W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
 set(GNUCXX11_CXX_FLAGS_DEBUG  "-g")
 set(GNUCXX11_CXX_FLAGS_OPT    "-g -O2")
 set(GNUCXX11_CXX_FLAGS_OPT3   "-g -O3")
@@ -35,7 +35,7 @@ set(GNUCXX11_SHARED_LINKER_FLAGS)
 set(GNUCXX11_SHARED_LINKER_FLAGS_DEBUG)
 set(GNUCXX11_SHARED_LINKER_FLAGS_OPT)
 set(GNUCXX11_SHARED_LINKER_FLAGS_OPT3)
-set(GNUCXX11_SHARED_LINKER_FLAGS_OPTARCH3)
+set(GNUCXX11_SHARED_LINKER_FLAGS_OPTARCH)
 set(GNUCXX11_COMPILE_DEFINITIONS)
 set(GNUCXX11_COMPILE_DEFINITIONS_DEBUG 
                          "-DLOFAR_DEBUG -DENABLE_DBGASSERT -DENABLE_TRACER")

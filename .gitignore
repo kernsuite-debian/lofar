@@ -1,0 +1,3 @@
+debian/lofar-*-build/
+debian/lofar-*.tar.bz2
+debian/lofar-*/

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 33326 2016-01-20 09:56:18Z schoenmakers $
+# $Id: CMakeLists.txt 35020 2016-07-20 14:24:45Z dijkema $
 
 # Generate the actual test script.
 configure_file(findenv.run_tmpl findenv.run_script)
@@ -17,6 +17,7 @@ lofar_add_test(tPhaseShift tPhaseShift.cc)
 lofar_add_test(tStationAdder tStationAdder.cc)
 lofar_add_test(tScaleData tScaleData.cc)
 lofar_add_test(tApplyCal tApplyCal.cc)
+lofar_add_test(tApplyCal2)
 lofar_add_test(tFilter tFilter.cc)
 #lofar_add_test(tDemixer tDemixer.cc)
 lofar_add_test(tNDPPP tNDPPP.cc)

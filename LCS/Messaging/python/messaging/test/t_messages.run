@@ -2,4 +2,10 @@
 
 # Run the unit test
 source python-coverage.sh
-python_coverage_test "Messaging/python" t_messages.py
+PYTHONVERSION=$(python -V|awk '{print $1}')
+if [ $PYTHONVERSION \> "2.6.9" ] ; then
+  python_coverage_test "Messaging/python" t_messages.py
+else
+  echo "python version too low for testing"
+fi
+

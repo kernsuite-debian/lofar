@@ -175,7 +175,7 @@ int run(const ParameterSet &options, const OptionParser::ArgumentList&)
       wait = false;
     }
 
-    pair<CommandId, shared_ptr<const Command> > command = session.getCommand();
+    pair<CommandId, LOFAR::shared_ptr<Command> > command = session.getCommand();
     if(command.second)
     {
       LOG_DEBUG_STR("Executing a " << command.second->type() << " command:"

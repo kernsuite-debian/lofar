@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34482 2016-05-17 12:21:59Z dijkema $
+# $Id: CMakeLists.txt 34902 2016-07-07 08:56:26Z dijkema $
 
 include(LofarPackageVersion)
 include(PythonInstall)
@@ -20,6 +20,7 @@ lofar_add_library(dppp
   DemixerNew.cc DemixInfo.cc DemixWorker.cc
   Predict.cc
   ApplyBeam.cc
+  phasefitter.cc
 )
 
 lofar_add_bin_program(NDPPP NDPPP.cc)

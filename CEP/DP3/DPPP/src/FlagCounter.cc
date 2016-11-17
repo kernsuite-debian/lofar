@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FlagCounter.cc 34867 2016-07-04 09:00:01Z mol $
+//# $Id: FlagCounter.cc 34859 2016-07-01 14:58:40Z dijkema $
 //#
 //# @author Ger van Diepen
 

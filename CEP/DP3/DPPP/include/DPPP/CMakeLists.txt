@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34482 2016-05-17 12:21:59Z dijkema $
+# $Id: CMakeLists.txt 35533 2016-10-04 12:12:01Z dijkema $
 
 # List of header files that will be installed.
 set(inst_HEADERS
@@ -16,7 +16,8 @@ set(inst_HEADERS
   DemixerNew.h DemixInfo.h DemixWorker.h
   ApplyBeam.h ApplyBeam.tcc
   Predict.h
-  GainCal.h StefCal.h
+  GainCal.h StefCal.h phasefitter.h
+  StManParsetKeys.h
 )
 
 # Create symbolic link to include directory.

@@ -21,7 +21,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: lofarinit.csh.in 35029 2016-07-21 11:42:59Z schaap $
+# $Id: lofarinit.csh.in 35890 2016-11-03 13:16:09Z schoenmakers $
 
 # Define root here.
 # This is a placeholder, so do NOT change the line.
@@ -96,9 +96,9 @@ else
 
     # Add the path to the standard paths.
     if (! $?PATH) then
-        setenv PATH $LOFARROOT/bin:$LOFARROOT/sbin
+        setenv PATH $LOFARROOT/sbin:$LOFARROOT/bin
     else
-        setenv PATH $LOFARROOT/bin:$LOFARROOT/sbin:$PATH
+        setenv PATH $LOFARROOT/sbin:$LOFARROOT/bin:$PATH
     endif
     if (! $?LD_LIBRARY_PATH) then
         setenv LD_LIBRARY_PATH $LOFARROOT/$lfr_libdir

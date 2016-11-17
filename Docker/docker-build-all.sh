@@ -12,5 +12,6 @@ cd ${LOFARROOT}/share/docker
 build lofar-base && \
 build lofar-pipeline && \
 build lofar-outputproc && \
-build lofar-tbb
+build lofar-tbb && \
+build dynspec
 

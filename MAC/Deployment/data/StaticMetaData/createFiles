@@ -238,9 +238,24 @@ def findStationInfo(stationName, dataDir):
     if not match:
         raise "\nFatal error: "+stationName+" is not defined in file StationInfo.dat"
     info = match.group().split()
-    if (len(info) != 13):
+    if (len(info) != 14):
         raise "\nFatal error: Data of "+stationName+" is not complete in file StationInfo.dat"
     return info
+
+def findEthPort():
+    """
+    Return ethport on which RSP boards are connected. For old LCUs (RHEL52) this is eth1,
+    for new LCUs (CentOS7) this is eno2. We simply check the presence of file
+    /etc/sysconfig/network-scripts/ifcfg-eno2
+    """
+    ethport=""
+    ethFile = "/etc/sysconfig/network-scripts/ifcfg-eno2"
+    if (os.access(ethFile,os.F_OK) == True):
+        ethport="eno2"
+    else:
+        ethport="eth1"
+
+    return ethport
 
 def createCCURSPConnectionsFile(resultDir, dataDir):
    """
@@ -279,7 +294,7 @@ def createRSPDriverFile(resultDir, stationName, dataDir,int_local,is_Cobalt):
     rspDestNode = findRSPDestNodes(stationName, dataDir)
     print stationName,"matches:",rspDestNode
 
-    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
+    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, nrPOWECS, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
 
     # Substitute MAC and IP address of destination nodes
     RSPfile = open(dataDir+"/RSPDriver.conf.tmpl")
@@ -458,6 +473,12 @@ def createRSPDriverFile(resultDir, stationName, dataDir,int_local,is_Cobalt):
             RSPconfig = RSPconfig.replace(repl_str, str(srcip_suffix))
             
     RSPconfig = setAttenuationSettings(RSPconfig, stationName, dataDir)                       
+
+    # Fill in the used network port to the RSP boards (eth1 or eno2)
+    repl_str = "@ETHPORT@"
+    ethport=findEthPort()
+    RSPconfig = RSPconfig.replace(repl_str, ethport)
+    
     outFile = os.open(dataDir+"/RSPDriver.conf.tmp", os.O_RDWR|os.O_CREAT|os.O_TRUNC)
     os.write(outFile, RSPconfig)
     os.close(outFile)
@@ -476,7 +497,7 @@ def createRSPDriverFile_Test(resultDir, stationName, dataDir, alias):
     rspDestNode = findRSPDestNodes(stationName, dataDir)
     #print stationName,"matches:",rspDestNode
 
-    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
+    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, nrPOWECS, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
 
     # Substitute MAC and IP address of destination nodes
     RSPfile = open(dataDir+"/RSPDriver.conf.tmpl")
@@ -623,7 +644,7 @@ def createTBBDriverFile(resultDir, stationName, dataDir):
     tbbDestNode = findTBBDestNodes(stationName, dataDir)
     #print stationName,"matches:",tbbDestNode
 
-    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
+    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, nrPOWECS, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
     #print stationName," has ",nrTBB," TBBoards"
     
     # Substitute MAC and IP address of destination nodes
@@ -673,6 +694,12 @@ def createTBBDriverFile(resultDir, stationName, dataDir):
     TBBconfig = TBBconfig.replace("@RING_ID@",   ringID)
     TBBconfig = TBBconfig.replace("@IP_PREFIX@",   ip_prefix)
     TBBconfig = TBBconfig.replace("@IP_SUBNET@",   ip_parts[2])
+
+    # Fill in the used network port to the TBB boards (eth1 or eno2)
+    repl_str = "@ETHPORT@"
+    ethport=findEthPort()
+    TBBconfig = TBBconfig.replace(repl_str, ethport)
+
     outFile = os.open(dataDir+"/TBBDriver.conf.tmp", os.O_RDWR|os.O_CREAT|os.O_TRUNC)
     os.write(outFile, TBBconfig)
     os.close(outFile)
@@ -685,14 +712,20 @@ def createRemoteStationFile(resultDir, stationName, dataDir):
     """
     Fills in the markers in the RemoteStation.conf file to match the values for the given station.
     """
-    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
+    (name, stationID, stnType, long, lat, height, nrRSP, nrTBB, nrLBA, nrHBA, nrPOWECS, HBAsplit, LBAcal, Aartfaac ) = findStationInfo(stationName, dataDir)
+
+    # Find Ip number station
+    ipnumber = findIPNumber(name)
+
     RSconfig = open(dataDir+"/RemoteStation.conf.tmpl").read()
     RSconfig = RSconfig.replace("@STATION_NAME@", stationName.upper())
     RSconfig = RSconfig.replace("@STATION_ID@",   stationID)
+    RSconfig = RSconfig.replace("@STATION_IP@",   ipnumber)
     RSconfig = RSconfig.replace("@NR_RSP@",       nrRSP)
     RSconfig = RSconfig.replace("@NR_TBB@",       nrTBB)
     RSconfig = RSconfig.replace("@NR_LBA@",       nrLBA)
     RSconfig = RSconfig.replace("@NR_HBA@",       nrHBA)
+    RSconfig = RSconfig.replace("@NR_POWECS@",    nrPOWECS)
     RSconfig = RSconfig.replace("@HBA_SPLIT@",    HBAsplit)
     RSconfig = RSconfig.replace("@LBA_WIDE@",     LBAcal)
     RSconfig = RSconfig.replace("@AARTFAAC@",     Aartfaac)

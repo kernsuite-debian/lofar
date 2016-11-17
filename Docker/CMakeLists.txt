@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34819 2016-06-29 04:58:50Z mol $
+# $Id: CMakeLists.txt 35142 2016-08-22 10:10:37Z schaap $
 
 lofar_package(Docker 1.0 DEPENDS Common)
 
@@ -25,6 +25,7 @@ lofar_add_bin_program(versiondocker versiondocker.cc)
 set(DOCKER_TEMPLATE_DIRS
   lofar-base
   lofar-pipeline
+  lofar-pulp
   lofar-outputproc)
 
 # Note: "docker-template" only works as long as the sources are still around,
@@ -57,8 +58,10 @@ endforeach()
 
 # Install everything else
 install(DIRECTORY
+  dynspec
   lofar-base
   lofar-pipeline
+  lofar-pulp
   lofar-outputproc
   lofar-tbbwriter
   DESTINATION share/docker

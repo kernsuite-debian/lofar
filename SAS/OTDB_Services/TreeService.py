@@ -93,7 +93,7 @@ def TaskGetIDs(input_dict, db_connection, return_tuple=True):
     if otdb_id is not None:
         try:
             (real_otdb_id, real_mom_id,tree_type) =\
-                db_connection.query("select treeid,momid,type from getTreeInfo({}, False)".format(otdb_id)).getresult()[0]
+                db_connection.query("select treeid,momid,type from getTreeInfo({0}, False)".format(otdb_id)).getresult()[0]
             return (tree_type, real_otdb_id, real_mom_id) if return_tuple else [tree_type, real_otdb_id, real_mom_id]
         except QUERY_EXCEPTIONS:
             pass
@@ -102,7 +102,7 @@ def TaskGetIDs(input_dict, db_connection, return_tuple=True):
     if  mom_id is not None: 
         try:
             (real_otdb_id, real_mom_id,tree_type) =\
-                db_connection.query("select treeid,momid,type from getTreeInfo({}, True)".format(mom_id)).getresult()[0]
+                db_connection.query("select treeid,momid,type from getTreeInfo({0}, True)".format(mom_id)).getresult()[0]
             return (tree_type, real_otdb_id, real_mom_id) if return_tuple else [tree_type, real_otdb_id, real_mom_id]
         except QUERY_EXCEPTIONS:
             pass
@@ -129,7 +129,7 @@ def TaskGetSpecification(input_dict, db_connection):
 
     # if task i not found it is end of story.
     if task_type is None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
 
     # Try to get the specification information
     try:
@@ -213,7 +213,7 @@ def TaskCreate(input_dict, db_connection):
     # when otdb_id = None task is not in the database
     # if we searched on OtdbID and the task is not found then is it end-of-story
     if task_type is None and otdb_id is not None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
 
     # if we searched on MomID and the task is not found that we try to create a task(template)
     if task_type is None and mom_id is not None:
@@ -225,19 +225,19 @@ def TaskCreate(input_dict, db_connection):
             # template_info is a list with tuples: (treeid,name)
             all_names = [ name for (_,name) in template_info if name[0] != '#' ]
             if not selected_template in all_names:
-                raise AttributeError("DefaultTemplate '{}' not found, available are:{}".format(selected_template, all_names))
+                raise AttributeError("DefaultTemplate '{0}' not found, available are:{1}".format(selected_template, all_names))
             # Yeah, default template exist, now make a copy of it.
             template_ids = [ tasknr for (tasknr,name) in template_info if name == selected_template ]
             if len(template_ids) != 1:
-                raise FunctionError("Programming error: matching task_ids for template {} are {}".\
+                raise FunctionError("Programming error: matching task_ids for template {0} are {1}".\
                       format(selected_template, template_ids))
-            otdb_id = db_connection.query("select copyTree(1,{})".format(template_ids[0])).getresult()[0][0]
+            otdb_id = db_connection.query("select copyTree(1,{0})".format(template_ids[0])).getresult()[0][0]
             # give new tree the mom_id when mom_id was specified by the user.
             campaign_name  = input_dict.get('CampaignName','no campaign')
             if mom_id is None: mom_id = 0
-            db_connection.query("select setMomInfo(1,{},{},0,'{}')".format(otdb_id, mom_id, campaign_name))
+            db_connection.query("select setMomInfo(1,{0},{1},0,'{2}')".format(otdb_id, mom_id, campaign_name))
         except QUERY_EXCEPTIONS, exc_info:
-            raise FunctionError("Error while create task from template {}: {}".format(selected_template, exc_info))
+            raise FunctionError("Error while create task from template {0}: {1}".format(selected_template, exc_info))
 
     # When we are here we always have a task, so do the key updates
     return TaskSetSpecification({'OtdbID':otdb_id, 'Specification':input_dict['Specification']}, db_connection)
@@ -276,7 +276,7 @@ def TaskSetStatus(input_dict, db_connection):
 
     # if task i not found it is end of story.
     if task_type is None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
 
     try:
         new_status   = input_dict['NewStatus']
@@ -327,9 +327,9 @@ def TaskSetSpecification(input_dict, db_connection):
 
     # if task i not found it is end of story.
     if task_type is None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
     if task_type == HARDWARE_TREE:
-        raise FunctionError("OtdbID/MomID {}/{} refers to a hardware tree.".format(otdb_id, mom_id))
+        raise FunctionError("OtdbID/MomID {0}/{1} refers to a hardware tree.".format(otdb_id, mom_id))
 
     try:
         update_list = input_dict['Specification']
@@ -344,12 +344,12 @@ def TaskSetSpecification(input_dict, db_connection):
     for (key, value) in update_list.iteritems():
         try:
             if task_type == TEMPLATE_TREE:
-                (node_id,name) = db_connection.query("select nodeid,name from getVTitem({},'{}')"\
+                (node_id,name) = db_connection.query("select nodeid,name from getVTitem({0},'{1}')"\
                                .format(otdb_id, key)).getresult()[0]
-                record_list = db_connection.query("select nodeid,instances,limits from getVTitemlist ({},'{}') where nodeid={}"\
+                record_list = db_connection.query("select nodeid,instances,limits from getVTitemlist ({0},'{1}') where nodeid={2}"\
                                .format(otdb_id, name, node_id)).getresult()
             else: # VIC_TREE
-                record_list = db_connection.query("select nodeid,instances,limits from getVHitemlist ({},'{}')"\
+                record_list = db_connection.query("select nodeid,instances,limits from getVHitemlist ({0},'{1}')"\
                                .format(otdb_id, key)).getresult()
             if len(record_list) == 0:
                 errors[key] = "Not found for tree %d" % otdb_id
@@ -395,16 +395,16 @@ def TaskPrepareForScheduling(input_dict, db_connection):
 
     # if task i not found it is end of story.
     if task_type is None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
     if task_type == HARDWARE_TREE:
-        raise FunctionError("OtdbID/MomID {}/{} refers to a hardware tree.".format(otdb_id, mom_id))
+        raise FunctionError("OtdbID/MomID {0}/{1} refers to a hardware tree.".format(otdb_id, mom_id))
 
     # get the information of the task
     try: 
-        (task_id,task_type,task_state) = db_connection.query("select treeid,type,state from getTreeInfo({},False)"\
+        (task_id,task_type,task_state) = db_connection.query("select treeid,type,state from getTreeInfo({0},False)"\
                                          .format(otdb_id)).getresult()[0]
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("TaskPrepareForScheduling: {}".format(exc_info))
+        raise FunctionError("TaskPrepareForScheduling: {0}".format(exc_info))
 
     # Get list of defines tree states
     state_names = {}
@@ -414,26 +414,26 @@ def TaskPrepareForScheduling(input_dict, db_connection):
             state_names[name] = nr
             state_nrs[nr]     = name
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("Error while getting list of task states for tree {}: {}".format(otdb_id, exc_info))
+        raise FunctionError("Error while getting list of task states for tree {0}: {1}".format(otdb_id, exc_info))
 
     # If task is of the type VItemplate convert it to a VHtree
     delete_old_task = False
     if task_type == TEMPLATE_TREE:
         try:
             # create executable task
-            new_task_id = db_connection.query("select instanciateVHtree(1,{})".format(task_id)).getresult()[0][0]
+            new_task_id = db_connection.query("select instanciateVHtree(1,{0})".format(task_id)).getresult()[0][0]
             # get the characteristics
-            (task_id,task_type,task_state) = db_connection.query("select treeid,type,state from getTreeInfo({},False)"\
+            (task_id,task_type,task_state) = db_connection.query("select treeid,type,state from getTreeInfo({0},False)"\
                                              .format(new_task_id)).getresult()[0]
             delete_old_task = True
         except QUERY_EXCEPTIONS, exc_info:
-            raise FunctionError("TaskPrepareForScheduling: failed for task {}: {}".format(otdb_id, exc_info))
+            raise FunctionError("TaskPrepareForScheduling: failed for task {0}: {1}".format(otdb_id, exc_info))
         # make sure the tree is in the right state
         if task_state != state_names['approved']:
             try:
-                db_connection.query("select setTreeState(1,{},{}::INT2,True)".format(task_id, state_names['approved']))
+                db_connection.query("select setTreeState(1,{0},{1}::INT2,True)".format(task_id, state_names['approved']))
             except QUERY_EXCEPTIONS, exc_info:
-                raise FunctionError("Error while setting task {} to 'approved': {}".format(task_id, exc_info))
+                raise FunctionError("Error while setting task {0} to 'approved': {1}".format(task_id, exc_info))
 
     if delete_old_task:
         TaskDelete({'OtdbID':otdb_id}, db_connection)
@@ -443,9 +443,9 @@ def TaskPrepareForScheduling(input_dict, db_connection):
     end_time   = input_dict.get("StopTime", "")
     if start_time != "" or end_time != "":
         try:
-            db_connection.query("select setSchedule(1,{},'{}','{}')".format(task_id,start_time,end_time))
+            db_connection.query("select setSchedule(1,{0},'{1}','{2}')".format(task_id,start_time,end_time))
         except QUERY_EXCEPTIONS, exc_info:
-            raise FunctionError("Error while setting schedule-times of task {} to '{}'-'{}': {}"\
+            raise FunctionError("Error while setting schedule-times of task {0} to '{1}'-'{2}': {3}"\
                   .format(task_id, start_time, end_time, exc_info))
 
     return {'OtdbID':task_id, 'MomID':mom_id, 'Success':True}
@@ -469,13 +469,13 @@ def TaskDelete(input_dict, db_connection):
 
     # if task i not found it is end of story.
     if task_type is None:
-        raise FunctionError("Task with OtdbID/MomID {}/{} does not exist".format(otdb_id, mom_id))
+        raise FunctionError("Task with OtdbID/MomID {0}/{1} does not exist".format(otdb_id, mom_id))
 
     # delete the task
     try: 
-        db_connection.query("select deleteTree(1,{})".format(otdb_id))
+        db_connection.query("select deleteTree(1,{0})".format(otdb_id))
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("TaskDelete {}: {}".format(otdb_id, exc_info))
+        raise FunctionError("TaskDelete {0}: {1}".format(otdb_id, exc_info))
 
     return {'OtdbID':otdb_id, 'MomID':mom_id, 'Success':True}
 
@@ -498,7 +498,7 @@ def GetDefaultTemplates(input_dict, db_connection):
             if name[0] != '#':
                 Templates[name] = { 'OtdbID':treeid, 'processType':proc_type, 'processSubtype':proc_subtype, 'Strategy':strategy}
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("GetDefaulTemplates: {}".format(exc_info))
+        raise FunctionError("GetDefaulTemplates: {0}".format(exc_info))
 
     return { 'DefaultTemplates': Templates }
 
@@ -522,7 +522,7 @@ def GetStations(input_dict, db_connection):
             if len(level) == 4:
                 Stations[level[3]] = level[2]
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("GetStations: {}".format(exc_info))
+        raise FunctionError("GetStations: {0}".format(exc_info))
 
     return { 'Stations': Stations }
 
@@ -549,14 +549,14 @@ def SetProject(input_dict, db_connection):
         contact      = input_dict['contact']
     except KeyError, info:
         raise AttributeError("SetProject: Key %s is missing in the input" % info)
-    logger.info("SetProject for project: {}".format(project_name))
+    logger.info("SetProject for project: {0}".format(project_name))
 
     # get the information
     Stations = {}
     try: 
-        project_id = db_connection.query("select saveCampaign(0,'{}','{}','{}','{}','{}')".format(project_name, title, pi, co_i, contact)).getresult()[0][0]
+        project_id = db_connection.query("select saveCampaign(0,'{0}','{1}','{2}','{3}','{4}')".format(project_name, title, pi, co_i, contact)).getresult()[0][0]
     except QUERY_EXCEPTIONS, exc_info:
-        raise FunctionError("SetProject: {}".format(exc_info))
+        raise FunctionError("SetProject: {0}".format(exc_info))
 
     return { "projectID": project_id }
 
@@ -609,39 +609,39 @@ class PostgressMessageHandler(MessageHandlerInterface):
 
     # The following functions are called from the Service code.
     def _TaskGetSpecification(self, **kwargs):
-        logger.info("_TaskGetSpecification({})".format(kwargs))
+        logger.info("_TaskGetSpecification({0})".format(kwargs))
         return TaskGetSpecification(kwargs, self.connection)
 
     def _TaskCreate(self, **kwargs):
-        logger.info("_TaskCreate({})".format(kwargs))
+        logger.info("_TaskCreate({0})".format(kwargs))
         return TaskCreate(kwargs, self.connection)
 
     def _TaskGetStatus(self, **kwargs):
-        logger.info("_TaskGetStatus({})".format(kwargs))
+        logger.info("_TaskGetStatus({0})".format(kwargs))
         return TaskGetStatus(kwargs.get('otdb_id'), self.connection)
 
     def _TaskSetStatus(self, **kwargs):
-        logger.info("_TaskSetStatus({})".format(kwargs))
+        logger.info("_TaskSetStatus({0})".format(kwargs))
         return TaskSetStatus(kwargs, self.connection)
 
     def _TaskGetTreeInfo(self, **kwargs):
-        logger.info("_TaskGetTreeInfo({})".format(kwargs))
+        logger.info("_TaskGetTreeInfo({0})".format(kwargs))
         return TaskGetTreeInfo(kwargs.get('otdb_id'), self.connection)
 
     def _TaskSetSpecification(self, **kwargs):
-        logger.info("_TaskSetSpecification({})".format(kwargs))
+        logger.info("_TaskSetSpecification({0})".format(kwargs))
         return TaskSetSpecification(kwargs, self.connection)
 
     def _TaskPrepareForScheduling(self, **kwargs):
-        logger.info("_TaskPrepareForScheduling({})".format(kwargs))
+        logger.info("_TaskPrepareForScheduling({0})".format(kwargs))
         return TaskPrepareForScheduling(kwargs, self.connection)
 
     def _TaskGetIDs(self, **kwargs):
-        logger.info("_TaskGetIDs({})".format(kwargs))
+        logger.info("_TaskGetIDs({0})".format(kwargs))
         return TaskGetIDs(kwargs, self.connection, return_tuple=False)
 
     def _TaskDelete(self, **kwargs):
-        logger.info("_TaskDelete({})".format(kwargs))
+        logger.info("_TaskDelete({0})".format(kwargs))
         return TaskDelete(kwargs, self.connection)
 
     def _GetDefaultTemplates(self, **kwargs):
@@ -653,7 +653,7 @@ class PostgressMessageHandler(MessageHandlerInterface):
         return GetStations(kwargs, self.connection)
 
     def _SetProject(self, **kwargs):
-        logger.info("_SetProject({})".format(kwargs))
+        logger.info("_SetProject({0})".format(kwargs))
         return SetProject(kwargs, self.connection)
 
 

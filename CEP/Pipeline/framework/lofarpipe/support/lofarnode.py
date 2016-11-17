@@ -16,6 +16,7 @@ import logging.handlers
 import cPickle as pickle
 
 from lofarpipe.support.usagestats import UsageStats
+from lofarpipe.support.utilities  import socket_recv
 
 def run_node(*args):
     """
@@ -128,18 +129,25 @@ class LOFARnodeTCP(LOFARnode):
         while True:
             tries -= 1
             try:
+                # connect
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.__try_connect(s)
+
+                # send request
                 message = "GET %d" % self.job_id
                 s.sendall(struct.pack(">L", len(message)) + message)
-                chunk = s.recv(4)
+
+                # receive response length
+                chunk = socket_recv(s, 4)
                 slen = struct.unpack(">L", chunk)[0]
-                chunk = s.recv(slen)
-                while len(chunk) < slen:
-                    chunk += s.recv(slen - len(chunk))
+
+                # receive response
+                chunk = socket_recv(s, slen)
+
+                # parse response
                 self.arguments = pickle.loads(chunk)
-            except socket.error, e:
-                print "Failed to get recipe arguments from server"
+            except (IOError, socket.error) as e:
+                print "Failed to get recipe arguments from server: %s" % (e,)
                 if tries > 0:
                     timeout = random.uniform(min_timeout, max_timeout)
                     print("Retrying in %f seconds (%d more %s)." %

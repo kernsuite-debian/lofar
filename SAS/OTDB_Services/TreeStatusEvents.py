@@ -136,7 +136,7 @@ if __name__ == "__main__":
                     try:
                         logger.info("creating %s" % (treestatuseventfilename,))
                         if not os.path.exists(os.path.dirname(treestatuseventfilename)):
-                            os.mkdirs(os.path.dirname(treestatuseventfilename))
+                            os.makedirs(os.path.dirname(treestatuseventfilename))
 
                         with open(treestatuseventfilename, 'w') as f:
                             f.write(start_time.strftime("%Y-%m-%d %H:%M:%S"))

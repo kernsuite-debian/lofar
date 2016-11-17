@@ -1,0 +1,3 @@
+set(CASACORE_ROOT_DIR /opt/casacore-latest)
+set(DAL_ROOT_DIR      /opt/DAL)
+

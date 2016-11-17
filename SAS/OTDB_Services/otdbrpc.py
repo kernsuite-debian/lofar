@@ -20,8 +20,9 @@ class OTDBPRCException(Exception):
 class OTDBRPC(RPCWrapper):
     def __init__(self, busname=DEFAULT_OTDB_SERVICE_BUSNAME,
                  servicename=DEFAULT_OTDB_SERVICENAME,
-                 broker=None):
-        super(OTDBRPC, self).__init__(busname, servicename, broker)
+                 broker=None,
+                 timeout=120):
+        super(OTDBRPC, self).__init__(busname, servicename, broker, timeout=timeout)
 
     def taskGetIDs(self, otdb_id=None, mom_id=None):
         if otdb_id:

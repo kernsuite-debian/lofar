@@ -124,6 +124,9 @@ class imager_source_finding(BaseRecipe, RemoteCommandRecipeMixIn):
         source_dbs_from_nodes.iterator = \
             catalog_output_path_from_nodes.iterator = DataMap.SkipIterator
 
+        # Job is succesfull if at least one source_db is found
+        succesfull_job = False
+
         for job, sourcedb_item, catalog_item in zip(jobs,
                                    source_dbs_from_nodes,
                                    catalog_output_path_from_nodes):

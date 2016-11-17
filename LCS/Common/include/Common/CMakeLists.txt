@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 28063 2014-01-28 18:15:18Z amesfoort $
+# $Id: CMakeLists.txt 35806 2016-10-26 22:30:38Z amesfoort $
 
 # Create symbolic link to include directory.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink 
@@ -24,6 +24,7 @@ install(FILES
   FileLocator.h
   hexdump.h
   InputParSet.h
+  IOPriority.h
   i4complex.h
   KVpair.h
   lofar_algorithm.h
@@ -93,6 +94,7 @@ install(FILES
   DESTINATION include/${PACKAGE_NAME}/shmem)
 
 install(FILES
+  Thread/Barrier.h
   Thread/Cancellation.h
   Thread/Condition.h
   Thread/Mutex.h

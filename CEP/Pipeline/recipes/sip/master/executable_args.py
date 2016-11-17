@@ -391,7 +391,7 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
             if job.results['returncode'] != 0:
                 outp.skip = True
                 if not self.inputs['error_tolerance']:
-                    self.logger.error("A job has failed and error_tolerance is not set. Bailing out!")
+                    self.logger.error("A job has failed with returncode %d and error_tolerance is not set. Bailing out!" % job.results['returncode'])
                     return 1
             for k, v in job.results.items():
                 if not k in jobresultdict:

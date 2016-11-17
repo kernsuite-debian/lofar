@@ -6,11 +6,11 @@ FROM lofar-base:${LOFAR_TAG}
 ENV AOFLAGGER_VERSION=2.8.0
 
 # Run-time dependencies
-RUN apt-get update && apt-get install -y python-xmlrunner python-scipy liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libboost-signals${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libgsl2 openssh-client libboost-regex${BOOST_VERSION}.0 gettext-base rsync python-matplotlib && \
+RUN apt-get update && apt-get install -y python-xmlrunner python-scipy liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libboost-signals${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libgsl2 openssh-client libboost-regex${BOOST_VERSION}.0 gettext-base rsync python-matplotlib ipython slurm-client && \
     apt-get -y install python-pip python-dev && \
     pip install pyfits pywcs python-monetdb && \
     apt-get -y purge python-pip python-dev && \
-    apt-get -y autoremove
+    apt-get -y autoremove --purge
 
 #
 # *******************
@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y wget cmake g++ libxml++2.6-dev libpng12
     bash -c "rm -rf ${INSTALLDIR}/aoflagger/{build,aoflagger-${AOFLAGGER_VERSION}}" && \
     bash -c "rm -rf ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION}.tar.bz2" && \
     apt-get -y purge wget cmake g++ libxml++2.6-dev libpng12-dev libfftw3-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-signals${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libcfitsio3-dev libopenblas-dev && \
-    apt-get -y autoremove
+    apt-get -y autoremove --purge
 
 #
 # *******************
@@ -58,5 +58,4 @@ RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison fle
     bash -c "strip ${INSTALLDIR}/lofar/{bin,sbin,lib64}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/lofar/{build,src}" && \
     apt-get purge -y subversion cmake g++ gfortran bison flex liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python-dev python-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libgsl-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
-    apt-get autoremove -y
-
+    apt-get autoremove -y --purge

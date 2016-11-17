@@ -139,11 +139,19 @@ class GenericPipeline(control):
         # the names will be the prefix for parset subsets
         pipeline_args = self.parset.makeSubset(
             self.parset.fullModuleName('pipeline') + '.')
-
+        pipeline_steps = self.parset.makeSubset(
+            self.parset.fullModuleName('steps') + '.')
         # *********************************************************************
         # forward declaration of things. just for better overview and understanding whats in here.
         # some of this might be removed in upcoming iterations, or stuff gets added.
         step_name_list = pipeline_args.getStringVector('steps')
+        # construct the step name list if there were pipeline.steps.<subset>
+        for item in pipeline_steps.keys():
+            if item in step_name_list:
+                loc = step_name_list.index(item)
+                step_name_list[loc:loc] = pipeline_steps.getStringVector(item)
+                step_name_list.remove(item)
+
         step_control_dict = {}
         step_parset_files = {}
         step_parset_obj = {}
@@ -180,6 +188,7 @@ class GenericPipeline(control):
         # plugins are not used at the moment and might better be replaced with master recipes
         while step_name_list:
             stepname = step_name_list.pop(0)
+            self.logger.info("Beginning step %s" % (stepname,))
             step = step_control_dict[stepname]
             #step_parset = step_parset_obj[stepname]
             inputdict = {}
@@ -278,17 +287,20 @@ class GenericPipeline(control):
                     val = subpipeline_parset[k]
                     if not str(k).startswith('!') and not str(k).startswith('pipeline.replace.'):
                         for item in checklist:
-                            if item in str(val):
+                            if item+".output" in str(val):
                                 val = str(val).replace(item, stepname + '-' + item)
 
                         self.parset.add(stepname + '-' + k, str(val))
                     else:
+                        # remove replacements strings to prevent loading the same key twice
+                        if k in self._keys(self.parset):
+                            self.parset.remove(k)
                         self.parset.add(k, str(val))
                 for i, item in enumerate(subpipeline_steplist):
                     subpipeline_steplist[i] = stepname + '-' + item
                 for item in step_parset_obj[stepname].keys():
                     for k in self._keys(self.parset):
-                        if str(k).startswith('!') and item in k or str(k).startswith('pipeline.replace.') and item in k:
+                        if str(k).startswith('!') and item == str(k).strip("! ") or str(k).startswith('pipeline.replace.') and item == str(k)[17:].strip():
                             self.parset.remove(k)
                             self.parset.add('! ' + item, str(step_parset_obj[stepname][item]))
                 self._replace_values()
@@ -299,10 +311,6 @@ class GenericPipeline(control):
                     step_control_dict[name] = step_control_dict[j]
                     step_name_list.insert(0, name)
 
-                # remove replacements strings to prevent loading the same key twice
-                for k in copy.deepcopy(self.parset.keywords()):
-                    if str(k).startswith('!'):
-                        self.parset.remove(k)
 
             # loop
             if kind_of_step == 'loop':
@@ -519,8 +527,10 @@ class GenericPipeline(control):
                 replacedict[str(check).lstrip('!').lstrip(' ')] = str(self.parset[check])
             if str(check).startswith('pipeline.replace.'):
                 replacedict[str(check).replace('pipeline.replace.', '').lstrip(' ')] = str(self.parset[check])
-        #self.logger.info( 'REPLACEDICT: ')
-        #self.logger.info(replacedict)
+        #expand environment variables
+        for k, v in replacedict.items():
+            replacedict[k] = os.path.expandvars(v)
+
         for check in self._keys(self.parset):
             for k, v in reversed(replacedict.items()):
                 if '{{ '+k+' }}' in str(self.parset[check]):

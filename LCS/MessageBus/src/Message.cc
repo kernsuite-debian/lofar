@@ -215,6 +215,16 @@ std::ostream& MessageContent::print (std::ostream& os) const
     return (os);
 }
 
+Message::Message() {}
+
+Message::~Message() {} 
+
+Message::Message(const qpid::messaging::Message &qpidMsg) 
+:
+  itsQpidMsg(qpidMsg)
+{
+}
+
 Message::Message(const MessageContent &content)
 :
   itsQpidMsg(content.qpidMsg())

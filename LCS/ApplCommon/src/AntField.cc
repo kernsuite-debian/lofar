@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: AntField.cc 30919 2015-02-05 15:26:22Z amesfoort $
+//#  $Id: AntField.cc 35890 2016-11-03 13:16:09Z schoenmakers $
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -35,17 +35,22 @@
 
 namespace LOFAR {
   // AntField(fileName)
-  // The structure of the file is as follows:
+  // 
+  // Reads in a Blitz-array from file. 
+  // The structure of the file depends on the Blitz version: In version 0.9 
+  // the array dimensions were formatted as: 3 x 5 x 6, but since version 
+  // 0.10 the format has changed to: (0,2) x (0,4) x (0,5).
+  // The class is compatible with both versions. 
   //
   // NORMAL-VECTOR <field>
-  // 3 [ x y z ]
+  // 3 [ x y z ] or (0,2) [ x y z ]
   //
   // ROTATION-MATRIX <field>
-  // 3 x 3 [ ... ]
+  // 3 x 3 [ ... ] or (0,2) x (0,2) [ ... ]
   //
   // <field>
-  // 3 [ x y z ]
-  // Nant x Npol x 3 [ ... ]
+  // 3 [ x y z ] or (0,2) [ x y z ]
+  // Nant x Npol x 3 [ ... ] or (0,Nant-1) x (0,Npol-1) x (0,2) [ ... ]
   //
   // optionally followed by more fields.
   //
@@ -103,6 +108,7 @@ namespace LOFAR {
     string fieldName;
     string inputLine;
     int    fieldIndex;
+    LOG_DEBUG_STR("Reading file " << fullFilename);
     // Read file and skip lines that start with '#' or are empty.
     // A line starting with ] is also empty.
     while (getline(inputStream, inputLine)) {
@@ -172,7 +178,7 @@ namespace LOFAR {
       ASSERTSTR(getShape(antennaPos)[0] <= int(MAX_ANTENNAS)  &&
                 getShape(antennaPos)[1] == int(N_POL)  &&
                 getShape(antennaPos)[2] == 3,
-                "Expected an array of size NrAntennas x nrPol x 3"
+                "Expected an array of size (NrAntennas x nrPol x 3)"
                 " for field " << fieldName << " in " << fullFilename);
       LOG_DEBUG_STR(fieldName << " dimensions is " << getShape(antennaPos));
 

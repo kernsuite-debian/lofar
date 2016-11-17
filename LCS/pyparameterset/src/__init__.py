@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 33112 2015-12-09 13:00:20Z diepen $
+# $Id: __init__.py 35870 2016-11-01 12:11:10Z donker $
 
 from _pyparameterset import PyParameterValue
 from _pyparameterset import PyParameterSet
@@ -156,6 +156,7 @@ class parameterset(PyParameterSet):
             self.replace (str(k), str(v))  # k, v always type string
 
     def get(self, key):
+        # type: (object) -> object
         """Get the parametervalue object of a parameter."""
         return parametervalue (self._get(key), _copyObj=True)
 

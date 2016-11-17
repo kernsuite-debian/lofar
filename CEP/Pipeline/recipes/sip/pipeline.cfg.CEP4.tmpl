@@ -44,7 +44,7 @@ globalfs = yes
 
 # We take the following path to start a remote container:
 #
-#  [container] --SSH--> [host] --SRUN--> [worker node] --DOCKER--> [container]
+#  [container] --SRUN--> [worker node] --DOCKER--> [container]
 #
 # This path is needed because running SRUN from within the container needs a lot of cluster-specific infra
 # (SLURM config files, Munge keys, correct Munge user ID, munged).
@@ -70,4 +70,4 @@ globalfs = yes
 #                            /bin/bash -c
 #
 #                            Required because the pipeline framework needs some bash functionality in the commands it starts.
-cmdline = ssh -n -tt -x localhost srun --exclusive --ntasks=1 --cpus-per-task={nr_cores} --jobid={slurm_job_id} --job-name={job_name} docker run --rm -u {uid} -v /data:/data --net=host {docker_env} lofar-pipeline:${LOFAR_TAG} {command}
+cmdline = srun --exclusive --ntasks=1 --cpus-per-task={nr_cores} --jobid={slurm_job_id} --job-name={job_name} /data/bin/docker-run-slurm.sh --rm -u {uid} -v /data:/data --net=host {docker_env} lofar-pipeline:${LOFAR_TAG} {command}

@@ -21,7 +21,7 @@ import cPickle as pickle
 
 from lofarpipe.support.lofarexceptions import PipelineQuit
 from lofarpipe.support.pipelinelogging import log_process_output
-from lofarpipe.support.utilities import spawn_process
+from lofarpipe.support.utilities import spawn_process, socket_recv
 
 class JobStreamHandler(SocketServer.StreamRequestHandler):
     """
@@ -41,17 +41,20 @@ class JobStreamHandler(SocketServer.StreamRequestHandler):
         Each request is expected to be a 4-bute length followed by either a
         GET/PUT request or a pickled LogRecord.
         """
+
         while True:
-            chunk = self.request.recv(4)
+            # Read message length
             try:
+                chunk = socket_recv(self.request, 4)
                 slen = struct.unpack(">L", chunk)[0]
             except:
                 break
-            chunk = self.connection.recv(slen)
-            while len(chunk) < slen:
-                chunk = chunk + self.connection.recv(slen - len(chunk))
-            input_msg = chunk.split(" ", 2)
+
+            # Read message
+            chunk = socket_recv(self.request, slen)
             try:
+                input_msg = chunk.split(" ", 2)
+
                 # Can we handle this message type?
                 if input_msg[0] == "GET":
                     self.send_arguments(int(input_msg[1]))
@@ -122,11 +125,13 @@ class JobSocketReceiver(SocketServer.ThreadingTCPServer):
         # until the queue is empty, thereby avoiding the problem of falling
         # out of the logger threads before all log messages have been handled.
         def loop_in_thread():
+            poller = select.poll()
+            poller.register(self.socket.fileno(), select.POLLIN)
+
             while True:
-                rd, wr, ex = select.select(
-                    [self.socket.fileno()], [], [], self.timeout
-                )
-                if rd:
+                events = poller.poll(self.timeout)
+
+                if events:
                     self.handle_request()
                 elif self.abort:
                     break

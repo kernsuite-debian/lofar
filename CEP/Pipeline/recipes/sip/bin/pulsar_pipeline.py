@@ -18,6 +18,7 @@ import sys
 import pulp
 
 from string import join
+import pprint
 from lofarpipe.support.control import control
 from lofarpipe.support.data_map import DataMap, validate_data_maps
 from lofarpipe.support.lofarexceptions import PipelineException
@@ -46,6 +47,7 @@ class pulsar_pipeline(control):
         dps = self.parset.makeSubset(
             self.parset.fullModuleName('DataProducts') + '.'
         )
+
         # Coherent Stokes input data
         self.coherentStokesEnabled = dps.getBool('Input_CoherentStokes.enabled', False)
         self.input_data['coherent'] = DataMap([
@@ -113,6 +115,7 @@ class pulsar_pipeline(control):
         self._get_io_product_specs()
 
         self.job_dir = self.config.get("layout", "job_directory")
+        self.globalfs = self.config.has_option("remote", "globalfs") and self.config.getboolean("remote", "globalfs")
         parset_dir = os.path.join(self.job_dir, "parsets")
         mapfile_dir = os.path.join(self.job_dir, "mapfiles")
         
@@ -137,6 +140,12 @@ class pulsar_pipeline(control):
 
         self.pulsar_parms = self.parset.makeSubset(self.parset.fullModuleName('Pulsar') + '.')
         pulsar_parset = os.path.join(parset_dir, "Pulsar.parset")
+
+        if self.globalfs:
+          # patch for Pulp in case of DOCKER
+          for k in [x for x in self.pulsar_parms.keys() if x.endswith("_extra_opts")]:
+            self.pulsar_parms.replace(k, self.pulsar_parms[k].getString().replace(" ","\\\\ "))
+
         self.pulsar_parms.writeFile(pulsar_parset)
             
         self.logger.debug("Processing: %s" %
@@ -146,6 +155,12 @@ class pulsar_pipeline(control):
         # --auto = automatic run from framework
         # -q = quiet mode, no user interaction
         sys.argv = ['pulp.py', '--auto', '-q']
+
+        if self.globalfs:
+          project = self.parset.getString(self.parset.fullModuleName('Campaign') + '.name')
+          sys.argv.extend(['--slurm', '--globalfs', '--docker', '--docker-container=lofar-pulp:%s' % os.environ.get("LOFAR_TAG"), '--raw=/data/projects/%s' % project])
+        else:
+          sys.argv.append("--auto")
       
         if (not self.coherentStokesEnabled):
           sys.argv.extend(["--noCS", "--noCV", "--noFE"])
@@ -158,6 +173,7 @@ class pulsar_pipeline(control):
        
         # Run the pulsar pipeline
         self.logger.debug("Starting pulp with: " + join(sys.argv))
+        self.logger.debug("Calling pulp.pulp(self) with self = %s", pprint.pformat(vars(self)))
         p = pulp.pulp(self) # TODO: MUCK self to capture the API
 
         # NOTE: PULP returns 0 on SUCCESS!!

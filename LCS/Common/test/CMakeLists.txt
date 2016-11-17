@@ -1,7 +1,8 @@
-# $Id: CMakeLists.txt 28849 2014-04-07 13:45:52Z schoenmakers $
+# $Id: CMakeLists.txt 34983 2016-07-14 17:29:29Z amesfoort $
 
 include(LofarCTest)
 
+lofar_add_test(tBarrier tBarrier.cc)
 lofar_add_test(tBoostBitset tBoostBitset.cc)
 lofar_add_test(testLogger testLogger.cc)
 lofar_add_test(tCasaLogSink tCasaLogSink.cc)

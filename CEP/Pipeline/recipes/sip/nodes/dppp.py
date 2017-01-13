@@ -111,10 +111,6 @@ class dppp(LOFARnodeTCP):
                 )
                 shutil.copytree(infile, tmpfile)
 
-            # Limit number of threads used.
-            self.environment['OMP_NUM_THREADS'] = str(nthreads)
-            self.logger.debug("Using %s threads for NDPPP" % nthreads)
-
             # *****************************************************************
             # 3. Update the parset with locally calculate information
 

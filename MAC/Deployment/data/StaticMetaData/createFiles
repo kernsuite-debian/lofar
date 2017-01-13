@@ -320,8 +320,9 @@ def createRSPDriverFile(resultDir, stationName, dataDir,int_local,is_Cobalt):
         # International station in local mode takes dest. MAC/IP info from
         # separate file 
         dstip_mac_alias = findIPandMAC_local(stationName,dataDir)
-        # International stations still need old (BG) portnumbers
-        basePort = 0x10FA
+        # International stations still need old (BG) portnumbers (AS: no more)
+        if stationName in ['FR606','SE607','UK608']:
+           basePort = 0x10FA
         for rspNr in range(len(dstip_mac_alias)):  
             blet_out = find_Blets(stationName, dataDir)[1+rspNr];
 

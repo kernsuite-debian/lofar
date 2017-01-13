@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35890 2016-11-03 13:16:09Z schoenmakers $
+# $Id: CMakeLists.txt 36096 2016-12-02 10:13:05Z mol $
 
 lofar_add_package(ACC)            # Application Configuration & Control
 lofar_add_package(AMC)            # Astronomical Measures Conversions

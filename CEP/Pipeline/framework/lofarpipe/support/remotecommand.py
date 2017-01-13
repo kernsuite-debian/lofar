@@ -276,19 +276,24 @@ class ComputeJob(object):
                 self.results['returncode'] = 1
                 error.set()
                 return 1
-            cmdarray = run_remote_command(
-                config,
-                logger,
-                self.host,
-                self.command,
-                {
+
+            environment = {
                     "PATH": os.environ.get('PATH'),
                     "PYTHONPATH": os.environ.get('PYTHONPATH'),
                     "LD_LIBRARY_PATH": os.environ.get('LD_LIBRARY_PATH'),
                     "LOFARROOT" : os.environ.get('LOFARROOT'),
                     "LOFARENV" : os.environ.get('LOFARENV',''),
                     "QUEUE_PREFIX" : os.environ.get('QUEUE_PREFIX','')
-                },
+                }
+            if "cores" in self.resources:
+                environment["OMP_NUM_THREADS"] = str(self.resources["cores"])
+
+            cmdarray = run_remote_command(
+                config,
+                logger,
+                self.host,
+                self.command,
+                environment,
                 arguments = [id, jobhost, jobport],
                 resources = self.resources
             )

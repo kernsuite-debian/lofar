@@ -220,9 +220,6 @@ class imager_prepare(LOFARnodeTCP):
         Muckable function running the dppp executable.
         Wraps dppp with catchLog4CPLus and catch_segfaults
         """
-        # TODO: cpu limited is static at this location
-        environment['OMP_NUM_THREADS'] = str(8)
-        self.logger.debug("Using %s threads for ndppp" % 8)
         with CatchLog4CPlus(working_dir, self.logger.name +
              "." + os.path.basename("imager_prepare_ndppp"),
                   os.path.basename(ndppp)) as logger:

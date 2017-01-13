@@ -21,3 +21,18 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
  python-casacore, casarest
 Conflicts: makems
 Description: offline LOFAR user software
+
+Package: lofar-dev
+Section: libdevel
+Architecture: any
+Depends: liblofar (= ${binary:Version}), ${misc:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Description: LOFAR development files
+
+Package: liblofar
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: lofar libraries

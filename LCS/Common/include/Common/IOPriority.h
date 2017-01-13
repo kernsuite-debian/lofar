@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: IOPriority.h 35807 2016-10-26 23:31:15Z amesfoort $
+//# $Id: IOPriority.h 36029 2016-11-21 11:04:38Z mol $
 
 #ifndef LOFAR_COMMON_IOPRIORITY_H
 #define LOFAR_COMMON_IOPRIORITY_H
@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
+#include <malloc.h>
 #include <sys/time.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -137,6 +138,14 @@ inline void setRTpriority()
       LOG_ERROR_STR("Failed to set RT priority: " << errno);
     }
   }
+}
+
+
+inline void tweakMalloc()
+{
+  // Reduce calls to brk()
+  mallopt(M_TOP_PAD, 16*1024*1024);
+  mallopt(M_TRIM_THRESHOLD, 16*1024*1024);
 }
 
 

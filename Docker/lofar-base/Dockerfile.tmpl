@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 #
 # versions
 #
-ENV CASACORE_VERSION=latest \
+ENV CASACORE_VERSION=2.2.0 \
     CASAREST_VERSION=latest \
     PYTHON_CASACORE_VERSION=2.1.2 \
     BOOST_VERSION=1.58
@@ -64,13 +64,17 @@ RUN apt-get update && apt-get install -y wget git cmake g++ gfortran flex bison 
     if [ "${CASACORE_VERSION}" != "latest" ]; then cd ${INSTALLDIR}/casacore/src && git checkout tags/v${CASACORE_VERSION}; fi && \
     cd ${INSTALLDIR}/casacore/data && wget --retry-connrefused ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar && \
     cd ${INSTALLDIR}/casacore/data && tar xf WSRT_Measures.ztar  && rm -f WSRT_Measures.ztar && \
-    cd ${INSTALLDIR}/casacore/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casacore/ -DDATA_DIR=${INSTALLDIR}/casacore/data -DBUILD_PYTHON=True -DENABLE_TABLELOCKING=ON -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCXX11=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fsigned-char -O2 -DNDEBUG -march=native" ../src/ && \
+    cd ${INSTALLDIR}/casacore/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casacore/ -DDATA_DIR=${INSTALLDIR}/casacore/data -DBUILD_PYTHON=True -DENABLE_TABLELOCKING=OFF -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCXX11=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fsigned-char -O2 -DNDEBUG -march=native" ../src/ && \
     cd ${INSTALLDIR}/casacore/build && make -j ${J} && \
     cd ${INSTALLDIR}/casacore/build && make install && \
     bash -c "strip ${INSTALLDIR}/casacore/{lib,bin}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/casacore/{build,src}" && \
     apt-get purge -y wget git cmake g++ gfortran flex bison libopenblas-dev libfftw3-dev libhdf5-dev libboost-python-dev libcfitsio-dev wcslib-dev && \
     apt-get autoremove -y --purge
+
+# Install and enable custom casarc
+COPY ["casarc",    "${INSTALLDIR}/"]
+ENV  CASARCFILES=${INSTALLDIR}/casarc
 
 #
 # *******************

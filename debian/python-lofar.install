@@ -1,4 +1,4 @@
-usr/lib/python2.7/*
+usr/lib/python*
 #usr/lib/python2.7/dist-packages/
 #usr/lib/python2.7/dist-packages/LAPS/
 #usr/lib/python2.7/dist-packages/lofar/

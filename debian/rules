@@ -8,9 +8,9 @@ override_dh_auto_configure:
 		 -DBUILD_PACKAGES="Offline" -DUSE_PYTHON_COMPILATION=OFF \
 		 -DUSE_QPID=OFF -DCASA_ROOT=/usr
 
-override_dh_auto_install:
-	dh_auto_install
-	touch debian/lofar/usr/lib/python2.7/site-packages/lofar/__init__.py
+#override_dh_auto_install:
+#	dh_auto_install
+	#touch debian/lofar/usr/lib/python2.7/site-packages/lofar/__init__.py
 
 %:
 	dh $@ --parallel --with python2 --builddirectory=build/gnu_opt

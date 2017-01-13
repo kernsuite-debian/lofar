@@ -9,30 +9,285 @@ Build-Depends: debhelper (>= 8.0.0), cmake, casarest, bison, casacore-dev,
  python-numpy, libgsl0-dev, libxml2-dev, libpng12-dev, libboost-system-dev,
  libboost-filesystem-dev, libgtkmm-2.4-dev, python-pywcs (>= 1.11), 
  libboost-regex-dev, libboost-program-options-dev, libboost-date-time-dev,
- liblog4cplus-dev, libcasasynthesis-dev, aoflagger, libblas-dev, liblapack-dev
-Standards-Version: 3.9.2
+ liblog4cplus-dev, libcasasynthesis-dev, aoflagger, libblas-dev, liblapack-dev,
+ dh-python
+Standards-Version: 3.9.8
 Homepage: http://www.lofar.org
 X-Python-Version: 2.7
 
+Package: casacore-tools
+Architecture: any
+Depends: python, ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+
 Package: lofar
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, 
- python-pywcs (>= 1.11), ipython, python-pyfits, python-scipy, casacore-data,
- python-casacore, casarest
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         casacore-data,
+         casarest
 Conflicts: makems
-Description: offline LOFAR user software
+Description: LOFAR telescope user software
+
+Package: python-lofar
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         ${python:Depends},
+         python-pywcs (>= 1.11),
+         ipython,
+         python-pyfits,
+         python-scipy,
+         python-casacore,
+         casarest
+Description: LOFAR Python packages
+ 
+Package: lofar-doc
+Section: doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Suggests: lofar-dev
+Description: LOFAR telescope user software (documentation)
 
 Package: lofar-dev
 Section: libdevel
 Architecture: any
-Depends: liblofar (= ${binary:Version}), ${misc:Depends}
+Depends: libapplcommon (= ${binary:Version}),
+         libawimager2lib (= ${binary:Version}),
+         libbbscontrol (= ${binary:Version}),
+         libbbskernel (= ${binary:Version}),
+         libblob (= ${binary:Version}),
+         libcommon (= ${binary:Version}),
+         libdocker (= ${binary:Version}),
+         libdppp (= ${binary:Version}),
+         libdppp-aoflag (= ${binary:Version}),
+         libelementresponse (= ${binary:Version}),
+         liblmwcommon (= ${binary:Version}),
+         liblofar-pyparameterset (= ${binary:Version}),
+         liblofar-pyparmdb (= ${binary:Version}),
+         liblofar-pystationresponse (= ${binary:Version}),
+         liblofar-pytools (= ${binary:Version}),
+         liblofarft (= ${binary:Version}),
+         liblofarstman (= ${binary:Version}),
+         libmessagebus (= ${binary:Version}),
+         libms (= ${binary:Version}),
+         libmslofar (= ${binary:Version}),
+         libparmdb (= ${binary:Version}),
+         libplc (= ${binary:Version}),
+         libpythondppp (= ${binary:Version}),
+         libspwcombine (= ${binary:Version}),
+         libstationresponse (= ${binary:Version}),
+         libtransport (= ${binary:Version}),
+         ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
-Description: LOFAR development files
+Description: LOFAR telescope development files
 
-Package: liblofar
+Package: libapplcommon
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: lofar libraries
+Description: a lofar lib
+
+Package: libawimager2lib
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libbbscontrol
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libbbskernel
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libblob
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libcommon
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libdocker
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libdppp
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libdppp-aoflag
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libelementresponse
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblmwcommon
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofar-pyparameterset
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofar-pyparmdb
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofar-pystationresponse
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofar-pytools
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofarft
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: liblofarstman
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libmessagebus
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libms
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libmslofar
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libparmdb
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libplc
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libpythondppp
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libspwcombine
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libstationresponse
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+
+Package: libtransport
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: a lofar lib
+

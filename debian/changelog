@@ -1,7 +1,12 @@
+lofar (2.19.5-2) xenial; urgency=medium
+
+  * split package into multiple subpackages
+
+ -- Gijs Molenaar (launchpad ppa build key) <gijs@pythonic.nl>  Thu, 02 Feb 2017 11:11:53 +0000
+
 lofar (2.19.5-1) xenial; urgency=medium
 
   * new upstream release
-  * split package into multiple subpackages
 
  -- Gijs Molenaar (launchpad ppa build key) <gijs@pythonic.nl>  Fri, 13 Jan 2017 10:01:26 +0200
 

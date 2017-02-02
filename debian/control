@@ -39,7 +39,8 @@ Depends: ${shlibs:Depends},
          python-pyfits,
          python-scipy,
          python-casacore,
-         casarest
+         python-qt4,
+         python-sip
 Description: LOFAR Python packages
  
 Package: lofar-doc

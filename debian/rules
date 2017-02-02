@@ -2,15 +2,21 @@
 # -*- makefile -*-
 
 override_dh_auto_configure:
-	 dh_auto_configure -- -DCMAKE_MODULE_PATH=$(CURDIR)/CMake \
-         -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF \
-		 -DUSE_OPENMP=ON  -DCASAREST_ROOT_DIR:PATH=/usr/include/casarest \
-		 -DBUILD_PACKAGES="Offline" -DUSE_PYTHON_COMPILATION=OFF \
-		 -DUSE_QPID=OFF -DCASA_ROOT=/usr
-
-#override_dh_auto_install:
-#	dh_auto_install
-	#touch debian/lofar/usr/lib/python2.7/site-packages/lofar/__init__.py
+	 dh_auto_configure -- \
+		 -DCMAKE_MODULE_PATH=$(CURDIR)/CMake \
+		 -DLIB_SUFFIX=/$(DEB_HOST_MULTIARCH) \
+         -DBUILD_SHARED_LIBS=ON \
+		 -DBUILD_TESTING=OFF \
+		 -DUSE_OPENMP=ON \
+		 -DCASAREST_ROOT_DIR:PATH=/usr/include/casarest \
+		 -DBUILD_PACKAGES="Offline" \
+		 -DUSE_PYTHON_COMPILATION=OFF \
+		 -DUSE_QPID=OFF \
+		 -DCASA_ROOT=/usr
 
 %:
-	dh $@ --parallel --with python2 --builddirectory=build/gnu_opt
+	dh $@ \
+		--parallel \
+		--with python2 \
+		--builddirectory=build/gnu_opt  \
+		--buildsystem=cmake

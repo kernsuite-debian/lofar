@@ -15,11 +15,6 @@ Standards-Version: 3.9.8
 Homepage: http://www.lofar.org
 X-Python-Version: 2.7
 
-Package: casacore-tools
-Architecture: any
-Depends: python, ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-
 Package: lofar
 Architecture: any
 Depends: ${shlibs:Depends},

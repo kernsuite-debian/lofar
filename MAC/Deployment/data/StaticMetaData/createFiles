@@ -242,21 +242,6 @@ def findStationInfo(stationName, dataDir):
         raise "\nFatal error: Data of "+stationName+" is not complete in file StationInfo.dat"
     return info
 
-def findEthPort():
-    """
-    Return ethport on which RSP boards are connected. For old LCUs (RHEL52) this is eth1,
-    for new LCUs (CentOS7) this is eno2. We simply check the presence of file
-    /etc/sysconfig/network-scripts/ifcfg-eno2
-    """
-    ethport=""
-    ethFile = "/etc/sysconfig/network-scripts/ifcfg-eno2"
-    if (os.access(ethFile,os.F_OK) == True):
-        ethport="eno2"
-    else:
-        ethport="eth1"
-
-    return ethport
-
 def createCCURSPConnectionsFile(resultDir, dataDir):
    """
    Copy the static file RSPConnections_Cobalt.dat from StaticMetaData to
@@ -477,7 +462,7 @@ def createRSPDriverFile(resultDir, stationName, dataDir,int_local,is_Cobalt):
 
     # Fill in the used network port to the RSP boards (eth1 or eno2)
     repl_str = "@ETHPORT@"
-    ethport=findEthPort()
+    ethport="eno2"
     RSPconfig = RSPconfig.replace(repl_str, ethport)
     
     outFile = os.open(dataDir+"/RSPDriver.conf.tmp", os.O_RDWR|os.O_CREAT|os.O_TRUNC)
@@ -611,7 +596,13 @@ def createRSPDriverFile_Test(resultDir, stationName, dataDir, alias):
               RSPconfig = RSPconfig.replace(repl_str, str(int_station_nr))
             repl_str = "@IP_EXTEN_0"+str(rspNr)+"@"
             RSPconfig = RSPconfig.replace(repl_str, str(srcip_suffix))
-    RSPconfig = setAttenuationSettings(RSPconfig, stationName, dataDir)                    
+    RSPconfig = setAttenuationSettings(RSPconfig, stationName, dataDir)         
+
+    # Fill in the used network port to the RSP boards (eth1 or eno2)
+    repl_str = "@ETHPORT@"
+    ethport="eno2"
+    RSPconfig = RSPconfig.replace(repl_str, ethport)
+         
     outFile = os.open(dataDir+"/RSPDriver.conf.tmp", os.O_RDWR|os.O_CREAT|os.O_TRUNC)
     os.write(outFile, RSPconfig)
     os.close(outFile)
@@ -698,7 +689,7 @@ def createTBBDriverFile(resultDir, stationName, dataDir):
 
     # Fill in the used network port to the TBB boards (eth1 or eno2)
     repl_str = "@ETHPORT@"
-    ethport=findEthPort()
+    ethport="eno2"
     TBBconfig = TBBconfig.replace(repl_str, ethport)
 
     outFile = os.open(dataDir+"/TBBDriver.conf.tmp", os.O_RDWR|os.O_CREAT|os.O_TRUNC)

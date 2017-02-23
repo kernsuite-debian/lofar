@@ -26,12 +26,12 @@ tar zxf ${srcdir}/tGainCal.tab.tgz
 echo "    select result of 0 rows" > taql.ref
 
 echo "Creating MODEL_DATA so that residual can be computed"
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=MODEL_DATA steps=[predict] predict.sourcedb=tNDPPP-generic.MS/sky predict.usebeammodel=false
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=MODEL_DATA steps=[predict] predict.sourcedb=tNDPPP-generic.MS/sky predict.usebeammodel=false
 
 echo; echo "Test caltype=diagonal"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout= steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.propagatesolutions=true gaincal.solint=1
+NDPPP msin=tNDPPP-generic.MS msout= steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.propagatesolutions=true gaincal.solint=1
 
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal
 
 echo "Comparing the bbs residual with the dppp residual (solutions will not be equal, but residual should be equal). This avoids issues with local minima."
 $taqlexe 'select from (select gsumsqr(sumsqr(abs(iif(t1.FLAG,0,t1.DPPP_DIAGONAL-t1.MODEL_DATA)))) as dpppres, gsumsqr(sumsqr(abs(iif(FLAG,0,t2.BBS_DIAGONAL-t1.MODEL_DATA)))) as bbsres from tNDPPP-generic.MS t1, tGainCal.tab t2) where dpppres>bbsres*1.02' > taql.out
@@ -41,8 +41,8 @@ $taqlexe 'select from tNDPPP-generic.MS where all(FLAG) groupby true having gcou
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=diagonal with timeslotsperparmupdate=4"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout= steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-tpp gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.timeslotsperparmupdate=1 gaincal.propagatesolutions=false
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_TPP steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-tpp
+NDPPP msin=tNDPPP-generic.MS msout= steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-tpp gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.timeslotsperparmupdate=1 gaincal.propagatesolutions=false
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_TPP steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-tpp
 $taqlexe 'select from tNDPPP-generic.MS where not all(near(DPPP_DIAGONAL, DPPP_DIAGONAL_TPP))'
 
 echo "Comparing the difference between applying with timeslotsperparmupdate = default and timeslotsperparmupdate=1"
@@ -53,8 +53,8 @@ $taqlexe 'select from tNDPPP-generic.MS where all(FLAG) groupby true having gcou
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=fulljones"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_FULLJONES_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-fulljones gaincal.usebeammodel=false gaincal.caltype=fulljones gaincal.solint=1 gaincal.applysolution=true
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_FULLJONES steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-fulljones
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_FULLJONES_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-fulljones gaincal.usebeammodel=false gaincal.caltype=fulljones gaincal.solint=1 gaincal.applysolution=true
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_FULLJONES steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-fulljones
 
 echo "Comparing the bbs residual with the dppp residual (solutions will not be equal, but residual should be equal). This avoids issues with local minima."
 $taqlexe 'select from (select gsumsqr(sumsqr(abs(iif(t1.FLAG,0,t1.DPPP_FULLJONES-t1.MODEL_DATA)))) as dpppres, gsumsqr(sumsqr(abs(iif(FLAG,0,t2.BBS_FULLJONES-t1.MODEL_DATA)))) as bbsres from tNDPPP-generic.MS t1, tGainCal.tab t2) where dpppres>bbsres*1.02' > taql.out
@@ -67,8 +67,8 @@ $taqlexe 'select from tNDPPP-generic.MS where all(FLAG) groupby true having gcou
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=diagonal, nchan=2"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.nchan=2 gaincal.applysolution=true
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.nchan=2 gaincal.applysolution=true
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan
 
 echo "Comparing the bbs residual with the dppp residual (solutions will not be equal, but residual should be equal). This avoids issues with local minima."
 $taqlexe 'select from (select gsumsqr(sumsqr(abs(iif(t1.FLAG,0,t1.DPPP_DIAGONAL_NCHAN-t1.MODEL_DATA)))) as dpppres, gsumsqr(sumsqr(abs(iif(FLAG,0,t2.BBS_DIAGONAL_NCHAN-t1.MODEL_DATA)))) as bbsres from tNDPPP-generic.MS t1, tGainCal.tab t2) where dpppres>bbsres*1.02' > taql.out
@@ -83,15 +83,15 @@ $taqlexe 'select from tNDPPP-generic.MS where all(FLAG) groupby true having gcou
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=diagonal, nchan=2, solint=7"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_7_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.nchan=2 gaincal.applysolution=true
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_7 steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_7_GAINCAL steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan gaincal.usebeammodel=false gaincal.caltype=diagonal gaincal.solint=4 gaincal.nchan=2 gaincal.applysolution=true
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_DIAGONAL_NCHAN_7 steps=[applycal] applycal.parmdb=tNDPPP-generic.MS/inst-diagonal-nchan
 
 echo "Comparing the solutions from gaincal + applycal with gaincal directly"
 $taqlexe 'select from tNDPPP-generic.MS where not(all(DPPP_DIAGONAL_NCHAN_7_GAINCAL ~= DPPP_DIAGONAL_NCHAN_7))' > taql.out
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=tec"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_TEC steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-tec gaincal.caltype=tec gaincal.solint=2
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_TEC steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-tec gaincal.caltype=tec gaincal.solint=2
 # For now, only testing that the right parameter names are in the output
 echo "    select result of 1 rows" > taql1.ref
 $taqlexe 'select from tNDPPP-generic.MS/inst-tec where (select NAME from ::NAMES)[NAMEID]=="TEC:CS001HBA0"' > taql.out
@@ -100,11 +100,16 @@ $taqlexe 'select from tNDPPP-generic.MS/inst-tec where (select NAME from ::NAMES
 diff taql.out taql.ref  ||  exit 1
 
 echo; echo "Test caltype=tecandphase"; echo
-../../src/NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_TEC steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-tecandphase gaincal.caltype=tecandphase gaincal.solint=2
+NDPPP msin=tNDPPP-generic.MS msout=. msout.datacolumn=DPPP_TEC steps=[gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-tecandphase gaincal.caltype=tecandphase gaincal.solint=2
 # For now, only testing that the right parameter names are in the output
 echo "    select result of 1 rows" > taql1.ref
 $taqlexe 'select from tNDPPP-generic.MS/inst-tecandphase where (select NAME from ::NAMES)[NAMEID]=="TEC:CS001HBA0"' > taql.out
 diff taql.out taql1.ref  ||  exit 1
 $taqlexe 'select from tNDPPP-generic.MS/inst-tecandphase where (select NAME from ::NAMES)[NAMEID]=="CommonScalarPhase:CS001HBA0"' > taql.out
 diff taql.out taql1.ref  ||  exit 1
+
+echo; echo "Test filter"; echo
+NDPPP msin=tNDPPP-generic.MS msout=tNDPPP-filtered.MS steps=[filter,gaincal] gaincal.sourcedb=tNDPPP-generic.MS/sky gaincal.parmdb=tNDPPP-generic.MS/inst-filter filter.baseline='!CS001HBA0&&*' gaincal.baseline='!CS002HBA1,RS305HBA&&*' gaincal.caltype=diagonal
+$taqlexe 'select from tNDPPP-generic.MS/inst-filter::NAMES where NAME LIKE "CS001HBA0%" OR NAME LIKE "%CS002HBA1%" OR NAME LIKE "%RS305HBA%"' > taql.out
+diff taql.out taql.ref || exit 1
 

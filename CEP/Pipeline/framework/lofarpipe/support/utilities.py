@@ -229,7 +229,7 @@ def spawn_process(cmd, logger, cwd = None, env = None, max_tries = 2, max_timeou
     propagate the exception.
     """
 
-    logger.error("support.utilities.spawn_process is DEPRECATED. Please use support.subprocessgroup.SubProcessGroup")
+    logger.debug("support.utilities.spawn_process is DEPRECATED. Please use support.subprocessgroup.SubProcessGroup")
 
     # Make sure the working directory exists.
     create_directory(cwd);

@@ -89,19 +89,14 @@ namespace LOFAR {
       // Perform stefcal (polarized or unpolarized)
       void stefcal();
 
+      // Check for scalar mode
+      bool scalarMode();
+
       // Apply the solution
       void applySolution(DPBuffer& buf, const casa::Cube<casa::DComplex>& invsol);
 
       // Invert solution (for applying it)
       casa::Cube<casa::DComplex> invertSol(const casa::Cube<casa::DComplex>& sol);
-
-      // Counts the number of antennas with non-flagged data,
-      // Set a map for the used antennas in iS, returns the number of antennas
-      void setAntennaMaps (const casa::Bool* flag, uint freqCell);
-
-      // Remove rows and colums corresponding to antennas with too much
-      // flagged data from vis and mvis
-      void removeDeadAntennas ();
 
       // Fills the matrices itsVis and itsMVis
       void fillMatrices (casa::Complex* model, casa::Complex* data,
@@ -112,6 +107,9 @@ namespace LOFAR {
 
       // Get parmdbname from itsMode
       string parmName();
+
+      // Determine which stations are used
+      void setAntennaUsed();
 
       // Write out the solutions of the current parameter chunk (timeslotsperparmupdate)
       void writeSolutions (double startTime);
@@ -132,9 +130,6 @@ namespace LOFAR {
 
       bool             itsApplySolution;
 
-      vector<Baseline> itsBaselines;
-
-      vector<casa::Matrix<casa::DComplex> > itsPrevSol; // previous solution, for propagating solutions, for each freq
       vector<casa::Cube<casa::DComplex> > itsSols; // for every timeslot, nCr x nSt x nFreqCells
       vector<casa::Matrix<double> > itsTECSols; // for every timeslot, 2 x nSt (alpha and beta)
 
@@ -148,16 +143,19 @@ namespace LOFAR {
       bool             itsApplyBeamToModelColumn;
 
       BaselineSelection itsBaselineSelection; // Filter
+      casa::Vector<bool> itsSelectedBL; // Vector (length nBl) telling
+                                        // which baselines are selected
+      casa::Vector<bool> itsAntennaUsed; // Vector (length nBl) telling
+                                         // which stations are solved for
 
       map<string,int>  itsParmIdMap; //# -1 = new parm name
 
       uint             itsMaxIter;
       double           itsTolerance;
-      bool             itsPropagateSolutions; // Not used currently, TODO: use this
+      bool             itsPropagateSolutions;
       uint             itsSolInt;  // Time cell size
       uint             itsNChan;   // Frequency cell size
       uint             itsNFreqCells;
-      uint             itsMinBLperAnt;
 
       uint             itsTimeSlotsPerParmUpdate;
       uint             itsConverged;

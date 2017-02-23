@@ -12,7 +12,9 @@ set(_py_files
   methodtrigger.py
   util.py
   postgres.py
-  datetimeutils.py)
+  datetimeutils.py
+  flask_utils.py
+  subprocess.py)
 
 python_install(${_py_files} DESTINATION lofar/common)
 

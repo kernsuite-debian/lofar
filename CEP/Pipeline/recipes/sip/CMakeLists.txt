@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35180 2016-08-25 11:35:32Z dijkema $
+# $Id: CMakeLists.txt 35908 2016-11-04 15:41:28Z mol $
 
 include(PythonInstall)
 
@@ -122,8 +122,8 @@ foreach(_file pipeline.cfg.CEP4)
   # when "all" is build.
   add_custom_command(
     OUTPUT ${_dst}
-    COMMAND ${CMAKE_SOURCE_DIR}/Docker/docker-template -v ${CMAKE_BINARY_DIR}/Docker/versiondocker < ${_src} > ${_dst}
-    DEPENDS ${CMAKE_SOURCE_DIR}/Docker/docker-template ${_src} ${CMAKE_BINARY_DIR}/Docker/versiondocker
+    COMMAND ${CMAKE_SOURCE_DIR}/Docker/docker-template -v ${CMAKE_BINARY_DIR}/bin/versiondocker < ${_src} > ${_dst}
+    DEPENDS ${CMAKE_SOURCE_DIR}/Docker/docker-template ${_src} ${CMAKE_BINARY_DIR}/bin/versiondocker
   )
   add_custom_target(${_file}_target ALL DEPENDS ${_dst})
 

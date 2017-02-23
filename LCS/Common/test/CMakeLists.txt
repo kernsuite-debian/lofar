@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34983 2016-07-14 17:29:29Z amesfoort $
+# $Id: CMakeLists.txt 35996 2016-11-15 18:29:20Z amesfoort $
 
 include(LofarCTest)
 
@@ -40,6 +40,7 @@ lofar_add_test(tReadLine tReadLine.cc)
 lofar_add_test(tThread tThread.cc)
 lofar_add_test(tMutex tMutex.cc)
 lofar_add_test(tCondition tCondition.cc)
+lofar_add_test(tSem_t tSem_t.cc)
 lofar_add_test(tSemaphore tSemaphore.cc)
 lofar_add_test(tQueue tQueue.cc)
 lofar_add_test(tCancellation tCancellation.cc)

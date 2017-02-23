@@ -8,6 +8,7 @@
 #   lofar_add_sbin_program(name)
 #   lofar_add_sbin_scripts([name1 [name2 ..]])
 #   lofar_add_sysconf_files([name1 [name2 ..]])
+#   lofar_add_data_files([name1 [name2 ..]])
 #   lofar_add_test(name)
 #   lofar_create_target_symlink(target symlink)
 #   lofar_join_arguments(var)
@@ -15,7 +16,7 @@
 #
 # Please refer to the module source for documentation of these macros.
 
-#  $Id: LofarMacros.cmake 34637 2016-06-08 16:23:52Z loose $
+#  $Id: LofarMacros.cmake 36428 2017-02-01 17:08:43Z loose $
 #
 #  Copyright (C) 2008-2009
 #  ASTRON (Netherlands Foundation for Research in Astronomy)
@@ -44,11 +45,14 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
   # lofar_add_bin_program(name)
   #
   # Add <name> to the list of programs that need to be compiled, linked and
-  # installed into the <prefix>/bin directory.
+  # installed into the <prefix>/bin directory. The binary will be built in
+  # the directory <build-dir>/bin.
   # --------------------------------------------------------------------------
   macro(lofar_add_bin_program _name)
     lofar_add_executable(${_name} ${ARGN})
     install(TARGETS ${_name} DESTINATION bin)
+    set_target_properties(${_name} PROPERTIES 
+      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
   endmacro(lofar_add_bin_program)
 
 
@@ -61,8 +65,9 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
   macro(lofar_add_bin_scripts)
     foreach(_name ${ARGN})
       get_filename_component(_abs_name ${_name} ABSOLUTE)
+      get_filename_component(_base_name ${_name} NAME)
       execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
-        ${_abs_name} ${CMAKE_BINARY_DIR}/bin/${_name})
+        ${_abs_name} ${CMAKE_BINARY_DIR}/bin/${_base_name})
       install(PROGRAMS ${_name} DESTINATION bin)
     endforeach(_name ${ARGN})
   endmacro(lofar_add_bin_scripts)
@@ -100,10 +105,11 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
   # - Set the link dependencies of this library on other LOFAR libraries 
   #   (variable ${PACKAGE_NAME}_LINK_LIBRARIES) and external libraries
   #   (variable LOFAR_EXTRA_LIBRARIES).
-  # - Mark the library for install into LOFAR_LIBDIR.
+  # - Mark the library for install into <LOFAR_LIBDIR> (either lib or lib64).
   # - Add a dependency of the library on the PackageVersion target of the
   #   current package; it has no effect if LofarPackageVersion is not included.
   # - Add a dependency of the current package on the library.
+  # - The library will be built in the directory <build-dir>/<LOFAR_LIBDIR>.
   #
   # Note: link dependencies are determined by examining the link dependencies
   # of the libraries in the LOFAR packages that the current package depends
@@ -129,6 +135,9 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
 #      VERSION ${${PACKAGE_NAME}_VERSION}
 #      OUTPUT_NAME lofar_${_name})
     install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
+    set_target_properties(${_name} PROPERTIES 
+      ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${LOFAR_LIBDIR}
+      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${LOFAR_LIBDIR})
     if(TARGET ${PACKAGE_NAME}_PackageVersion)
       add_dependencies(${_name} ${PACKAGE_NAME}_PackageVersion)
     endif(TARGET ${PACKAGE_NAME}_PackageVersion)
@@ -140,11 +149,14 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
   # lofar_add_sbin_program(name)
   #
   # Add <name> to the list of programs that need to be compiled, linked and
-  # installed into the <prefix>/sbin directory.
+  # installed into the <prefix>/sbin directory.  The binary will be built in
+  # the directory <build-dir>/sbin.
   # --------------------------------------------------------------------------
   macro(lofar_add_sbin_program _name)
     lofar_add_executable(${_name} ${ARGN})
     install(TARGETS ${_name} DESTINATION sbin)
+    set_target_properties(${_name} PROPERTIES 
+      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/sbin)
   endmacro(lofar_add_sbin_program)
 
 
@@ -157,8 +169,9 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
   macro(lofar_add_sbin_scripts)
     foreach(_name ${ARGN})
       get_filename_component(_abs_name ${_name} ABSOLUTE)
+      get_filename_component(_base_name ${_name} NAME)
       execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
-        ${_abs_name} ${CMAKE_BINARY_DIR}/sbin/${_name})
+        ${_abs_name} ${CMAKE_BINARY_DIR}/sbin/${_base_name})
       install(PROGRAMS ${_name} DESTINATION sbin)
     endforeach(_name ${ARGN})
   endmacro(lofar_add_sbin_scripts)
@@ -182,6 +195,26 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
       install(FILES ${_name} DESTINATION etc/${_path})
     endforeach(_name ${ARGN})
   endmacro(lofar_add_sysconf_files)
+
+
+  # --------------------------------------------------------------------------
+  # lofar_add_data_files([name1 [name2 ..]])
+  #
+  # Add system data files (architecture-independent data) that need to be
+  # installed into the <prefix>/share directory. Also create a symbolic link
+  # in <build-dir>/share to each of these files. The file names may contain
+  # a relative(!) path.
+  # --------------------------------------------------------------------------
+  macro(lofar_add_data_files)
+    foreach(_name ${ARGN})
+      get_filename_component(_path ${_name} PATH)
+      get_filename_component(_abs_name ${_name} ABSOLUTE)
+      file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/share/${_path})
+      execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
+        ${_abs_name} ${CMAKE_BINARY_DIR}/share/${_name})
+      install(FILES ${_name} DESTINATION share/${_path})
+    endforeach(_name ${ARGN})
+  endmacro(lofar_add_data_files)
 
 
   # --------------------------------------------------------------------------

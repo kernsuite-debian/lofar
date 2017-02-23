@@ -1,5 +1,5 @@
 Creating new file in blob format ...
-../src/makesourcedb: Version GvD 2013-May-16
+makesourcedb: Version GvD 2013-May-16
 Wrote 0 patches (out of 0) and 5 sources (out of 5) into tSourceDBBlob_tmp.src
 
 Source name:    sun
@@ -142,7 +142,7 @@ Patch names: []
 Patch names: [cygnus,cygnusA,lena]
 
 Appending to file ...
-../src/makesourcedb: Version GvD 2013-May-16
+makesourcedb: Version GvD 2013-May-16
 Wrote 0 patches (out of 0) and 5 sources (out of 5) into tSourceDBBlob_tmp.src
 
 Source name:    sun
@@ -417,7 +417,7 @@ Patch names: []
 Patch names: [cygnus,cygnusA,lena]
 
 Creating new file in casa format ...
-../src/makesourcedb: Version GvD 2013-May-16
+makesourcedb: Version GvD 2013-May-16
 Wrote 0 patches (out of 0) and 5 sources (out of 5) into tSourceDBBlob_tmp.src
 
 Source name:    sun

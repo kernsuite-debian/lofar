@@ -41,20 +41,20 @@ PATH="$ssdir:$sedir:$curdir:$PATH"
 export PATH
 
 startdistproc -dsn tstartdproc.in_vd -cdn tstartdproc.in_cd \
--mode single -dry -hfn tstartdproc_tmp.out0 -fdp ../src prog1 -arg "a b"
+-mode single -dry -hfn tstartdproc_tmp.out0 prog1 -arg "a b"
 echo "status=$?"
 cat tstartdproc_tmp.out0
 
 echo ''
 startdistproc -dsn tstartdproc.in_vd -cdn tstartdproc.in_cd \
--mode mpi -dry -hfn tstartdproc_tmp.out1 -fdp ../src prog1 -arg "a b"
+-mode mpi -dry -hfn tstartdproc_tmp.out1 prog1 -arg "a b"
 echo "status=$?"
 cat tstartdproc_tmp.out1
 
 echo ''
 startdistproc -useenv "$curdir/tstartdproc_tmp.out2.envfile" \
 -dsn tstartdproc.in_vd -cdn tstartdproc.in_cd \
--mode 3851 -dry -hfn tstartdproc_tmp.out2 -fdp ../src prog1 -arg "a b" \
+-mode 3851 -dry -hfn tstartdproc_tmp.out2 prog1 -arg "a b" \
 > tstartdproc_tmp.log2
 echo "status=$?"
 cat tstartdproc_tmp.out2
@@ -65,7 +65,7 @@ echo ''
 startdistproc -killonfail -useenv "$curdir/tstartdproc_tmp.out3.envfile" \
 -logfile "$curdir/tstartdproc_tmp.log3b" \
 -dsn tstartdproc.in_vd -cdn tstartdproc.in_cd1 -nostartmaster \
--mode 3851 -hfn tstartdproc_tmp.out3 -fdp ../src "`pwd`/tstartdproc.in_run" \
+-mode 3851 -hfn tstartdproc_tmp.out3 "`pwd`/tstartdproc.in_run" \
 > tstartdproc_tmp.log3a
 echo "status=$?"
 cat tstartdproc_tmp.out3

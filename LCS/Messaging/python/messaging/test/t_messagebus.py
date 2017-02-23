@@ -28,12 +28,15 @@ import re
 import struct
 import sys
 import unittest
+import logging
 
 from lofar.messaging.messages import *
 from lofar.messaging.messagebus import *
 from lofar.messaging.exceptions import MessageBusError, InvalidMessage
 
 TIMEOUT = 1.0
+
+logger = logging.getLogger(__name__)
 
 
 # ========  FromBus unit tests  ======== #
@@ -252,9 +255,8 @@ class SendReceiveMessage(unittest.TestCase):
         self.assertEqual(
             (send_msg.SystemName, send_msg.MessageId, send_msg.MessageType),
             (recv_msg.SystemName, recv_msg.MessageId, recv_msg.MessageType))
-        self.assertEqual(
-            (send_msg.content, send_msg.content_type),
-            (recv_msg.content, recv_msg.content_type))
+        self.assertEqual(send_msg.content, recv_msg.content)
+        self.assertEqual(send_msg.content_type, recv_msg.content_type)
 
     def test_sendrecv_event_message(self):
         """
@@ -284,8 +286,18 @@ class SendReceiveMessage(unittest.TestCase):
         content = {"request": "Do Something", "argument": "Very Often"}
         self._test_sendrecv(RequestMessage(content, reply_to=QUEUE))
 
+    def test_sendrecv_request_message_with_large_content_map(self):
+        """
+        Test send/receive of an RequestMessage, containing a dict with a large string value.
+        Qpid, cannot (de)serialize strings > 64k in a dict
+        We circumvent this in ToBus.send and FromBus.receive by converting long strings in a dict to a buffer and back.
+        """
+        content = {"key1": "short message", "key2": "long message " + (2**17)*'a'}
+        self._test_sendrecv(RequestMessage(content, reply_to=QUEUE))
+
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     QUEUE = sys.argv[1] if len(sys.argv) > 1 else "testqueue"
     del sys.argv[1:]
     unittest.main()

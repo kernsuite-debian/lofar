@@ -45,15 +45,19 @@ For Debian/Ubuntu (likely incomplete list, but goes a long way):
 	apt-get install subversion cmake make g++ gfortran python-dev python-numpy
 	apt-get install libboost-dev libblitz0-dev libfftw3-dev libcfitsio3-dev libxml2-dev liblog4cplus-dev
 	apt-get install libpng12-dev                         # or latest version; for AOFlagger
-	apt-get install libreadline-dev libpqxx-dev doxygen  # optional
+	apt-get install libreadline-dev libpqxx-dev doxygen python-coverage  # optional
 	apt-get install libunittest++-dev                    # optional, for tests that use UnitTest++
+	apt-get install python-pygresql python-psycopg2 python-mysql.connector  # optional, for some SAS/ tests
+	apt-get install postgresql                           # optional, for some SAS/OTDB_Services/ tests
 
 
 For CentOS/Fedora (likely incomplete list, but goes a long way):
 
 	yum install subversion cmake make gcc python-devel numpy
 	yum install boost-devel fftw-devel cfitsio-devel libxml2-devel libpng-devel
-	yum install readline-devel libpqxx-devel doxygen     # optional
+	yum install readline-devel libpqxx-devel doxygen python-coverage  # optional
+	yum install PyGreSQL python-psycopg2 mysql-connector-python  # optional, for some SAS/ tests
+	yum install postgresql                               # optional, for some SAS/OTDB_Services/ tests
 
 	The blitz and blitz-devel pkgs are available on some distros, but not on e.g. CentOS 7.
 	If required for your build, but not in your repo, take the two RPMs from CentOS 6 (or build from source).
@@ -72,7 +76,7 @@ NOTE (any OS): For manual builds, the most prominent dependencies you likely nee
 	casarest:                  https://github.com/casacore/casarest
 
 	AOFlagger:                 https://sourceforge.net/projects/aoflagger/
-            which may need: Debian/Ubuntu: libgsl0-dev libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev
+            which may need: Debian/Ubuntu: libgsl-dev libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev
                             CentOS/Fedora: gsl-devel gtkmm[24|30]-devel libsigc++20-devel
 
 

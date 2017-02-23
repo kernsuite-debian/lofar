@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34529 2016-05-24 17:00:41Z mol $
+# $Id: CMakeLists.txt 36468 2017-02-06 16:35:27Z schaap $
 
 include(LofarCTest)
 
@@ -8,3 +8,4 @@ file(COPY
 
 lofar_add_test(t_dbcredentials)
 lofar_add_test(t_methodtrigger)
+lofar_add_test(t_util)

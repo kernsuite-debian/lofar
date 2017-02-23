@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 31882 2015-06-22 07:50:04Z mol $
+# $Id: CMakeLists.txt 35903 2016-11-04 13:11:40Z loose $
 
 # Create symbolic link to include directory.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink 
@@ -16,4 +16,10 @@ install(FILES
   XMLDoc.h
   DESTINATION include/${PACKAGE_NAME})
 
-add_subdirectory(Protocols)
+install(FILES
+  Protocols/TaskFeedbackDataproducts.h
+  Protocols/TaskFeedbackProcessing.h
+  Protocols/TaskFeedbackState.h
+  Protocols/TaskSpecificationSystem.h
+  DESTINATION include/${PACKAGE_NAME}/Protocols)
+

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Instrument.h 36096 2016-12-02 10:13:05Z mol $
+//# $Id: Instrument.h 36374 2017-01-24 15:22:52Z schoenmakers $
 
 #ifndef LOFAR_BBSKERNEL_INSTRUMENT_H
 #define LOFAR_BBSKERNEL_INSTRUMENT_H

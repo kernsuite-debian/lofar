@@ -136,7 +136,7 @@ def prepare_testdata(lofarroot,pipeline,workdir,testdata,host0=None,host1=None,h
 			for key,val in replacelist:
 				line = line.replace(key,val)
 		#if gsmserver != None:
-		#	line = line.replace('ldb002',gsmserver)
+		#	line = line.replace('gsmdb.control.lofar',gsmserver)
 		sys.stdout.write(line)
 
 

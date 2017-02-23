@@ -154,5 +154,13 @@ def convertStringDigitKeysToInt(dct):
     #python2.6 using dict constructor and list comprehension
     return dict((int(k) if isinstance(k, basestring) and k.isdigit() else k, convertStringDigitKeysToInt(v) if isinstance(v, dict) else v) for k,v in dct.items())
 
+def convertBufferValuesToString(dct):
+    '''recursively convert all string values in the dict to buffer'''
+    return dict( (k, convertBufferValuesToString(v) if isinstance(v, dict) else str(v) if isinstance(v, buffer) else v) for k,v in dct.items())
+
+def convertStringValuesToBuffer(dct, max_string_length=65535):
+    '''recursively convert all string values in the dict to buffer'''
+    return dict( (k, convertStringValuesToBuffer(v, max_string_length) if isinstance(v, dict) else (buffer(v, 0, len(v)) if (isinstance(v, basestring) and len(v) > max_string_length) else v)) for k,v in dct.items())
+
 def to_csv_string(values):
     return ','.join(str(x) for x in values)

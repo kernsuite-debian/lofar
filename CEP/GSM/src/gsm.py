@@ -56,7 +56,7 @@ def gsmMain (name, argv):
     if len(argv) > st+5:
         theta = float(argv[st+5])
 
-    db_host = "ldb002.offline.lofar"
+    db_host = "gsmdb.control.lofar"
     #db_host = "napels"
     db_dbase = "gsm"
     db_user = "gsm"

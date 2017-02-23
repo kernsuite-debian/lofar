@@ -96,7 +96,7 @@ class RPC():
         self.Verbose           = kwargs.pop("Verbose", False)
         self.BusName           = kwargs.pop("busname", None)
         self.ServiceName       = service
-        self.broker            = broker
+        self.broker            = broker if broker else 'localhost'
         if self.BusName is None:
             self.Request = ToBus(self.ServiceName, broker=self.broker)
         else:
@@ -306,6 +306,7 @@ class RPCWrapper(object):
     def close(self):
         '''Close all opened rpc connections'''
         for rpc in self._serviceRPCs.values():
+            logger.info('closing rpc connection %s at %s', rpc.Request.address, rpc.broker)
             rpc.close()
 
     def __enter__(self):
@@ -333,6 +334,7 @@ class RPCWrapper(object):
                 # not in cache
                 # so, create RPC for this service method, open it, and cache it
                 rpc = RPC(service_method, busname=self.busname, broker=self.broker, ForwardExceptions=True, **rpckwargs)
+                logger.info('opening rpc connection %s at %s', rpc.Request.address, rpc.broker)
                 rpc.open()
                 self._serviceRPCs[service_method] = rpc
 

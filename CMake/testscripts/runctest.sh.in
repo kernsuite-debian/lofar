@@ -25,8 +25,12 @@
 # runtest.sh uses this variable to find test input files and the like.
 srcdir="@srcdir@"; export srcdir
 
-# Add the bin directory in the build tree to PATH
-PATH="@CMAKE_BINARY_DIR@/bin:${PATH}"; export PATH
+# Add the sbin and bin directories in the build tree to PATH
+PATH="@CMAKE_BINARY_DIR@/sbin:@CMAKE_BINARY_DIR@/bin:${PATH}"; export PATH
+
+# Add the lib or lib64 directory in the build tree to LD_LIBRARY_PATH
+LD_LIBRARY_PATH="@CMAKE_BINARY_DIR@/@LOFAR_LIBDIR@:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH
 
 # Add the Python build directory to PYTHONPATH.
 PYTHONPATH="@srcdir@:@PYTHON_BUILD_DIR@:${PYTHONPATH}"; export PYTHONPATH

@@ -6,6 +6,11 @@ import inspect
 import sys
 import re
 
+# We need the fixture to be in the front of the python path.
+# Some packages (f.e. casacore) have a site.py, which get run at python start, and can modify
+# the python path. We thus can only prepend the fixture after python has started.
+sys.path=["%s/fixture" % os.path.dirname(__file__)] + sys.path
+
 class Discover():
     """
     Discover class collects all unit test case in <path> and recursive directories

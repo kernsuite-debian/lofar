@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35806 2016-10-26 22:30:38Z amesfoort $
+# $Id: CMakeLists.txt 35996 2016-11-15 18:29:20Z amesfoort $
 
 # Create symbolic link to include directory.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink 
@@ -99,6 +99,7 @@ install(FILES
   Thread/Condition.h
   Thread/Mutex.h
   Thread/Queue.h
+  Thread/Sem_t.h
   Thread/Semaphore.h
   Thread/Thread.h
   DESTINATION include/${PACKAGE_NAME}/Thread)

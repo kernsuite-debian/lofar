@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35142 2016-08-22 10:10:37Z schaap $
+# $Id: CMakeLists.txt 35908 2016-11-04 15:41:28Z mol $
 
 lofar_package(Docker 1.0 DEPENDS Common)
 
@@ -43,8 +43,8 @@ foreach(_dir ${DOCKER_TEMPLATE_DIRS})
   # when "all" is build.
   add_custom_command(
     OUTPUT ${_dst}
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/docker-template -v ${CMAKE_CURRENT_BINARY_DIR}/versiondocker < ${_src} > ${_dst}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/docker-template ${_src} ${CMAKE_CURRENT_BINARY_DIR}/versiondocker
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/docker-template -v ${CMAKE_BINARY_DIR}/bin/versiondocker < ${_src} > ${_dst}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/docker-template ${_src} ${CMAKE_BINARY_DIR}/bin/versiondocker
   )
   add_custom_target(${_dir}_Dockerfile_target ALL DEPENDS ${_dst})
 

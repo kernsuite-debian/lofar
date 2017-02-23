@@ -23,6 +23,6 @@
 # $Id$
 
 
-../src/parmdbm tparmdb_tmp.stdout < tparmdb.in > /dev/null
+parmdbm tparmdb_tmp.stdout < tparmdb.in > /dev/null
 cat tparmdb_tmp.stdout
 #sed -e '/Assertion: /d' tparmdb_tmp.outtmp

@@ -18,11 +18,12 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tBarrier.cc 34983 2016-07-14 17:29:29Z amesfoort $
+//# $Id: tBarrier.cc 35995 2016-11-15 16:33:18Z dijkema $
 
 #include <lofar_config.h>
 
 #include <unistd.h> // alarm(3)
+#include <Common/LofarLogger.h>
 #include <Common/Thread/Thread.h>
 #include <Common/Thread/Barrier.h>
 

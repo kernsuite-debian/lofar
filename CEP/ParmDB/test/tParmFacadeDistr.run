@@ -30,20 +30,10 @@
 if test "$srcdir" = ""; then
   srcdir=../../../../../LOFAR/CEP/ParmDB/test
 fi
-curdir=`pwd`
-srcdir=`cd $srcdir/../src > /dev/null && pwd`
-exedir=`cd ../src > /dev/null && pwd`
-mwsdir=`cd $srcdir/../../LMWCommon/src > /dev/null && pwd`
-mwedir=`cd ../../LMWCommon/src > /dev/null && pwd`
-
-# Extend PATH.
-PATH=$curdir:$srcdir:$exedir:$mwsdir:$mwedir:$PATH
-export PATH
-
 
 # The test uses 2 remote pdb-s, so create them.
 echo "Filling pdb1"
-../src/parmdbm <<EOF > tParmFacadeDistr_tmp.pdbout
+parmdbm <<EOF > tParmFacadeDistr_tmp.pdbout
  create tablename='tParmFacadeDistr_tmp.pdb1'
  add parm1 domain=[1,4,5,10],values=2
  add parm2 type='polc', domain=[1,4,5,10], values=[2,0.1], nx=2
@@ -55,7 +45,7 @@ if [ $? != 0 ]; then
   exit 1
 fi
 echo "Filling pdb2"
-../src/parmdbm <<EOF > tParmFacadeDistr_tmp.pdbout
+parmdbm <<EOF > tParmFacadeDistr_tmp.pdbout
  create tablename='tParmFacadeDistr_tmp.pdb2'
  add parm1 domain=[7,10,5,10],values=3
  add parm2 type='polc', domain=[7,10,5,10], values=[6,0.3], nx=2

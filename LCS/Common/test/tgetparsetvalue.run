@@ -1,7 +1,5 @@
 #!/bin/sh
 
-PATH=$(cd ../src && pwd):$PATH
-
 getparsetvalue tgetparsetvalue.parset key1
 getparsetvalue tgetparsetvalue.parset key1 0
 getparsetvalue tgetparsetvalue.parset key1 1

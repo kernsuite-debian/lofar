@@ -310,6 +310,22 @@ class ReplyMessage(LofarMessage):
         if (reply_to!=None):
             self.subject = reply_to
 
+class CommandMessage(LofarMessage):
+    """
+    Message class used for command messages. Commands will typically be sent
+    to a controller. Command messages are messages that *must* be delivered.
+    If the message cannot be delivered to the recipient, it will be stored in
+    a persistent queue for later delivery.
+    """
+
+    def __init__(self, content=None, context=None, recipients=None, **kwargs):
+        super(CommandMessage, self).__init__(
+                content,
+                **kwargs)
+        self.durable = True
+        self.context=context
+        self.recipients=recipients
+        self.subject='command',
 
 
 MESSAGE_FACTORY.register("EventMessage", EventMessage)
@@ -317,6 +333,7 @@ MESSAGE_FACTORY.register("MonitoringMessage", MonitoringMessage)
 MESSAGE_FACTORY.register("ProgressMessage", ProgressMessage)
 MESSAGE_FACTORY.register("RequestMessage", RequestMessage)
 MESSAGE_FACTORY.register("ReplyMessage", ReplyMessage)
+MESSAGE_FACTORY.register("CommandMessage", CommandMessage)
 
 __all__ = ["EventMessage", "MonitoringMessage", "ProgressMessage",
-	   "RequestMessage", "ReplyMessage"]
+	   "RequestMessage", "ReplyMessage", "CommandMessage"]

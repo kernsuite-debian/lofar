@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 36096 2016-12-02 10:13:05Z mol $
+# $Id: CMakeLists.txt 36374 2017-01-24 15:22:52Z schoenmakers $
 
 lofar_package(PyBDSM 1.0)
 enable_language(Fortran)

@@ -29,12 +29,14 @@ Provide an easy way exchange messages on the message bus.
 from lofar.messaging.exceptions import MessageBusError, MessageFactoryError
 from lofar.messaging.messages import to_qpid_message, MESSAGE_FACTORY
 from lofar.common.util import raise_exception
+from lofar.common.util import convertStringValuesToBuffer, convertBufferValuesToString
 
 import qpid.messaging
 import logging
 import sys
 import uuid
 import threading
+from copy import deepcopy
 
 logger = logging.getLogger(__name__)
 
@@ -122,7 +124,7 @@ class FromBus(object):
             self.__exit__(*sys.exc_info())
             raise
         self.opened+=1
-      
+
 
     def __enter__(self):
         self.open()
@@ -149,7 +151,7 @@ class FromBus(object):
             self.session = None
           logger.debug("[FromBus] Disconnected from broker: %s", self.broker)
         self.opened-=1
-       
+
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
@@ -206,7 +208,24 @@ class FromBus(object):
         except qpid.messaging.MessagingError:
             raise_exception(MessageBusError,
                             "[FromBus] Failed to fetch message from: "
-                            "%s" % self.address) 
+                            "%s" % self.address)
+        except Exception as e:
+            #FIXME: what if another exception is raised? should we reconnect?
+            logger.error(e)
+            raise_exception(MessageBusError,
+                            "[FromBus] unknown exception while receiving message on %s: %s" % (self.address, e))
+
+        try:
+            if isinstance(msg.content, dict):
+                #qpid cannot handle strings longer than 64k within dicts
+                #so each string was converted to a buffer which qpid can fit in 2^32-1 bytes
+                #and now we convert it back on this end
+                msg.content = convertBufferValuesToString(msg.content)
+        except MessageFactoryError:
+            self.reject(msg)
+            raise_exception(MessageBusError, "[FromBus] Message rejected")
+
+
         logger.debug("[FromBus] Message received on: %s subject: %s" % (self.address, msg.subject))
         if logDebugMessages:
             logger.debug("[FromBus] %s" % msg)
@@ -260,6 +279,17 @@ class FromBus(object):
             "[FromBus] reject() is not supported, using ack() instead")
         self.ack(msg)
 
+    def nr_of_messages_in_queue(self, timeout=1.0):
+        self._check_session()
+
+        try:
+            recv = self.session.next_receiver(timeout)
+            return recv.available()
+        except qpid.messaging.exceptions.Empty:
+            return 0
+        except Exception as e:
+            raise_exception(MessageBusError,
+                            "[FromBus] Failed to get number of messages available in queue: %s" % self.address)
 
 class ToBus(object):
     """
@@ -429,6 +459,15 @@ class ToBus(object):
         """
         sender = self._get_sender()
         qmsg = to_qpid_message(message)
+
+        if isinstance(qmsg.content, dict):
+            #qpid cannot handle strings longer than 64k within dicts
+            #so convert each string to a buffer which qpid can fit in 2^32-1 bytes
+            #convert it back on the other end
+            #make copy of qmsg first, because we are modifying the contents, and we don't want any side effects
+            qmsg = deepcopy(qmsg)
+            qmsg.content = convertStringValuesToBuffer(qmsg.content, 65535)
+
         logger.debug("[ToBus] Sending message to: %s (%s)", self.address, qmsg)
         try:
             sender.send(qmsg, timeout=timeout)

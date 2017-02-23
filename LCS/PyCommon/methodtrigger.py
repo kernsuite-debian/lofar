@@ -31,15 +31,18 @@ class MethodTrigger:
     self.method = method
     self.old_func = obj.__getattribute__(method)
 
-    self.called = False
-    self.args = []
-    self.kwargs = {}
+    self.reset()
 
     self.lock = Lock()
     self.cond = Condition(self.lock)
 
     # Patch the target method
     obj.__setattr__(method, self.trigger)
+
+  def reset(self):
+    self.called = False
+    self.args = []
+    self.kwargs = {}
 
   def trigger(self, *args, **kwargs):
     # Save the call parameters

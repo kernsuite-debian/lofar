@@ -26,40 +26,40 @@ rm -rf tmergesourcedb_tmp.sdb*
 
 # Remove the Version line from the output because it is system dependent.
 echo "create sourcedb-s ..."
-../src/makesourcedb in=tmergesourcedb.in_1 out=tmergesourcedb_tmp.sdbc1 append=0 outtype=casa format="< " | grep -v ' Version '
-../src/makesourcedb in=tmergesourcedb.in_2 out=tmergesourcedb_tmp.sdbc2 append=0 outtype=casa format="< " | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbc1 | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbc2 | grep -v ' Version '
+makesourcedb in=tmergesourcedb.in_1 out=tmergesourcedb_tmp.sdbc1 append=0 outtype=casa format="< " | grep -v ' Version '
+makesourcedb in=tmergesourcedb.in_2 out=tmergesourcedb_tmp.sdbc2 append=0 outtype=casa format="< " | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbc1 | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbc2 | grep -v ' Version '
 
 # Merge the two sdb-s and show the result.
 echo "test merge mode=match ..."
-../src/mergesourcedb in1=tmergesourcedb_tmp.sdbc1 in2=tmergesourcedb_tmp.sdbc2 out=tmergesourcedb_tmp.sdbcm outtype=casa append=0 mode=match | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbcm | grep -v ' Version '
+mergesourcedb in1=tmergesourcedb_tmp.sdbc1 in2=tmergesourcedb_tmp.sdbc2 out=tmergesourcedb_tmp.sdbcm outtype=casa append=0 mode=match | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbcm | grep -v ' Version '
 
 echo
 echo "test mode=all ..."
 # Merge the two sdb-s and show the result.
-../src/mergesourcedb in1=tmergesourcedb_tmp.sdbc1 in2=tmergesourcedb_tmp.sdbc2 out=tmergesourcedb_tmp.sdbca append=0 mode=all | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbca | grep -v ' Version '
+mergesourcedb in1=tmergesourcedb_tmp.sdbc1 in2=tmergesourcedb_tmp.sdbc2 out=tmergesourcedb_tmp.sdbca append=0 mode=all | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbca | grep -v ' Version '
 
 # Now do the same for blob mode.
 echo
 echo "create sourcedb-s ..."
-../src/makesourcedb in=tmergesourcedb.in_1 out=tmergesourcedb_tmp.sdbb1 append=0 outtype=blob format="< " | grep -v ' Version '
-../src/makesourcedb in=tmergesourcedb.in_2 out=tmergesourcedb_tmp.sdbb2 append=0 outtype=blob format="< " | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbb1 | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbb2 | grep -v ' Version '
+makesourcedb in=tmergesourcedb.in_1 out=tmergesourcedb_tmp.sdbb1 append=0 outtype=blob format="< " | grep -v ' Version '
+makesourcedb in=tmergesourcedb.in_2 out=tmergesourcedb_tmp.sdbb2 append=0 outtype=blob format="< " | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbb1 | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbb2 | grep -v ' Version '
 
 # Merge the two sdb-s and show the result.
 echo "test merge mode=match ..."
-../src/mergesourcedb in1=tmergesourcedb_tmp.sdbb1 in2=tmergesourcedb_tmp.sdbb2 out=tmergesourcedb_tmp.sdbbm outtype=blob append=0 mode=match | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbbm | grep -v ' Version '
+mergesourcedb in1=tmergesourcedb_tmp.sdbb1 in2=tmergesourcedb_tmp.sdbb2 out=tmergesourcedb_tmp.sdbbm outtype=blob append=0 mode=match | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbbm | grep -v ' Version '
 
 echo
 echo "test mode=all ..."
 # Merge the two sdb-s and show the result.
-../src/mergesourcedb in1=tmergesourcedb_tmp.sdbb1 in2=tmergesourcedb_tmp.sdbb2 out=tmergesourcedb_tmp.sdbba outtype=blob append=0 mode=all | grep -v ' Version '
-../src/showsourcedb in=tmergesourcedb_tmp.sdbba | grep -v ' Version '
+mergesourcedb in1=tmergesourcedb_tmp.sdbb1 in2=tmergesourcedb_tmp.sdbb2 out=tmergesourcedb_tmp.sdbba outtype=blob append=0 mode=all | grep -v ' Version '
+showsourcedb in=tmergesourcedb_tmp.sdbba | grep -v ' Version '
 
 exit 0
 

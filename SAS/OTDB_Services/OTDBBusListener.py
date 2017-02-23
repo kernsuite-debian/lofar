@@ -95,6 +95,13 @@ class OTDBBusListener(AbstractBusListener):
             self.onObservationAborted(treeId, modificationTime)
         elif msg.content['state'] == 'obsolete':
             self.onObservationObsolete(treeId, modificationTime)
+        else:
+            return
+
+        self.onObservationStatusChanged(treeId, msg.content['state'], modificationTime)
+
+    def onObservationStatusChanged(self, treeId, new_status, modificationTime):
+        pass
 
     def onObservationDescribed(self, treeId, modificationTime):
         pass

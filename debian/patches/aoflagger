@@ -1,0 +1,11 @@
+Description: disable aoflagger
+
+--- lofar-2.20.2.orig/CEP/DP3/CMakeLists.txt
++++ lofar-2.20.2/CEP/DP3/CMakeLists.txt
+@@ -5,5 +5,5 @@ lofar_add_package(TestDynDPPP)
+ lofar_add_package(PythonDPPP)
+ lofar_add_package(DPPP_AOFlag)
+ lofar_add_package(SPW_Combine SPWCombine)
+-lofar_add_package(AOFlagger)
++#lofar_add_package(AOFlagger)
+ 

@@ -1,17 +1,8 @@
-Description: add so versions
+Description: set so version
 
---- lofar-2.19.5.orig/CEP/DP3/DPPP_AOFlag/src/CMakeLists.txt
-+++ lofar-2.19.5/CEP/DP3/DPPP_AOFlag/src/CMakeLists.txt
-@@ -9,4 +9,6 @@ lofar_add_library(dppp_aoflag
-   Register.cc
- )
- 
-+set_target_properties(dppp_aoflag PROPERTIES OUTPUT_NAME dppp_aoflag)
-+
- lofar_add_bin_program(versiondppp_aoflag versiondppp_aoflag.cc)
---- lofar-2.19.5.orig/CMake/LofarMacros.cmake
-+++ lofar-2.19.5/CMake/LofarMacros.cmake
-@@ -125,10 +125,12 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
+--- lofar-2.20.2.orig/CMake/LofarMacros.cmake
++++ lofar-2.20.2/CMake/LofarMacros.cmake
+@@ -131,10 +131,12 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
        target_link_libraries(${_name} LINK_INTERFACE_LIBRARIES
          ${${PACKAGE_NAME}_LINK_LIBRARIES})
      endif(NOT APPLE AND NOT POLICY CMP0022)
@@ -20,35 +11,11 @@ Description: add so versions
 -#      OUTPUT_NAME lofar_${_name})
 -    install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    if(NOT "${ARGN}" MATCHES "^MODULE")
-+      set_target_properties(${_name} PROPERTIES 
-+        VERSION 0 # Quick hack for Gijs. We'll think about versioning later.
-+        OUTPUT_NAME ${_name})
-+      install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
++       set_target_properties(${_name} PROPERTIES
++         VERSION 0 # Quick hack for Gijs. We'll think about versioning later.
++         OUTPUT_NAME ${_name})
++       install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    endif(NOT "${ARGN}" MATCHES "^MODULE")
-     if(TARGET ${PACKAGE_NAME}_PackageVersion)
-       add_dependencies(${_name} ${PACKAGE_NAME}_PackageVersion)
-     endif(TARGET ${PACKAGE_NAME}_PackageVersion)
---- lofar-2.19.5.orig/CMake/LofarOptions.cmake
-+++ lofar-2.19.5/CMake/LofarOptions.cmake
-@@ -67,8 +67,8 @@ if(NOT DEFINED LOFAR_OPTIONS_INCLUDED)
-     # See http://www.mail-archive.com/cmake@cmake.org/msg21473.html
-   else(BUILD_STATIC_EXECUTABLES)
-     # Set RPATH to use for installed targets; append linker search path
--    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LOFAR_LIBDIR}")
--    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-+    #set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LOFAR_LIBDIR}")
-+    #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-   endif(BUILD_STATIC_EXECUTABLES)
-   
-   if(USE_BACKTRACE)
---- lofar-2.19.5.orig/LCS/LofarStMan/src/CMakeLists.txt
-+++ lofar-2.19.5/LCS/LofarStMan/src/CMakeLists.txt
-@@ -9,6 +9,8 @@ lofar_add_library(lofarstman
-   Register.cc
-   )
- 
-+set_target_properties(lofarstman PROPERTIES OUTPUT_NAME lofarstman)
-+
- lofar_add_bin_program(versionlofarstman versionlofarstman.cc)
- lofar_add_bin_program(fixlsmeta fixlsmeta.cc)
- 
+     set_target_properties(${_name} PROPERTIES 
+       ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${LOFAR_LIBDIR}
+       LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${LOFAR_LIBDIR})

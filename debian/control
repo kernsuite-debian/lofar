@@ -19,6 +19,7 @@ Package: lofar
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
+         python-lofar,
          casacore-data,
          casarest
 Conflicts: makems
@@ -35,7 +36,8 @@ Depends: ${shlibs:Depends},
          python-scipy,
          python-casacore,
          python-qt4,
-         python-sip
+         python-sip,
+         python-matplotlib
 Description: LOFAR Python packages
  
 Package: lofar-doc

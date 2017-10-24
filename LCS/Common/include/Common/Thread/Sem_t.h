@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Sem_t.h 35996 2016-11-15 18:29:20Z amesfoort $
+//# $Id: Sem_t.h 37655 2017-06-19 12:40:06Z amesfoort $
 
 #ifndef LOFAR_LCS_COMMON_SEMT_H
 #define LOFAR_LCS_COMMON_SEMT_H
@@ -95,6 +95,7 @@ public:
     return true;
   }
 
+#if _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600  // OS X does not have sem_timedwait()
   bool timedwait(const struct timespec *abs_timeout) {
     if (::sem_timedwait(&sem, abs_timeout) < 0) {
       if (errno == ETIMEDOUT) {
@@ -104,6 +105,7 @@ public:
     }
     return true;
   }
+#endif
 
 private:
   Sem_t(const Sem_t&);

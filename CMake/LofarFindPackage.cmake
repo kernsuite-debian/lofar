@@ -31,7 +31,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarFindPackage.cmake 30919 2015-02-05 15:26:22Z amesfoort $
+#  $Id: LofarFindPackage.cmake 36994 2017-03-30 21:17:40Z loose $
 
 include(LofarMacros)
 
@@ -77,10 +77,10 @@ function(lofar_find_package _package)
       endif(NOT DEFINED HAVE_${_PKG})
       add_definitions(${${_PKG}_DEFINITIONS})
       if(${_PKG}_INCLUDE_DIRS)
-        include_directories(${${_PKG}_INCLUDE_DIRS})
+        include_directories(SYSTEM ${${_PKG}_INCLUDE_DIRS})
         set(${_PKG}_INCLUDE_DIRS ${${_PKG}_INCLUDE_DIRS} PARENT_SCOPE)
       else(${_PKG}_INCLUDE_DIRS)
-        include_directories(${${_PKG}_INCLUDE_DIR})
+        include_directories(SYSTEM ${${_PKG}_INCLUDE_DIR})
         set(${_PKG}_INCLUDE_DIR ${${_PKG}_INCLUDE_DIR} PARENT_SCOPE)
       endif(${_PKG}_INCLUDE_DIRS)
       set(${_PKG}_LIBRARIES ${${_PKG}_LIBRARIES} PARENT_SCOPE)

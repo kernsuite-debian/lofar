@@ -1,0 +1,67 @@
+# Definitions file for DAS5 compiler suite.
+#
+# Compiler suite
+set(LOFAR_COMPILER_SUITES GNU)
+
+# Build variants
+set(LOFAR_BUILD_VARIANTS DEBUG OPT OPT3 OPTARCH)
+
+# After loading the right gcc version module (not tested with other compilers)
+if(NOT (DEFINED ENV{CC} AND DEFINED ENV{CXX} AND DEFINED ENV{FC}))
+   message(FATAL_ERROR "CC, CXX and FC environment variables are required. Have you loaded the compile module?")
+endif()
+
+set(GNU_COMPILERS GNU_C GNU_CXX GNU_Fortran GNU_ASM)
+set(GNU_C         $ENV{CC}  )      # C compiler
+set(GNU_CXX       $ENV{CXX} )      # C++ compiler
+set(GNU_Fortran   $ENV{FC}  )      # Fortran compiler
+set(GNU_ASM       $ENV{CC}  )      # assembler
+
+message(WARNING "Building using fs5 variants file. Compilers picked based on environment variables, flags are based on directory name (e.g. gnu_opt assumes gnu compiler suite). This could be inconsistent and cause problems.")
+
+# if(NOT ENV{FOO_HOME})
+#   message(FATAL_ERROR "Could not find FOO_HOME environment variable")
+#   endif(NOT ENV{FOO_HOME}))
+#
+#
+#
+# DAS5 specific settings
+option(USE_QPID         "Use Qpid"            OFF)
+option(USE_OPENMP       "Use OpenMP"           ON)
+set(WCSLIB_ROOT_DIR     $ENV{WCSLIB_ROOT_DIR}    )
+set(CFITSIO_ROOT_DIR    $ENV{CFITSIO_ROOT_DIR}   )
+set(CASAREST_ROOT_DIR   $ENV{CASAREST_ROOT_DIR}  )
+set(CASACORE_ROOT_DIR   $ENV{CASACORE_ROOT_DIR}  )
+set(LOG4CPLUS_ROOT_DIR  $ENV{LOG4CPLUS_ROOT_DIR} )
+set(PYTHON_BDSF         $ENV{PYBDSF_ROOT_DIR}    )
+set(AOFLAGGER_ROOT_DIR  $ENV{AOFLAGGER_ROOT_DIR} )
+
+set(GNU_C_FLAGS          "-W -Wall -Wno-unknown-pragmas")
+set(GNU_C_FLAGS_DEBUG    "-g")
+set(GNU_C_FLAGS_OPT      "-g -O2")
+set(GNU_C_FLAGS_OPT3     "-g -O3")
+set(GNU_C_FLAGS_OPTARCH  "-g -O3 -march=native")
+set(GNU_CXX_FLAGS        "-W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
+set(GNU_CXX_FLAGS_DEBUG  "-g")
+set(GNU_CXX_FLAGS_OPT    "-g -O2")
+set(GNU_CXX_FLAGS_OPT3   "-g -O3")
+set(GNU_CXX_FLAGS_OPTARCH "-g -O3 -march=native")
+set(GNU_EXE_LINKER_FLAGS)
+set(GNU_EXE_LINKER_FLAGS_DEBUG)
+set(GNU_EXE_LINKER_FLAGS_OPT)
+set(GNU_EXE_LINKER_FLAGS_OPT3)
+set(GNU_EXE_LINKER_FLAGS_OPTARCH)
+set(GNU_SHARED_LINKER_FLAGS)
+set(GNU_SHARED_LINKER_FLAGS_DEBUG)
+set(GNU_SHARED_LINKER_FLAGS_OPT)
+set(GNU_SHARED_LINKER_FLAGS_OPT3)
+set(GNU_SHARED_LINKER_FLAGS_OPTARCH)
+set(GNU_COMPILE_DEFINITIONS)
+set(GNU_COMPILE_DEFINITIONS_DEBUG 
+                         "-DLOFAR_DEBUG -DENABLE_DBGASSERT -DENABLE_TRACER")
+set(GNU_COMPILE_DEFINITIONS_OPT)
+set(GNU_COMPILE_DEFINITIONS_OPT3
+                         "-DNDEBUG -DDISABLE_DEBUG_OUTPUT")
+set(GNU_COMPILE_DEFINITIONS_OPTARCH
+                         "-DNDEBUG -DDISABLE_DEBUG_OUTPUT")
+

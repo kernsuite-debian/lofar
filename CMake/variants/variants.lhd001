@@ -1,0 +1,14 @@
+option(BUILD_SHARED_LIBS        "Build shared libraries"      ON)
+
+set(CASACORE_ROOT_DIR /opt/cep/casacore/casacore_current)
+set(CASAREST_ROOT_DIR /opt/cep/casacore/casarest_current)
+set(PYRAP_ROOT_DIR /opt/cep/casacore/python-casacore_current)
+set(AOFLAGGER_ROOT_DIR /opt/cep/aoflagger/current)
+set(BDSF_ROOT_DIR /opt/cep/pybdsf/current)
+set(DAL_ROOT_DIR /opt/cep/dal/current)
+set(ENV{HDF5_ROOT} )
+
+set(CTEST_CUSTOM_WARNING_EXCEPTION
+  "/log4cxx/helpers/objectptr.h:[0-9]+: warning: base class"
+  "/log4cxx/helpers/objectptr.h:[0-9]+: warning: dereferencing type-punned pointer"
+)

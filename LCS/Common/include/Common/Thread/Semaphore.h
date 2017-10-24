@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Semaphore.h 17975 2011-05-10 09:52:51Z mol $ 
+//# $Id: Semaphore.h 38286 2017-09-03 23:42:04Z amesfoort $ 
 
 #ifndef  LOFAR_LCS_COMMON_SEMAPHORE_H
 #define  LOFAR_LCS_COMMON_SEMAPHORE_H
@@ -42,6 +42,7 @@ class Semaphore
     bool tryDown(unsigned count = 1);
     bool tryDown(unsigned count, const struct timespec &timespec);
 
+    unsigned getValue();
     void noMore();
     
   private:
@@ -111,6 +112,13 @@ inline bool Semaphore::tryDown(unsigned count, const struct timespec &timespec)
       return false;
 
   return lowerLevel(count);
+}
+
+
+inline unsigned Semaphore::getValue()
+{
+  ScopedLock lock(mutex); // w/ C++11, we can use memory_order_relaxed instead
+  return level;
 }
 
 

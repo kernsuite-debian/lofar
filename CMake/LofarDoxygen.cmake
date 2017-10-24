@@ -1,6 +1,6 @@
 # - Generate script to configure and run the code documentation tool Doxygen.
 
-# $Id: LofarDoxygen.cmake 24588 2013-04-12 12:55:38Z loose $
+# $Id: LofarDoxygen.cmake 38611 2017-10-10 09:53:34Z beukema $
 #
 # Copyright (C) 2010
 # ASTRON (Netherlands Institute for Radio Astronomy)
@@ -28,6 +28,11 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
   if(BUILD_DOCUMENTATION)
     # Locate the doxygen programs.
     find_package(Doxygen REQUIRED)
+    
+    find_python_module(doxypypy REQUIRED)
+    
+    set(ENV{PATH} "${CMAKE_CURRENT_BINARY_DIR}/py_filter.sh:$ENV{PATH}")
+    message(STATUS "PATH content is: $ENV{PATH}")
 
     # Document all source code, unless BUILD_PACKAGES is defined.
     if(NOT DEFINED BUILD_PACKAGES)

@@ -36,6 +36,9 @@ options="create:never"
 
 logger=logging.getLogger("MessageBus")
 
+# Set to True if the caller parses LOFARENV -- required for surface between MessageBus and Messaging libs
+IGNORE_LOFARENV=False
+
 class BusException(Exception):
     pass
 
@@ -100,7 +103,7 @@ class Session:
         lofarenv = os.environ.get("LOFARENV", "")
         queueprefix = os.environ.get("QUEUE_PREFIX", "")
 
-        if lofarenv == "PRODUCTION":
+        if lofarenv == "PRODUCTION" or IGNORE_LOFARENV:
             pass
         elif lofarenv == "TEST":
             queueprefix += "test."

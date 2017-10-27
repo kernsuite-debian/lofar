@@ -23,7 +23,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPythonModule.cmake 35902 2016-11-04 13:06:52Z loose $
+# $Id: FindPythonModule.cmake 36926 2017-03-22 12:48:58Z dijkema $
 
 # Search for the Python interpreter.
 find_package(PythonInterp)
@@ -37,27 +37,30 @@ find_package(PythonInterp)
 # set it to FALSE.
 # The REQUIRED option stops processing with an error message if the module
 # <module> cannot be found.
+# The HINTS option can be used to give a path (or colon-separated list of 
+# paths) that are prepended to the search path.
 # -----------------------------------------------------------------------------
-macro(find_python_module _module)
+include(CMakeParseArguments)
 
+macro(find_python_module _module)
   # Name of module in uppercase.
   string(TOUPPER "${_module}" _MODULE)
+  cmake_parse_arguments(PYTHON_${_MODULE}_FIND
+                        "REQUIRED"
+                        "HINTS"
+                        ""
+                        ${ARGN}
+                       )
+
+  if(NOT "${PYTHON_${_MODULE}_FIND_UNPARSED_ARGUMENTS}" STREQUAL "")
+    MESSAGE(FATAL_ERROR "Unknown arguments: ${PYTHON_${_MODULE}_FIND_UNPARSED_ARGUMENTS}")
+  endif()
 
   # Try to find the python module, if we have not found it yet.
   if(NOT PYTHON_${_MODULE})
-
-    # Check if option REQUIRED was given.
-    if(NOT "${ARGN}" STREQUAL "")
-      if("${ARGN}" STREQUAL "REQUIRED")
-        set(PYTHON_${_MODULE}_FIND_REQUIRED TRUE)
-      else()
-        message(FATAL_ERROR
-          "find_python_module called with invalid argument \"${ARGN}\"")
-      endif()
-    endif()
-
     # Try to import the python module we need to find, and get its file path.
     if(PYTHON_EXECUTABLE)
+      set(ENV{PYTHONPATH} ${PYTHON_${_MODULE}_FIND_HINTS}:$ENV{PYTHONPATH})
       set(_cmd "import ${_module}; print ${_module}.__file__")
       execute_process(
         COMMAND "${PYTHON_EXECUTABLE}" "-c" "${_cmd}"

@@ -25,6 +25,13 @@
 # runtest.sh uses this variable to find test input files and the like.
 srcdir="@srcdir@"; export srcdir
 
+# Set LOFARROOT to allow tests to find files that we mirror in the build dir
+#
+# Note that LOFARROOT (in the environment) is the base directory for the
+# install root, that allows programs to find bin/, etc/, etc,
+# and LOFAR_ROOT (in CMake) is the base directory of the source.
+LOFARROOT="@CMAKE_BINARY_DIR@"; export LOFARROOT
+
 # Add the sbin and bin directories in the build tree to PATH
 PATH="@CMAKE_BINARY_DIR@/sbin:@CMAKE_BINARY_DIR@/bin:${PATH}"; export PATH
 

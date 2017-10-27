@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tSem_t.cc 35997 2016-11-15 18:39:07Z amesfoort $
+//# $Id: tSem_t.cc 37655 2017-06-19 12:40:06Z amesfoort $
 
 #include <lofar_config.h>
 
@@ -81,6 +81,9 @@ static void testSimple() {
   sem.post();
   ASSERT(sem.trywait());
 
+#if _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600  // OS X does not have sem_timedwait()
+  LOG_INFO("Testing timedwait wrapper");
+
   // timedwait
   struct timespec ts1 = {::time(0), 0};
   ASSERT(!sem.timedwait(&ts1));
@@ -90,6 +93,7 @@ static void testSimple() {
   // underlying timedwait is specified to succeed if decr is possible immediately,
   // even if abs_timeout already passed
   ASSERT(sem.timedwait(&ts2));
+#endif
 }
 
 int main()

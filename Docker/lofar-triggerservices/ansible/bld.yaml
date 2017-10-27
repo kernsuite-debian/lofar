@@ -1,0 +1,4 @@
+- hosts: local
+  user: root
+  roles:
+     - buildhostcentos7

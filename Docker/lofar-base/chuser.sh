@@ -11,10 +11,6 @@ if [ -z "${HOME}" ]; then
   mkdir -p $HOME && cd $HOME
 fi
 
-# Add user to system
-fgrep -q ":x:${UID}:" /etc/passwd || echo "${USER}:x:${UID}:${UID}::${HOME}:/bin/bash" >> /etc/passwd
-fgrep -q ":x:${UID}:" /etc/group  || echo "${USER}:x:${UID}:" >> /etc/group
-
 # Set the environment
 [ -e /opt/bashrc ] && source /opt/bashrc
 

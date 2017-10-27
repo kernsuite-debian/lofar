@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceData.cc 25297 2013-06-12 11:39:35Z diepen $
+//# $Id: SourceData.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 #include <lofar_config.h>
 #include <ParmDB/SourceData.h>
@@ -84,11 +84,11 @@ namespace BBS {
     setParm (parms, "PolarizationAngle", 0, itsPolAngle);
     setParm (parms, "PolarizedFraction", 0, itsPolFrac);
     setParm (parms, "RotationMeasure", 0, itsRM);
-    itsSpInx.resize (itsInfo.getSpectralIndexNTerms());
-    for (uint i=0; i<itsSpInx.size(); ++i) {
+    itsSpTerms.resize (itsInfo.getNSpectralTerms());
+    for (uint i=0; i<itsSpTerms.size(); ++i) {
       ostringstream ostr;
       ostr << "SpectralIndex:" << i;
-      setParm (parms, ostr.str(), 0, itsSpInx[i]);
+      setParm (parms, ostr.str(), 0, itsSpTerms[i]);
     }
   }
 
@@ -117,10 +117,10 @@ namespace BBS {
       makeParm (parms, "PolarizedFraction", itsPolFrac);
       makeParm (parms, "RotationMeasure", itsRM);
     }
-    for (uint i=0; i<itsSpInx.size(); ++i) {
+    for (uint i=0; i<itsSpTerms.size(); ++i) {
       ostringstream ostr;
       ostr << "SpectralIndex:" << i;
-      makeParm (parms, ostr.str(), itsSpInx[i]);
+      makeParm (parms, ostr.str(), itsSpTerms[i]);
     }
   }
 
@@ -135,8 +135,8 @@ namespace BBS {
     if (itsInfo.getUseRotationMeasure()) {
       bos << itsPolAngle << itsPolFrac << itsRM;
     }
-    if (itsInfo.getSpectralIndexNTerms() > 0) {
-      bos.put (itsSpInx);
+    if (itsInfo.getNSpectralTerms() > 0) {
+      bos.put (itsSpTerms);
     }
     bos.putEnd();
   }
@@ -157,10 +157,10 @@ namespace BBS {
     } else {
       itsPolAngle = itsPolFrac = itsRM = 0;
     }
-    if (itsInfo.getSpectralIndexNTerms() > 0) {
-      bis.get (itsSpInx);
+    if (itsInfo.getNSpectralTerms() > 0) {
+      bis.get (itsSpTerms);
     } else {
-      itsSpInx.resize(0);
+      itsSpTerms.clear();
     }
     bis.getEnd();
   }
@@ -179,9 +179,10 @@ namespace BBS {
       os << "    major=" << itsMajorAxis << " arcsec  minor=" << itsMinorAxis
          << " arcsec  orientation=" << itsOrientation << " deg" << endl;
     }
-    if (itsInfo.getSpectralIndexNTerms() > 0) {
-      os << "    nspinx=" << itsInfo.getSpectralIndexNTerms()
-         << " reffreq=" << itsInfo.getSpectralIndexRefFreq()/1e6 << " MHz"
+    if (itsInfo.getNSpectralTerms() > 0) {
+      os << "    nspinx=" << itsInfo.getNSpectralTerms()
+         << " logSI=" << boolalpha << itsInfo.getHasLogarithmicSI()
+         << " reffreq=" << itsInfo.getSpectralTermsRefFreq()/1e6 << " MHz"
          << endl;
     }
     if (itsInfo.getUseRotationMeasure()) {

@@ -17,19 +17,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPInput.cc 30980 2015-02-11 14:54:36Z diepen $
+//# $Id: DPInput.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
 #include <DPPP/DPInput.h>
 #include <Common/Exception.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MCPosition.h>
-#include <casa/Utilities/Copy.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/casa/Utilities/Copy.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -37,7 +37,7 @@ namespace LOFAR {
     DPInput::~DPInput()
     {}
 
-    casa::String DPInput::msName() const
+    casacore::String DPInput::msName() const
     {
       return String();
     }

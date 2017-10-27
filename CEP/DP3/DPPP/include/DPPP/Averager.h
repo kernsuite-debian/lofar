@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Averager.h 35179 2016-08-25 11:25:17Z dijkema $
+//# $Id: Averager.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -29,7 +29,7 @@
 
 #include <DPPP/DPInput.h>
 #include <DPPP/DPBuffer.h>
-#include <casa/Arrays/Cube.h>
+#include <casacore/casa/Arrays/Cube.h>
 
 namespace LOFAR {
 
@@ -87,8 +87,8 @@ namespace LOFAR {
       // Copy the fullRes flags in the input buffer to the correct
       // time index in the output buffer.
       // If a flag is set, set all flags in corresponding FullRes window.
-      void copyFullResFlags (const casa::Cube<bool>& fullResFlags,
-                             const casa::Cube<bool>& flags,
+      void copyFullResFlags (const casacore::Cube<bool>& fullResFlags,
+                             const casacore::Cube<bool>& flags,
                              int timeIndex);
 
       // Get the value in Hertz of a string like "1000 MHz". If unit is
@@ -101,10 +101,10 @@ namespace LOFAR {
       DPBuffer        itsBuf;
       DPBuffer        itsBufTmp;
       DPBuffer        itsBufOut;
-      casa::Cube<int> itsNPoints;
-      casa::Cube<casa::Complex> itsAvgAll;
-      casa::Cube<float>         itsWeightAll;
-      casa::Cube<bool>          itsFullResFlags;
+      casacore::Cube<int> itsNPoints;
+      casacore::Cube<casacore::Complex> itsAvgAll;
+      casacore::Cube<float>         itsWeightAll;
+      casacore::Cube<bool>          itsFullResFlags;
       double          itsFreqResolution;
       double          itsTimeResolution;
       uint            itsNChanAvg;

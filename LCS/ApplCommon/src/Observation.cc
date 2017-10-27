@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Observation.cc 31792 2015-06-15 07:42:54Z mol $
+//# $Id: Observation.cc 37552 2017-06-01 08:43:15Z mol $
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -676,25 +676,16 @@ vector<int> Observation::getBeamAllocation(const string& stationName) const
 
 	// is DSL for this station available?
 	string	fieldName = getAntennaFieldName(itsStnHasDualHBA);
-	string	dsl(str(format("%s%s.DataslotList") % station % fieldName));
-	string	rbl(str(format("%s%s.RSPBoardList") % station % fieldName));
-	if (!itsDataslotParset.isDefined(dsl) || !itsDataslotParset.isDefined(rbl)) {
-		LOG_ERROR_STR("No dataslots defined for " << station << antennaArray);
-		return (b2b);
-	}
-	vector<int>	RSPboardList = itsDataslotParset.getIntVector(rbl,true);
-	vector<int>	DataslotList = itsDataslotParset.getIntVector(dsl,true);
+	vector<int>	RSPboardList;
+	vector<int>	DataslotList;
 
-	ASSERTSTR (RSPboardList.size() == DataslotList.size(), "RSPBoardlist (" << RSPboardList << 
-			") differs size of DataslotList(" << DataslotList << ") for station " << station);
-	ASSERTSTR (RSPboardList.size() == itsBeamSlotList.size(), RSPboardList.size() << 
-			" dataslot allocations, but beams specify " << itsBeamSlotList.size() << " for station " << station);
+    getDataSlotMapping(station, fieldName, RSPboardList, DataslotList);
 
 	// initialize arrays
 	b2b = itsSlotTemplate;
 
 	// fill with required information
-	for (int i = RSPboardList.size()-1; i >= 0; --i) {
+	for (int i = itsBeamSlotList.size()-1; i >= 0; --i) {
 		int	idx = RSPboardList[i] * maxBeamletsPerRSP(bitsPerSample) + DataslotList[i];
 		if (b2b[idx] != -1) {
 			THROW (Exception, "beamlet " << i << " of beam " << itsBeamSlotList[i] << " clashes with beamlet of other beam(" << b2b[idx] << ")"); 
@@ -705,6 +696,31 @@ vector<int> Observation::getBeamAllocation(const string& stationName) const
 	}
 
 	return (b2b);
+}
+
+void Observation::getDataSlotMapping( const string &station, const string &fieldName, vector<int> &boards, vector<int> &slots ) const {
+    string	dsl(str(format("%s%s.DataslotList") % station % fieldName));
+	string	rbl(str(format("%s%s.RSPBoardList") % station % fieldName));
+
+    vector<int> empty;
+	boards = itsDataslotParset.getIntVector(rbl,empty,true);
+	slots  = itsDataslotParset.getIntVector(dsl,empty,true);
+
+    if (boards.empty() || slots.empty()) {
+        // use default identity mapping if none specified
+        boards.clear();
+        slots.clear();
+
+        for (size_t i = 0; i < itsBeamSlotList.size(); i++) {
+            boards.push_back(static_cast<int>(i / maxBeamletsPerRSP(bitsPerSample)));
+            slots.push_back(static_cast<int>(i % maxBeamletsPerRSP(bitsPerSample)));
+        }
+    }
+
+    ASSERTSTR (boards.size() == slots.size(), "RSPBoardlist (" << boards << 
+            ") differs size of DataslotList(" << slots << ") for station " << station);
+    ASSERTSTR (boards.size() == itsBeamSlotList.size(), boards.size() << 
+            " dataslot allocations, but beams specify " << itsBeamSlotList.size() << " for station " << station);
 }
 
 //
@@ -735,15 +751,14 @@ vector<int>	Observation::getBeamlets (uint beamIdx, const string&	stationName) c
 		return (itsDataslotParset.getInt32Vector(str(format("Beam[%d].beamletList") % parsetIdx), vector<int32>(), true));	// true:expandable
 	}
 
-	// is DSL for this station available?
+// is DSL for this station available?
 	// both fields have their own beamlet mapping
-	string	dsl(str(format("%s%s.DataslotList") % station % fieldName));
-	string	rbl(str(format("%s%s.RSPBoardList") % station % fieldName));
-	if (!itsDataslotParset.isDefined(dsl) || !itsDataslotParset.isDefined(rbl)) {
-		return (result);
-	}
-	vector<int>	RSPboardList = itsDataslotParset.getIntVector(rbl,true);
-	vector<int>	DataslotList = itsDataslotParset.getIntVector(dsl,true);
+
+	vector<int>	RSPboardList;
+	vector<int>	DataslotList;
+
+    getDataSlotMapping(station, fieldName, RSPboardList, DataslotList);
+
 	uint	nrEntries = itsBeamSlotList.size();
 	for (uint i = 0; i < nrEntries; ++i) {
 		if (itsBeamSlotList[i] == parsetIdx) {
@@ -819,6 +834,8 @@ bool Observation::_isStationName(const string&	hostname) const
 //
 bool Observation::_hasDataSlots(const ParameterSet*	aPS) const
 {
+    return true; // JD RT HACK: We supply default mappings if the dataslots arent found after all
+
 	ParameterSet::const_iterator	iter = aPS->begin();
 	ParameterSet::const_iterator	end  = aPS->end();
 	while (iter != end) {

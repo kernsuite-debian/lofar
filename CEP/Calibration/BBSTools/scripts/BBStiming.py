@@ -140,8 +140,6 @@ class BBSTiming:
       identifiedSteps=[]                     # we need a dictionary, because every step has substeps
       stepDict={}                            # dictionary for a particular substep
 
-
-      if self.
       for line in lines:
          line.upper()                        # convert all to upper for string matching
          if line.find("ALL") != -1:          # we use "ALL" as indicator for a step, it is common to all steps and appears only once

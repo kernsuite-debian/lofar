@@ -16,7 +16,7 @@
 #
 # Please refer to the module source for documentation of these macros.
 
-#  $Id: LofarMacros.cmake 36428 2017-02-01 17:08:43Z loose $
+#  $Id: LofarMacros.cmake 37648 2017-06-16 08:29:25Z schoenmakers $
 #
 #  Copyright (C) 2008-2009
 #  ASTRON (Netherlands Foundation for Research in Astronomy)
@@ -178,22 +178,40 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
 
 
   # --------------------------------------------------------------------------
-  # lofar_add_sysconf_files([name1 [name2 ..]])
+  # lofar_add_sysconf_files([name1 [name2 ..]] [DESTINATION subdir])
   #
   # Add system configuration files (read-only single machine data) that need
   # to be installed into the <prefix>/etc directory. Also create a symbolic
   # link in <build-dir>/etc to each of these files. The file names may contain
   # a relative(!) path.
+  #
+  # The mentioned files are installed in the same relative path as provided,
+  # that is:
+  #     lofar_add_sysconf_files(foo/bar)
+  # installs "etc/foo/bar". To override this behaviour use:
+  #     lofar_add_sysconf_files(foo/bar DESTINATION .)
+  # installs "etc/bar".
   # --------------------------------------------------------------------------
   macro(lofar_add_sysconf_files)
-    foreach(_name ${ARGN})
-      get_filename_component(_path ${_name} PATH)
-      get_filename_component(_abs_name ${_name} ABSOLUTE)
-      file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/etc/${_path})
+    string(REGEX REPLACE ";?DESTINATION.*" "" _src_names "${ARGN}")
+    string(REGEX MATCH "DESTINATION;.*" _destination "${ARGN}")
+    string(REGEX REPLACE "^DESTINATION;" "" _destination "${_destination}")
+    foreach(_src_name ${_src_names})
+      if(_destination MATCHES ".+")
+        get_filename_component(_src_filename ${_src_name} NAME)
+        set(_dest_name ${_destination}/${_src_filename})
+      else(_destination MATCHES ".+")
+        set(_dest_name ${_src_name})
+      endif(_destination MATCHES ".+")
+
+      get_filename_component(_abs_name ${_src_name} ABSOLUTE)
+      get_filename_component(_dest_path ${_dest_name} PATH)
+
+      file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/etc/${_dest_path})
       execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
-        ${_abs_name} ${CMAKE_BINARY_DIR}/etc/${_name})
-      install(FILES ${_name} DESTINATION etc/${_path})
-    endforeach(_name ${ARGN})
+        ${_abs_name} ${CMAKE_BINARY_DIR}/etc/${_dest_name})
+      install(FILES ${_src_name} DESTINATION etc/${_dest_path})
+    endforeach(_src_name ${_src_names})
   endmacro(lofar_add_sysconf_files)
 
 

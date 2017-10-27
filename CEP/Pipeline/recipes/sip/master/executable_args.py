@@ -303,7 +303,7 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
 
         if not self.inputs['skip_infile'] and len(self.inputs['inputkeys']) is not len(inputmapfiles):
             self.logger.error("Number of input mapfiles %d and input keys %d have to match." %
-                              len(self.inputs['inputkeys']), len(inputmapfiles))
+                              (len(inputmapfiles), len(self.inputs['inputkeys'])))
             return 1
 
         filedict = {}

@@ -38,14 +38,13 @@ RUN apt-get update && \
     pip install numpy && \
     apt-get purge -y python-pip && \
     apt-get autoremove -y --purge && \
-    apt-get install -y nano sudo
+    apt-get install -y nano sudo vim
 
 #
 # open security holes (allow smooth user switching, allow sudo)
 #
 RUN echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    sed -i 's/requiretty/!requiretty/g' /etc/sudoers && \
-    chmod a+rw /etc/group /etc/passwd
+    sed -i 's/requiretty/!requiretty/g' /etc/sudoers 
 
 #
 # setup install dir

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Demixer.cc 32433 2015-09-09 14:05:38Z dijkema $
+//# $Id: Demixer.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -51,14 +51,14 @@
 #include <Common/lofar_iostream.h>
 #include <Common/lofar_fstream.h>
 
-#include <casa/Quanta/MVAngle.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/MatrixMath.h>
-#include <scimath/Mathematics/MatrixMathLA.h>
+#include <casacore/casa/Quanta/MVAngle.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/MatrixMath.h>
+#include <casacore/scimath/Mathematics/MatrixMathLA.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -287,8 +287,8 @@ namespace LOFAR {
       }
 
       // Prepare conversion from relative to absolute UVW
-      casa::Vector<casa::Int> newAnt1(itsNBl);
-      casa::Vector<casa::Int> newAnt2(itsNBl);
+      casacore::Vector<casacore::Int> newAnt1(itsNBl);
+      casacore::Vector<casacore::Int> newAnt2(itsNBl);
       for (uint i=0; i<itsNBl; ++i) {
         newAnt1[i]=antennaMap[infoSel.getAnt1()[i]];
         newAnt2[i]=antennaMap[infoSel.getAnt2()[i]];
@@ -832,9 +832,9 @@ namespace LOFAR {
       struct ThreadPrivateStorage
       {
         vector<double>                unknowns;
-        casa::Matrix<double>          uvw;
-        vector<casa::Cube<dcomplex> > model;
-        casa::Cube<dcomplex>          model_subtr;
+        casacore::Matrix<double>          uvw;
+        vector<casacore::Cube<dcomplex> > model;
+        casacore::Cube<dcomplex>          model_subtr;
         size_t                        count_converged;
       };
 

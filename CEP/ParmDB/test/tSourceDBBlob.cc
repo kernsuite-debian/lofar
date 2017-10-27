@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tSourceDBBlob.cc 25297 2013-06-12 11:39:35Z diepen $
+//# $Id: tSourceDBBlob.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDB.h>
@@ -51,9 +51,10 @@ int main()
     cout << "Major axis:     " << sdata.getMajorAxis() << endl;
     cout << "Minor axis:     " << sdata.getMinorAxis() << endl;
     cout << "Orientation:    " << sdata.getOrientation() << endl;
-    cout << "Spectral index: " << sdata.getInfo().getSpectralIndexNTerms()
-         << "  " << sdata.getSpectralIndex() << endl;
-    cout << "SpInx RefFreq:  " << sdata.getInfo().getSpectralIndexRefFreq() << endl;
+    cout << "Spectral index: " << sdata.getInfo().getNSpectralTerms()
+         << "  " << sdata.getSpectralTerms() << endl;
+    cout << "Logarithmic SI: " << boolalpha << sdata.getInfo().getHasLogarithmicSI() << endl;
+    cout << "SpInx RefFreq:  " << sdata.getInfo().getSpectralTermsRefFreq() << endl;
     cout << "Use RM:         " << sdata.getInfo().getUseRotationMeasure() << endl;
     cout << "PolAngle:       " << sdata.getPolarizationAngle() << endl;
     cout << "PolFrac:        " << sdata.getPolarizedFraction() << endl;

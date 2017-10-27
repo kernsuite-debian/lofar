@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FlagCounter.h 23223 2012-12-07 14:09:42Z schoenmakers $
+//# $Id: FlagCounter.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -30,7 +30,7 @@
 #include <Common/lofar_vector.h>
 #include <Common/lofar_string.h>
 #include <Common/LofarTypes.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Vector.h>
 
 namespace LOFAR {
   class ParameterSet;
@@ -100,12 +100,12 @@ namespace LOFAR {
 
     private:
       // Save the percentages per station in a table.
-      void saveStation (int64 npoints, const casa::Vector<int64>& nused,
-                        const casa::Vector<int64>& count) const;
+      void saveStation (int64 npoints, const casacore::Vector<int64>& nused,
+                        const casacore::Vector<int64>& count) const;
 
       // Save the percentages per channel.
       void saveChannel (int64 npoints,
-                        const casa::Vector<int64>& count) const;
+                        const casacore::Vector<int64>& count) const;
 
       //# Data members.
       const DPInfo* itsInfo;

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPInfo.cc 31423 2015-04-03 14:06:21Z dijkema $
+//# $Id: DPInfo.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -25,13 +25,13 @@
 #include <DPPP/DPInfo.h>
 #include <DPPP/DPInput.h>
 #include <Common/LofarLogger.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCPosition.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Containers/ContainerIO.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/BasicSL/STLIO.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR {

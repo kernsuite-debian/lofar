@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35020 2016-07-20 14:24:45Z dijkema $
+# $Id: CMakeLists.txt 38047 2017-07-26 12:49:53Z dijkema $
 
 # Generate the actual test script.
 configure_file(findenv.run_tmpl findenv.run_script)
@@ -27,6 +27,7 @@ lofar_add_test(tDemix)
 lofar_add_test(tPredict)
 lofar_add_test(tApplyBeam)
 lofar_add_test(tGainCal)
+lofar_add_test(tH5Parm tH5Parm)
 # lofar_add_test(tExpr tExpr.cc)
 # lofar_add_test(tmeqarray tmeqarray.cc)
 # lofar_add_test(test_flaggers test_flaggers.cc)

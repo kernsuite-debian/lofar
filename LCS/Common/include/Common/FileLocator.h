@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FileLocator.h 28734 2014-03-25 10:51:44Z loose $
+//# $Id: FileLocator.h 36648 2017-02-21 16:51:57Z loose $
 
 #ifndef LOFAR_COMMON_FILELOCATOR_H
 #define LOFAR_COMMON_FILELOCATOR_H
@@ -44,7 +44,7 @@ namespace LOFAR {
 class FileLocator
 {
 public:
-	#define		BASE_SEARCH_DIR		"$LOFARROOT:/opt/lofar"
+	#define		BASE_SEARCH_DIR		".:$LOFARROOT:/opt/lofar"
 
 	typedef list<string>::iterator		iterator;
 

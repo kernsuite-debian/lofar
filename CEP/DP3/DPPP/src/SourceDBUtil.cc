@@ -85,10 +85,10 @@ vector<Patch::ConstPtr> makePatches(SourceDB &sourceDB,
             {
                 GaussianSource::Ptr gauss(new GaussianSource(position, stokes));
 
-                const double deg2rad = (casa::C::pi / 180.0);
+                const double deg2rad = (casacore::C::pi / 180.0);
                 gauss->setPositionAngle(src.getOrientation() * deg2rad);
 
-                const double arcsec2rad = (casa::C::pi / 3600.0) / 180.0;
+                const double arcsec2rad = (casacore::C::pi / 3600.0) / 180.0;
                 gauss->setMajorAxis(src.getMajorAxis() * arcsec2rad);
                 gauss->setMinorAxis(src.getMinorAxis() * arcsec2rad);
                 source = gauss;
@@ -103,10 +103,12 @@ vector<Patch::ConstPtr> makePatches(SourceDB &sourceDB,
         }
 
         // Fetch spectral index attributes (if applicable).
-        if (src.getSpectralIndex().size() > 0) {
-          source->setSpectralIndex(src.getInfo().getSpectralIndexRefFreq(),
-                                   src.getSpectralIndex().begin(),
-                                   src.getSpectralIndex().end());
+        bool isLogarithmic = src.getInfo().getHasLogarithmicSI();
+        if (src.getSpectralTerms().size() > 0) {
+          source->setSpectralTerms(src.getInfo().getSpectralTermsRefFreq(),
+                                   isLogarithmic,
+                                   src.getSpectralTerms().begin(),
+                                   src.getSpectralTerms().end());
         }
 
         // Fetch rotation measure attributes (if applicable).

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: NDPPP.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id: NDPPP.cc 38299 2017-09-05 11:16:56Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -30,7 +30,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <casa/OS/File.h>
+#include <casacore/casa/OS/File.h>
 
 using namespace LOFAR::DPPP;
 using namespace LOFAR;
@@ -50,7 +50,7 @@ void showUsage() {
     "\"NDPPP.parset\" or \"DPPP.parset\" as a default."<<std::endl;
   std::cout<<"-v will show version info and exit."<<std::endl;
   std::cout<<"Documentation is at http://www.lofar.org/wiki/doku.php?id="<<
-    "public:user_software:ndppp"<<std::endl;
+    "public:user_software:documentation:ndppp"<<std::endl;
 }
 
 int main(int argc, char *argv[])
@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
       parsetName = argv[1];
     } else if (argc==1) {
       // No arguments given: try to load [N]DPPP.parset
-      if (casa::File("NDPPP.parset").exists()) {
+      if (casacore::File("NDPPP.parset").exists()) {
         parsetName="NDPPP.parset";
-      } else if (casa::File("DPPP.parset").exists()) {
+      } else if (casacore::File("DPPP.parset").exists()) {
         parsetName="DPPP.parset";
       } else { // No default file, show usage and exit
         showUsage();

@@ -31,13 +31,13 @@
 
 #include <iostream>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
 
-    StefCal::StefCal(uint solInt, uint nChan, const string& mode,
-                     double tolerance, uint maxAntennas,
+    StefCal::StefCal(uint solInt, uint nChan, StefCalMode mode,
+                     bool scalar, double tolerance, uint maxAntennas,
                      bool detectStalling, uint debugLevel)
     : _nSt    (maxAntennas),
       _badIters (0),
@@ -45,6 +45,7 @@ namespace LOFAR {
       _solInt (solInt),
       _nChan  (nChan),
       _mode   (mode),
+      _scalar (scalar),
       _tolerance (tolerance),
       _totalWeight (0.),
       _detectStalling (detectStalling),
@@ -53,17 +54,16 @@ namespace LOFAR {
       resetVis();
 
       _nSt = maxAntennas;
-      if (_mode=="fulljones") {
+      if (_mode==FULLJONES) {
+        ASSERT(!_scalar);
         _nCr=4;
         _nSp=1;
         _savedNCr=4;
-      } else if (_mode=="scalarphase" || _mode=="tec" || _mode=="scalaramplitude"
-          || _mode=="tecandphase") {
+      } else if (_scalar) {
         _nCr=1;
         _nSp=2;
         _savedNCr=1;
-      } else { // mode=="phaseonly", mode=="diagonal", mode=="amplitudeonly"
-        ASSERT (_mode=="phaseonly" || _mode=="diagonal" || _mode=="amplitudeonly");
+      } else {
         _nCr=1;
         _nSp=1;
         _savedNCr=2;
@@ -72,11 +72,9 @@ namespace LOFAR {
       _vis.resize(IPosition(6,_nSt,2,_solInt,_nChan,2,_nSt));
       _mvis.resize(IPosition(6,_nSt,2,_solInt,_nChan,2,_nSt));
 
-      if (_mode=="fulljones" || _mode=="scalarphase" || _mode=="tec" || _mode=="scalaramplitude"
-          || _mode=="tecandphase") {
+      if (_scalar || _mode==FULLJONES) {
         _nUn = _nSt;
       } else {
-        ASSERT (_mode=="phaseonly" || _mode=="diagonal" || _mode=="amplitudeonly");
         _nUn = 2*_nSt;
       }
 
@@ -112,8 +110,7 @@ namespace LOFAR {
 
       if (initSolutions) {
         double ginit=1.0;
-        if (_mode != "phaseonly" && _mode != "scalarphase" &&
-            _mode != "tec" && _mode != "tecandphase") {
+        if (_mode != PHASEONLY) {
           // Initialize solution with sensible amplitudes
           double fronormvis=0;
           double fronormmod=0;
@@ -212,7 +209,7 @@ namespace LOFAR {
         return CONVERGED;
       }
 
-      if (_mode=="fulljones") {
+      if (_mode==FULLJONES) {
         doStep_polarized();
         doStep_polarized();
         return relax(2*iter);
@@ -331,35 +328,26 @@ namespace LOFAR {
                   vis_p++;
                 }
               }
-              //cout<<"iS.z bij ch="<<ch<<"="<<iS.z<<endl<<"----"<<endl;
             }
           }
         }
-        //cout<<"st1="<<st1%nSt<<(st1>=nSt?"y":"x")<<", t="<<tt<<"       ";
-        //cout<<", w="<<ww<<"       ";
-        if (ww==0) {
+
+        // Flag a station if all baselines are flagged or all data is zero
+        if (ww==0 || abs(tt)==0) {
           _stationFlagged[st1%_nSt]=true;
           _g(st1,0)=0;
           continue;
         }
         _g(st1,0)=tt/ww;
-        //cout<<", g="<<iS.g(st1,0)<<endl;
-        if (_mode=="phaseonly" || _mode=="scalarphase" || _mode=="tec" || _mode=="tecandphase") {
+
+
+        // Constrain solutions
+        if (_mode==PHASEONLY) {
           ASSERT(abs(_g(st1,0))!=0);
           _g(st1,0)/=abs(_g(st1,0));
           ASSERT(isFinite(_g(st1,0)));
-        } else if (_mode=="amplitudeonly" || _mode=="scalaramplitude") {
+        } else if (_mode==AMPLITUDEONLY) {
           _g(st1,0) = abs(_g(st1,0));
-        }
-
-        if (_debugLevel>2) {
-          cout<<endl<<"gi=[";
-          ASSERT(isFinite(_g(0,0)));
-          for (uint ant=0; ant<_nUn; ++ant) {
-            if (ant>0) cout<<",";
-            cout<<_g(ant,0);
-          }
-          cout<<"]"<<endl;
         }
       }
     }
@@ -368,25 +356,7 @@ namespace LOFAR {
       _totalWeight += weight;
     }
 
-    casa::Matrix<casa::DComplex> StefCal::getSolution(bool setNaNs) {
-      if (setNaNs && _debugLevel>0) {
-        cout<<endl<<"dg=[";
-        for (uint iter=0; iter<_dgs.size(); ++iter) {
-          if (iter>0) cout<<",";
-          cout<<_dgs[iter];
-        }
-        cout<<"]"<<endl;
-      }
-
-      if (_debugLevel>2) {
-        cout<<endl<<"g=[";
-        for (uint ant=0; ant<_nUn; ++ant) {
-          if (ant>0) cout<<",";
-          cout<<_g(ant,0);
-        }
-        cout<<"]"<<endl;
-      }
-
+    casacore::Matrix<casacore::DComplex> StefCal::getSolution(bool setNaNs) {
       if (setNaNs) {
         for (uint ant=0; ant<_nUn; ++ant) {
           if (_stationFlagged[ant%_nSt]) {
@@ -416,11 +386,11 @@ namespace LOFAR {
       double c2 = 1.2;
       double dgxx;
       bool threestep = false;
-      uint maxBadIters=(_mode=="tec"||_mode=="tecandphase"?2:3);
+      uint maxBadIters=3;
 
       int sstep=0;
 
-      if ((_detectStalling && iter > 3) || ((_mode=="tec"||_mode=="tecandphase") && iter>2)) {
+      if (_detectStalling && iter > 3) {
         double improvement = _dgx-_dg;
 
         if (abs(improvement) < 5.0e-2*_dg) {
@@ -466,7 +436,7 @@ namespace LOFAR {
       fronormg=sqrt(fronormg);
 
       _dg = fronormdiff/fronormg;
-      if (_debugLevel>0) {
+      if (_debugLevel>2) {
         _dgs.push_back(_dg);
       }
 

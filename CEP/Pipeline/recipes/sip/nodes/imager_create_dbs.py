@@ -216,6 +216,8 @@ class imager_create_dbs(LOFARnodeTCP):
                     station_diameter = lba_inner
                 elif antenna_set.count('OUTER'):
                     station_diameter = lba_outer
+                elif antenna_set.count('SPARSE'):
+                    station_diameter = lba_outer
 
             #raise exception if the antenna is not of a supported type
             if station_diameter == None:

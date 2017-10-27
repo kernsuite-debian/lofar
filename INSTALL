@@ -10,26 +10,32 @@ Supported Systems
 - Linux      (most in use at ASTRON are Ubuntu, CentOS, and SUSE Linux Enterprise)
 - Mac OS X   (reasonably recent should work, also with LLVM/Clang)
 
-
-Install from Ubuntu Packages
-----------------------------
-
-To install LOFAR Offline processing tools (and many more radio astro packages)
-the easy way for Ubuntu LTS version(s), see:
-
-	KERN: The Radio Astronomy Software Suite
-	http://kernsuite.info/
+- any        See the next section on Docker
 
 
-Install using Docker Scripts
-----------------------------
+Install using a Docker image / script
+-------------------------------------
 
-To create a Docker container with Ubuntu or CentOS and LOFAR Offline processing tools, see:
+For prepared Docker images, see:
+
+	http://www.lofar.org/wiki/doku.php?id=public:docker
+
+
+To create a Docker image with Ubuntu or CentOS and LOFAR Offline processing tools, see:
 
 	https://github.com/lofar-astron/lofar-deploy
 
-or, again for Ubuntu LTS:
 
+For a(nother) Docker image, see the next section.
+
+
+Install from Ubuntu Packages (or a Docker image / script)
+---------------------------------------------------------
+
+To install LOFAR Offline processing tools (and many more radio astro packages)
+the easy way for Ubuntu LTS 16.04, see:
+
+	KERN: The Radio Astronomy Software Suite
 	http://kernsuite.info/
 
 
@@ -46,9 +52,14 @@ For Debian/Ubuntu (likely incomplete list, but goes a long way):
 	apt-get install libboost-dev libblitz0-dev libfftw3-dev libcfitsio3-dev libxml2-dev liblog4cplus-dev
 	apt-get install libpng12-dev                         # or latest version; for AOFlagger
 	apt-get install libreadline-dev libpqxx-dev doxygen python-coverage  # optional
+	apt-get install libxml++2.6-dev                      # or newer
+        apt-get install libarmadillo-dev                     # optional, for DPPP_DDECal
 	apt-get install libunittest++-dev                    # optional, for tests that use UnitTest++
-	apt-get install python-pygresql python-psycopg2 python-mysql.connector  # optional, for some SAS/ tests
+	apt-get install python-xmlrunner                     # for some CEP/Pipeline/ tests
+	apt-get install python-pygresql python-psycopg2 python-mysql.connector  # python mysql and postgresql interfaces
+	apt-get install python-mock python-django            # for some SAS/ tests
 	apt-get install postgresql                           # optional, for some SAS/OTDB_Services/ tests
+	apt-get install libhdf5-dev                          # optional, required by casacore-dev from the KERN-2 suite.
 
 
 For CentOS/Fedora (likely incomplete list, but goes a long way):
@@ -56,28 +67,37 @@ For CentOS/Fedora (likely incomplete list, but goes a long way):
 	yum install subversion cmake make gcc python-devel numpy
 	yum install boost-devel fftw-devel cfitsio-devel libxml2-devel libpng-devel
 	yum install readline-devel libpqxx-devel doxygen python-coverage  # optional
-	yum install PyGreSQL python-psycopg2 mysql-connector-python  # optional, for some SAS/ tests
+	yum install libxml++-devel
+        yum install armadillo-devel                          # optional, for DPPP_DDECal
+	yum install PyGreSQL python-psycopg2 mysql-connector-python  # python mysql and postgresql interfaces
+	yum install python2-mock python-django               # for some SAS/ tests
 	yum install postgresql                               # optional, for some SAS/OTDB_Services/ tests
 
-	The blitz and blitz-devel pkgs are available on some distros, but not on e.g. CentOS 7.
-	If required for your build, but not in your repo, take the two RPMs from CentOS 6 (or build from source).
-	Idem for log4cplus (LOFAR log4cxx support is dodgy).
-	Similar for unittest++ and unitest++-devel (both optional), but take two RPMs from Fedora 22 (or build from source).
-	RPMs known to work on CentOS 7 can be found at: https://support.astron.nl/lofar_issuetracker/issues/8161
+	RPMs for these 3 known to work on CentOS 7 can be found at https://support.astron.nl/lofar_issuetracker/issues/8161
+	- blitz, blitz-devel: available on some distros, but not on e.g. CentOS 7.
+	  If required for your build, but not in your repo, take the two RPMs from CentOS 6 (or build from source).
+	- log4cplus: idem as blitz (LOFAR log4cxx support is dodgy).
+	- unittest++, unitest++-devel (optional): idem, but can take two RPMs from Fedora 22 (or build from source).
+
+	- python-xmlrunner: pip install xmlrunner  # possibly with: --target=/your/path/libdir/pythonversion/site-packages
 
 
 
-NOTE (any OS): For manual builds, the most prominent dependencies you likely need to build are casacore (+ friends) and AOFlagger:
+NOTE (any OS): For manual builds, the most prominent dependencies you may need to install are:
 
 	casacore:                  https://github.com/casacore/casacore
 	python-casacore ('pyrap'): https://github.com/casacore/python-casacore
 	IERS/measures tables:      ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar (auto-updated weekly),
-                                       also see https://github.com/casacore/casacore-data-update
+	                               also see https://github.com/casacore/casacore-data-update
 	casarest:                  https://github.com/casacore/casarest
 
 	AOFlagger:                 https://sourceforge.net/projects/aoflagger/
-            which may need: Debian/Ubuntu: libgsl-dev libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev
-                            CentOS/Fedora: gsl-devel gtkmm[24|30]-devel libsigc++20-devel
+	    which may need: Debian/Ubuntu: libgsl-dev libgtkmm-[2.4|3.0]-dev libsigc++-2.0-dev
+	                    CentOS/Fedora: gsl-devel gtkmm[24|30]-devel libsigc++20-devel
+
+	PyBDSF (blob detector & source finder): https://github.com/lofar-astron/PyBDSF
+
+	python-monetdb (if using GSM inside the LOFAR network): pip install python-monetdb  # possibly with: --target=/your/path/libdir/pythonversion/site-packages
 
 
 Instructions for Manual Build from Source
@@ -94,7 +114,7 @@ Instructions for Manual Build from Source
   into e.g. $HOME/local/$LOFAR_RELEASE/
   (Only ends succesfully once CMake can find all required dependencies.)
 
-	mkdir -p $HOME/build/$LOFAR_RELEASE/gnu_opt  # last directory must be {gnu|clang}_{debug|opt}
+	mkdir -p $HOME/build/$LOFAR_RELEASE/gnu_opt  # last directory must be {gnu|clang}[cxx11]_{debug|opt}
 	cd $HOME/build/$LOFAR_RELEASE/gnu_opt
 	cmake -DCMAKE_INSTALL_PREFIX="$HOME/local/$LOFAR_RELEASE" -DBUILD_PACKAGES="DP3 Calibration Imager PyBDSM" -DUSE_OPENMP=ON "$HOME/src/$LOFAR_RELEASE"
 
@@ -110,8 +130,8 @@ Instructions for Manual Build from Source
   All tests should pass, however, a few packages (not selected above) require
   GPU hardware or a database to pass all tests.
 
-- You may want to add the installation path bin/ to your PATH by sourcing (not executing!) the lofarinit script:
+- You may want to add the installation path bin/ to your PATH by sourcing the lofarinit script:
 
-	. "$HOME/local/$LOFAR_RELEASE/lofarinit.sh"  # for Bourne-like shells, or
-	. "$HOME/local/$LOFAR_RELEASE/lofarinit.csh" # for C-like shells
+	source "$HOME/local/$LOFAR_RELEASE/lofarinit.sh"  # for Bourne-like shells, or
+	source "$HOME/local/$LOFAR_RELEASE/lofarinit.csh" # for C-like shells
 

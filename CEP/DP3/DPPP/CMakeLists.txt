@@ -1,9 +1,10 @@
-# $Id: CMakeLists.txt 33326 2016-01-20 09:56:18Z schoenmakers $
+# $Id: CMakeLists.txt 36939 2017-03-25 18:42:49Z dijkema $
 
 lofar_package(DPPP 1.0 DEPENDS LofarStMan Common MS ParmDB StationResponse)
 
 include(LofarFindPackage)
 lofar_find_package(Casacore COMPONENTS casa ms tables REQUIRED)
+lofar_find_package(HDF5 COMPONENTS CXX REQUIRED)
 
 add_subdirectory(include/DPPP)
 add_subdirectory(src)

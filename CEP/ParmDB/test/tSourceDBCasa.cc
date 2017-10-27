@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tSourceDBCasa.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id: tSourceDBCasa.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDBCasa.h>
@@ -116,10 +116,12 @@ void testSources()
   // Add to an existing patch.
   pdb.addSource (SourceInfo("sun", SourceInfo::POINT, "SUN"),
                  "patch1a", defValues);
-  pdb.addSource (SourceInfo("src1", SourceInfo::POINT, "J2000", 1, 1e9, true),
-                 "patch2a", defValues,
-                 1., -1.);
-  ASSERT (t1.nrow() == 2);
+  pdb.addSource (SourceInfo("src1", SourceInfo::POINT, "J2000", true, 1, 1e9,
+                    true), "patch2a", defValues, 1., -1.);
+  // Add a source with polynomial spectral terms
+  pdb.addSource (SourceInfo("src1pol", SourceInfo::POINT, "J2000", false, 1, 1e9, 
+                    true), "patch2a", defValues, 1., -1.);
+  ASSERT (t1.nrow() == 3);
   ASSERT (t2.nrow() == 6);
   // Try adding to an unknown patch.
   bool ok = false;
@@ -140,14 +142,14 @@ void testSources()
     ok = true;
   }
   ASSERT (ok);
-  ASSERT (t1.nrow() == 2);
+  ASSERT (t1.nrow() == 3);
   ASSERT (t2.nrow() == 6);
   // Now add a source as a patch and as a source to that patch.
   pdb.addSource (SourceInfo("src2", SourceInfo::POINT), "src2",
                  3, 2.5, defValues, 1.1, -1.1);
   pdb.addSource (SourceInfo("src2a", SourceInfo::DISK), "src2",
                  defValues, 1.101, -1.101);
-  ASSERT (t1.nrow() == 4);
+  ASSERT (t1.nrow() == 5);
   ASSERT (t2.nrow() == 7);
   ASSERT (pdb.sourceExists ("sun"));
   ASSERT (!pdb.sourceExists ("moon"));
@@ -160,14 +162,14 @@ void testSources()
     SourceInfo info1 = pdb.getSource("src1");
     ASSERT (info1.getName() == "src1");
     ASSERT (info1.getType() == SourceInfo::POINT);
-    ASSERT (info1.getSpectralIndexNTerms() == 1);
-    ASSERT (info1.getSpectralIndexRefFreq() == 1e9);
+    ASSERT (info1.getNSpectralTerms() == 1);
+    ASSERT (info1.getSpectralTermsRefFreq() == 1e9);
     ASSERT (info1.getUseRotationMeasure() == true);
   }
   // Now add a duplicate source name (do not check).
   pdb.addSource (SourceInfo("src1", SourceInfo::POINT), "patch2a", defValues,
                  1.2, -1.2, false);
-  ASSERT (t1.nrow() == 5);
+  ASSERT (t1.nrow() == 6);
   ASSERT (t2.nrow() == 7);
   ok = false;
   try {
@@ -179,7 +181,7 @@ void testSources()
   ASSERT (ok);
   // Now remove src1 (which has duplicates).
   pdb.deleteSources ("src1");
-  ASSERT (t1.nrow() == 3);
+  ASSERT (t1.nrow() == 4);
   ASSERT (t2.nrow() == 7);
   pdb.checkDuplicates();
   // Get some sources.
@@ -187,15 +189,17 @@ void testSources()
   ASSERT (info1.getName() == "sun");
   ASSERT (info1.getType() == SourceInfo::POINT);
   ASSERT (info1.getRefType() == "SUN");
-  ASSERT (info1.getSpectralIndexNTerms() == 0);
-  ASSERT (info1.getSpectralIndexRefFreq() == 0.);
+  ASSERT (info1.getNSpectralTerms() == 0);
+  ASSERT (info1.getSpectralTermsRefFreq() == 0.);
   ASSERT (info1.getUseRotationMeasure() == false);
   vector<SourceInfo> vinfo1 = pdb.getSources("s*");
-  ASSERT(vinfo1.size() == 3);
+  ASSERT(vinfo1.size() == 4);
   ASSERT(vinfo1[0].getName()=="sun" && vinfo1[0].getType()==SourceInfo::POINT &&
-         vinfo1[0].getRefType()=="SUN");
-  ASSERT(vinfo1[1].getName()=="src2" && vinfo1[1].getType()==SourceInfo::POINT);
-  ASSERT(vinfo1[2].getName()=="src2a" && vinfo1[2].getType()==SourceInfo::DISK);
+         vinfo1[0].getRefType()=="SUN"); // && vinfo1[0].getHasLogarithmicSI()==true); // TODO: enable this check
+  ASSERT(vinfo1[1].getName()=="src1pol" &&
+         vinfo1[1].getType()==SourceInfo::POINT); // && vinfo1[1].getHasLogarithmicSI()==false); // TODO: enable this check
+  ASSERT(vinfo1[2].getName()=="src2" && vinfo1[2].getType()==SourceInfo::POINT);
+  ASSERT(vinfo1[3].getName()=="src2a" && vinfo1[3].getType()==SourceInfo::DISK);
   vector<SourceInfo> vinfo2 = pdb.getPatchSources("src2");
   ASSERT(vinfo2.size() == 2);
   ASSERT(vinfo2[0].getName()=="src2" && vinfo2[0].getType()==SourceInfo::POINT);
@@ -209,12 +213,12 @@ void checkParms()
   Table t1("tSourceDBCasa_tmp.tab/DEFAULTVALUES");
   Table t2("tSourceDBCasa_tmp.tab/NAMES");
   Table t3("tSourceDBCasa_tmp.tab");
-  ASSERT (t1.nrow() == 28);
+  ASSERT (t1.nrow() == 38);
   ASSERT (t2.nrow() == 0);
   ASSERT (t3.nrow() == 0);
   ParmMap v;
   pdb.getDefValues (v, "*");
-  ASSERT (v.size() == 28);
+  ASSERT (v.size() == 38);
   ASSERT (v["I:sun"].getFirstParmValue().getValues().data()[0] == 2);
   ASSERT (v["Q:sun"].getFirstParmValue().getValues().data()[0] == 0);
   ASSERT (v["U:sun"].getFirstParmValue().getValues().data()[0] == 0.2);
@@ -270,9 +274,10 @@ void showData()
     cout << "Major axis:     " << sdata.getMajorAxis() << endl;
     cout << "Minor axis:     " << sdata.getMinorAxis() << endl;
     cout << "Orientation:    " << sdata.getOrientation() << endl;
-    cout << "Spectral index: " << sdata.getInfo().getSpectralIndexNTerms()
-         << "  " << sdata.getSpectralIndex() << endl;
-    cout << "SpInx RefFreq:  " << sdata.getInfo().getSpectralIndexRefFreq() << endl;
+    cout << "Spectral index: " << sdata.getInfo().getNSpectralTerms()
+         << "  " << sdata.getSpectralTerms() << endl;
+    cout << "Logarithmic SI: " << boolalpha << sdata.getInfo().getHasLogarithmicSI() << endl;
+    cout << "SpInx RefFreq:  " << sdata.getInfo().getSpectralTermsRefFreq() << endl;
     cout << "Use RM:         " << sdata.getInfo().getUseRotationMeasure() << endl;
     cout << "PolAngle:       " << sdata.getPolarizationAngle() << endl;
     cout << "PolFrac:        " << sdata.getPolarizedFraction() << endl;

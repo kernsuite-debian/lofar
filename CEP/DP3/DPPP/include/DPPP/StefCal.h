@@ -26,8 +26,8 @@
 
 // @file
 // @brief DPPP step class to apply a calibration correction to the data
-#include <casa/Arrays/Cube.h>
-#include <casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
 
 namespace LOFAR {
 
@@ -39,9 +39,12 @@ namespace LOFAR {
     public:
       enum Status {CONVERGED=1, NOTCONVERGED=2, STALLED=3, FAILED=4};
 
+      enum StefCalMode {DEFAULT, PHASEONLY, AMPLITUDEONLY, FULLJONES};
+
       // mode can be "diagonal", "fulljones", "phaseonly", "scalarphase"
-      StefCal(uint solInt, uint nChan, const string& mode, double tolerance,
-              uint maxAntennas, bool detectStalling, uint debugLevel);
+      StefCal(uint solInt, uint nChan, StefCalMode mode, bool scalar,
+              double tolerance, uint maxAntennas, bool detectStalling,
+              uint debugLevel);
 
       // Sets visibility matrices to zero
       void resetVis();
@@ -59,7 +62,7 @@ namespace LOFAR {
       // Returns the solution. The return matrix has a length of maxAntennas,
       // which is zero for antennas for which no solution was computed.
       // The mapping is stored in the antenna map
-      casa::Matrix<casa::DComplex> getSolution(bool setNaNs);
+      casacore::Matrix<casacore::DComplex> getSolution(bool setNaNs);
 
       double getWeight() {
         return _totalWeight;
@@ -69,16 +72,16 @@ namespace LOFAR {
       void incrementWeight(float weight);
 
       // Returns a reference to the visibility matrix
-      casa::Array<casa::DComplex>& getVis() {
+      casacore::Array<casacore::DComplex>& getVis() {
         return _vis;
       }
 
       // Returns a reference to the model visibility matrix
-      casa::Array<casa::DComplex>& getMVis() {
+      casacore::Array<casacore::DComplex>& getMVis() {
         return _mvis;
       }
 
-      casa::Vector<bool>& getStationFlagged() {
+      casacore::Vector<bool>& getStationFlagged() {
         return _stationFlagged;
       }
 
@@ -96,9 +99,6 @@ namespace LOFAR {
       void clearStationFlagged();
 
     private:
-      // Number of unknowns (nSt or 2*nSt, depending on _mode)
-      uint nUn();
-
       // Perform relaxation
       Status relax(uint iter);
 
@@ -108,15 +108,15 @@ namespace LOFAR {
       double getAverageUnflaggedSolution();
 
       uint _savedNCr;
-      casa::Vector<bool> _stationFlagged ; // Contains true for totally flagged stations
-      casa::Array<casa::DComplex> _vis; // Visibility matrix
-      casa::Array<casa::DComplex> _mvis; // Model visibility matrix
-      casa::Matrix<casa::DComplex> _g; // Solution, indexed by station, correlation
-      casa::Matrix<casa::DComplex> _gx; // Previous solution
-      casa::Matrix<casa::DComplex> _gxx; // Solution before previous solution
-      casa::Matrix<casa::DComplex> _gold; // Previous solution
-      casa::Matrix<casa::DComplex> _h; // Hermitian transpose of previous solution
-      casa::Matrix<casa::DComplex> _z; // Internal stefcal vector
+      casacore::Vector<bool> _stationFlagged ; // Contains true for totally flagged stations
+      casacore::Array<casacore::DComplex> _vis; // Visibility matrix
+      casacore::Array<casacore::DComplex> _mvis; // Model visibility matrix
+      casacore::Matrix<casacore::DComplex> _g; // Solution, indexed by station, correlation
+      casacore::Matrix<casacore::DComplex> _gx; // Previous solution
+      casacore::Matrix<casacore::DComplex> _gxx; // Solution before previous solution
+      casacore::Matrix<casacore::DComplex> _gold; // Previous solution
+      casacore::Matrix<casacore::DComplex> _h; // Hermitian transpose of previous solution
+      casacore::Matrix<casacore::DComplex> _z; // Internal stefcal vector
 
       uint _nSt; // number of stations in the current solution
       uint _nUn; // number of unknowns
@@ -126,7 +126,8 @@ namespace LOFAR {
       uint _veryBadIters; // number of iterations where solution got worse
       uint _solInt; // solution interval
       uint _nChan;  // number of channels
-      string _mode; // diagonal, scalarphase, fulljones or phaseonly
+      StefCalMode _mode; // diagonal, scalarphase, fulljones or phaseonly
+      bool _scalar; // false if each polarization has a separate solution
       double _tolerance;
       double _totalWeight;
       bool _detectStalling;

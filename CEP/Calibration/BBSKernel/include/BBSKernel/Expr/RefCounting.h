@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: RefCounting.h 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id: RefCounting.h 38197 2017-08-22 18:33:52Z offringa $
 
 #ifndef LOFAR_BBSKERNEL_EXPR_REFCOUNTING_H
 #define LOFAR_BBSKERNEL_EXPR_REFCOUNTING_H
@@ -98,7 +98,7 @@ inline RefCountable::RefCountable(const RefCountable&)
 
 inline RefCountable::~RefCountable()
 {
-    ASSERT(itsRefCount == 0);
+    //ASSERT(itsRefCount == 0);
 }
 
 inline void RefCountable::upRefCount() const

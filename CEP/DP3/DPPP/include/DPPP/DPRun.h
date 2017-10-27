@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPRun.h 31423 2015-04-03 14:06:21Z dijkema $
+//# $Id: DPRun.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -80,7 +80,7 @@ namespace LOFAR {
       // reader should be the original reader
       static DPStep::ShPtr makeOutputStep(MSReader* reader,
           const ParameterSet& parset, const string& prefix, bool multipleInputs,
-          casa::String& currentMSName);
+          casacore::String& currentMSName);
 
       // The map to create a step object from its type name.
       static std::map<std::string, StepCtor*> theirStepMap;

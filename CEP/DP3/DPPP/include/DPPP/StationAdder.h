@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationAdder.h 30980 2015-02-11 14:54:36Z diepen $
+//# $Id: StationAdder.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -31,7 +31,7 @@
 #include <DPPP/DPBuffer.h>
 #include <DPPP/UVWCalculator.h>
 #include <Common/ParameterRecord.h>
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR {
   class ParameterSet;
@@ -93,13 +93,13 @@ namespace LOFAR {
       // way first a broad pattern can be given, which can be narrowed down.
       // A warning is given if a pattern does not match any station name.
       static vector<int> getMatchingStations
-      (const casa::Vector<casa::String>& antennaNames,
+      (const casacore::Vector<casacore::String>& antennaNames,
        const vector<string>& patterns);
 
     private:
       // Update the beam info subtables.
       void updateBeamInfo (const string& msName, uint origNant,
-                           casa::Table& antTab);
+                           casacore::Table& antTab);
 
       //# Data members.
       DPInput*        itsInput;
@@ -107,7 +107,7 @@ namespace LOFAR {
       DPBuffer        itsBuf;
       DPBuffer        itsBufTmp;
       ParameterRecord itsStatRec;     // stations definitions
-      vector<casa::Vector<int> > itsParts;  // the stations in each superstation
+      vector<casacore::Vector<int> > itsParts;  // the stations in each superstation
       vector<vector<int> > itsBufRows; // old baseline rows in each new baseline
       uint            itsMinNPoint  ;  // flag data if too few unflagged data
       bool            itsMakeAutoCorr; // also form new auto-correlations?

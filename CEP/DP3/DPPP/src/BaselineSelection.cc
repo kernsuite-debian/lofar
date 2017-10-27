@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BaselineSelection.cc 34902 2016-07-07 08:56:26Z dijkema $
+//# $Id: BaselineSelection.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -31,7 +31,7 @@
 #include <Common/StringUtil.h>
 #include <Common/StreamUtil.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR {

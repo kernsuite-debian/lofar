@@ -1,7 +1,9 @@
 *.substvars
 *.log
 *.debhelper
-casacore-tools0/
+tmp/
+python-lofar/
+casacore-tools/
 libapplcommon0/
 libawimager2lib0/
 libbbscontrol0/
@@ -10,6 +12,8 @@ libblob0/
 libcommon0/
 libdocker0/
 libdppp-aoflag0/
+libdppp-ddecal0/
+libdppp-pythondppp0/
 libdppp0/
 libelementresponse0/
 liblmwcommon0/
@@ -24,10 +28,6 @@ libms0/
 libmslofar0/
 libparmdb0/
 libplc0/
-libpythondppp0/
 libspwcombine0/
 libstationresponse0/
 libtransport0/
-python-lofar0/
-tmp/
-

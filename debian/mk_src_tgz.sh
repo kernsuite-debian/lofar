@@ -19,6 +19,6 @@ svn update --depth=infinity CMake
 BUILD_DIR=../lofar-${VERSION}-build/gnu_opt
 mkdir -p ${BUILD_DIR}
 cd ${BUILD_DIR}
-cmake -DBUILD_PACKAGES=Offline -DUSE_OPENMP=ON ../../lofar-${VERSION}  -DUSE_LOG4CPLUS=OFF
+cmake -DBUILD_PACKAGES="DP3 pyparmdb Pipeline Calibration StaticMetaData MSLofar" -DUSE_OPENMP=ON ../../lofar-${VERSION}  -DUSE_LOG4CPLUS=OFF
 cd ../..
 tar jcf lofar-${VERSION}.tar.bz2 lofar-${VERSION} --exclude .svn

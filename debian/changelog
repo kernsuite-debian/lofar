@@ -1,3 +1,10 @@
+lofar (3.0.2-1) xenial; urgency=medium
+
+  * new upstream release
+  * only build packages "DP3 Calibration pyparmdb"
+
+ -- KERN packaging <packaging@kernsuite.info>  Fri, 27 Oct 2017 13:17:04 +0200
+
 lofar (2.20.2-1kern2) xenial; urgency=medium
 
   * install missing files for adam

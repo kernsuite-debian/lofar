@@ -5,7 +5,7 @@ usr/share/pipeline/*
 usr/share/pipeline/skymodels/*
 usr/share/pipeline/demixing/*
 usr/share/rfistrategies/*
-usr/etc/supervisord.d/*
+#usr/etc/supervisord.d/*
 usr/lofarinit.csh
 usr/lofarinit.sh
 usr/sbin/*

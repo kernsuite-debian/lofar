@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationAdder.cc 32355 2015-08-31 10:00:31Z schoenmakers $
+//# $Id: StationAdder.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -29,20 +29,20 @@
 #include <Common/ParameterSet.h>
 #include <Common/ParameterRecord.h>
 
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableRow.h>
-#include <casa/Utilities/LinearSearch.h>
-#include <casa/Utilities/Regex.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableRow.h>
+#include <casacore/casa/Utilities/LinearSearch.h>
+#include <casacore/casa/Utilities/Regex.h>
 #include <iostream>
 #include <iomanip>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -163,7 +163,7 @@ namespace LOFAR {
             MPosition::Convert (antennaPos[inx], MPosition::ITRF)().getValue();
           const Vector<Double>& diff = mvdiff.getValue();
           double dist = sqrt(std::accumulate(diff.cbegin(), diff.cend(), 0.,
-                                             casa::SumSqr<Double>()));
+                                             casacore::SumSqr<Double>()));
           // Add the radius of the station used.
           maxdist = max (maxdist, dist + 0.5*antennaDiam[inx]);
         }

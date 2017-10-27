@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSUpdater.cc 35533 2016-10-04 12:12:01Z dijkema $
+//# $Id: MSUpdater.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -27,19 +27,19 @@
 #include <DPPP/MSWriter.h>
 #include <DPPP/DPBuffer.h>
 #include <Common/ParameterSet.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/ColumnDesc.h>
-#include <tables/Tables/StandardStMan.h>
-#include <casa/Containers/Record.h>
-#include <casa/Utilities/LinearSearch.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/ColumnDesc.h>
+#include <casacore/tables/DataMan/StandardStMan.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Utilities/LinearSearch.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
 #include <iostream>
 #include <limits>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -69,7 +69,7 @@ namespace LOFAR {
     MSUpdater::~MSUpdater()
     {}
 
-    bool MSUpdater::addColumn (const string& colName, const casa::DataType
+    bool MSUpdater::addColumn (const string& colName, const casacore::DataType
                                dataType, const ColumnDesc& cd)
     {
       if (itsMS.tableDesc().isColumn(colName)) {
@@ -80,9 +80,8 @@ namespace LOFAR {
         return false;
       }
 
-      if(itsStManKeys.stManName == "dysco" && itsStManKeys.dyscoDataBitRate != 0)
-      {
-        casa::Record dyscoSpec = itsStManKeys.GetDyscoSpec();
+      if (itsStManKeys.stManName == "dysco" && itsStManKeys.dyscoDataBitRate != 0) {
+        casacore::Record dyscoSpec = itsStManKeys.GetDyscoSpec();
         DataManagerCtor dyscoConstructor = DataManager::getCtor("DyscoStMan");
         CountedPtr<DataManager> dyscoStMan(dyscoConstructor(colName + "_dm", dyscoSpec));
         ColumnDesc directColumnDesc(cd);
@@ -136,14 +135,15 @@ namespace LOFAR {
       }
       if (itsWriteData) {
         // If compressing, flagged values need to be set to NaN to decrease the dynamic range
-        if(itsStManKeys.stManName == "dysco")
-        {
-          casa::Cube<casa::Complex> dataCopy = buf.getData().copy();
-          casa::Cube<casa::Complex>::iterator dataIter = dataCopy.begin();
-          for(casa::Cube<bool>::const_iterator flagIter = buf.getFlags().begin(); flagIter != buf.getFlags().end(); ++flagIter)
-          {
-            if(*flagIter)
-              *dataIter = casa::Complex(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+        if (itsStManKeys.stManName == "dysco") {
+          Cube<Complex> dataCopy = buf.getData().copy();
+          Cube<Complex>::iterator dataIter = dataCopy.begin();
+          for (Cube<bool>::const_iterator flagIter = buf.getFlags().begin();
+               flagIter != buf.getFlags().end(); ++flagIter) {
+            if(*flagIter) {
+              *dataIter = Complex(std::numeric_limits<float>::quiet_NaN(),
+                                  std::numeric_limits<float>::quiet_NaN());
+            }
             ++dataIter;
           }
           putData (buf.getRowNrs(), dataCopy);
@@ -153,13 +153,30 @@ namespace LOFAR {
         }
       }
       if (itsWriteWeights) {
+        Cube<float> weights;
         if (!buf.getWeights().empty()) {
           // Use weights from buffer
-          putWeights (buf.getRowNrs(), buf.getWeights());
+          weights = buf.getWeights();
         } else {
           itsBuffer.referenceFilled (buf);
-          putWeights (buf.getRowNrs(),
-                      itsReader->fetchWeights(buf, itsBuffer, itsTimer));
+          weights = itsReader->fetchWeights(buf, itsBuffer, itsTimer);
+        }
+
+        // If compressing, set weights of flagged points to zero to decrease the
+        // dynamic range
+        if (itsStManKeys.stManName == "dysco") {
+          Cube<float> weightsCopy = weights.copy();
+          Cube<float>::iterator weightsIter = weightsCopy.begin();
+          for (Cube<bool>::const_iterator flagIter = buf.getFlags().begin();
+               flagIter != buf.getFlags().end(); ++flagIter) {
+            if(*flagIter) {
+              *weightsIter = 0.;
+            }
+            ++weightsIter;
+          }
+          putWeights (buf.getRowNrs(), weightsCopy);
+        } else {
+          putWeights (buf.getRowNrs(), weights);
         }
       }
       itsNrDone++;

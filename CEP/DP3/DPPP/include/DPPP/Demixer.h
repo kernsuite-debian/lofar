@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Demixer.h 32305 2015-08-26 18:40:37Z dijkema $
+//# $Id: Demixer.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -34,15 +34,15 @@
 #include <DPPP/PhaseShift.h>
 #include <DPPP/Filter.h>
 
-#include <casa/Arrays/Cube.h>
-#include <casa/Quanta/Quantum.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MeasFrame.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MCPosition.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MeasFrame.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MCPosition.h>
 
 namespace LOFAR {
 
@@ -93,13 +93,13 @@ namespace LOFAR {
     private:
       // Add the decorrelation factor contribution for each time slot.
       void addFactors (const DPBuffer& newBuf,
-                       casa::Array<casa::DComplex>& factorBuf);
+                       casacore::Array<casacore::DComplex>& factorBuf);
 
       // Calculate the decorrelation factors by averaging them.
       // Apply the P matrix to deproject the sources without a model.
-      void makeFactors (const casa::Array<casa::DComplex>& bufIn,
-                        casa::Array<casa::DComplex>& bufOut,
-                        const casa::Cube<float>& weightSums,
+      void makeFactors (const casacore::Array<casacore::DComplex>& bufIn,
+                        casacore::Array<casacore::DComplex>& bufOut,
+                        const casacore::Cube<float>& weightSums,
                         uint nChanOut,
                         uint nChanAvg);
 
@@ -107,7 +107,7 @@ namespace LOFAR {
       void handleDemix();
 
       // Deproject the sources without a model.
-      void deproject (casa::Array<casa::DComplex>& factors,
+      void deproject (casacore::Array<casacore::DComplex>& factors,
                       vector<MultiResultStep*> avgResults,
                       uint resultIndex);
 
@@ -175,27 +175,27 @@ namespace LOFAR {
       //# Accumulator used for computing the demixing weights at the demix
       //# resolution. The shape of this buffer is #correlations x #channels
       //# x #baselines x #directions x #directions (fastest axis first).
-      casa::Array<casa::DComplex>           itsFactorBuf;
+      casacore::Array<casacore::DComplex>           itsFactorBuf;
       //# Buffer of demixing weights at the demix resolution. Each Array is a
       //# cube of shape #correlations x #channels x #baselines of matrices of
       //# shape #directions x #directions.
-      vector<casa::Array<casa::DComplex> >  itsFactors;
+      vector<casacore::Array<casacore::DComplex> >  itsFactors;
 
       //# Accumulator used for computing the demixing weights. The shape of this
       //# buffer is #correlations x #channels x #baselines x #directions
       //# x #directions (fastest axis first).
-      casa::Array<casa::DComplex>           itsFactorBufSubtr;
+      casacore::Array<casacore::DComplex>           itsFactorBufSubtr;
       //# Buffer of demixing weights at the subtract resolution. Each Array is a
       //# cube of shape #correlations x #channels x #baselines of matrices of
       //# shape #directions x #directions.
-      vector<casa::Array<casa::DComplex> >  itsFactorsSubtr;
+      vector<casacore::Array<casacore::DComplex> >  itsFactorsSubtr;
 
       PatchList                             itsPatchList;
       Position                              itsPhaseRef;
       vector<Baseline>                      itsBaselines;
       vector<int>                           itsUVWSplitIndex;
-      casa::Vector<double>                  itsFreqDemix;
-      casa::Vector<double>                  itsFreqSubtr;
+      casacore::Vector<double>                  itsFreqDemix;
+      casacore::Vector<double>                  itsFreqSubtr;
       vector<double>                        itsUnknowns;
       vector<double>                        itsPrevSolution;
       uint                                  itsTimeIndex;

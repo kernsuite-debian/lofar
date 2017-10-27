@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 36374 2017-01-24 15:22:52Z schoenmakers $
+# $Id: CMakeLists.txt 38611 2017-10-10 09:53:34Z beukema $
 
 lofar_add_package(ACC)            # Application Configuration & Control
 lofar_add_package(AMC)            # Astronomical Measures Conversions
@@ -17,4 +17,6 @@ lofar_add_package(Transport)      # Low-level transport library
 lofar_add_package(MSLofar)        # LOFAR MeasurementSet definition
 lofar_add_package(LofarStMan)     # Storage Manager for the main table of a LOFAR MS
 lofar_add_package(PyCommon)       # Python package with common (lofar) modules
+lofar_add_package(PyStationModel) # Python package with station model modules
+lofar_add_package(PyServiceSkeleton)
 

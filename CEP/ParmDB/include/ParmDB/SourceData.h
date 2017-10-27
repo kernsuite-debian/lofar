@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceData.h 25297 2013-06-12 11:39:35Z diepen $
+//# $Id: SourceData.h 37340 2017-05-11 12:39:06Z dijkema $
 
 // @file
 // @brief Base class for a table holding sources and their parameters
@@ -90,8 +90,8 @@ namespace BBS {
       { return itsPolFrac; }
     double getRotationMeasure() const
       { return itsRM; }
-    const vector<double>& getSpectralIndex() const
-      { return itsSpInx; }
+    const vector<double>& getSpectralTerms() const
+      { return itsSpTerms; }
 
     // Set the various source parameters.
     void setInfo (const SourceInfo& info)
@@ -122,8 +122,8 @@ namespace BBS {
       { itsPolFrac =  polarizedFraction; }
     void setRotationMeasure (double potationMeasure)
       { itsRM = potationMeasure; }
-    void setSpectralIndex (const vector<double>& spectralIndex)
-      { itsSpInx = spectralIndex; }
+    void setSpectralTerms (const vector<double>& spectralTerms)
+      { itsSpTerms = spectralTerms; }
 
     // Set the parameters from a ParmMap object.
     void setParms (const ParmMap& defaultParameters);
@@ -166,7 +166,7 @@ namespace BBS {
     double         itsPolAngle;
     double         itsPolFrac;
     double         itsRM;
-    vector<double> itsSpInx;
+    vector<double> itsSpTerms;
   };
 
   // @}

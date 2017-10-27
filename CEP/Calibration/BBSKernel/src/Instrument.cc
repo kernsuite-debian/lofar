@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Instrument.cc 36374 2017-01-24 15:22:52Z schoenmakers $
+//# $Id: Instrument.cc 38611 2017-10-10 09:53:34Z beukema $
 
 #include <lofar_config.h>
 #include <BBSKernel/Instrument.h>

@@ -108,7 +108,8 @@ function create_queue() {
   #   create_queue [host:]queue
   HOSTQUEUE="$1"
 
-  echo "MessageBus: Creating queue $FULL_QUEUE_PREFIX$HOSTQUEUE" >&2
+  ts=`date '+%F %T.%N'`  # e.g. 2015-10-16 16:00:46.186
+  echo "$ts INFO - MessageFuncs.sh: Creating queue $FULL_QUEUE_PREFIX$HOSTQUEUE" >&2
 
   _qpid_receive "$HOSTQUEUE" "; { create: always }" --print-content no --ignore-reply-to
 
@@ -125,7 +126,8 @@ function delete_queue() {
   # Will not remove used queues
   HOSTQUEUE="$1"
 
-  echo "MessageBus: Deleting queue $FULL_QUEUE_PREFIX$HOSTQUEUE" >&2
+  ts=`date '+%F %T.%N'`  # e.g. 2015-10-16 16:00:46.186
+  echo "$ts INFO - MessageFuncs.sh: Deleting queue $FULL_QUEUE_PREFIX$HOSTQUEUE" >&2
 
   _qpid_receive "$HOSTQUEUE" "; { delete: always }" --print-content no --ignore-reply-to
 }

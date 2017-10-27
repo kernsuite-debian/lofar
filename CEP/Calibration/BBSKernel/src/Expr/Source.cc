@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Source.cc 18775 2011-09-06 13:36:45Z zwieten $
+//# $Id: Source.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Source.h>
@@ -68,7 +68,7 @@ Source::Source(const SourceInfo &source, Scope &scope)
     itsPosition = position;
 
     // Stokes vector.
-    const unsigned int nCoeff = source.getSpectralIndexNTerms();
+    const unsigned int nCoeff = source.getNSpectralTerms();
 
     vector<Expr<Scalar>::Ptr> coeff;
     coeff.reserve(nCoeff);
@@ -79,7 +79,7 @@ Source::Source(const SourceInfo &source, Scope &scope)
         coeff.push_back(scope(SKY, oss.str()));
     }
 
-    const double refFreq = source.getSpectralIndexRefFreq();
+    const double refFreq = source.getSpectralTermsRefFreq();
     ExprParm::Ptr refStokes = scope(SKY, "I:" + name());
     Expr<Scalar>::Ptr stokesI = Expr<Scalar>::Ptr(new SpectralIndex(refFreq,
         refStokes, coeff.begin(), coeff.end()));

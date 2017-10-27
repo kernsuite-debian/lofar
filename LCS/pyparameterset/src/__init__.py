@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 35870 2016-11-01 12:11:10Z donker $
+# $Id: __init__.py 37552 2017-06-01 08:43:15Z mol $
 
 from _pyparameterset import PyParameterValue
 from _pyparameterset import PyParameterSet
@@ -153,6 +153,12 @@ class parameterset(PyParameterSet):
 
     def adoptDict(self, parms):
         for (k,v) in parms.iteritems():
+            # str(container) calls __repr__ on its items, which ends
+            # badly for us for lists of unicode strings ([u"a"] -> ['ua']).
+            # We thus stringify the items first.
+            if isinstance(v, list):
+                v = [str(x) for x in v]
+
             self.replace (str(k), str(v))  # k, v always type string
 
     def get(self, key):

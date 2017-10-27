@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSWriter.cc 35533 2016-10-04 12:12:01Z dijkema $
+//# $Id: MSWriter.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -30,26 +30,26 @@
 #include <DPPP/DPLogger.h>
 #include <MS/VdsMaker.h>
 #include <Common/ParameterSet.h>
-#include <tables/Tables/TableCopy.h>
+#include <casacore/tables/Tables/TableCopy.h>
 #if defined(casacore)
-#include <tables/DataMan/DataManInfo.h>
+#include <casacore/tables/DataMan/DataManInfo.h>
 #else
-#include <tables/Tables/DataManInfo.h>
+#include <casacore/tables/DataMan/DataManInfo.h>
 #endif
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/StandardStMan.h>
-#include <tables/Tables/TiledStManAccessor.h>
-#include <measures/TableMeasures/ArrayMeasColumn.h>
-#include <measures/Measures/MCDirection.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Containers/Record.h>
-#include <casa/OS/Path.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/DataMan/StandardStMan.h>
+#include <casacore/tables/DataMan/TiledStManAccessor.h>
+#include <casacore/measures/TableMeasures/ArrayMeasColumn.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/OS/Path.h>
 #include <iostream>
 #include <limits>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -135,7 +135,7 @@ namespace LOFAR {
           if (itsVdsDir[itsVdsDir.size() - 1] != '/') {
             itsVdsDir.append ("/");
           }
-          vdsName = itsVdsDir + string(casa::Path(vdsName).baseName());
+          vdsName = itsVdsDir + string(casacore::Path(vdsName).baseName());
         }
         // Create VDS file without detailed time info.
         LOFAR::VdsMaker::create (itsMS.tableName(), vdsName,
@@ -184,13 +184,14 @@ namespace LOFAR {
       os << "  time interval:  " << itsInterval << std::endl;
       os << "  DATA column:    " << itsDataColName << std::endl;
       os << "  WEIGHT column:  " << itsWeightColName << std::endl;
-      if(itsStManKeys.stManName == "dysco") {
+      if (itsStManKeys.stManName == "dysco") {
         os
           << "  Compressed:     yes\n"
           << "  Data bitrate:   " << itsStManKeys.dyscoDataBitRate << '\n'
           << "  Weight bitrate: " << itsStManKeys.dyscoWeightBitRate << '\n'
           << "  Dysco mode:     " << itsStManKeys.dyscoNormalization << ' ' 
-            << itsStManKeys.dyscoDistribution << '(' << itsStManKeys.dyscoDistTruncation << ")\n";
+            << itsStManKeys.dyscoDistribution << '(' 
+            << itsStManKeys.dyscoDistTruncation << ")\n";
       }
       else {
         os << "  Compressed:     no\n";
@@ -333,7 +334,7 @@ namespace LOFAR {
       newtab.bindCreate (dminfo);
       DataManagerCtor dyscoConstructor = 0;
       Record dyscoSpec;
-      if(itsStManKeys.stManName == "dysco") {
+      if (itsStManKeys.stManName == "dysco") {
         dyscoSpec = itsStManKeys.GetDyscoSpec();
         dyscoConstructor = DataManager::getCtor("DyscoStMan");
       }
@@ -556,21 +557,35 @@ namespace LOFAR {
         return;
       }
 
-      // If compressing, flagged values need to be set to NaN to decrease the dynamic range
-      if(itsStManKeys.stManName == "dysco")
-      {
-        casa::Cube<casa::Complex> dataCopy = buf.getData().copy();
-        casa::Cube<casa::Complex>::iterator dataIter = dataCopy.begin();
-        for(casa::Cube<bool>::const_iterator flagIter = buf.getFlags().begin(); flagIter != buf.getFlags().end(); ++flagIter)
-        {
-          if(*flagIter)
-            *dataIter = casa::Complex(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+      // Write WEIGHT_SPECTRUM and DATA
+      ArrayColumn<Float> weightCol(out, "WEIGHT_SPECTRUM");
+      itsBuffer.referenceFilled (buf);
+      const Array<Float>& weights = itsReader->fetchWeights (buf, itsBuffer,
+                                                             itsTimer);
+
+      // If compressing, flagged values need to be set to NaN, and flagged
+      // weights to zero, to decrease the dynamic range
+      if (itsStManKeys.stManName == "dysco") {
+        Cube<Complex> dataCopy = buf.getData().copy();
+        Cube<Complex>::iterator dataIter = dataCopy.begin();
+        Cube<float> weightsCopy = weights.copy();
+        Cube<float>::iterator weightsIter = weightsCopy.begin();
+        for (Cube<bool>::const_iterator flagIter = buf.getFlags().begin();
+             flagIter != buf.getFlags().end(); ++flagIter) {
+          if (*flagIter) {
+            *dataIter = Complex(std::numeric_limits<float>::quiet_NaN(),
+                                std::numeric_limits<float>::quiet_NaN());
+            *weightsIter = 0.;
+          }
           ++dataIter;
+          ++weightsIter;
         }
         dataCol.putColumn (dataCopy);
+        weightCol.putColumn (weightsCopy);
       }
       else {
         dataCol.putColumn (buf.getData());
+        weightCol.putColumn (weights);
       }
       
       flagCol.putColumn (buf.getFlags());
@@ -580,14 +595,9 @@ namespace LOFAR {
       if (itsWriteFullResFlags) {
         writeFullResFlags (out, buf);
       }
-      // Write WEIGHT_SPECTRUM and UVW.
-      ArrayColumn<Float> weightCol(out, "WEIGHT_SPECTRUM");
+
+      // Write UVW
       ArrayColumn<Double> uvwCol(out, "UVW");
-      // Do not account for getting the data in the timings.
-      itsBuffer.referenceFilled (buf);
-      const Array<Float>& weights = itsReader->fetchWeights (buf, itsBuffer,
-                                                             itsTimer);
-      weightCol.putColumn (weights);
       const Array<Double>& uvws = itsReader->fetchUVW (buf, itsBuffer,
                                                        itsTimer);
       uvwCol.putColumn (uvws);

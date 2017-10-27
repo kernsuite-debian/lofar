@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: makesourcedb.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id: makesourcedb.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 // This program writes patch and source information into a SourceDB.
 // The input is read from an ASCII file that can be formatted in various ways.
@@ -150,7 +150,7 @@ Exception::TerminateHandler t(Exception::terminate);
 enum FieldNr {
   // First the standard fields.
   NameNr, TypeNr, RefTypeNr, RaNr, DecNr,
-  INr, QNr, UNr, VNr, SpInxNr, RefFreqNr,
+  INr, QNr, UNr, VNr, SpInxNr, LogSINr, RefFreqNr,
   MajorNr, MinorNr, OrientNr, RotMeasNr, PolFracNr, PolAngNr, RefWavelNr,
   IShapeletNr, QShapeletNr, UShapeletNr, VShapeletNr,
   NrKnownFields,
@@ -177,6 +177,7 @@ vector<string> fillKnown()
   names.push_back ("U");
   names.push_back ("V");
   names.push_back ("SpectralIndex");
+  names.push_back ("LogarithmicSI");
   names.push_back ("ReferenceFrequency");
   names.push_back ("MajorAxis");
   names.push_back ("MinorAxis");
@@ -473,6 +474,15 @@ string getValue (const vector<string>& values, int nr,
     return defVal;
   }
   return unquote (values[nr]);
+}
+
+bool string2bool (const vector<string>& values, int nr, bool defVal)
+{
+  string value = getValue (values, nr);
+  if (value.empty()) {
+    return defVal;
+  }
+  return strToBool (value);
 }
 
 int string2int (const vector<string>& values, int nr, int defVal)
@@ -891,6 +901,7 @@ void process (const string& line, SourceDB& pdb, const SdbFormat& sdbf,
                                                  vector<string>()),
                                    0.));
   double refFreq = string2real (values, sdbf.fieldNrs[RefFreqNr], 0);
+  bool useLogSI = string2bool (values, sdbf.fieldNrs[LogSINr], true);
   bool useRM = false;
   double rmRefWavel = 0;
   if (rm.empty()) {
@@ -920,7 +931,7 @@ void process (const string& line, SourceDB& pdb, const SdbFormat& sdbf,
                  "only be given for ReferenceWavelength=0");
     }
   }               
-  SourceInfo srcInfo(srcName, srctype, refType, spinx.size(), refFreq, useRM);
+  SourceInfo srcInfo(srcName, srctype, refType, useLogSI, spinx.size(), refFreq, useRM);
   if (srctype == SourceInfo::SHAPELET) {
     fillShapelet (srcInfo, shapeletI, shapeletQ, shapeletU, shapeletV);
   }
@@ -1126,7 +1137,7 @@ int main (int argc, char* argv[])
                   "Output sourcedb name", "string");
     inputs.create ("outtype", "casa",
                    "Output type (casa or blob)", "string");
-    inputs.create("format", "",
+    inputs.create("format", "<",
                   "Format of the input lines or name of file containing format",
                   "string");
     inputs.create("append", "true",

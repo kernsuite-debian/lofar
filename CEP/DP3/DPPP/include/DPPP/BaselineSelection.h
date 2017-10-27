@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BaselineSelection.h 27640 2013-12-04 08:02:49Z diepen $
+//# $Id: BaselineSelection.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -28,8 +28,8 @@
 // @brief Class to handle the baseline selection
 
 #include <DPPP/DPInfo.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
 
 namespace LOFAR {
   class ParameterSet;
@@ -68,26 +68,26 @@ namespace LOFAR {
 
       // Form the selection matrix telling for each baseline if it is selected.
       // If no selection is made, all values in the matrix are true.
-      casa::Matrix<bool> apply (const DPInfo& info) const;
+      casacore::Matrix<bool> apply (const DPInfo& info) const;
 
       // Form the selection vector telling if a baseline in the DPInfo object
       // is selected.
-      casa::Vector<bool> applyVec (const DPInfo& info) const;
+      casacore::Vector<bool> applyVec (const DPInfo& info) const;
 
     private:
       // Convert the baseline selection string.
-      void handleBL (casa::Matrix<bool>& selectBL,
+      void handleBL (casacore::Matrix<bool>& selectBL,
                      const DPInfo& info) const;
 
       // Handle a vector of baseline specifications.
-      casa::Matrix<bool> handleBLVector (const ParameterValue& pvBL,
-                                         const casa::Vector<casa::String>&) const;
+      casacore::Matrix<bool> handleBLVector (const ParameterValue& pvBL,
+                                         const casacore::Vector<casacore::String>&) const;
 
       // Handle the correlation type selection.
-      void handleCorrType (casa::Matrix<bool>& selectBL) const;
+      void handleCorrType (casacore::Matrix<bool>& selectBL) const;
 
       // Handle the baseline length selection.
-      void handleLength (casa::Matrix<bool>& selectBL,
+      void handleLength (casacore::Matrix<bool>& selectBL,
                          const DPInfo& info) const;
 
       //# Data members

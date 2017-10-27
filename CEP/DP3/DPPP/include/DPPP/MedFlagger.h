@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MedFlagger.h 30980 2015-02-11 14:54:36Z diepen $
+//# $Id: MedFlagger.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -141,7 +141,7 @@ namespace LOFAR {
       double           itsMaxBLength;    //# maximum baseline length
       vector<double>   itsBLength;       //# length of each baseline
       vector<DPBuffer> itsBuf;
-      vector<casa::Cube<float> > itsAmpl; //# amplitudes of the data
+      vector<casacore::Cube<float> > itsAmpl; //# amplitudes of the data
       FlagCounter      itsFlagCounter;
       NSTimer          itsTimer;
       NSTimer          itsComputeTimer;  //# move/median timer

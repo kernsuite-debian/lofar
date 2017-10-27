@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Socket.cc 29564 2014-06-19 09:32:10Z schoenmakers $
+//# $Id: Socket.cc 37773 2017-07-05 07:11:30Z schaap $
 
 #include <lofar_config.h>
 
@@ -387,17 +387,18 @@ int32 Socket::initTCPSocket(bool	asServer)
 		uint32				IPbytes;
 		// try if hostname is hard ip address
 		if ((IPbytes = inet_addr(itsHost.c_str())) == INADDR_NONE) {
-		  struct addrinfo*		hostEnt;		// server host entry
+		  struct addrinfo*		hostEnt = NULL;		// server host entry
 
 		  // No, try to resolve the name
 		  if (getaddrinfo(itsHost.c_str(), NULL, &hints, &hostEnt) != 0) {
 		    LOG_ERROR(formatString("Socket:Hostname (%s) can not be resolved",
 														itsHost.c_str()));
+            if (hostEnt)
+                freeaddrinfo(hostEnt);
 		    return (itsErrno = BADHOST);
 		  }
 
 		  memcpy (&IPbytes, &reinterpret_cast<struct sockaddr_in *>(hostEnt->ai_addr)->sin_addr, sizeof IPbytes);
-
           freeaddrinfo(hostEnt);
 		}
 		memcpy ((char*) &itsTCPAddr.sin_addr.s_addr, (char*) &IPbytes, 
@@ -405,12 +406,16 @@ int32 Socket::initTCPSocket(bool	asServer)
 	}
 			
 	// try to resolve the service
-	struct addrinfo*	servEnt;		// service info entry
+	struct addrinfo*	servEnt = NULL;		// service info entry
 
 	if (getaddrinfo(NULL, itsPort.c_str(), &hints, &servEnt) != 0) {
 		LOG_ERROR(formatString(
 					"Socket:Portnr/service(%s) can not be resolved",
 					itsPort.c_str()));
+
+        if (servEnt)
+            freeaddrinfo(servEnt);
+
 		return (itsErrno = PORT);
 	}
 
@@ -951,6 +956,7 @@ int32 Socket::write (const void*	buf, int32	nrBytes)
 		while (bytesLeft > 0 && !itsErrno && !sigpipe) {
 			errno = 0;								// reset system error
 			int32 oldCounter = *sigpipeCounter;
+
 			bytesWritten = ::write (itsSocketID, buf, bytesLeft);
 			//std::clog << "wrote " << bytesWritten << " from " << bytesLeft << " bytes" << std::endl;
 			sigpipe = (oldCounter != *sigpipeCounter); // check for SIGPIPE

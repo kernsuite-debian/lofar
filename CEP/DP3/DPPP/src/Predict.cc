@@ -29,6 +29,7 @@
 #include <Common/ParameterSet.h>
 #include <Common/Timer.h>
 #include <Common/OpenMP.h>
+#include <Common/StreamUtil.h>
 #include <ParmDB/ParmDBMeta.h>
 #include <ParmDB/PatchInfo.h>
 #include <DPPP/DPInfo.h>
@@ -42,12 +43,13 @@
 #include <DPPP/GaussianSource.h>
 #include <ParmDB/SourceDB.h>
 
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Quanta/Quantum.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MeasConvert.h>
-#include <tables/Tables/RefRows.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/OS/File.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/tables/Tables/RefRows.h>
 
 #include <stddef.h>
 #include <string>
@@ -55,7 +57,7 @@
 #include <utility>
 #include <vector>
 
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR::BBS;
 
 namespace LOFAR {
@@ -64,18 +66,38 @@ namespace LOFAR {
     Predict::Predict (DPInput* input,
                       const ParameterSet& parset,
                       const string& prefix)
-      : itsInput         (input),
-        itsName          (prefix),
-        itsSourceDBName  (parset.getString (prefix + "sourcedb")),
-        itsOperation     (parset.getString (prefix + "operation", "replace")),
-        itsApplyBeam     (parset.getBool (prefix + "usebeammodel", false)),
-        itsDebugLevel    (parset.getInt (prefix + "debuglevel", 0)),
-        itsPatchList     ()
     {
+      init(input, parset, prefix, parset.getStringVector(prefix + "sources",
+                                                         vector<string>()));
+    }
+
+    Predict::Predict (DPInput* input,
+                      const ParameterSet& parset,
+                      const string& prefix,
+                      const vector<string>& sourcePatterns)
+    {
+      init(input, parset, prefix, sourcePatterns);
+    }
+
+    void Predict::init(DPInput* input,
+              const ParameterSet& parset,
+              const string& prefix, const vector<string>& sourcePatterns) {
+      itsInput = input;
+      itsName = prefix;
+      itsSourceDBName = parset.getString (prefix + "sourcedb");
+      itsOperation = parset.getString (prefix + "operation", "replace");
+      itsApplyBeam = parset.getBool (prefix + "usebeammodel", false);
+      itsDebugLevel = parset.getInt (prefix + "debuglevel", 0);
+      itsPatchList = vector<Patch::ConstPtr> ();
+
+      ASSERT(File(itsSourceDBName).exists());
       BBS::SourceDB sourceDB(BBS::ParmDBMeta("", itsSourceDBName), false);
 
-      vector<string> sourcePatterns=parset.getStringVector(prefix + "sources",
-                                                           vector<string>());
+      // Save directions specifications to pass to applycal
+      stringstream ss;
+      ss << sourcePatterns;
+      itsDirectionsStr = ss.str();
+
       vector<string> patchNames=makePatchList(sourceDB, sourcePatterns);
       itsPatchList = makePatches (sourceDB, patchNames, patchNames.size());
 
@@ -104,13 +126,10 @@ namespace LOFAR {
         }
       }
 
+      // If called from h5parmpredict, applycal gets set by that step,
+      // so must not be read from parset
       if (parset.isDefined(prefix + "applycal.parmdb")) {
-        itsDoApplyCal=true;
-        itsApplyCalStep=ApplyCal(input, parset, prefix + "applycal.", true);
-        ASSERT(!(itsOperation!="replace" &&
-                 parset.getBool(prefix + "applycal.updateweights", false)));
-        itsResultStep=new ResultStep();
-        itsApplyCalStep.setNextStep(DPStep::ShPtr(itsResultStep));
+        setApplyCal(input, parset, prefix + "applycal.");
       } else {
         itsDoApplyCal=false;
       }
@@ -124,6 +143,18 @@ namespace LOFAR {
       } else {
         itsStokesIOnly = !checkPolarized(sourceDB, patchNames, patchNames.size());
       }
+    }
+
+    void Predict::setApplyCal(DPInput* input,
+                              const ParameterSet& parset,
+                              const string& prefix) {
+      itsDoApplyCal=true;
+      itsApplyCalStep=ApplyCal(input, parset, prefix, true,
+                               itsDirectionsStr);
+      ASSERT(!(itsOperation!="replace" &&
+               parset.getBool(prefix + "applycal.updateweights", false)));
+      itsResultStep=new ResultStep();
+      itsApplyCalStep.setNextStep(DPStep::ShPtr(itsResultStep));
     }
 
     Predict::Predict()
@@ -192,6 +223,13 @@ namespace LOFAR {
       }
     }
 
+    std::pair<double, double> Predict::getFirstDirection() const {
+      std::pair<double, double> res;
+      res.first = itsPatchList[0]->position()[0];
+      res.second = itsPatchList[0]->position()[1];
+      return res;
+    }
+
     void Predict::show (std::ostream& os) const
     {
       os << "Predict " << itsName << endl;
@@ -237,7 +275,7 @@ namespace LOFAR {
       const size_t nSt = info().nantenna();
       const size_t nBl = info().nbaselines();
       const size_t nCh = info().nchan();
-      const size_t nCr = 4;
+      const size_t nCr = info().ncorr();
       const size_t nSamples = nBl * nCh * nCr;
 
       double time = itsTempBuffer.getTime();
@@ -251,12 +289,15 @@ namespace LOFAR {
 
       if (itsApplyBeam) {
         for (uint thread=0;thread<OpenMP::maxThreads();++thread) {
+#pragma omp critical(initialmeasuresconversion)
+          {
           itsMeasFrames[thread].resetEpoch (MEpoch(MVEpoch(time/86400),
                                                    MEpoch::UTC));
           //Do a conversion on all threads, because converters are not
           //thread safe and apparently need to be used at least once
           refdir  = dir2Itrf(info().delayCenter(),itsMeasConverters[thread]);
           tiledir = dir2Itrf(info().tileBeamDir(),itsMeasConverters[thread]);
+          }
         }
       }
 

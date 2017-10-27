@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceDBCasa.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id: SourceDBCasa.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDBCasa.h>
@@ -86,6 +86,7 @@ namespace BBS {
     td.addColumn (ScalarColumnDesc<int>   ("SOURCETYPE"));
     td.addColumn (ScalarColumnDesc<String>("REFTYPE"));
     td.addColumn (ScalarColumnDesc<uint>  ("SPINX_NTERMS"));
+    td.addColumn (ScalarColumnDesc<bool>  ("LOG_SI"));
     td.addColumn (ScalarColumnDesc<double>("SPINX_REFFREQ"));
     td.addColumn (ScalarColumnDesc<bool>  ("USE_ROTMEAS"));
     td.addColumn (ScalarColumnDesc<double>("SHAPELET_ISCALE"));
@@ -328,6 +329,7 @@ namespace BBS {
     ScalarColumn<int>    typeCol (itsSourceTable, "SOURCETYPE");
     ScalarColumn<String> reftCol (itsSourceTable, "REFTYPE");
     ScalarColumn<uint>   spinxCol(itsSourceTable, "SPINX_NTERMS");
+    ScalarColumn<bool>   logSICol(itsSourceTable, "LOG_SI");
     ScalarColumn<double> sirefCol(itsSourceTable, "SPINX_REFFREQ");
     ScalarColumn<bool>   usermCol(itsSourceTable, "USE_ROTMEAS");
     ScalarColumn<double> iscalCol(itsSourceTable, "SHAPELET_ISCALE");
@@ -344,8 +346,9 @@ namespace BBS {
     idCol.put    (rownr, patchId);
     typeCol.put  (rownr, sourceInfo.getType());
     reftCol.put  (rownr, sourceInfo.getRefType());
-    spinxCol.put (rownr, sourceInfo.getSpectralIndexNTerms());
-    sirefCol.put (rownr, sourceInfo.getSpectralIndexRefFreq());
+    spinxCol.put (rownr, sourceInfo.getNSpectralTerms());
+    logSICol.put (rownr, sourceInfo.getHasLogarithmicSI());
+    sirefCol.put (rownr, sourceInfo.getSpectralTermsRefFreq());
     usermCol.put (rownr, sourceInfo.getUseRotationMeasure());
     iscalCol.put (rownr, sourceInfo.getShapeletScaleI());
     qscalCol.put (rownr, sourceInfo.getShapeletScaleQ());
@@ -558,9 +561,18 @@ namespace BBS {
       ROArrayColumn<double>  qcoefCol(table, "SHAPELET_QCOEFF");
       ROArrayColumn<double>  ucoefCol(table, "SHAPELET_UCOEFF");
       ROArrayColumn<double>  vcoefCol(table, "SHAPELET_VCOEFF");
+      ROScalarColumn<bool> logSICol;
+      bool hasLogSICol = table.tableDesc().isColumn("LOG_SI");
+      if (hasLogSICol) {
+        logSICol = ROScalarColumn<bool>(table, "LOG_SI");
+      }
       for (uint i=0; i<nm.size(); ++i) {
         SourceInfo::Type type = SourceInfo::Type((tp[i]));
-        res.push_back (SourceInfo(nm[i], type, rt[i], sd[i], sr[i], rm[i]));
+        bool useLogSI = true;
+        if (hasLogSICol) {
+          useLogSI = logSICol(i);
+        }
+        res.push_back (SourceInfo(nm[i], type, rt[i], useLogSI, sd[i], sr[i], rm[i]));
         if (type == SourceInfo::SHAPELET) {
           ASSERTSTR (icoefCol.isDefined(i), "No coefficients defined for "
                      " shapelet source " << nm[i]);
@@ -590,7 +602,7 @@ namespace BBS {
           }
         }
         res.push_back (SourceInfo(nm[i], SourceInfo::Type(tp[i]), rt[i],
-                                  degree+1, refFreq));
+                                  true, degree+1, refFreq)); // In old format, useLogSI = true always
       }
     }
     return res;
@@ -634,7 +646,7 @@ namespace BBS {
       src.setMinorAxis (0);
     }
     // Fetch spectral index attributes (if applicable).
-    size_t nTerms = src.getInfo().getSpectralIndexNTerms();
+    size_t nTerms = src.getInfo().getNSpectralTerms();
     vector<double> terms;
     if (nTerms > 0) {
       terms.reserve(nTerms);
@@ -644,7 +656,7 @@ namespace BBS {
         terms.push_back (getDefaultParmValue(oss.str()));
       }
     }
-    src.setSpectralIndex(terms);
+    src.setSpectralTerms(terms);
     // Fetch rotation measure attributes (if applicable).
     if (src.getInfo().getUseRotationMeasure()) {
       src.setPolarizedFraction (getDefaultParmValue

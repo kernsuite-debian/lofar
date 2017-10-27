@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPRun.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id: DPRun.cc 38299 2017-09-05 11:16:56Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -41,6 +41,7 @@
 #include <DPPP/ScaleData.h>
 #include <DPPP/ApplyCal.h>
 #include <DPPP/Predict.h>
+#include <DPPP/H5ParmPredict.h>
 #include <DPPP/GainCal.h>
 #include <DPPP/Filter.h>
 #include <DPPP/Counter.h>
@@ -50,10 +51,11 @@
 #include <Common/StreamUtil.h>
 #include <Common/OpenMP.h>
 
-#include <casa/OS/Path.h>
-#include <casa/OS/DirectoryIterator.h>
-#include <casa/OS/Timer.h>
-#include <casa/OS/DynLib.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/DirectoryIterator.h>
+#include <casacore/casa/OS/Timer.h>
+#include <casacore/casa/OS/DynLib.h>
+#include <casacore/casa/Utilities/Regex.h>
 
 namespace LOFAR {
   namespace DPPP {
@@ -83,7 +85,7 @@ namespace LOFAR {
         libname = libname.substr (0, pos);
       }
       // Try to load and initialize the dynamic library.
-      casa::DynLib dl(libname, string("libdppp_"), "register_"+libname, false);
+      casacore::DynLib dl(libname, string("libdppp_"), "register_"+libname, false);
       if (dl.getHandle()) {
         // See if registered now.
         iter = theirStepMap.find (type);
@@ -99,7 +101,7 @@ namespace LOFAR {
 
     void DPRun::execute (const string& parsetName, int argc, char* argv[])
     {
-      casa::Timer timer;
+      casacore::Timer timer;
       NSTimer nstimer;
       nstimer.start();
       ParameterSet parset;
@@ -243,12 +245,12 @@ namespace LOFAR {
         if (inNames[0].find_first_of ("*?{['") != string::npos) {
           vector<string> names;
           names.reserve (80);
-          casa::Path path(inNames[0]);
-          casa::String dirName(path.dirName());
-          casa::Directory dir(dirName);
+          casacore::Path path(inNames[0]);
+          casacore::String dirName(path.dirName());
+          casacore::Directory dir(dirName);
           // Use the basename as the file name pattern.
-          casa::DirectoryIterator dirIter (dir,
-                                           casa::Regex::fromPattern(path.baseName()));
+          casacore::DirectoryIterator dirIter (dir,
+                                           casacore::Regex::fromPattern(path.baseName()));
           while (!dirIter.pastEnd()) {
             names.push_back (dirName + '/' + dirIter.name());
             dirIter++;
@@ -270,8 +272,8 @@ namespace LOFAR {
       } else {
         reader = new MultiMSReader (inNames, parset, "msin.");
       }
-      casa::Path pathIn (reader->msName());
-      casa::String currentMSName (pathIn.absoluteName());
+      casacore::Path pathIn (reader->msName());
+      casacore::String currentMSName (pathIn.absoluteName());
 
       // Create the other steps.
       firstStep = DPStep::ShPtr (reader);
@@ -280,8 +282,12 @@ namespace LOFAR {
       for (vector<string>::const_iterator iter = steps.begin();
            iter != steps.end(); ++iter) {
         string prefix(*iter + '.');
-        // The name is the default step type.
-        string type = toLower(parset.getString (prefix+"type", *iter));
+        // The alphabetic part of the name is the default step type.
+        // This allows names like average1, out3.
+        int res = casacore::Regex("[a-z]+").match((*iter).c_str(), (*iter).size());
+        string defaulttype = (*iter).substr(0,res);
+
+        string type = toLower(parset.getString (prefix+"type", defaulttype));
         // Define correct name for AOFlagger synonyms.
         if (type == "aoflagger"  ||  type == "rficonsole") {
           type = "aoflag";
@@ -312,6 +318,8 @@ namespace LOFAR {
           step = DPStep::ShPtr(new ApplyCal (reader, parset, prefix));
         } else if (type == "predict") {
           step = DPStep::ShPtr(new Predict (reader, parset, prefix));
+        } else if (type == "h5parmpredict") {
+          step = DPStep::ShPtr(new H5ParmPredict (reader, parset, prefix));
         } else if (type == "applybeam") {
           step = DPStep::ShPtr(new ApplyBeam (reader, parset, prefix));
         } else if (type == "gaincal"  ||  type == "calibrate") {
@@ -352,10 +360,10 @@ namespace LOFAR {
                                          const ParameterSet& parset,
                                          const string& prefix,
                                          bool multipleInputs,
-                                         casa::String& currentMSName)
+                                         casacore::String& currentMSName)
     {
       DPStep::ShPtr step;
-      casa::String outName;
+      casacore::String outName;
       bool doUpdate = false;
       if (prefix == "msout.") {
         // The last output step.
@@ -373,7 +381,7 @@ namespace LOFAR {
         outName  = currentMSName;
         doUpdate = true;
       } else {
-        casa::Path pathOut(outName);
+        casacore::Path pathOut(outName);
         if (currentMSName == pathOut.absoluteName()) {
           outName  = currentMSName;
           doUpdate = true;
@@ -391,7 +399,7 @@ namespace LOFAR {
         step = DPStep::ShPtr(new MSWriter (reader, outName, parset, prefix));
         reader->setReadVisData (true);
       }
-      casa::Path pathOut(outName);
+      casacore::Path pathOut(outName);
       currentMSName = pathOut.absoluteName();
       return step;
     }

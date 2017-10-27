@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tBarrier.cc 35995 2016-11-15 16:33:18Z dijkema $
+//# $Id: tBarrier.cc 36879 2017-03-17 16:19:45Z amesfoort $
 
 #include <lofar_config.h>
 
@@ -26,6 +26,11 @@
 #include <Common/LofarLogger.h>
 #include <Common/Thread/Thread.h>
 #include <Common/Thread/Barrier.h>
+
+#if !_POSIX_BARRIERS  // OS X
+#warning _POSIX_BARRIERS not defined on this system: tBarrier test disarmed
+#undef USE_THREADS
+#endif
 
 using namespace std;
 using namespace LOFAR;

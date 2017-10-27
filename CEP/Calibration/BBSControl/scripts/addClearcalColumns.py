@@ -1,4 +1,4 @@
-!#/usr/bin/env python
+#!/usr/bin/env python
 #
 # Script that creates (if not already present) MODEL_DATA and CORRECTED_DATA
 # columns in a MS
@@ -29,7 +29,7 @@ else:
 # Check if we got a gds file or a single MS, i.e. a directory
 # or if it is a gds file, i.e. text file
 #
-if os.path.isdir(filename)       # directory, i.e. single MS
+if os.path.isdir(filename):       # directory, i.e. single MS
    addClearcalColumns(filename)
 else:                            # gds
    executeGDS(filename)
@@ -40,7 +40,7 @@ else:                            # gds
 # returns true/false accordingy
 #
 def hasColumn(table, name):
-   if name is in table.colnames():
+   if name in table.colnames():
       return True
    else:
       return False
@@ -102,7 +102,9 @@ def parseGDS(gdsFilename):
 
    for line in lines:                # get "NParts" (number of parts)
       if line.find("NParts"):
-         numParts=
+         # Illegal statement below, replaced by pass
+         # numParts=
+         pass
       else:
          raise ValueError
          
@@ -120,7 +122,7 @@ def parseGDS(gdsFilename):
 # Add columns to multiple files in list MSfilenames        
 #        
 def multipleFiles(MSfilenames):
-   if !isinstance(MSfilename, list):
+   if not isinstance(MSfilename, list):
       print "multipleFiles() MSfilenames is not a list"
    else:
       for filename in MSfilenames:

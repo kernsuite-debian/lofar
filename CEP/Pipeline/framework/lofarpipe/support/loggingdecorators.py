@@ -109,7 +109,7 @@ def strip_xml_to_master_details(pipeline_xml, logger):
     This function removes most of the data in the xml limiting the size.
     """
     local_document = _xml.Document()
-    
+
     simplyfied_pipeline_xml = local_document.createElement("Simplyfied_pipeline_xml")
     simplyfied_pipeline_xml.appendChild(get_child(pipeline_xml, "active_stack").cloneNode(True))
 
@@ -119,8 +119,8 @@ def strip_xml_to_master_details(pipeline_xml, logger):
             continue
 
         # Create copy of the xml, make a shallow clone
-        simplyfied_pipeline_xml.appendChild(node.cloneNode(False)) 
-        
+        simplyfied_pipeline_xml.appendChild(node.cloneNode(False))
+
     return simplyfied_pipeline_xml
 
 
@@ -157,18 +157,12 @@ def mail_log_on_exception(target):
             else:
                 msg_string = "duration: {0} \n "\
                  "No additional pipeline data available".format(duration_recipe)
-    
-            _mail_msg_to("pipeline_finished", "klijn@astron.nl",
-                         "pipeline finished: {0}: {1}".format(
-                                os.path.basename(calling_object.__file__),
-                                calling_object.inputs['job_name']),
-                         msg_string)
 
         except Exception, message:
             # Static list of mail to be send
-            mail_list = ["klijn@astron.nl", 
+            mail_list = ["klijn@astron.nl",
                          "orru@astron.nl",
-                         "sciencesupport@astron.nl"
+                         "sos@astron.nl"
                          ]
 
             # get the active stack
@@ -179,8 +173,8 @@ def mail_log_on_exception(target):
                                                stack, calling_object.logger)
 
                 active_stack_data = simplyfied_pipeline_xml.toprettyxml(
-                                                              encoding='ascii')           
-            
+                                                              encoding='ascii')
+
             # get the Obsid and pipeline name add to subjecy title
             subject = "Failed pipeline run {0}: {1}".format(
                         os.path.basename(calling_object.__file__),
@@ -192,7 +186,7 @@ def mail_log_on_exception(target):
 
             # mail all recipients
             for entry in mail_list:
-                _mail_msg_to("pipeline_error", entry,
+                _mail_msg_to("softwaresupport@astron.nl", entry,
                          subject, msg)
 
             raise
@@ -205,7 +199,7 @@ def mail_log_on_exception(target):
 
 def _mail_msg_to(adr_from, adr_to, subject, msg):
     """
-    Fire and forget wrapper from lofar stmp mail access.
+    Fire and forget wrapper from lofar smtp mail access.
     sends an email with a from adress to an adress with a subject and message.
     """
     # Create a text/plain message

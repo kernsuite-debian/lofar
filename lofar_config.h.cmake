@@ -1,4 +1,4 @@
-/* $Id: lofar_config.h.cmake 36374 2017-01-24 15:22:52Z schoenmakers $ */
+/* $Id: lofar_config.h.cmake 38611 2017-10-10 09:53:34Z beukema $ */
 
 /*-------------------------------------------------------------------------*\
 |     Defines for the presence or absence of (system) header files          |

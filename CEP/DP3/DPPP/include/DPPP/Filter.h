@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Filter.h 30980 2015-02-11 14:54:36Z diepen $
+//# $Id: Filter.h 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -170,28 +170,28 @@ namespace LOFAR {
     private:
       // Create the mapping from old to new id (e.g. ANTENNA_ID).
       // The removed ids get a mapping -1.
-      casa::Vector<casa::Int>
-      createIdMap (casa::uInt nrId,
-                   const casa::Vector<casa::uInt>& removedIds) const;
+      casacore::Vector<casacore::Int>
+      createIdMap (casacore::uInt nrId,
+                   const casacore::Vector<casacore::uInt>& removedIds) const;
 
       // Remove rows with deleted stations from a subtable.
       // Renumber the ANTENNA_ID of the remaining rows.
       // It fills nrId with the original number of rows in the subtable
       // and returns the vector of removed row numbers.
-      casa::Vector<casa::uInt>
-      renumberSubTable (const casa::Table& ms, const casa::String& name,
-                        const casa::String& colName,
-                        const casa::Vector<casa::uInt>& removedAnt,
-                        const casa::Vector<casa::Int>& antMap,
-                        casa::uInt& nrId) const;
+      casacore::Vector<casacore::uInt>
+      renumberSubTable (const casacore::Table& ms, const casacore::String& name,
+                        const casacore::String& colName,
+                        const casacore::Vector<casacore::uInt>& removedAnt,
+                        const casacore::Vector<casacore::Int>& antMap,
+                        casacore::uInt& nrId) const;
 
       //# Data members.
       DPInput*          itsInput;
       string            itsName;
       DPBuffer          itsBuf;
       DPBuffer          itsBufTmp;
-      casa::String      itsStartChanStr;  //# startchan expression
-      casa::String      itsNrChanStr;     //# nchan expression
+      casacore::String      itsStartChanStr;  //# startchan expression
+      casacore::String      itsNrChanStr;     //# nchan expression
       bool              itsRemoveAnt;     //# Remove from ANTENNA table?
       BaselineSelection itsBaselines;
       uint              itsStartChan;

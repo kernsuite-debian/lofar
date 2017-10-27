@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceInfo.h 25297 2013-06-12 11:39:35Z diepen $
+//# $Id: SourceInfo.h 37340 2017-05-11 12:39:06Z dijkema $
 
 // @file
 // @brief Info about a source
@@ -67,7 +67,8 @@ namespace BBS {
     // <br> useRotationMeasure indicates that Q and U have to be calculated
     // using a rotation measure, polarization angle, and polarized fraction.
     SourceInfo (const string& name, Type type, const string& refType="J2000",
-                uint spectralIndexNTerms=0, double spectralIndexRefFreqHz=0.,
+                bool useLogarithmicSI=true, uint spectralIndexNTerms=0,
+                double spectralIndexRefFreqHz=0.,
                 bool useRotationMeasure=false);
 
     // Copy constructor.
@@ -88,14 +89,20 @@ namespace BBS {
     const string& getRefType() const
       { return itsRefType; }
 
+    // Whether the standard logarithmic spectral function is used (where the first
+    // terms is thus the SI) or a polynomial spectral function (as used in e.g.
+    // cleaning).
+    bool getHasLogarithmicSI() const
+      { return itsHasLogarithmicSI; }
+      
     // Get the number of terms in the spectral index function.
     // A value 0 means that the spectral index is not used.
-    uint getSpectralIndexNTerms() const
-      { return itsSpInxNTerms; }
+    uint getNSpectralTerms() const
+      { return itsNSpTerms; }
 
     // Get the reference frequency (in Hz) for the spectral index.
-    double getSpectralIndexRefFreq() const
-      { return itsSpInxRefFreq; }
+    double getSpectralTermsRefFreq() const
+      { return itsSpTermsRefFreq; }
 
     // Tell if Q,U are directly given or have to be calculated from
     // rotation measure, polarisation fraction and angle.
@@ -138,8 +145,10 @@ namespace BBS {
     string itsName;           // source name
     Type   itsType;           // source type
     string itsRefType;        // reference type
-    uint32 itsSpInxNTerms;    // nr of terms in the spectral index function
-    double itsSpInxRefFreq;   // reference frequency (Hz) for spectral index
+    uint32 itsNSpTerms;    // nr of terms in the spectral index function
+    double itsSpTermsRefFreq;   // reference frequency (Hz) for spectral index
+    bool itsHasLogarithmicSI; // Spectral indices are logarithmic terms
+                              // (false means as polynomials)
     bool   itsUseRotMeas;     // true=use RM,PolFrac,PolAngle; false=use Q,U
     double itsShapeletScaleI; // shapelet scale for I-flux
     double itsShapeletScaleQ;

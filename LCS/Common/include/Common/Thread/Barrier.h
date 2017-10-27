@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: Barrier.h 34983 2016-07-14 17:29:29Z amesfoort $
+//#  $Id: Barrier.h 36879 2017-03-17 16:19:45Z amesfoort $
 
 #ifndef LOFAR_LCS_COMMON_BARRIER_H
 #define LOFAR_LCS_COMMON_BARRIER_H
@@ -26,6 +26,12 @@
 #ifdef USE_THREADS
 
 #include <pthread.h>
+
+#if !_POSIX_BARRIERS  // OS X
+// Don't bother yet providing our own barrier impl. We hardly use it. Just warn.
+#warning _POSIX_BARRIERS not defined on this system: code using LOFAR::Barrier will not compile
+#else
+
 #include <Common/LofarLogger.h>
 #include <Common/SystemCallException.h>
 
@@ -73,6 +79,7 @@ private:
 
 } // namespace LOFAR
 
+#endif
 #endif
 
 #endif

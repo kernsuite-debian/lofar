@@ -17,8 +17,34 @@ Major axis:     0
 Minor axis:     0
 Orientation:    0
 Spectral index: 0  []
+Logarithmic SI: true
 SpInx RefFreq:  0
-Use RM:         0
+Use RM:         false
+PolAngle:       0
+PolFrac:        0
+RM:             0
+Shapelet I:     []
+Shapelet Q:     []
+Shapelet U:     []
+Shapelet V:     []
+
+Source name:    src1pol
+Patch name:     patch2a
+Source type:    0
+Reftype:        J2000
+RA:             1
+DEC:            -1
+I:              2
+Q:              0
+U:              0.2
+V:              0
+Major axis:     0
+Minor axis:     0
+Orientation:    0
+Spectral index: 1  [1.5]
+Logarithmic SI: false
+SpInx RefFreq:  1e+09
+Use RM:         true
 PolAngle:       0
 PolFrac:        0
 RM:             0
@@ -41,8 +67,9 @@ Major axis:     0
 Minor axis:     0
 Orientation:    0
 Spectral index: 0  []
+Logarithmic SI: true
 SpInx RefFreq:  0
-Use RM:         0
+Use RM:         false
 PolAngle:       0
 PolFrac:        0
 RM:             0
@@ -65,8 +92,9 @@ Major axis:     0
 Minor axis:     0
 Orientation:    0
 Spectral index: 0  []
+Logarithmic SI: true
 SpInx RefFreq:  0
-Use RM:         0
+Use RM:         false
 PolAngle:       0
 PolFrac:        0
 RM:             0

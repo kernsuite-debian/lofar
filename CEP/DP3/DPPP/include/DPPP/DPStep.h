@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPStep.h 32169 2015-08-12 18:59:29Z schoenmakers $
+//# $Id: DPStep.h 37166 2017-04-19 10:43:50Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -218,6 +218,9 @@ namespace LOFAR {
     class MultiResultStep: public DPStep
     {
     public:
+      // Define the shared pointer for this type.
+      typedef shared_ptr<MultiResultStep> ShPtr;
+
       // Create the object. By default it sets its next step to the NullStep.
       MultiResultStep (uint size);
 

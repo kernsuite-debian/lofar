@@ -1310,7 +1310,7 @@ namespace
         itsTimers[timer].stop();
     }
 
-    void Statistics::reset()
+    /*void Statistics::reset()
     {
         fill(itsCounters, itsCounters + N_Counter, 0);
 
@@ -1318,7 +1318,7 @@ namespace
         {
             itsTimers[i].reset();
         }
-    }
+    }*/
 
     string Statistics::counters() const
     {

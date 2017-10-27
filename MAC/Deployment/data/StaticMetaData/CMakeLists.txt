@@ -1,19 +1,21 @@
-# $Id: CMakeLists.txt 35890 2016-11-03 13:16:09Z schoenmakers $
+# $Id: CMakeLists.txt 37648 2017-06-16 08:29:25Z schoenmakers $
 
 lofar_package(StaticMetaData 1.0)
 
 lofar_add_sbin_scripts(createFiles)
 
 # These files end up in ${prefix}/etc
-file(GLOB sysconf_data *.conf *.conf.centos7)
-install(FILES
+file(GLOB sysconf_data RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" *.conf)
+lofar_add_sysconf_files(
   ${sysconf_data}
   StationInfo.dat
-  ControlInfo.dat
-  DESTINATION etc)
+  ControlInfo.dat)
 
 # These files end up in ${prefix}/etc/StaticMetaData
-file(GLOB staticmeta_data 
+# lofar_add_sysconf_files can only install in the same
+# relative dir as in the source, hence we've put a symlink
+# StaticMetaData -> . in this directory.
+file(GLOB staticmeta_data RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
   *.tmpl 
   *.test 
   *.dat 
@@ -23,6 +25,4 @@ file(GLOB staticmeta_data
   iHBADeltas/*.conf*
   AntennaFields/*.conf*
   Attenuation/*.conf*)
-install(FILES
-  ${staticmeta_data}
-  DESTINATION etc/StaticMetaData)
+lofar_add_sysconf_files(${staticmeta_data} DESTINATION StaticMetaData)

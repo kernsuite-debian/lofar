@@ -1,6 +1,6 @@
 # Alexander's variants file
 #
-# $Id: variants.dop256 35154 2016-08-22 13:24:02Z amesfoort $
+# $Id: variants.dop256 36940 2017-03-26 01:24:18Z amesfoort $
 
 option(USE_MPI       "Use MPI"       ON)
 option(USE_CUDA      "Use CUDA"      ON)
@@ -12,6 +12,9 @@ option(USE_CUDA      "Use CUDA"      ON)
 # The dirs thereunder must be lower case, e.g. unittest++/ or dal/
 
 set(QPID_ROOT_DIR /opt/qpid)
+
+# This is a Python runtime dependency and thus shouldn't be needed here. But let's fix the build for the mo.
+set(BDSF_ROOT_DIR  /usr/local/lib/python2.7/dist-packages)
 
 # Enable ccache symlinks to accelerate recompilation (/usr/bin/ccache).
 #set(GNU_C         /usr/lib64/ccache/gcc)

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Filter.cc 32169 2015-08-12 18:59:29Z schoenmakers $
+//# $Id: Filter.cc 37169 2017-04-19 12:41:21Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -28,13 +28,13 @@
 #include <DPPP/DPLogger.h>
 #include <Common/ParameterSet.h>
 
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/ExprNode.h>
-#include <tables/Tables/RecordGram.h>
-#include <casa/Containers/Record.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/TaQL/ExprNode.h>
+#include <casacore/tables/TaQL/RecordGram.h>
+#include <casacore/casa/Containers/Record.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {

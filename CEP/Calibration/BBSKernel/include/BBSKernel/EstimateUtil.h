@@ -244,7 +244,6 @@ void equate(const Location &start, const Location &end,
     typename T_CELL_PROCESSOR::StatisticsType &statistics,
     T_ITER cells)
 {
-    typedef typename T_CELL_PROCESSOR::CellType CellType;
     typedef typename T_CELL_PROCESSOR::StatisticsType StatisticsType;
 
     typedef vector<pair<size_t, size_t> >::const_iterator IteratorType;

@@ -9,7 +9,7 @@
 
 class SolverPlot:
 
-   def __init__(self, parent):
+    def __init__(self, parent):
         QtGui.QMainWindow.__init__(self, parent)
 
         self.setGeometry(300, 300, 350, 300)
@@ -22,7 +22,7 @@ class SolverPlot:
 
     
     # Create a histogram of "data"
-    def createHisto( data ):
+    def createHisto(self, data):
         n, bins, patches = pl.hist(data, 50, normed=1, histtype='stepfilled')
         pl.setp(patches, 'facecolor', 'g', 'alpha', 0.75) 
         return
@@ -37,18 +37,17 @@ class SolverPlot:
             self.canvas.print_figure(path, dpi=self.dpi)
             self.statusBar().showMessage('Saved to %s' % path, 2000)
 
-    def createSubplot(plot):
-
-        return
+    def createSubplot(self, plot):
+        pass
 
     # Create Plot on canvas
-    def plot():
+    def plot(self):
         ax.plot(list, "r+")    
         ax.set_title(colname)
         plt.draw()
         return
 
     # Plotting function, update on change of plotting parameters
-    def replot():
-        return
+    def replot(self):
+        pass
 

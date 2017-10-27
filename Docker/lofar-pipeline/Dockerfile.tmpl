@@ -6,11 +6,27 @@ FROM lofar-base:${LOFAR_TAG}
 ENV AOFLAGGER_VERSION=2.8.0
 
 # Run-time dependencies
-RUN apt-get update && apt-get install -y python-xmlrunner python-scipy liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libboost-signals${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libgsl2 openssh-client libboost-regex${BOOST_VERSION}.0 gettext-base rsync python-matplotlib ipython slurm-client && \
+RUN apt-get update && apt-get install -y python-xmlrunner python-scipy liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libboost-signals${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libgsl2 openssh-client libboost-regex${BOOST_VERSION}.0 gettext-base rsync python-matplotlib ipython slurm-client libhdf5-cpp-11 && \
     apt-get -y install python-pip python-dev && \
     pip install pyfits pywcs python-monetdb && \
     apt-get -y purge python-pip python-dev && \
     apt-get -y autoremove --purge
+
+#
+# *******************
+#   PyBDSF
+# *******************
+#
+
+ENV PYBDSF_VERSION=1.8.12
+
+RUN apt-get update && apt-get install -y git g++ gfortran libboost-python-dev python-setuptools && \
+    mkdir ${INSTALLDIR}/pybdsf && \
+    cd ${INSTALLDIR}/pybdsf && git clone https://github.com/lofar-astron/pybdsf && \
+    cd ${INSTALLDIR}/pybdsf/pybdsf && git checkout tags/v${PYBDSF_VERSION} && \
+    mkdir -p ${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ && \
+    export PYTHONPATH=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/pybdsf/lib64/python${PYTHON_VERSION}/site-packages:$PYTHONPATH && cd ${INSTALLDIR}/pybdsf/pybdsf && python setup.py install --prefix=${INSTALLDIR}/pybdsf/ && \
+    apt-get -y purge git g++ gfortran libboost-python-dev python-setuptools
 
 #
 # *******************
@@ -49,7 +65,7 @@ RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison fle
     cd ${INSTALLDIR}/lofar && \
     svn --non-interactive -q co -r ${LOFAR_REVISION} -N ${LOFAR_BRANCH_URL} src; \
     svn --non-interactive -q up src/CMake && \
-    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && cmake -DBUILD_PACKAGES=Offline -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASAREST_ROOT_DIR=${INSTALLDIR}/casarest/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DAOFLAGGER_ROOT_DIR=${INSTALLDIR}/aoflagger/ -DQPID_ROOT_DIR=/opt/qpid/ -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && cmake -DBUILD_PACKAGES=Offline -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASAREST_ROOT_DIR=${INSTALLDIR}/casarest/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DAOFLAGGER_ROOT_DIR=${INSTALLDIR}/aoflagger/ -DBDSF_ROOT_DIR=/opt/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ -DQPID_ROOT_DIR=/opt/qpid/ -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && sed -i '29,31d' include/ApplCommon/PosixTime.h && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make -j ${J} && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make install && \
@@ -59,3 +75,6 @@ RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison fle
     bash -c "rm -rf ${INSTALLDIR}/lofar/{build,src}" && \
     apt-get purge -y subversion cmake g++ gfortran bison flex liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python-dev python-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libgsl-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
     apt-get autoremove -y --purge
+
+# install additional bashrc files
+COPY ["bashrc.d",  "${INSTALLDIR}/bashrc.d/"]

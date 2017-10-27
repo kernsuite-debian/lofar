@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceInfo.cc 25297 2013-06-12 11:39:35Z diepen $
+//# $Id: SourceInfo.cc 37340 2017-05-11 12:39:06Z dijkema $
 
 // @file
 // @brief Info about a source
@@ -40,14 +40,16 @@ namespace BBS {
 
   SourceInfo::SourceInfo (const string& name, Type type,
                           const string& refType,
-                          uint spectralIndexNTerms,
-                          double spectralIndexRefFreqHz,
+                          bool useLogarithmicSI,
+                          uint nSpectralTerms,
+                          double spectralTermsRefFreqHz,
                           bool useRotationMeasure)
     : itsName           (name),
       itsType           (type),
       itsRefType        (refType),
-      itsSpInxNTerms    (spectralIndexNTerms),
-      itsSpInxRefFreq   (spectralIndexRefFreqHz),
+      itsNSpTerms    (nSpectralTerms),
+      itsSpTermsRefFreq   (spectralTermsRefFreqHz),
+      itsHasLogarithmicSI(useLogarithmicSI),
       itsUseRotMeas     (useRotationMeasure),
       itsShapeletScaleI (0),
       itsShapeletScaleQ (0),
@@ -66,8 +68,9 @@ namespace BBS {
       itsName           = that.itsName;
       itsType           = that.itsType;
       itsRefType        = that.itsRefType;
-      itsSpInxNTerms    = that.itsSpInxNTerms;
-      itsSpInxRefFreq   = that.itsSpInxRefFreq;
+      itsNSpTerms    = that.itsNSpTerms;
+      itsSpTermsRefFreq   = that.itsSpTermsRefFreq;
+      itsHasLogarithmicSI = that.itsHasLogarithmicSI;
       itsUseRotMeas     = that.itsUseRotMeas;
       itsShapeletScaleI = that.itsShapeletScaleI;
       itsShapeletScaleQ = that.itsShapeletScaleQ;
@@ -103,9 +106,11 @@ namespace BBS {
 
   void SourceInfo::write (BlobOStream& bos) const
   {
-    int16 version = 1;
+    int16 version = 2;
+      // TODO itsHasLogarithmicSI has to be written in new blob version
     bos << version << itsName << int16(itsType) << itsRefType
-        << itsSpInxNTerms << itsSpInxRefFreq << itsUseRotMeas;
+        << itsHasLogarithmicSI
+        << itsNSpTerms << itsSpTermsRefFreq << itsUseRotMeas;
     if (itsType == SHAPELET) {
       bos << itsShapeletScaleI << itsShapeletScaleQ
           << itsShapeletScaleU << itsShapeletScaleV
@@ -118,9 +123,14 @@ namespace BBS {
   void SourceInfo::read (BlobIStream& bis)
   {
     int16 version, type;
-    bis >> version >> itsName >> type >> itsRefType
-        >> itsSpInxNTerms >> itsSpInxRefFreq >> itsUseRotMeas;
-    ASSERT (version == 1);
+    bis >> version >> itsName >> type >> itsRefType;
+    ASSERT (version == 1 || version == 2);
+    if (version >= 2) {
+     bis >> itsHasLogarithmicSI;
+    } else {
+     itsHasLogarithmicSI = true;
+    }
+    bis >> itsNSpTerms >> itsSpTermsRefFreq >> itsUseRotMeas;
     // Convert to enum.
     itsType = Type(type);
     if (itsType == SHAPELET) {

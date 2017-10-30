@@ -1,3 +1,9 @@
+lofar (3.0.2-1kern1) xenial; urgency=medium
+
+  * add conflicts with old packages
+
+ -- KERN packaging <packaging@kernsuite.info>  Mon, 30 Oct 2017 12:30:17 +0200
+
 lofar (3.0.2-1) xenial; urgency=medium
 
   * new upstream release

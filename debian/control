@@ -1,7 +1,7 @@
 Source: lofar
 Section: science
 Priority: extra
-Maintainer: Gijs Molenaar <gijs@pythonic.nl>
+Maintainer: KERN packaging <packaging@kernsuite.info>
 Build-Depends: debhelper (>= 8.0.0),
  dh-python,
  cmake,
@@ -114,7 +114,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libapplcommon
+Replaces: libapplcommon ( << 3.0.3 )
+Breaks: libapplcommon ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libbbscontrol0
@@ -123,7 +124,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libbbscontrol
+Replaces: libbbscontrol ( << 3.0.3 )
+Breaks: libbbscontrol ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libbbskernel0
@@ -132,7 +134,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libbbskernel
+Replaces: libbbskernel ( << 3.0.3 )
+Breaks: libbbskernel ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libblob0
@@ -141,7 +144,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libblob
+Replaces: libblob ( << 3.0.3 )
+Breaks: libblob ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libcommon0
@@ -159,7 +163,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libdocker
+Replaces: libdocker ( << 3.0.3 )
+Breaks: libdocker ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libdppp0
@@ -168,7 +173,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libdppp
+Replaces: libdppp ( << 3.0.3 )
+Breaks: libdppp ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libdppp-aoflag0
@@ -186,7 +192,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libdppp-ddecal
+Replaces: libdppp-ddecal ( << 3.0.3 )
+Breaks: libdppp-ddecal ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libdppp-pythondppp0
@@ -195,7 +202,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libdppp-pythondppp
+Replaces: libdppp-pythondppp ( << 3.0.3 )
+Breaks: libdppp-pythondppp ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libelementresponse0
@@ -204,7 +212,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libelementresponse
+Replaces: libelementresponse ( << 3.0.3 )
+Breaks: libelementresponse ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblmwcommon0
@@ -213,7 +222,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblmwcommon
+Replaces: liblmwcommon ( << 3.0.3 )
+Breaks: liblmwcommon ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblofar-pyparameterset0
@@ -222,7 +232,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblofar-pyparameterset
+Replaces: liblofar-pyparameterset ( << 3.0.3 )
+Breaks: liblofar-pyparameterset ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblofar-pyparmdb0
@@ -231,7 +242,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblofar-pyparmdb
+Replaces: liblofar-pyparmdb ( << 3.0.3 )
+Breaks: liblofar-pyparmdb ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblofar-pystationresponse0
@@ -240,7 +252,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblofar-pystationresponse
+Replaces: liblofar-pystationresponse ( << 3.0.3 )
+Breaks: liblofar-pystationresponse ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblofar-pytools0
@@ -249,7 +262,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblofar-pytools
+Replaces: liblofar-pytools ( << 3.0.3 )
+Breaks: liblofar-pytools ( << 3.0.3 )
 Description: a lofar lib
 
 Package: liblofarstman0
@@ -258,7 +272,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: liblofarstman
+Replaces: liblofarstman ( << 3.0.3 )
+Breaks: liblofarstman ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libmessagebus0
@@ -267,7 +282,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libmessagebus
+Replaces: libmessagebus ( << 3.0.3 )
+Breaks: libmessagebus ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libms0
@@ -276,7 +292,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libms
+Replaces: libms ( << 3.0.3 )
+Breaks: libms ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libmslofar0
@@ -285,7 +302,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libmslofar
+Replaces: libmslofar ( << 3.0.3 )
+Breaks: libmslofar ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libparmdb0
@@ -294,7 +312,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libparmdb
+Replaces: libparmdb ( << 3.0.3 )
+Breaks: libparmdb ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libplc0
@@ -303,7 +322,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libplc
+Replaces: libplc ( << 3.0.3 )
+Breaks: libplc ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libspwcombine0
@@ -312,7 +332,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libspwcombine
+Replaces: libspwcombine ( << 3.0.3 )
+Breaks: libspwcombine ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libstationresponse0
@@ -321,7 +342,8 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libstationresponse
+Replaces: libstationresponse ( << 3.0.3 )
+Breaks: libstationresponse ( << 3.0.3 )
 Description: a lofar lib
 
 Package: libtransport0
@@ -330,6 +352,7 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Replaces: libtransport
+Replaces: libtransport ( << 3.0.3 )
+Breaks: libtransport ( << 3.0.3 )
 Description: a lofar lib
 

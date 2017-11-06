@@ -1,3 +1,10 @@
+lofar (3.0.3-1kern1) xenial; urgency=medium
+
+  * Imported Upstream version 3.0.3
+  * add breaks old packages statements
+
+ -- KERN packaging <packaging@kernsuite.info>  Mon, 06 Nov 2017 19:08:16 +0200
+
 lofar (3.0.2-1kern1) xenial; urgency=medium
 
   * add conflicts with old packages

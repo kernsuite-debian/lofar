@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 38611 2017-10-10 09:53:34Z beukema $
+# $Id: CMakeLists.txt 38968 2018-01-26 11:31:15Z dijkema $
 
 lofar_add_package(DPPP)
 lofar_add_package(TestDynDPPP)

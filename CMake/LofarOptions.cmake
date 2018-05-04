@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarOptions.cmake 30919 2015-02-05 15:26:22Z amesfoort $
+#  $Id: LofarOptions.cmake 39122 2018-02-21 14:06:03Z jurges $
 
 if(NOT DEFINED LOFAR_OPTIONS_INCLUDED)
 
@@ -72,7 +72,14 @@ if(NOT DEFINED LOFAR_OPTIONS_INCLUDED)
   endif(BUILD_STATIC_EXECUTABLES)
   
   if(USE_BACKTRACE)
-    lofar_find_package(Backtrace REQUIRED)
+    IF(BUILD_DOCUMENTATION)
+      lofar_find_package(Backtrace)
+      IF(NOT HAVE_BACKTRACE)
+        message(WARNING "Removed REQUIRED option while looking for package 'Backtrace' because BUILD_DOCUMENTATION=${BUILD_DOCUMENTATION}. This allows cmake to continue configuring so you could make the doc, but building the code might not be possible.")
+      ENDIF()
+    ELSE()
+      lofar_find_package(Backtrace REQUIRED)
+    ENDIF(BUILD_DOCUMENTATION)
   else(USE_BACKTRACE)
     set(HAVE_BACKTRACE OFF)
   endif(USE_BACKTRACE)

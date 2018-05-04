@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 31155 2015-03-09 12:41:29Z mol $
+# $Id: CMakeLists.txt 39416 2018-04-20 08:59:00Z renting $
 
 include(PythonInstall)
 
@@ -34,4 +34,5 @@ python_install(
   support/utilities.py
   support/xmllogging.py
   support/usagestats.py
+  support/feedback_version.py
   DESTINATION lofarpipe)

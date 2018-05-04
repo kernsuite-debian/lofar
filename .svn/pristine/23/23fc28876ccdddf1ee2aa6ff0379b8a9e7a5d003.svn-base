@@ -1,0 +1,2 @@
+# Write MeasurementSets using fewer files, and 4MB blocks
+tables.storage.type = multifile

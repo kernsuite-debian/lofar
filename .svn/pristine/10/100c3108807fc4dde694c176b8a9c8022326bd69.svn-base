@@ -1,0 +1,33 @@
+# Alexander's variants file
+#
+# $Id$
+
+option(USE_MPI       "Use MPI"       ON)
+option(USE_CUDA      "Use CUDA"      ON)
+#option(USE_OPENCL    "Use OpenCL"    OFF)
+#set(GNU_COMPILE_DEFINITIONS   -DCL_USE_DEPRECATED_OPENCL_1_1_APIS)
+#set(CLANG_COMPILE_DEFINITIONS -DCL_USE_DEPRECATED_OPENCL_1_1_APIS)
+
+# Default search path for LOFAR deps (see CMake/variants/variants): /opt/lofar/external:/usr/local
+# The dirs thereunder must be lower case, e.g. unittest++/ or dal/
+
+set(QPID_ROOT_DIR /opt/qpid)
+
+# This is a Python runtime dependency and thus shouldn't be needed here. But let's fix the build for the mo.
+set(BDSF_ROOT_DIR  /usr/local/lib/python2.7/dist-packages)
+
+# Enable ccache symlinks to accelerate recompilation (/usr/bin/ccache).
+#set(GNU_C         /usr/lib64/ccache/gcc)
+#set(GNU_CXX       /usr/lib64/ccache/g++)
+#set(GNU_Fortran   /usr/bin/gfortran)
+#set(GNU_ASM       /usr/lib64/ccache/gcc)
+
+# CUDA 5.0 headers reject gcc > 4.6. Force 4.6 (see cuda/include/host_config.h)
+# CUDA 6.5 headers reject gcc > 4.8. Force 4.8
+# CUDA 7.0 headers reject gcc > 4.9. Force 4.9
+# This is only needed for 2 COBALT tests that configure/compile a .cu file with nvcc at cmake/make time.
+#set(GNU_C         /usr/bin/gcc-4.9)
+#set(GNU_CXX       /usr/bin/g++-4.9)
+#set(GNU_Fortran   /usr/bin/gfortran-4.9)
+#set(GNU_ASM       /usr/bin/gcc-4.9)
+

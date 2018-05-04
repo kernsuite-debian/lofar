@@ -1,0 +1,8 @@
+# Station software and the like apparently cannot (yet) handle shared libs.
+# AS: put under comment as LOFAR general rule is to use shared libs now. 
+#option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
+set(WINCC_ROOT_DIR /opt/WinCC_OA/3.14)
+set(CASACORE_ROOT_DIR "/opt/casacore")
+#set(QPID_ROOT_DIR /opt/qpid)
+

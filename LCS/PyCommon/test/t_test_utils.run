@@ -1,0 +1,4 @@
+#!/bin/bash
+source python-coverage.sh
+
+python_coverage_test test_utils t_test_utils.py

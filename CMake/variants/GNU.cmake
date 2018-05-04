@@ -1,6 +1,6 @@
 # Definitions file for the GNU compiler suite.
 #
-# $Id: GNU.cmake 35155 2016-08-22 13:25:44Z amesfoort $
+# $Id: GNU.cmake 39220 2018-03-16 12:00:48Z jurges $
 
 
 # Compiler suite
@@ -21,11 +21,11 @@ set(GNU_C_FLAGS_DEBUG    "-g")
 set(GNU_C_FLAGS_OPT      "-g -O2")
 set(GNU_C_FLAGS_OPT3     "-g -O3")
 set(GNU_C_FLAGS_OPTARCH  "-g -O3 -march=native")
-set(GNU_CXX_FLAGS        "-W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
-set(GNU_CXX_FLAGS_DEBUG  "-g")
-set(GNU_CXX_FLAGS_OPT    "-g -O2")
-set(GNU_CXX_FLAGS_OPT3   "-g -O3")
-set(GNU_CXX_FLAGS_OPTARCH "-g -O3 -march=native")
+set(GNU_CXX_FLAGS        "-std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 -W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
+set(GNU_CXX_FLAGS_DEBUG  "-std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 -g")
+set(GNU_CXX_FLAGS_OPT    "-std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 -g -O2")
+set(GNU_CXX_FLAGS_OPT3   "-std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 -g -O3")
+set(GNU_CXX_FLAGS_OPTARCH "-std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 -g -O3 -march=native")
 set(GNU_EXE_LINKER_FLAGS)
 set(GNU_EXE_LINKER_FLAGS_DEBUG)
 set(GNU_EXE_LINKER_FLAGS_OPT)

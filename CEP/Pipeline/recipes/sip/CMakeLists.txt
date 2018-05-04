@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35908 2016-11-04 15:41:28Z mol $
+# $Id: CMakeLists.txt 39390 2018-04-16 11:43:17Z klazema $
 
 include(PythonInstall)
 
@@ -143,3 +143,4 @@ configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/tasks.cfg.CEP4.in
   ${CMAKE_CURRENT_BINARY_DIR}/tasks.cfg.CEP4)
 
+add_subdirectory(helpers/test/)

@@ -1,0 +1,18 @@
+ServerName 127.0.0.1
+Listen 8000
+
+WSGIScriptAlias / /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/wsgi.py 
+
+Alias /triggers/static/ /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/static/
+<Location "/triggers/static/">
+    Options -Indexes
+</Location>
+
+WSGIPythonPath /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/
+<Directory /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/ >
+    <Files wsgi.py>
+        Require all granted
+    </Files>
+</Directory>
+
+WSGIPassAuthorization On

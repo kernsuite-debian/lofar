@@ -9,6 +9,11 @@ else
     echo "example:"
     echo " $ $0 1.10.0"
     echo
+    echo Find the latest release here:  https://svn.astron.nl/LOFAR/tags/
+    echo 
+    echo make sure you have installed:
+    echo    subversion aoflagger-dev flex bison libxml2-dev libpng-dev python-psycopg2 python-xmlrunner
+    echo
     exit 1
 fi
 

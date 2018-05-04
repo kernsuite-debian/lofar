@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35996 2016-11-15 18:29:20Z amesfoort $
+# $Id: CMakeLists.txt 39220 2018-03-16 12:00:48Z jurges $
 
 include(LofarCTest)
 
@@ -26,7 +26,6 @@ lofar_add_test(tKVpair tKVpair.cc)
 lofar_add_test(tSingleton tSingleton.cc)
 lofar_add_test(tObjectFactory tObjectFactory.cc Shapes.cc Coordinates.cc)
 lofar_add_test(tSystemUtil tSystemUtil.cc)
-lofar_add_test(tSaxpy tSaxpy.cc)
 lofar_add_test(tPrettyUnits tPrettyUnits.cc)
 lofar_add_test(tParameterValue tParameterValue.cc)
 lofar_add_test(tParameterRecord tParameterRecord.cc)

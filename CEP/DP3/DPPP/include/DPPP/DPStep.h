@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPStep.h 37166 2017-04-19 10:43:50Z dijkema $
+//# $Id: DPStep.h 39147 2018-02-27 14:06:09Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -116,7 +116,7 @@ namespace LOFAR {
       { return itsPrevStep; }
 
       // Set the next step.
-      void setNextStep (DPStep::ShPtr nextStep)
+      virtual void setNextStep (DPStep::ShPtr nextStep)
         { itsNextStep = nextStep;
           nextStep->setPrevStep(this);
         }
@@ -129,11 +129,11 @@ namespace LOFAR {
       DPInfo& info()
         { return itsInfo; }
 
-    private:
       // Update the general info (called by setInfo).
       // The default implementation copies the info.
       virtual void updateInfo (const DPInfo&);
 
+    private:
       //# Data members.
       DPStep::ShPtr itsNextStep;
       DPStep*       itsPrevStep; // Normal pointer for back links, prevent
@@ -177,6 +177,7 @@ namespace LOFAR {
     class ResultStep: public DPStep
     {
     public:
+      typedef shared_ptr<ResultStep> ShPtr;
       // Create the object. By default it sets its next step to the NullStep.
       ResultStep();
 

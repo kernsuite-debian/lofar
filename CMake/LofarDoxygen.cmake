@@ -1,6 +1,6 @@
 # - Generate script to configure and run the code documentation tool Doxygen.
 
-# $Id: LofarDoxygen.cmake 38611 2017-10-10 09:53:34Z beukema $
+# $Id: LofarDoxygen.cmake 38670 2017-10-17 09:38:03Z beukema $
 #
 # Copyright (C) 2010
 # ASTRON (Netherlands Institute for Radio Astronomy)
@@ -21,6 +21,7 @@
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
 include(LofarMacros)
+include(FindPythonModule)
 
 # Only process this file when we're ate the top-level source directory.
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")

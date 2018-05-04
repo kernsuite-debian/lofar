@@ -1,0 +1,2 @@
+# Fix for Debian (FindPython tends to settle on /usr/bin/python2.6, which is a "minimal" python install)
+set(PYTHON_EXECUTABLE "/usr/bin/python2.7")

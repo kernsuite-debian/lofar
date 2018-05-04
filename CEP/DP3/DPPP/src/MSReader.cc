@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSReader.cc 38064 2017-07-27 08:31:03Z dijkema $
+//# $Id: MSReader.cc 39363 2018-04-10 09:19:22Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -153,13 +153,13 @@ namespace LOFAR {
         }
         itsLastTime = qtime.getValue("s");
       }
-      if (nTimes > 0) {
-        itsLastTime = itsFirstTime + (nTimes-1) * itsTimeInterval;
-      }
       ASSERT (itsLastTime >= itsFirstTime);
       // If needed, skip the first times in the MS.
       // It also sets itsFirstTime properly (round to time/interval in MS).
       skipFirstTimes();
+      if (nTimes > 0) {
+        itsLastTime = itsFirstTime + (nTimes-1) * itsTimeInterval;
+      }
       itsNextTime  = itsFirstTime;
       itsStartTime = itsFirstTime - 0.5*itsTimeInterval;
       // Parse the chan expressions.
@@ -558,12 +558,9 @@ namespace LOFAR {
       ROArrayMeasColumn<MDirection> fldcol2 (fldtab, "DELAY_DIR");
       phaseCenter = *(fldcol1(0).data());
       delayCenter = *(fldcol2(0).data());
-      if (fldtab.tableDesc().isColumn ("LOFAR_TILE_BEAM_DIR")) {
-        ROArrayMeasColumn<MDirection> fldcol3 (fldtab, "LOFAR_TILE_BEAM_DIR");
-        tileBeamDir = *(fldcol3(0).data());
-      } else {
-        tileBeamDir = delayCenter;
-      }
+
+      tileBeamDir = StationResponse::readTileBeamDirection(itsMS);
+
       // Get the array position using the telescope name from the OBSERVATION
       // subtable. 
       Table obstab (itsMS.keywordSet().asTable ("OBSERVATION"));

@@ -31,7 +31,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarFindPackage.cmake 36994 2017-03-30 21:17:40Z loose $
+#  $Id: LofarFindPackage.cmake 39122 2018-02-21 14:06:03Z jurges $
 
 include(LofarMacros)
 
@@ -41,7 +41,6 @@ function(lofar_find_package _package)
   string(TOUPPER ${_package} _PKG)
 
   if(NOT ${_PKG}_FOUND)
-
     # Set CMAKE_PREFIX_PATH, used by the find_xxx() commands, to the package's
     # root directory ${_PKG}_ROOT_DIR, if defined; otherwise set it to the
     # LOFAR search path.
@@ -50,6 +49,19 @@ function(lofar_find_package _package)
     else(${_PKG}_ROOT_DIR)
       lofar_search_path(CMAKE_PREFIX_PATH ${_pkg})
     endif(${_PKG}_ROOT_DIR)
+
+    list(FIND ARGV REQUIRED is_required)
+
+    IF(BUILD_DOCUMENTATION)
+      IF(is_required GREATER -1)
+          # Removing REQUIRED option while looking for package.
+          # This allows cmake to continue configuring so you could make the doc,
+          # but building the code might not be possible.
+          # In case the package is not found, a WARNING is issued below.
+          list(REMOVE_ITEM ARGV REQUIRED)
+          list(REMOVE_ITEM ARGN REQUIRED)
+      ENDIF()
+    ENDIF(BUILD_DOCUMENTATION)
 
     # Search the package using the Find${_package}.cmake module, unless the
     # package have been disabled explicitly.
@@ -60,10 +72,10 @@ function(lofar_find_package _package)
         find_package(${ARGV} QUIET)
       endif(LOFAR_VERBOSE_CONFIGURE)
     else(NOT DEFINED USE_${_PKG} OR USE_${_PKG})
-      list(FIND ARGN REQUIRED is_required)
       if(is_required GREATER -1)
-        message(SEND_ERROR 
-          "Package ${_package} is required, but has been disabled explicitly!")
+        IF(NOT BUILD_DOCUMENTATION)
+          message(SEND_ERROR "Package ${_package} is required, but has been disabled explicitly!")
+        ENDIF(NOT BUILD_DOCUMENTATION)
       else(is_required GREATER -1)
         message(STATUS "Package ${_package} has been disabled explicitly")
       endif(is_required GREATER -1)
@@ -88,6 +100,9 @@ function(lofar_find_package _package)
         PARENT_SCOPE)
     else(${_PKG}_FOUND)
       set(HAVE_${_PKG} FALSE CACHE INTERNAL "Have ${_package}?")
+      if(is_required GREATER -1)
+          message(WARNING "Removed REQUIRED option while looking for package '${_package}' because BUILD_DOCUMENTATION=${BUILD_DOCUMENTATION}. This allows cmake to continue configuring so you could make the doc, but building the code might not be possible.")
+      endif(is_required GREATER -1)
     endif(${_PKG}_FOUND)
     set(${_PKG}_FOUND ${${_PKG}_FOUND} PARENT_SCOPE)
 

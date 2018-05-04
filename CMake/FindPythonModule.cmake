@@ -23,7 +23,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPythonModule.cmake 36926 2017-03-22 12:48:58Z dijkema $
+# $Id: FindPythonModule.cmake 39122 2018-02-21 14:06:03Z jurges $
 
 # Search for the Python interpreter.
 find_package(PythonInterp)
@@ -42,9 +42,23 @@ find_package(PythonInterp)
 # -----------------------------------------------------------------------------
 include(CMakeParseArguments)
 
-macro(find_python_module _module)
+function(find_python_module _module)
   # Name of module in uppercase.
   string(TOUPPER "${_module}" _MODULE)
+
+  list(FIND ARGV REQUIRED is_required)
+
+  IF(BUILD_DOCUMENTATION)
+    IF(is_required GREATER -1)
+        # Removing REQUIRED option while looking for package.
+        # This allows cmake to continue configuring so you could make the doc,
+        # but building the code might not be possible.
+        # In case the package is not found, a WARNING is issued below.
+        list(REMOVE_ITEM ARGV REQUIRED)
+        list(REMOVE_ITEM ARGN REQUIRED)
+    ENDIF()
+  ENDIF(BUILD_DOCUMENTATION)
+
   cmake_parse_arguments(PYTHON_${_MODULE}_FIND
                         "REQUIRED"
                         "HINTS"
@@ -83,4 +97,10 @@ macro(find_python_module _module)
   find_package_handle_standard_args(PYTHON_${_MODULE} DEFAULT_MSG 
     PYTHON_${_MODULE})
 
-endmacro()
+  if(NOT PYTHON_${_MODULE}_FOUND)
+    if(is_required GREATER -1)
+      message(WARNING "Removed REQUIRED option while looking for python module '${_module}' because BUILD_DOCUMENTATION=${BUILD_DOCUMENTATION}. This allows cmake to continue configuring so you could make the doc, but building the code might not be possible.")
+    endif(is_required GREATER -1)
+  endif(NOT PYTHON_${_MODULE}_FOUND)
+
+endfunction()

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 38611 2017-10-10 09:53:34Z beukema $
+# $Id: CMakeLists.txt 38972 2018-01-30 14:17:21Z schaap $
 
 lofar_add_package(ACC)            # Application Configuration & Control
 lofar_add_package(AMC)            # Astronomical Measures Conversions
@@ -19,4 +19,5 @@ lofar_add_package(LofarStMan)     # Storage Manager for the main table of a LOFA
 lofar_add_package(PyCommon)       # Python package with common (lofar) modules
 lofar_add_package(PyStationModel) # Python package with station model modules
 lofar_add_package(PyServiceSkeleton)
+lofar_add_package(WinCCWrapper)   # Wrapper around WinCC API to read/write to datapoints from/to WinCC database, includes boost python bindings
 

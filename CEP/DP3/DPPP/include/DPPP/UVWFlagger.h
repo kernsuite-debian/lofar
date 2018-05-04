@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: UVWFlagger.h 37169 2017-04-19 12:41:21Z dijkema $
+//# $Id: UVWFlagger.h 39147 2018-02-27 14:06:09Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -110,6 +110,10 @@ namespace LOFAR {
       string               itsName;
       DPBuffer             itsBuffer;
       uint                 itsNTimes;
+
+      // If nothing is filled in, this step just passes through data
+      bool                 itsIsDegenerate;
+
       casacore::Vector<double> itsRecWavel; //# reciprokes of wavelengths
       vector<double>       itsRangeUVm; //# UV ranges (in m) to be flagged
       vector<double>       itsRangeUm;  //# U  ranges (in m) to be flagged

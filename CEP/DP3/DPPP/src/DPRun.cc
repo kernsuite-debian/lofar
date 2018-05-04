@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPRun.cc 38299 2017-09-05 11:16:56Z dijkema $
+//# $Id: DPRun.cc 39071 2018-02-08 15:50:02Z dijkema $
 //#
 //# @author Ger van Diepen
 
@@ -43,6 +43,7 @@
 #include <DPPP/Predict.h>
 #include <DPPP/H5ParmPredict.h>
 #include <DPPP/GainCal.h>
+#include <DPPP/Upsample.h>
 #include <DPPP/Filter.h>
 #include <DPPP/Counter.h>
 #include <DPPP/ProgressMeter.h>
@@ -284,8 +285,10 @@ namespace LOFAR {
         string prefix(*iter + '.');
         // The alphabetic part of the name is the default step type.
         // This allows names like average1, out3.
-        int res = casacore::Regex("[a-z]+").match((*iter).c_str(), (*iter).size());
-        string defaulttype = (*iter).substr(0,res);
+        string defaulttype = (*iter);
+        while (defaulttype.size()>0 && std::isdigit(*defaulttype.rbegin())) {
+          defaulttype.resize(defaulttype.size()-1);
+        }
 
         string type = toLower(parset.getString (prefix+"type", defaulttype));
         // Define correct name for AOFlagger synonyms.
@@ -324,6 +327,8 @@ namespace LOFAR {
           step = DPStep::ShPtr(new ApplyBeam (reader, parset, prefix));
         } else if (type == "gaincal"  ||  type == "calibrate") {
           step = DPStep::ShPtr(new GainCal (reader, parset, prefix));
+        } else if (type == "upsample") {
+          step = DPStep::ShPtr(new Upsample (reader, parset, prefix));
         } else if (type == "out" || type=="output") {
           step = makeOutputStep(reader, parset, prefix,
                                 inNames.size()>1, currentMSName);

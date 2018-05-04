@@ -1,0 +1,47 @@
+# Definitions file for the GNUCXX11 compiler suite.
+#
+# $Id$
+
+
+# Compiler suite
+set(LOFAR_COMPILER_SUITES GNUCXX11)
+
+# Build variants
+set(LOFAR_BUILD_VARIANTS DEBUG OPT OPT3 OPTARCH)
+
+# GNU compiler suite
+set(GNUCXX11_COMPILERS GNUCXX11_C GNUCXX11_CXX GNUCXX11_Fortran GNUCXX11_ASM)
+set(GNUCXX11_C         /usr/bin/gcc)      # GNU C compiler
+set(GNUCXX11_CXX       /usr/bin/g++)      # GNU C++ compiler
+set(GNUCXX11_Fortran   /usr/bin/gfortran) # GNU Fortran compiler
+set(GNUCXX11_ASM       /usr/bin/gcc)      # GNU assembler
+
+set(GNUCXX11_C_FLAGS          "-W -Wall -Wno-unknown-pragmas")
+set(GNUCXX11_C_FLAGS_DEBUG    "-g")
+set(GNUCXX11_C_FLAGS_OPT      "-g -O2")
+set(GNUCXX11_C_FLAGS_OPT3     "-g -O3")
+set(GNUCXX11_C_FLAGS_OPTARCH  "-g -O3 -march=native")
+set(GNUCXX11_CXX_FLAGS        "-std=gnu++11 -W -Wall -Woverloaded-virtual -Wno-unknown-pragmas")
+set(GNUCXX11_CXX_FLAGS_DEBUG  "-g")
+set(GNUCXX11_CXX_FLAGS_OPT    "-g -O2")
+set(GNUCXX11_CXX_FLAGS_OPT3   "-g -O3")
+set(GNUCXX11_CXX_FLAGS_OPTARCH "-g -O3 -march=native")
+set(GNUCXX11_EXE_LINKER_FLAGS)
+set(GNUCXX11_EXE_LINKER_FLAGS_DEBUG)
+set(GNUCXX11_EXE_LINKER_FLAGS_OPT)
+set(GNUCXX11_EXE_LINKER_FLAGS_OPT3)
+set(GNUCXX11_EXE_LINKER_FLAGS_OPTARCH)
+set(GNUCXX11_SHARED_LINKER_FLAGS)
+set(GNUCXX11_SHARED_LINKER_FLAGS_DEBUG)
+set(GNUCXX11_SHARED_LINKER_FLAGS_OPT)
+set(GNUCXX11_SHARED_LINKER_FLAGS_OPT3)
+set(GNUCXX11_SHARED_LINKER_FLAGS_OPTARCH)
+set(GNUCXX11_COMPILE_DEFINITIONS)
+set(GNUCXX11_COMPILE_DEFINITIONS_DEBUG 
+                         "-DLOFAR_DEBUG -DENABLE_DBGASSERT -DENABLE_TRACER")
+set(GNUCXX11_COMPILE_DEFINITIONS_OPT)
+set(GNUCXX11_COMPILE_DEFINITIONS_OPT3
+                         "-DNDEBUG -DDISABLE_DEBUG_OUTPUT")
+set(GNUCXX11_COMPILE_DEFINITIONS_OPTARCH
+                         "-DNDEBUG -DDISABLE_DEBUG_OUTPUT")
+

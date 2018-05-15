@@ -1,3 +1,19 @@
+lofar (3.1.1-1kern1) bionic; urgency=medium
+
+  [ Gijs Molenaar ]
+  * prepare for 18.04
+  * New upstream version 3.1.1
+  * fix aoflagger linking
+
+ -- KERN packaging <packaging@kernsuite.info>  Tue, 15 May 2018 14:55:51 +0200
+
+lofar (3.1.1-1kern1) bionic; urgency=medium
+
+  * prepare for 18.04
+  * New upstream version 3.1.1
+
+ -- KERN packaging <packaging@kernsuite.info>  Fri, 04 May 2018 15:16:44 +0200
+
 lofar (3.0.3-1kern1) xenial; urgency=medium
 
   * Imported Upstream version 3.0.3

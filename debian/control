@@ -38,7 +38,10 @@ Build-Depends: debhelper (>= 8.0.0),
  python-casacore,
  python-numpy,
  python-pywcs (>= 1.11) | python-astropy, 
- python-xmlrunner
+ python-xmlrunner,
+ libglibmm-2.4-dev,
+ libgtkmm-3.0-dev,
+ libpython2.7-dev
 Standards-Version: 3.9.7
 Homepage: http://www.lofar.org
 X-Python-Version: 2.7

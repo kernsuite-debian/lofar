@@ -31,3 +31,8 @@ libplc0/
 libspwcombine0/
 libstationresponse0/
 libtransport0/
+files
+lofar-dev/
+lofar-doc/
+lofar/
+

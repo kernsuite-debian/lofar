@@ -61,14 +61,13 @@ Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          ${python:Depends},
-         python-pywcs (>= 1.11),
          ipython,
          python-pyfits,
          python-scipy,
          python-casacore,
-         python-qt4,
          python-sip,
          python-matplotlib
+Recommends: python-qt4
 Description: LOFAR Python packages
  
 Package: lofar-doc

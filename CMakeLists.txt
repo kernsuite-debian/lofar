@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 38611 2017-10-10 09:53:34Z beukema $
+# $Id: CMakeLists.txt 39773 2018-06-26 07:36:09Z schaap $
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -26,6 +26,7 @@ if(NOT DEFINED BUILD_PACKAGES)
   lofar_add_package(MAC)
   lofar_add_package(LCU)
   lofar_add_package(LTA)
+  lofar_add_package(QA)
   lofar_add_package(SubSystems)
 else(NOT DEFINED BUILD_PACKAGES)
   separate_arguments(BUILD_PACKAGES)

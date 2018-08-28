@@ -17,31 +17,31 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: datetimeutils.py 37773 2017-07-05 07:11:30Z schaap $
+# $Id: datetimeutils.py 39896 2018-07-18 13:38:41Z schaap $
 
 from datetime import datetime, timedelta
 import sys
 import os
 
 
-def monthRanges(min_date, max_date):
+def monthRanges(min_date, max_date, month_step=1):
     ranges = []
 
     min_month_start = datetime(min_date.year, min_date.month, 1, tzinfo=min_date.tzinfo)
 
     month_start = min_month_start
     while month_start < max_date:
-        if month_start.month < 12:
-            month_end = datetime(month_start.year, month_start.month+1, 1, tzinfo=month_start.tzinfo) - timedelta(milliseconds=1)
+        if month_start.month <= 12-month_step:
+            month_end = datetime(month_start.year, month_start.month+month_step, 1, tzinfo=month_start.tzinfo) - timedelta(milliseconds=1)
         else:
-            month_end = datetime(month_start.year+1, month_start.month-11, 1, tzinfo=month_start.tzinfo) - timedelta(milliseconds=1)
+            month_end = datetime(month_start.year+1, month_start.month-12+month_step, 1, tzinfo=month_start.tzinfo) - timedelta(milliseconds=1)
 
         ranges.append((month_start, month_end))
 
-        if month_start.month < 12:
-            month_start = datetime(month_start.year, month_start.month+1, 1, tzinfo=min_date.tzinfo)
+        if month_start.month <= 12-month_step:
+            month_start = datetime(month_start.year, month_start.month+month_step, 1, tzinfo=min_date.tzinfo)
         else:
-            month_start = datetime(month_start.year+1, month_start.month-11, 1, tzinfo=min_date.tzinfo)
+            month_start = datetime(month_start.year+1, month_start.month-12+month_step, 1, tzinfo=min_date.tzinfo)
 
     return ranges
 
@@ -66,3 +66,37 @@ def format_timedelta(td):
 def parseDatetime(date_time):
     """ Parse the datetime format used in LOFAR parsets. """
     return datetime.strptime(date_time, ('%Y-%m-%d %H:%M:%S.%f' if '.' in date_time else '%Y-%m-%d %H:%M:%S'))
+
+MDJ_EPOCH = datetime(1858, 11, 17, 0, 0, 0)
+
+def to_modified_julian_date(timestamp):
+    '''
+    computes the modified_julian_date from a python datetime timestamp
+    :param timestamp: datetime a python datetime timestamp
+    :return: double, the modified_julian_date
+    '''
+    return to_modified_julian_date_in_seconds(timestamp)/86400.0
+
+def to_modified_julian_date_in_seconds(timestamp):
+    '''
+    computes the modified_julian_date (in seconds as opposed to the official days) from a python datetime timestamp
+    :param timestamp: datetime a python datetime timestamp
+    :return: double, the modified_julian_date (fractional number of seconds since MJD_EPOCH)
+    '''
+    return totalSeconds(timestamp - MDJ_EPOCH)
+
+def from_modified_julian_date(modified_julian_date):
+    '''
+    computes the python datetime timestamp from a modified_julian_date
+    :param modified_julian_date: double, a timestamp expressed in modified_julian_date format (fractional number of days since MJD_EPOCH)
+    :return: datetime, the timestamp as python datetime
+    '''
+    return from_modified_julian_date_in_seconds(modified_julian_date*86400.0)
+
+def from_modified_julian_date_in_seconds(modified_julian_date_secs):
+    '''
+    computes the python datetime timestamp from a modified_julian_date (in seconds as opposed to the official days)
+    :param modified_julian_date: double, a timestamp expressed in modified_julian_date format (fractional number of seconds since MJD_EPOCH)
+    :return: datetime, the timestamp as python datetime
+    '''
+    return MDJ_EPOCH + timedelta(seconds=modified_julian_date_secs)

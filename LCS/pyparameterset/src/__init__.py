@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 37552 2017-06-01 08:43:15Z mol $
+# $Id: __init__.py 39773 2018-06-26 07:36:09Z schaap $
 
 from _pyparameterset import PyParameterValue
 from _pyparameterset import PyParameterSet
@@ -160,6 +160,16 @@ class parameterset(PyParameterSet):
                 v = [str(x) for x in v]
 
             self.replace (str(k), str(v))  # k, v always type string
+
+    @staticmethod
+    def fromString(parset_string):
+        '''Create a parset from a plain text string.
+        Splits the string in lines, and parses each '=' seperated key/value pair.
+        '''
+        lines = [l.strip() for l in parset_string.split('\n')]
+        kv_pairs = [tuple(l.split('=')) for l in lines if '=' in l]
+        parset_dict = dict(kv_pairs)
+        return parameterset(parset_dict)
 
     def get(self, key):
         # type: (object) -> object

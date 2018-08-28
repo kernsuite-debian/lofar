@@ -26,10 +26,15 @@ Module with nice postgres helper methods and classes.
 import logging
 from threading import Thread, Lock
 from Queue import Queue, Empty
+from datetime import  datetime
+import time
+import re
 import select
 import psycopg2
 import psycopg2.extras
 import psycopg2.extensions
+from lofar.common.datetimeutils import totalSeconds
+from lofar.common import dbcredentials
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +92,149 @@ def makePostgresNotificationQueries(schema, table, action, column_name='id'):
     sql_lines = '\n'.join([s.strip() for s in sql.split('\n')]) + '\n'
     return sql_lines
 
-class PostgresListener(object):
+FETCH_NONE=0
+FETCH_ONE=1
+FETCH_ALL=2
+
+class PostgresDatabaseConnection(object):
+    def __init__(self,
+                 host='',
+                 database='',
+                 username='',
+                 password='',
+                 port=5432,
+                 log_queries=False, auto_commit_selects=True, num_connect_retries=5, connect_retry_interval=1.0):
+        self._host = host
+        self._database = database
+        self._username = username
+        self._password = password
+        self._port = port
+        self._connection = None
+        self._log_queries = log_queries
+        self.__connection_retries = 0
+        self.__auto_commit_selects = auto_commit_selects
+        self.__num_connect_retries = num_connect_retries
+        self.__connect_retry_interval = connect_retry_interval
+        self._connect()
+
+    def _connect(self):
+        for i in range(self.__num_connect_retries):
+            try:
+                self._disconnect()
+
+                logger.debug("%s connecting to db %s:*****@%s on %s:%s", type(self).__name__,
+                             self._username,
+                             self._database,
+                             self._host,
+                             self._port)
+                self._connection = psycopg2.connect(host=self._host,
+                                                    user=self._username,
+                                                    password=self._password,
+                                                    database=self._database,
+                                                    port=self._port,
+                                                    connect_timeout=5)
+
+                if self._connection:
+                    logger.debug("%s connected to db %s", type(self).__name__, self._database)
+                    return
+            except Exception as e:
+                logger.error(e)
+                if i == self.__num_connect_retries-1:
+                    raise
+
+                logger.debug('retrying to connect to %s in %s seconds', self._database, self.__connect_retry_interval)
+                time.sleep(self.__connect_retry_interval)
+
+    def _disconnect(self):
+        if self._connection:
+            logger.debug("%s disconnecting from db: %s", type(self).__name__, self._database)
+            self._connection.close()
+            self._connection = None
+
+    def __enter__(self):
+        '''connects to the database'''
+        self._connect()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        '''disconnects from the database'''
+        self._disconnect()
+
+    def _queryAsSingleLine(self, query, qargs=None):
+        line = ' '.join(query.replace('\n', ' ').split())
+        if qargs:
+            line = line % tuple(['\'%s\'' % a if isinstance(a, basestring) else a for a in qargs])
+        return line
+
+    def executeQuery(self, query, qargs=None, fetch=FETCH_NONE):
+        '''execute the query and reconnect upon OperationalError'''
+        try:
+            with self._connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor) as cursor:
+                start = datetime.utcnow()
+                cursor.execute(query, qargs)
+                if self._log_queries:
+                    elapsed = datetime.utcnow() - start
+                    elapsed_ms = 1000.0 * totalSeconds(elapsed)
+                    logger.info('executed query in %.1fms%s yielding %s rows: %s', elapsed_ms,
+                                                                                   ' (SLOW!)' if elapsed_ms > 250 else '', # for easy log grep'ing
+                                                                                   cursor.rowcount,
+                                                                                   self._queryAsSingleLine(query, qargs))
+
+                try:
+                    self._log_database_notifications()
+
+                    result = []
+                    if fetch == FETCH_ONE:
+                        result = cursor.fetchone()
+
+                    if fetch == FETCH_ALL:
+                        result = cursor.fetchall()
+
+                    if self.__auto_commit_selects and re.search('select', query, re.IGNORECASE):
+                        #prevent dangling in idle transaction on server
+                        self.commit()
+
+                    return result
+                except Exception as e:
+                    logger.error("error while fetching result(s) for %s: %s", self._queryAsSingleLine(query, qargs), e)
+
+        except (psycopg2.OperationalError, AttributeError) as e:
+            logger.error(str(e))
+            while self.__connection_retries < 5:
+                logger.info("(re)trying to connect to database")
+                self.__connection_retries += 1
+                self._connect()
+                if self._connection:
+                    self.__connection_retries = 0
+                    return self.executeQuery(query, qargs, fetch)
+                time.sleep(i*i)
+        except (psycopg2.IntegrityError, psycopg2.ProgrammingError, psycopg2.InternalError, psycopg2.DataError)as e:
+            logger.error("Rolling back query=\'%s\' due to error: \'%s\'" % (self._queryAsSingleLine(query, qargs), e))
+            self.rollback()
+            return []
+        except Exception as e:
+            logger.error(str(e))
+
+        return []
+
+    def _log_database_notifications(self):
+        if self._log_queries and self._connection.notices:
+            for notice in self._connection.notices:
+                logger.info('database log message %s', notice.strip())
+        del self._connection.notices[:]
+
+    def commit(self):
+        if self._log_queries:
+            logger.debug('commit')
+        self._connection.commit()
+
+    def rollback(self):
+        if self._log_queries:
+            logger.info('rollback')
+        self._connection.rollback()
+
+
+class PostgresListener(PostgresDatabaseConnection):
     ''' This class lets you listen to postgress notifications
     It execute callbacks when a notifocation occurs.
     Make your own subclass with your callbacks and subscribe them to the appriate channel.
@@ -122,32 +269,34 @@ class PostgresListener(object):
                  password='',
                  port=5432):
         '''Create a new PostgresListener'''
-        self.conn = psycopg2.connect(host=host,
-                                     user=username,
-                                     password=password,
-                                     database=database,
-                                     port=port)
-        self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-        self.cursor = self.conn.cursor()
+        super(PostgresListener, self).__init__(host=host,
+                                               database=database,
+                                               username=username,
+                                               password=password,
+                                               port=port)
         self.__listening = False
         self.__lock = Lock()
         self.__callbacks = {}
         self.__waiting = False
         self.__queue = Queue()
 
+    def _connect(self):
+        super(PostgresListener, self)._connect()
+        self._connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+
     def subscribe(self, notification, callback):
         '''Subscribe to a certain postgres notification.
         Call callback method in case such a notification is received.'''
         logger.info("Subscribed %sto %s" % ('and listening ' if self.isListening() else '', notification))
         with self.__lock:
-            self.cursor.execute("LISTEN %s;", (psycopg2.extensions.AsIs(notification),))
+            self.executeQuery("LISTEN %s;", (psycopg2.extensions.AsIs(notification),))
             self.__callbacks[notification] = callback
 
     def unsubscribe(self, notification):
         '''Unubscribe from a certain postgres notification.'''
         logger.info("Unsubscribed from %s" % notification)
         with self.__lock:
-            self.cursor.execute("UNLISTEN %s;", (psycopg2.extensions.AsIs(notification),))
+            self.executeQuery("UNLISTEN %s;", (psycopg2.extensions.AsIs(notification),))
             if notification in self.__callbacks:
                 del self.__callbacks[notification]
 
@@ -173,11 +322,11 @@ class PostgresListener(object):
 
         def eventLoop():
             while self.isListening():
-                if select.select([self.conn],[],[],2) != ([],[],[]):
-                    self.conn.poll()
-                    while self.conn.notifies:
+                if select.select([self._connection],[],[],2) != ([],[],[]):
+                    self._connection.poll()
+                    while self._connection.notifies:
                         try:
-                            notification = self.conn.notifies.pop(0)
+                            notification = self._connection.notifies.pop(0)
                             logger.debug("Received notification on channel %s payload %s" % (notification.channel, notification.payload))
 
                             if self.isWaiting():
@@ -270,3 +419,4 @@ class PostgresListener(object):
                 pass
 
         self.stopWaiting()
+

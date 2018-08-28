@@ -1,0 +1,13 @@
+Description: find xml runner
+
+--- lofar-3.1.5.orig/CMake/FindPythonModule.cmake
++++ lofar-3.1.5/CMake/FindPythonModule.cmake
+@@ -75,7 +75,7 @@ function(find_python_module _module)
+     # Try to import the python module we need to find, and get its file path.
+     if(PYTHON_EXECUTABLE)
+       set(ENV{PYTHONPATH} ${PYTHON_${_MODULE}_FIND_HINTS}:$ENV{PYTHONPATH})
+-      set(_cmd "import ${_module}; print ${_module}.__file__")
++      set(_cmd "from __future__ import print_function; import ${_module}; print(${_module}.__file__)")
+       execute_process(
+         COMMAND "${PYTHON_EXECUTABLE}" "-c" "${_cmd}"
+         RESULT_VARIABLE _result

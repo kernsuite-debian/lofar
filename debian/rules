@@ -2,7 +2,9 @@
 # -*- makefile -*-
 
 override_dh_auto_configure:
-	 dh_auto_configure -- \
+	mkdir -p build_python2/gnucxx11_opt
+	mkdir -p build_python3/gnucxx11_opt
+	cd build_python3/gnucxx11_opt && cmake ../.. \
 		 -DCMAKE_MODULE_PATH=$(CURDIR)/CMake \
 		 -DLIB_SUFFIX=/$(DEB_HOST_MULTIARCH) \
          -DBUILD_SHARED_LIBS=ON \
@@ -10,13 +12,22 @@ override_dh_auto_configure:
 		 -DUSE_OPENMP=ON \
 		 -DCASAREST_ROOT_DIR:PATH=/usr/include/casarest \
 		 -DBUILD_PACKAGES="DP3 pyparmdb Pipeline Calibration StaticMetaData MSLofar" \
+		 -DPYTHON_EXECUTABLE=/usr/bin/python3 \
 		 -DUSE_PYTHON_COMPILATION=OFF \
 		 -DUSE_QPID=OFF \
 		 -DCASA_ROOT=/usr
 
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf build_python2 build_python3
+	
+override_dh_auto_build:
+	cd build_python3/gnucxx11_opt && make -j
+	
+override_dh_auto_install:
+	cd build_python3/gnucxx11_opt && DESTDIR=$(CURDIR)/debian/tmp make install -j
+
 %:
 	dh $@ \
 		--parallel \
-		--with python2 \
-		--builddirectory=build/gnucxx11_opt  \
-		--buildsystem=cmake
+		--with python2,python3 

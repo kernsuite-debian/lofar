@@ -12,7 +12,7 @@ Description: set so version
 -    install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    if(NOT "${ARGN}" MATCHES "^MODULE")
 +       set_target_properties(${_name} PROPERTIES
-+         VERSION 0 # Quick hack for Gijs. We'll think about versioning later.
++         VERSION 2 # Quick hack for Gijs. We'll think about versioning later.
 +         OUTPUT_NAME ${_name})
 +       install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    endif(NOT "${ARGN}" MATCHES "^MODULE")

@@ -1,3 +1,11 @@
+lofar (3.1.7-1) bionic; urgency=medium
+
+  [ Gijs Molenaar ]
+  * add broken watch file
+  * New upstream version 3.1.7
+
+ -- KERN packaging <packaging@kernsuite.info>  Thu, 08 Nov 2018 09:48:41 +0100
+
 lofar (3.1.5-1) bionic; urgency=medium
 
   [ Gijs Molenaar ]

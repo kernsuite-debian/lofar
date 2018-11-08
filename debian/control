@@ -41,7 +41,9 @@ Build-Depends: debhelper (>= 8.0.0),
  python-xmlrunner,
  libglibmm-2.4-dev,
  libgtkmm-3.0-dev,
- libpython2.7-dev
+ libpython2.7-dev,
+ binutils-dev,
+ python-psycopg2
 Standards-Version: 3.9.7
 Homepage: http://www.lofar.org
 X-Python-Version: 2.7

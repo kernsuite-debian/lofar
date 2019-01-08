@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 38972 2018-01-30 14:17:21Z schaap $
+# $Id: CMakeLists.txt 40029 2018-08-24 06:27:42Z klazema $
 
 lofar_add_package(MACIO)       # MAC I/O related functions
 lofar_add_package(GCF)         # Generic Control Framework

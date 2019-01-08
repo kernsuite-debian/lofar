@@ -5,7 +5,7 @@
 # in the top-level build directory. Any of the variables below can be set by
 # the user, either on the command line or in the variants file(s).
 
-# $Id: CTestCustom.cmake.in 38611 2017-10-10 09:53:34Z beukema $
+# $Id: CTestCustom.cmake.in 40029 2018-08-24 06:27:42Z klazema $
 
 # Assign contents of <val> to <var> if <val> is set. 
 macro(set_if_set var val)

@@ -1,4 +1,4 @@
-/* $Id: lofar_config.h.cmake 38611 2017-10-10 09:53:34Z beukema $ */
+/* $Id: lofar_config.h.cmake 40029 2018-08-24 06:27:42Z klazema $ */
 
 /*-------------------------------------------------------------------------*\
 |     Defines for the presence or absence of (system) header files          |
@@ -173,6 +173,9 @@
 
 /* Define if WCSLIB is installed */
 #cmakedefine HAVE_WCSLIB 1
+
+/* Define if python3 is installed */
+#cmakedefine PYTHON_VERSION_MAJOR @PYTHON_VERSION_MAJOR@
 
 
 /*-------------------------------------------------------------------------*\

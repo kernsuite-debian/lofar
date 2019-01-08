@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 33126 2015-12-11 19:09:42Z dijkema $
+# $Id: __init__.py 39709 2018-06-14 12:07:59Z dijkema $
 
-import _stationresponse
+from ._stationresponse import StationResponse
 
 class stationresponse(object):
     """
@@ -64,7 +64,7 @@ class stationresponse(object):
             time = subtable.getcell("TIME", 0)
             print time, response.evaluateChannel(time, 0, 0)
         """
-        self._response = _stationresponse.StationResponse(msname, inverse,
+        self._response = StationResponse(msname, inverse,
           useElementResponse, useArrayFactor, useChanFreq)
 
     def version (self, type='other'):

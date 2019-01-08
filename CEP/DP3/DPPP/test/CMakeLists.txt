@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39071 2018-02-08 15:50:02Z dijkema $
+# $Id: CMakeLists.txt 39914 2018-07-19 12:21:14Z dijkema $
 
 # Generate the actual test script.
 configure_file(findenv.run_tmpl findenv.run_script)
@@ -17,6 +17,7 @@ lofar_add_test(tPhaseShift tPhaseShift.cc)
 lofar_add_test(tStationAdder tStationAdder.cc)
 lofar_add_test(tScaleData tScaleData.cc)
 lofar_add_test(tApplyCal tApplyCal.cc)
+lofar_add_test(tApplyCalH5 tApplyCalH5.cc)
 lofar_add_test(tApplyCal2)
 lofar_add_test(tMultiApplyCal)
 lofar_add_test(tFilter tFilter.cc)
@@ -31,6 +32,9 @@ lofar_add_test(tGainCal)
 lofar_add_test(tH5Parm tH5Parm)
 lofar_add_test(tGainCalH5Parm)
 lofar_add_test(tUpsample tUpsample.cc)
+if(CMAKE_CXX_FLAGS MATCHES ".*\\+\\+11.*")
+  lofar_add_test(tGridInterpolate tGridInterpolate.cc)
+endif()
 # lofar_add_test(tExpr tExpr.cc)
 # lofar_add_test(tmeqarray tmeqarray.cc)
 # lofar_add_test(test_flaggers test_flaggers.cc)

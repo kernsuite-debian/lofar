@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindBoost.cmake 14879 2010-01-26 11:26:32Z loose $
+# $Id: FindBoost.cmake 39709 2018-06-14 12:07:59Z dijkema $
 
 # Set BOOST_ROOT if BOOST_ROOT_DIR is set.
 if(BOOST_ROOT_DIR)
@@ -57,6 +57,28 @@ foreach(_comp ${Boost_FIND_COMPONENTS})
     endif(Boost_FIND_REQUIRED)
   endif(DEFINED USE_BOOST_${_COMP} AND NOT USE_BOOST_${_COMP})
 endforeach(_comp ${Boost_FIND_COMPONENTS})
+
+# For python3, append the python component with a suffix
+if("${Boost_FIND_COMPONENTS}" MATCHES "python")
+  find_package(Python)
+  if(PYTHON_FOUND)
+    if(PYTHON_VERSION_MAJOR GREATER 2)
+      # TODO: add support for CentOS7 here (name should be python3 there)
+      if(APPLE)
+        # On apple (homebrew), boost-python for python 3 is called boost-python3
+        string(REPLACE "python" "python3"
+               Boost_FIND_COMPONENTS "${Boost_FIND_COMPONENTS}")
+      else(APPLE)
+        # On ubuntu, boost-python for python 3 is called e.g. boost-python-py35
+        string(REPLACE "python"
+                       "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}"
+               Boost_FIND_COMPONENTS "${Boost_FIND_COMPONENTS}")
+      endif(APPLE)
+  endif(PYTHON_VERSION_MAJOR GREATER 2)
+  else(PYTHON_FOUND)
+    message(SEND_ERROR "boost-python was requested but python was not found.")
+  endif(PYTHON_FOUND)
+endif("${Boost_FIND_COMPONENTS}" MATCHES "python")
 
 # Call the "real" FindBoost module.
 include(${CMAKE_ROOT}/Modules/FindBoost.cmake)

@@ -1,3 +1,10 @@
+lofar (3.2.5-1) bionic; urgency=medium
+
+  [ Gijs Molenaar ]
+  * New upstream version 3.2.5
+
+ -- KERN packaging <packaging@kernsuite.info>  Tue, 08 Jan 2019 11:13:42 +0200
+
 lofar (3.1.7-1) bionic; urgency=medium
 
   [ Gijs Molenaar ]

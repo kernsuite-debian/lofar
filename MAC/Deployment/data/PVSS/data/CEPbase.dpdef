@@ -1,0 +1,9 @@
+# CEP PVSS Database base types
+# If CEP need some extra DPT DP DPE defines or powerconfig settings
+# they can be defined here
+
+#Fill some defaults
+# DpValue
+ElementName	TypeName	_original.._value
+scriptInfo.transferMPs.runDone	ScriptInfo	0
+scriptInfo.setSumAlerts.runDone	ScriptInfo	0

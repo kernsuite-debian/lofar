@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tPerturbed.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Prediffer.h>
@@ -26,7 +26,7 @@
 #include <BBSKernel/MNS/MeqMatrix.h>
 #include <Common/StreamUtil.h>
 #include <Common/LofarLogger.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
@@ -108,8 +108,8 @@ void doTest (Prediffer& pre1, const StepProp& stepProp,
       const dcomplex* resv1 = resm1->dcomplexStorage();
       const dcomplex* resv2 = resm2->dcomplexStorage();
       for (int k=0; k<resm1->nelements(); ++k) {
-	ASSERTSTR (casa::near(real(resv1[k]),real(resv2[k])) &&
-		   casa::near(imag(resv1[k]),imag(resv2[k])),
+	ASSERTSTR (casacore::near(real(resv1[k]),real(resv2[k])) &&
+		   casacore::near(imag(resv1[k]),imag(resv2[k])),
 		   "res1=" << std::setprecision(10) << resv1[k]
 		   << " res2=" << std::setprecision(10) << resv2[k]
 		   << " rnr=" << k
@@ -119,8 +119,8 @@ void doTest (Prediffer& pre1, const StepProp& stepProp,
       resm1->dcomplexStorage(resv1_r, resv1_i);
       resm2->dcomplexStorage(resv2_r, resv2_i);
       for (int k=0; k<resm1->nelements(); ++k) {
-	ASSERTSTR (casa::near(resv1_r[k],resv2_r[k]) &&
-		   casa::near(resv1_i[k],resv2_i[k]),
+	ASSERTSTR (casacore::near(resv1_r[k],resv2_r[k]) &&
+		   casacore::near(resv1_i[k],resv2_i[k]),
 		   "res1=(" << std::setprecision(10) << resv1_r[k] << ',' <<
 		   resv1_i[k] << ") res2=" << std::setprecision(10) <<
 		   resv2_r[k] << ',' << resv2_i[k] << ") rnr=" << k <<

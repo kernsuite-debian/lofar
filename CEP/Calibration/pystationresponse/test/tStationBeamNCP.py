@@ -1,5 +1,6 @@
 "Test the Station Beam at the NCP. Rationale: when pointing at the NCP all stations should have (almost) the same beam"
 
+
 import sys
 
 import lofar.stationresponse as st
@@ -17,8 +18,8 @@ a=[mys.evaluateStation(time=times[0],station=st) for st in range(20)]
 
 for a1 in a:
     for a2 in a:
-	if np.linalg.norm(a1-a2)>1.e-3:
-            print "a1=",a1,"\na2=",a2,"\nnorm=",np.linalg.norm(a1-a2)
-	    sys.exit(1)
+        if np.linalg.norm(a1-a2)>1.e-3:
+            print("a1=",a1,"\na2=",a2,"\nnorm=",np.linalg.norm(a1-a2))
+            sys.exit(1)
 
 sys.exit(0)

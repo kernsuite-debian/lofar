@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ComplexBuiltinInt.h 25182 2013-06-04 14:47:42Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_COMPLEXBUILTININT_H
 #define LOFAR_COMMON_COMPLEXBUILTININT_H

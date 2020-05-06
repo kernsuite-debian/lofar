@@ -42,7 +42,7 @@ PatchExprBase::~PatchExprBase()
 }
 
 PatchExpr::PatchExpr(Scope &scope, SourceDB &sourceDB, const string &name,
-    const casa::MDirection &refPhase)
+    const casacore::MDirection &refPhase)
     :   itsName(name)
 {
     initSourceList(scope, sourceDB, name);
@@ -151,7 +151,7 @@ void PatchExpr::initPositionExpr(const vector<Source::Ptr> &sources)
 }
 
 void PatchExpr::initLMNExpr(const vector<Source::Ptr> &sources,
-    const casa::MDirection &refPhase)
+    const casacore::MDirection &refPhase)
 {
     itsLMN.reserve(sources.size());
     for(vector<Source::Ptr>::const_iterator it = sources.begin(),

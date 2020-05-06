@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Python class for End-to-end tests of BBS
 #
@@ -29,7 +29,7 @@ class testdppp(testsip):
     # Execute DPPP <parset>
     #
     def run(self):    
-        print bcolors.OKBLUE + "Running DPPP "+ self.parset + bcolors.ENDC
+        print(bcolors.OKBLUE + "Running DPPP "+ self.parset + bcolors.ENDC)
         arguments = self.parset
         #command = ['DPPP', arguments]
         
@@ -38,14 +38,14 @@ class testdppp(testsip):
         
         proc = subprocess.Popen('DPPP ' + arguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in proc.stdout.readlines():
-            print line
+            print(line)
         ret = proc.wait()
  
         #ret=subprocess.call(command)       
         if ret==0:
-            print bcolors.OKBLUE + "DPPP exited successfully." + bcolors.ENDC
+            print(bcolors.OKBLUE + "DPPP exited successfully." + bcolors.ENDC)
         else:
-            print bcolors.FAIL + "Fatal: DPPP terminated with an error." + bcolors.ENDC
+            print(bcolors.FAIL + "Fatal: DPPP terminated with an error." + bcolors.ENDC)
             self.passed=False
             self.end()
             
@@ -54,7 +54,7 @@ class testdppp(testsip):
     #
     def executeTest(self, test="all", verbose=False, taql=False):
         if self.verbose:
-            print bcolors.WARNING + "Execute test " + bcolors.ENDC + sys.argv[0] 
+            print(bcolors.WARNING + "Execute test " + bcolors.ENDC + sys.argv[0]) 
 
         self.copyOriginalFiles()
 #        self.makeGDS()

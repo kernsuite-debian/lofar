@@ -1,0 +1,1222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lofar:project xmlns:lofar="http://www.astron.nl/MoM2-Lofar" xmlns:mom2="http://www.astron.nl/MoM2"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.astron.nl/MoM2-Lofar http://lofar.astron.nl:8080/mom3/schemas/LofarMoM2.xsd http://www.astron.nl/MoM2 http://lofar.astron.nl:8080/mom3/schemas/MoM2.xsd ">
+    <version>2.16.6</version>
+    <template version="2.16.6" author="Alwin de Jong,Adriaan Renting" changedBy="Adriaan Renting">
+        <description>XML Template generator version 2.16.6</description>
+    </template>
+    <name>LC7_026</name>
+    <children>
+        <item index="0">
+            <lofar:folder topology_parent="false">
+                <name>Transient_2017-03-08</name>
+                <description>HBA Zero Inner, 110-190 MHz</description>
+                <children>
+                    <item index="0">
+                        <lofar:folder topology_parent="true">
+                            <topology>0</topology>
+                            <name>Transient follow-up</name>
+                            <description>Target Scan (Pulsar)</description>
+                            <children>
+                                <item index="0">
+                                    <lofar:observation>
+                                        <name>P0/1/TO</name>
+                                        <description>P0/1/TO (Target Observation)</description>
+                                        <topology>B0.1.T</topology>
+                                        <predecessor_topology/>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <lofar:observationAttributes>
+                                            <observationId>
+                                            </observationId>
+                                            <name>P0/1/TO</name>
+                                            <projectName>LC7_026</projectName>
+                                            <instrument>Beam Observation</instrument>
+                                            <defaultTemplate>BeamObservation</defaultTemplate>
+                                            <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                                            <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                                            <userSpecification>
+                                                <correlatedData>true</correlatedData>
+                                                <coherentStokesData>false</coherentStokesData>
+                                                <incoherentStokesData>true</incoherentStokesData>
+                                                <antenna>HBA Zero Inner</antenna>
+                                                <clock mode="200 MHz"/>
+                                                <instrumentFilter>110-190 MHz</instrumentFilter>
+                                                <integrationInterval>2.0</integrationInterval>
+                                                <channelsPerSubband>64</channelsPerSubband>
+                                                <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                                                <tiedArrayBeams>
+                                                    <flyseye>false</flyseye>
+                                                </tiedArrayBeams>
+                                                <stokes>
+                                                    <integrateChannels>false</integrateChannels>
+                                                    <subbandsPerFileCS/>
+                                                    <numberCollapsedChannelsCS/>
+                                                    <stokesDownsamplingStepsCS/>
+                                                    <whichCS/>
+                                                    <subbandsPerFileIS>512</subbandsPerFileIS>
+                                                    <numberCollapsedChannelsIS>64</numberCollapsedChannelsIS>
+                                                    <stokesDownsamplingStepsIS>1</stokesDownsamplingStepsIS>
+                                                    <whichIS>I</whichIS>
+                                                </stokes>
+                                                <stationSet>Custom</stationSet>
+                                                <stations>
+                                                    CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501,RS106,RS205,RS208,RS210,RS305,RS306,RS307,RS310,RS406,RS407,RS409,RS503,RS508,RS509
+                                                </stations>
+                                                <timeFrame>UT</timeFrame>
+                                                <startTime>2017-03-08T09:56:18</startTime>
+                                                <!--<endTime>2017-03-08T11:56:18</endTime>-->
+                                                <duration>7200</duration>
+                                                <bypassPff>false</bypassPff>
+                                                <enableSuperterp>false</enableSuperterp>
+                                                <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                                            </userSpecification>
+                                        </lofar:observationAttributes>
+                                        <children>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P0</name>
+                                                    <description>P0</description>
+                                                    <topology>B0.1.T.SAP000</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P0</targetName>
+                                                            <ra>247.25</ra>
+                                                            <dec>43.9833333333</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP000.uv.dps</name>
+                                                                <topology>B0.1.T.SAP000.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP000.is</name>
+                                                                <topology>B0.1.T.SAP000.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P1</name>
+                                                    <description>P1</description>
+                                                    <topology>B0.1.T.SAP001</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P1</targetName>
+                                                            <ra>250.025941667</ra>
+                                                            <dec>43.9833333333</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP001.uv.dps</name>
+                                                                <topology>B0.1.T.SAP001.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP001.is</name>
+                                                                <topology>B0.1.T.SAP001.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P2</name>
+                                                    <description>P2</description>
+                                                    <topology>B0.1.T.SAP002</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P2</targetName>
+                                                            <ra>244.474058333</ra>
+                                                            <dec>43.9833333333</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP002.uv.dps</name>
+                                                                <topology>B0.1.T.SAP002.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP002.is</name>
+                                                                <topology>B0.1.T.SAP002.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P3</name>
+                                                    <description>P3</description>
+                                                    <topology>B0.1.T.SAP003</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P3</targetName>
+                                                            <ra>248.637970833</ra>
+                                                            <dec>46.3873693611</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP003.uv.dps</name>
+                                                                <topology>B0.1.T.SAP003.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP003.is</name>
+                                                                <topology>B0.1.T.SAP003.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P4</name>
+                                                    <description>P4</description>
+                                                    <topology>B0.1.T.SAP004</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P4</targetName>
+                                                            <ra>245.862029167</ra>
+                                                            <dec>46.3873693611</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP004.uv.dps</name>
+                                                                <topology>B0.1.T.SAP004.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP004.is</name>
+                                                                <topology>B0.1.T.SAP004.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P5</name>
+                                                    <description>P5</description>
+                                                    <topology>B0.1.T.SAP005</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P5</targetName>
+                                                            <ra>248.637970833</ra>
+                                                            <dec>41.5792973056</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP005.uv.dps</name>
+                                                                <topology>B0.1.T.SAP005.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP005.is</name>
+                                                                <topology>B0.1.T.SAP005.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P6</name>
+                                                    <description>P6</description>
+                                                    <topology>B0.1.T.SAP006</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P6</targetName>
+                                                            <ra>245.862029167</ra>
+                                                            <dec>41.5792973056</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP006.uv.dps</name>
+                                                                <topology>B0.1.T.SAP006.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP006.is</name>
+                                                                <topology>B0.1.T.SAP006.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>P7</name>
+                                                    <description>P7</description>
+                                                    <topology>B0.1.T.SAP007</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>P7</targetName>
+                                                            <ra>279.1549375</ra>
+                                                            <dec>33.4702861111</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B0.1.T.SAP007.uv.dps</name>
+                                                                <topology>B0.1.T.SAP007.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                        <item>
+                                                            <lofar:bfDataProduct>
+                                                                <name>B0.1.T.SAP007.is</name>
+                                                                <topology>B0.1.T.SAP007.is</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:bfDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                        </children>
+                                    </lofar:observation>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT0</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P0/1.0/PP</name>
+                                        <description>P0/1.0/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP000.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT0.pu.dps</name>
+                                                    <topology>B0.1.PT0.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT1</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P1/1.1/PP</name>
+                                        <description>P1/1.1/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP001.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT1.pu.dps</name>
+                                                    <topology>B0.1.PT1.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT2</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P2/1.2/PP</name>
+                                        <description>P2/1.2/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP002.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT2.pu.dps</name>
+                                                    <topology>B0.1.PT2.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT3</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P3/1.3/PP</name>
+                                        <description>P3/1.3/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP003.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT3.pu.dps</name>
+                                                    <topology>B0.1.PT3.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT4</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P4/1.4/PP</name>
+                                        <description>P4/1.4/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP004.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT4.pu.dps</name>
+                                                    <topology>B0.1.PT4.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT5</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P5/1.5/PP</name>
+                                        <description>P5/1.5/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP005.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT5.pu.dps</name>
+                                                    <topology>B0.1.PT5.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT6</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P6/1.6/PP</name>
+                                        <description>P6/1.6/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP006.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT6.pu.dps</name>
+                                                    <topology>B0.1.PT6.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:PulsarPipelineType">
+                                        <topology>B0.1.PT7</topology>
+                                        <predecessor_topology>B0.1.T</predecessor_topology>
+                                        <name>P7/1.7/PP</name>
+                                        <description>P7/1.7/PP (Pulsar Pipeline)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Pulsar Pipeline</defaultTemplate>
+                                            <duration>10000</duration>
+                                            <_2bf2fitsExtraOpts>-nsamples 8192</_2bf2fitsExtraOpts>
+                                            <_8bitConversionSigma>5.0</_8bitConversionSigma>
+                                            <decodeNblocks>6</decodeNblocks>
+                                            <decodeSigma>3</decodeSigma>
+                                            <digifilExtraOpts/>
+                                            <dspsrExtraOpts/>
+                                            <dynamicSpectrumTimeAverage>0.5</dynamicSpectrumTimeAverage>
+                                            <nofold/>
+                                            <nopdmp>true</nopdmp>
+                                            <norfi/>
+                                            <prepdataExtraOpts/>
+                                            <prepfoldExtraOpts/>
+                                            <prepsubbandExtraOpts/>
+                                            <pulsar>tabfind+</pulsar>
+                                            <rawTo8bit/>
+                                            <rfifindExtraOpts>-blocks 1</rfifindExtraOpts>
+                                            <rrats/>
+                                            <singlePulse/>
+                                            <skipDsps/>
+                                            <skipDynamicSpectrum>true</skipDynamicSpectrum>
+                                            <skipPrepfold/>
+                                            <tsubint>-1</tsubint>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:bfDataProduct topology="B0.1.T.SAP007.is">
+                                                </lofar:bfDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:pulsarDataProduct>
+                                                    <name>B0.1.PT7.pu.dps</name>
+                                                    <topology>B0.1.PT7.pu.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:pulsarDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                            </children>
+                        </lofar:folder>
+                    </item>
+                    <item index="0">
+                        <lofar:folder topology_parent="true">
+                            <topology>0</topology>
+                            <name>Bookend</name>
+                            <description>Bookend Calibrator Scan (Preprocessing)</description>
+                            <children>
+                                <item index="0">
+                                    <lofar:observation>
+                                        <name>3C 196/1/TO</name>
+                                        <description>3C 196/1/TO (Target Observation)</description>
+                                        <topology>B1.1.T</topology>
+                                        <predecessor_topology/>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <lofar:observationAttributes>
+                                            <observationId>
+                                            </observationId>
+                                            <name>3C 196/1/TO</name>
+                                            <projectName>LC7_026</projectName>
+                                            <instrument>Beam Observation</instrument>
+                                            <defaultTemplate>BeamObservation</defaultTemplate>
+                                            <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                                            <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                                            <userSpecification>
+                                                <correlatedData>true</correlatedData>
+                                                <coherentStokesData>false</coherentStokesData>
+                                                <incoherentStokesData>false</incoherentStokesData>
+                                                <antenna>HBA Zero Inner</antenna>
+                                                <clock mode="200 MHz"/>
+                                                <instrumentFilter>110-190 MHz</instrumentFilter>
+                                                <integrationInterval>1.0</integrationInterval>
+                                                <channelsPerSubband>64</channelsPerSubband>
+                                                <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                                                <tiedArrayBeams>
+                                                    <flyseye>false</flyseye>
+                                                </tiedArrayBeams>
+                                                <stokes>
+                                                    <integrateChannels>false</integrateChannels>
+                                                    <subbandsPerFileCS/>
+                                                    <numberCollapsedChannelsCS/>
+                                                    <stokesDownsamplingStepsCS/>
+                                                    <whichCS/>
+                                                    <subbandsPerFileIS/>
+                                                    <numberCollapsedChannelsIS/>
+                                                    <stokesDownsamplingStepsIS/>
+                                                    <whichIS/>
+                                                </stokes>
+                                                <stationSet>Custom</stationSet>
+                                                <stations>
+                                                    CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501,RS106,RS205,RS208,RS210,RS305,RS306,RS307,RS310,RS406,RS407,RS409,RS503,RS508,RS509
+                                                </stations>
+                                                <timeFrame>UT</timeFrame>
+                                                <startTime>2017-03-08T11:58:18</startTime>
+                                                <endTime>2017-03-08T12:08:18</endTime>
+                                                <duration>600</duration>
+                                                <bypassPff>false</bypassPff>
+                                                <enableSuperterp>false</enableSuperterp>
+                                                <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                                            </userSpecification>
+                                        </lofar:observationAttributes>
+                                        <children>
+                                            <item index="0">
+                                                <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                                                    <name>3C 196</name>
+                                                    <description>3C 196</description>
+                                                    <topology>B1.1.T.SAP000</topology>
+                                                    <currentStatus>
+                                                        <mom2:approvedStatus/>
+                                                    </currentStatus>
+                                                    <lofar:bfMeasurementAttributes>
+                                                        <measurementType>Target</measurementType>
+                                                        <specification>
+                                                            <targetName>3C 196</targetName>
+                                                            <ra>123.400216667</ra>
+                                                            <dec>48.217295</dec>
+                                                            <equinox>J2000</equinox>
+                                                            <duration>0</duration>
+                                                            <subbandsSpecification>
+                                                                <subbands>210..249</subbands>
+                                                            </subbandsSpecification>
+                                                            <tiedArrayBeams>
+                                                                <flyseye>false</flyseye>
+                                                                <nrTabRings>0</nrTabRings>
+                                                                <tabRingSize/>
+                                                                <tiedArrayBeamList>
+
+                                                                </tiedArrayBeamList>
+                                                            </tiedArrayBeams>
+                                                        </specification>
+                                                    </lofar:bfMeasurementAttributes>
+                                                    <resultDataProducts>
+                                                        <item>
+                                                            <lofar:uvDataProduct>
+                                                                <name>B1.1.T.SAP000.uv.dps</name>
+                                                                <topology>B1.1.T.SAP000.uv.dps</topology>
+                                                                <status>no_data</status>
+                                                                <storageCluster>
+                                                                    <name>CEP4</name>
+                                                                    <partition>/data/projects/</partition>
+                                                                </storageCluster>
+                                                            </lofar:uvDataProduct>
+                                                        </item>
+                                                    </resultDataProducts>
+                                                </lofar:measurement>
+                                            </item>
+                                        </children>
+                                    </lofar:observation>
+                                </item>
+                                <item index="0">
+                                    <lofar:pipeline xsi:type="lofar:AveragingPipelineType">
+                                        <topology>B1.1.PT0</topology>
+                                        <predecessor_topology>B1.1.T</predecessor_topology>
+                                        <name>3C 196/1.0/TP</name>
+                                        <description>3C 196/1.0/TP (Preprocessing)</description>
+                                        <currentStatus>
+                                            <mom2:approvedStatus/>
+                                        </currentStatus>
+                                        <processingCluster>
+                                            <name>CEP4</name>
+                                            <partition>cpu</partition>
+                                            <numberOfTasks>1</numberOfTasks>
+                                            <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                                            <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                                            <maxDurationPerTask>PT600S</maxDurationPerTask>
+                                            <numberOfCoresPerTask>20</numberOfCoresPerTask>
+                                            <runSimultaneous>true</runSimultaneous>
+                                        </processingCluster>
+                                        <pipelineAttributes>
+                                            <defaultTemplate>Preprocessing Pipeline</defaultTemplate>
+                                            <flaggingStrategy>HBAdefault</flaggingStrategy>
+                                            <duration>1500</duration>
+                                            <demixingParameters>
+                                                <averagingFreqStep>16</averagingFreqStep>
+                                                <averagingTimeStep>1</averagingTimeStep>
+                                                <demixFreqStep>64</demixFreqStep>
+                                                <demixTimeStep>10</demixTimeStep>
+                                                <demixAlways>[CygA]</demixAlways>
+                                                <demixIfNeeded/>
+                                                <ignoreTarget/>
+                                            </demixingParameters>
+                                        </pipelineAttributes>
+                                        <usedDataProducts>
+                                            <item>
+                                                <lofar:uvDataProduct topology="B1.1.T.SAP000.uv.dps">
+                                                </lofar:uvDataProduct>
+                                            </item>
+                                        </usedDataProducts>
+                                        <resultDataProducts>
+                                            <item>
+                                                <lofar:uvDataProduct>
+                                                    <name>B1.1.PT0.uv.dps</name>
+                                                    <topology>B1.1.PT0.uv.dps</topology>
+                                                    <status>no_data</status>
+                                                    <storageCluster>
+                                                        <name>CEP4</name>
+                                                        <partition>/data/projects/</partition>
+                                                    </storageCluster>
+                                                </lofar:uvDataProduct>
+                                            </item>
+                                        </resultDataProducts>
+                                    </lofar:pipeline>
+                                </item>
+                            </children>
+                        </lofar:folder>
+                    </item>
+                </children>
+            </lofar:folder>
+        </item>
+    </children>
+</lofar:project>

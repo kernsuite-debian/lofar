@@ -30,15 +30,15 @@
 #include <Common/StreamUtil.h>
 #include <Common/OpenMP.h>
 
-#include <casa/OS/HostInfo.h>
-#include <casa/OS/File.h>
+#include <casacore/casa/OS/HostInfo.h>
+#include <casacore/casa/OS/File.h>
 
 #include <aoflagger.h>
 
 #include <iostream>
 #include <algorithm>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {

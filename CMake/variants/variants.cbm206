@@ -1,0 +1,19 @@
+## -*- CMake -*-
+##
+## Host specific variants file. 
+## Settings in this file extend or override those in the global variants file.
+##
+
+## Specific settings for the cobalt2 build host cbm206
+## We also have cbm201...cbm213 symlinks to this file for convenience.
+
+option(USE_LOG4CPLUS "Use Log4Cplus" ON)
+option(USE_MPI       "Use MPI"       ON)
+
+set(CASACORE_ROOT_DIR /opt/casacore/3.0.0)
+set(DAL_ROOT_DIR      /opt/DAL/3.3.1)
+set(BLITZ_ROOT_DIR    /opt/blitz/1.0.1)
+
+# MPI_ROOT_DIR does not need to be specified, because it can just be found thanks to the usage of mpi-selector
+
+

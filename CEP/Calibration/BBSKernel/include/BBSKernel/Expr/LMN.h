@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LMN.h 14632 2009-12-08 21:26:54Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_LMN_H
 #define LOFAR_BBSKERNEL_EXPR_LMN_H
@@ -28,7 +28,7 @@
 
 #include <BBSKernel/Expr/BasicExpr.h>
 
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -44,7 +44,7 @@ public:
     typedef shared_ptr<LMN>         Ptr;
     typedef shared_ptr<const LMN>   ConstPtr;
 
-    LMN(const casa::MDirection &reference,
+    LMN(const casacore::MDirection &reference,
         const Expr<Vector<2> >::ConstPtr &direction);
 
 protected:
@@ -52,7 +52,7 @@ protected:
         const Vector<2>::View &direction) const;
 
 private:
-    casa::MDirection    itsPhaseReference;
+    casacore::MDirection    itsPhaseReference;
 };
 
 // @}

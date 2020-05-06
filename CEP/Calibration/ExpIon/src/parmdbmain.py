@@ -30,7 +30,7 @@ def store_parms( pdbname, parms, create_new = False) :
    else : 
       process.stdin.write( "open tablename='" + pdbname + "'\n" )
 
-   parmnames = parms.keys()
+   parmnames = list(parms.keys())
    for parmname in parmnames:
       v = parms[parmname]
       times = v['times']

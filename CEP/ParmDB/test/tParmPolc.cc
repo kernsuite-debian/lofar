@@ -18,22 +18,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParmPolc.cc 22819 2012-11-16 11:02:55Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Parm.h>
 #include <ParmDB/ParmCache.h>
 #include <ParmDB/ParmDB.h>
 #include <Common/LofarLogger.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 // Test evaluating a polc for a single and multiple ParmValues.

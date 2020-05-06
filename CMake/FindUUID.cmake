@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindUUID.cmake 31607 2015-05-13 11:16:53Z loose $
+# $Id$
 
 if(NOT UUID_FOUND)
 

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceInfo.h 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 // @file
 // @brief Info about a source
@@ -30,8 +30,8 @@
 //# Includes
 #include <Common/lofar_string.h>
 #include <Common/LofarTypes.h>
-#include <casa/Arrays/Array.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR {
 
@@ -111,13 +111,13 @@ namespace BBS {
 
     // Set or get the shapelet info.
     // <group>
-    const casa::Array<double>& getShapeletCoeffI() const
+    const casacore::Array<double>& getShapeletCoeffI() const
       { return itsShapeletCoeffI; }
-    const casa::Array<double>& getShapeletCoeffQ() const
+    const casacore::Array<double>& getShapeletCoeffQ() const
       { return itsShapeletCoeffQ; }
-    const casa::Array<double>& getShapeletCoeffU() const
+    const casacore::Array<double>& getShapeletCoeffU() const
       { return itsShapeletCoeffU; }
-    const casa::Array<double>& getShapeletCoeffV() const
+    const casacore::Array<double>& getShapeletCoeffV() const
       { return itsShapeletCoeffV; }
     double getShapeletScaleI() const
       { return itsShapeletScaleI; }
@@ -127,10 +127,10 @@ namespace BBS {
       { return itsShapeletScaleU; }
     double getShapeletScaleV() const
       { return itsShapeletScaleV; }
-    void setShapeletCoeff (const casa::Array<double>& I,
-                           const casa::Array<double>& Q,
-                           const casa::Array<double>& U,
-                           const casa::Array<double>& V);
+    void setShapeletCoeff (const casacore::Array<double>& I,
+                           const casacore::Array<double>& Q,
+                           const casacore::Array<double>& U,
+                           const casacore::Array<double>& V);
     void setShapeletScale (double scaleI, double scaleQ,
                            double scaleU, double scaleV);
     // </group>
@@ -154,10 +154,10 @@ namespace BBS {
     double itsShapeletScaleQ;
     double itsShapeletScaleU;
     double itsShapeletScaleV;
-    casa::Array<double> itsShapeletCoeffI;  // shapelet coefficients I-flux
-    casa::Array<double> itsShapeletCoeffQ;
-    casa::Array<double> itsShapeletCoeffU;
-    casa::Array<double> itsShapeletCoeffV;
+    casacore::Array<double> itsShapeletCoeffI;  // shapelet coefficients I-flux
+    casacore::Array<double> itsShapeletCoeffQ;
+    casacore::Array<double> itsShapeletCoeffU;
+    casacore::Array<double> itsShapeletCoeffV;
   };
 
   // @}

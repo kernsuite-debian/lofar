@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: NextChunkCommand.cc 30631 2014-12-17 10:43:11Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSControl/NextChunkCommand.h>
@@ -28,8 +28,8 @@
 #include <Common/lofar_iomanip.h>
 #include <Common/ParameterSet.h>
 
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVTime.h>
 
 namespace LOFAR
 {
@@ -71,11 +71,11 @@ namespace LOFAR
         << " - " << setprecision(3) << itsFreqRange.second / 1e6 << " MHz"
         << endl;
       os << "Time: "
-        << casa::MVTime::Format(casa::MVTime::YMD, 6)
-        << casa::MVTime(casa::Quantum<casa::Double>(itsTimeRange.first, "s"))
+        << casacore::MVTime::Format(casacore::MVTime::YMD, 6)
+        << casacore::MVTime(casacore::Quantum<casacore::Double>(itsTimeRange.first, "s"))
         << " - "
-        << casa::MVTime::Format(casa::MVTime::YMD, 6)
-        << casa::MVTime(casa::Quantum<casa::Double>(itsTimeRange.second, "s"))
+        << casacore::MVTime::Format(casacore::MVTime::YMD, 6)
+        << casacore::MVTime(casacore::Quantum<casacore::Double>(itsTimeRange.second, "s"))
         << endl;
     }
 

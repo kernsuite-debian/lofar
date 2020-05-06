@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Run the unit test
+source python-coverage.sh
+python_coverage_test "trigger_service.py" t_trigger_service.py

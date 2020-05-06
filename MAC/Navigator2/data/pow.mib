@@ -1,0 +1,1596 @@
+
+-- Powec Mib v. 1.00
+
+--   powecMIB MODULE-IDENTITY
+--       LAST-UPDATED "0110171200Z"
+--       ORGANIZATION "Power-One, Powec"
+--       CONTACT-INFO "Marius Tannum, mariust@powec.no"
+--       DESCRIPTION "System Information, Powec Power Systems"
+--       ::= { enterprises 5961 }
+	
+POWEC-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+
+   	enterprises, IpAddress			FROM RFC1155-SMI
+	DisplayString 				FROM RFC1213-MIB
+   	OBJECT-TYPE           			FROM RFC-1212
+	TRAP-TYPE 	    				FROM RFC-1215;
+
+
+
+	powecMIB			OBJECT IDENTIFIER ::= { enterprises 5961 }
+	dcPowerSystem 		OBJECT IDENTIFIER ::= { powecMIB 1 }
+		
+	systemInfo 			OBJECT IDENTIFIER ::= { dcPowerSystem 1 } 
+	powerSystem			OBJECT IDENTIFIER ::= { dcPowerSystem 2 }    
+	rectifierInfo		OBJECT IDENTIFIER ::= { dcPowerSystem 3 }
+	alarmInfo			OBJECT IDENTIFIER ::= { dcPowerSystem 4 }
+	battery			OBJECT IDENTIFIER ::= { dcPowerSystem 5 }
+	agentSetup			OBJECT IDENTIFIER ::= { dcPowerSystem 6 }
+	systemParameters		OBJECT IDENTIFIER ::= { dcPowerSystem 10 }
+	alarmHistory		OBJECT IDENTIFIER ::= { dcPowerSystem 12 }
+	powecTrap			OBJECT IDENTIFIER ::= { dcPowerSystem 99 }
+	
+	
+-- SYSTEM INFO variables
+
+serverName OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Server Name String"
+	::= { systemInfo 1 }
+
+systemName OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-write
+	STATUS  mandatory
+	DESCRIPTION
+		"System Type String for the DC System Site"
+	::= { systemInfo 2 }
+
+powerSystemType	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"String containing the type of power supply control module"
+	::= { systemInfo 3 }
+
+powerSystemSoftVer	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"String containing the software version of the control module"
+	::= { systemInfo 4 }
+
+powerSystemSerialNo	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Serial Number of the control module"
+	::= { systemInfo 5 }
+	
+
+powerSystemAddress	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"An integer containing the address of the PCU/PCS"
+	::= { systemInfo 6 }
+
+installationDate OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Installation date of the PCU/PCS of the form 'DD.MM.YY'"
+	::= { systemInfo 7 }	
+updated OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Date of last update of the form 'DD.MM.YY'"
+	::= { systemInfo 8 }
+outputData OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"String containing a description of the DC Output"
+	::= { systemInfo 9 }
+batteryDescript OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"String containing a description of the Battery"
+	::= { systemInfo 10 }
+batteryCapacity OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"An integer containing battery capacity in Ah"
+		
+	::= { systemInfo 11 }
+	
+	
+
+-- POWER SYSTEM variables
+
+systemVoltage1		OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the system DC voltage (voltage * 100)"
+	::= { powerSystem 1 }
+
+systemVoltage2		OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing an additional DC voltage (voltage * 100)"
+	::= { powerSystem 2 }
+
+
+
+loadCurrent		OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the system load current (current * 10)"
+	::= { powerSystem 3 }
+
+
+batteryCurrent		OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the battery current (current * 10)"
+	::= { powerSystem 4 }
+
+
+rectifierCurrent	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the rectifier current (current * 10)"
+	::= { powerSystem 5}
+externalInput1 OBJECT-TYPE
+	SYNTAX INTEGER{
+		clear(1),
+		alarm(2)
+
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"External Input-to-trap 1"
+	::= { powerSystem 6 }
+	
+externalInput2 OBJECT-TYPE
+	SYNTAX INTEGER{
+		clear(1),
+		alarm(2)
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"External Input-to-trap 2"
+	::= { powerSystem 7 }
+
+comPcu OBJECT-TYPE
+	SYNTAX INTEGER{
+		comOk(1),
+		comFailed(2)
+
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"PCU Communication OK or Failed"
+	::= { powerSystem 8 }
+
+-- RECTIFIER INFO variables
+numRectifiers OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Number of Rectifiers in the module table"
+	::= { rectifierInfo 1 }
+
+-- MODULE INFO variables
+
+moduleTable	OBJECT-TYPE
+	SYNTAX SEQUENCE OF ModuleTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Module Information Table"
+	::= { rectifierInfo 2 }
+
+moduleEntry	OBJECT-TYPE
+	SYNTAX ModuleTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Queue of Module Table"
+	INDEX { moduleIndex }
+	::= { moduleTable 1 }
+	
+moduleIndex	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Number of Entries in the Module Table"
+	::= { moduleEntry 1 }
+
+rectifierOk	OBJECT-TYPE
+	SYNTAX INTEGER
+ 	{
+		ok(1),
+		alarm(2)
+		
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Rectifier Module Ok or Alarm"
+	::= { moduleEntry 2 }
+
+moduleVoltage	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Voltage "
+	::= { moduleEntry 3 }
+
+moduleCurrent	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Current (Amp*10)"
+	::= { moduleEntry 4 }
+
+meanCurrent	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module MeanCurrent for current sharing"
+	::= { moduleEntry 5 }
+
+temperature	OBJECT-TYPE
+	SYNTAX INTEGER(-40..127)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Temperature in celcius (modules without temperature
+		measurement will show -40)"
+	::= { moduleEntry 6 }
+
+moduleComStatus	OBJECT-TYPE
+	SYNTAX INTEGER
+ 	{
+		ok(1),
+		alarm(2)
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Communication Status "
+	::= { moduleEntry 7 }
+
+
+moduleStatus	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Status: 
+			Bit 0 - Input Voltage OK
+			Bit 1 - Low Voltage Alarm
+			Bit 2 - Module Alarm
+			Bit 3 - Overvoltage Shutdown
+			Bit 4 - Current Limiting
+			Bit 5 - Power On
+			Bit 6 - OVP Enabled
+		"
+	::= { moduleEntry 8 }
+
+moduleFlag		OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Flag "
+	::= { moduleEntry 9 }
+
+moduleConfig	OBJECT-TYPE
+	SYNTAX INTEGER
+ 	{
+		pmp30_48(1),
+		pmp30_110(2),
+		pmp30_220(3),
+		pmp15_48(5),
+		pmp10_24(7),
+		pmp10_48(9),
+		pmp30_24(17),
+		pmp25_24(22),
+		pmp25_48(24),
+		eqGroup1(33),
+		pmp5024(52),
+		pmp5048(54),
+		eqGroup2(65)
+
+	}
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Module Config, Type of module installed: 
+			1	PMP 30.48
+			2	PMP 30.110
+			3	PMP 30.220
+			5	PMP 15.48
+			7	PMP 10.24
+			9	PMP 10.48
+			17	PMP 30.24
+			22	PMP 25.24
+			24	PMP 25.48
+			33	EQ Group 1
+			52	PMP 50.24
+			54	PMP 50.48
+			65	EQ Group 2
+			"
+	::= {moduleEntry 10 }
+	
+softVersion OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Software version in the module"
+	::= { moduleEntry 11 }
+moduleSerialNo OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Serial Number of the module"
+	::= { moduleEntry 12 }
+
+
+
+-- ALARM INFO variables (Alarm and Status Information)
+-- The alarmRelay, alarmData, extraAlarmData and statusData
+-- are integers from 0-255 containing the byte value received 
+-- from the controlmodule. The agent interprets these bytes and
+-- display them as text alarms in the "activeAlarmTable". 
+
+mainsFailureFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the mains failure flag"
+	::= { alarmInfo 1 }
+
+alarmRelay1	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm relay status for relay 1 to 8 "
+	::= { alarmInfo 2 }
+
+alarmRelay2	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm relay status for relay 9 to 16 "
+	::= { alarmInfo 3 }
+
+alarmData1	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 1"
+	::= { alarmInfo 4 }
+
+alarmData2	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 2"
+	::= { alarmInfo 5 }
+
+alarmData3	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 3"
+	::= { alarmInfo 6 }
+	
+extraAlarmData1	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing extra alarm data 1"
+	::= { alarmInfo 7 }
+	
+extraAlarmData2	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing extra alarm data 2"
+	::= { alarmInfo 8 }
+
+
+statusData1	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 1"
+	::= { alarmInfo 9 }
+
+statusData2	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 2"
+	::= { alarmInfo 10 }
+
+statusData3	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 3"
+	::= { alarmInfo 11 }
+
+numbOfAlarms	OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Variable containing the number of active alarms at the moment"
+	::= { alarmInfo 12 }
+activeAlarmTable	OBJECT-TYPE
+	SYNTAX SEQUENCE OF ActiveAlarmTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Active Alarm Table"
+	::= { alarmInfo 13 }
+
+activeAlarmEntry	OBJECT-TYPE
+	SYNTAX ActiveAlarmTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Queue of Active Alarm Table"
+	INDEX { alarmIndex }
+	::= { activeAlarmTable 1 }
+	
+alarmIndex	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Entery Number in the Active Alarm Table"
+	::= { activeAlarmEntry 1 }
+
+alarmText	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Active Alarm Description String"
+	::= { activeAlarmEntry 2 }	
+
+alarmType	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Type Number of the Active Alarm"
+	::= { activeAlarmEntry 3 }	
+
+alarmDate	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Date and Time of the Active Alarm (syntax: hh:mm dd.mm.yy)"
+	::= { activeAlarmEntry 4 }	
+
+-- SYMMETRY
+
+battTemp OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Battery Temperature"
+	::= { battery 1 }
+	
+numbOfBatteries OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Number of Battery strings"
+	::= { battery 2 }
+	
+
+symmetryTable	OBJECT-TYPE
+	SYNTAX SEQUENCE OF SymmetryTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Battery Symmetry Voltage Table for up to 4 voltage measurements
+		for each battery string."
+	::= { battery 3 }
+
+symmetryEntry	OBJECT-TYPE
+	SYNTAX SymmetryTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Queue of Symmetry Table"
+	INDEX { symmetryIndex }
+	::= { symmetryTable 1 }
+	
+symmetryIndex	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Entery Number in the Symmetry Table"
+	::= { symmetryEntry 1 }
+
+symmetry1	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Symmetry Voltage in Branch 1"
+	::= { symmetryEntry 2 }
+symmetry2	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Symmetry Voltage in Branch 2"
+	::= { symmetryEntry 3 }
+symmetry3	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Symmetry Voltage in Branch 3"
+	::= { symmetryEntry 4 }
+symmetry4	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Symmetry Voltage in Branch 4"
+	::= { symmetryEntry 5 }
+
+
+
+
+
+-- AGENT SETUP
+
+trapReciepient1	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 1"
+	::= { agentSetup 1 }
+
+trapReciepient2	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 2"
+	::= { agentSetup 2 }
+trapReciepient3	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 3"
+	::= { agentSetup 3 }
+trapReciepient4	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 4"
+	::= { agentSetup 4 }
+trapReciepient5	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 5"
+	::= { agentSetup 5 }
+trapReciepient6	OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address to Trap Reciepient 6"
+	::= { agentSetup 6 }
+
+includeText	OBJECT-TYPE
+	SYNTAX INTEGER{
+		include(1),
+		notInclude(2),
+		onlyOneTrap(3)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Include text in the Trap
+			Trap syntax: ahText ahEntryType ahReason
+
+		 OnlyoneTrap syntax:
+			alarmData1 alarmData2 alarmData3 extraAlarmData1
+			extraAlarmData2 statusData1 statusData2 statusData3
+			externalInput1 externalInput2 comPcu
+		"
+	::= { agentSetup 7 }
+	
+trapOnClear	OBJECT-TYPE
+	SYNTAX INTEGER{
+		onClear(1),
+		notOnClear(2)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Send Trap when alarm Clears, applies only when includText is
+		 in the state inclued(1) or notInclued(2)
+		"
+	::= { agentSetup 8 }
+	
+externalInput1Text	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Text Description of External Input 1 "
+	::= { agentSetup 9 }	
+	
+externalInput2Text	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Text Description of External Input 2 "
+	::= { agentSetup 10 }	
+
+
+-- ALARM HISTORY
+
+alarmHistoryCount	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Number of Alarm History entries in the History Table"
+	::= { alarmHistory 1 }
+	
+alarmHistoryTable	OBJECT-TYPE
+	SYNTAX SEQUENCE OF HistoryTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Alarm History Table"
+	::= { alarmHistory 2 }
+
+alarmHistoryEntry	OBJECT-TYPE
+	SYNTAX HistoryTable
+	ACCESS not-accessible
+	STATUS mandatory
+	DESCRIPTION
+		"Queue of History Table"
+	INDEX { ahTableIndex }
+	::= { alarmHistoryTable 1 }
+	
+ahTableIndex	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Entery Number in the History Table"
+	::= { alarmHistoryEntry 1 }
+
+ahEntryType	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Type of Alarm"
+	::= { alarmHistoryEntry 2 }
+
+ahReason	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Reason for the entry in the History Table
+			3 - Alarm Bytes Changed (only if 'oneTrap' enabled)
+			2 - Alarm Appeard
+			1 - Alarm Cleared
+		"
+	::= { alarmHistoryEntry 3 }
+
+ahTime	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Time and date of the History Table entry"
+	::= { alarmHistoryEntry 4 }
+
+ahText	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Alarm Text for this ahEntryType"
+	::= { alarmHistoryEntry 5 }
+
+	
+alarmHistoryTableClear	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Set of this OID will clear the alarm history "
+	::= { alarmHistory 3 }
+
+trapString	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Last Trap string
+		 If onlyOneTrap is set to 1 then the format of trapString is:
+			alarmData1 alarmData2 alarmData3 extraAlarmData1
+			extraAlarmData2 statusData1 statusData2 statusData3
+			externalInput1 externalInput2 comPCU
+		 
+		 If includeText is set to 1 then the format:
+		 	ahText ahEntryType ahReason
+
+		"
+	::= { alarmHistory 4 }
+
+
+-- SYSTEM PARAMETERS
+uFlag	OBJECT-TYPE
+	SYNTAX INTEGER{
+		u1normal(1),
+		u2boost(2),
+		u3test(3),
+		u4spare(4)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the operation mode Flag (normal, boost charge, test, spare)"
+	::= { systemParameters 1 }
+
+u1NormalRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U1 (Normal) Reference Voltage (Volt*10)"
+	::= { systemParameters 2 }
+
+u2BoostRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U2 (Boost) Reference Voltage (Volt*10)"
+	::= { systemParameters 3 }
+
+u3TestRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U3 (Test) Reference Voltage (Volt*10)"
+	::= { systemParameters 4 }
+
+u4SpareRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U4 (Spare) Reference Voltage (Volt*10)"
+	::= { systemParameters 5 }
+
+
+lowVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Limit (Volt*10)"
+	::= { systemParameters 6 }
+
+
+lowVoltDisconVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Disconnect Limit (Volt*10)"
+	::= { systemParameters 7 }
+
+lowVoltDisconHourLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Disconnect Limit (Hour*10)"
+	::= { systemParameters 8 }
+
+lowVoltDisconMinuteLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Disconnect Limit (Minute*10)"
+	::= { systemParameters 9 }
+
+
+lowVoltReconLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Reconnect Limit (Volt*10)"
+	::= { systemParameters 10 }
+partLoadDisconVolt	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit (V*10)
+		Only one variable of partLoadDisconVolt, partLoadDisconHour or partLoadDisconMinute 
+		will be acive based on the configuration of the PCU/PCS"
+	::= { systemParameters 11 }
+
+partLoadDisconHour	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit (Hour*10)
+		Only one variable of partLoadDisconVolt, partLoadDisconHour or partLoadDisconMinute 
+		will be acive based on the configuration of the PCU/PCS"
+	::= { systemParameters 12 }
+
+partLoadDisconMinute	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit (Minute*10)
+		Only one variable of partLoadDisconVolt, partLoadDisconHour or partLoadDisconMinute 
+		will be acive based on the configuration of the PCU/PCS"
+	::= { systemParameters 13 }
+
+highVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Voltage Limit (Volt*10)"
+	::= { systemParameters 14 }
+	
+highVoltDisconLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Voltage Disconnect Limit (Volt*10)"
+	::= { systemParameters 15 }
+
+autoBoostFlag	OBJECT-TYPE
+--	SYNTAX INTEGER(0..1)
+	SYNTAX INTEGER{
+		boostEnabled(1)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Auto Boost Flag(1 for auto boost enabled, 0 disabled)."
+	::= { systemParameters 16 }
+
+boostTime	OBJECT-TYPE
+	SYNTAX INTEGER(0..200)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Time value (hour*10)"
+	::= { systemParameters 17 }
+
+boostInterval	OBJECT-TYPE
+	SYNTAX INTEGER(30..160)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Interval value (weeks*10)"
+	::= { systemParameters 18 }
+
+boostTimeFactor	OBJECT-TYPE
+	SYNTAX INTEGER(0..20)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Time Factor"
+	::= { systemParameters 19 }
+
+boostLimit1	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Limit1 value (Volt*10)"
+	::= { systemParameters 20 }
+
+boostLimit2	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Limit2 value (Volt*10)"
+	::= { systemParameters 21 }
+
+
+
+noOfBatteries	OBJECT-TYPE
+	SYNTAX INTEGER(0..12)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Number of Batteries"
+	::= { systemParameters 22 }
+
+batType	OBJECT-TYPE
+	SYNTAX INTEGER{
+		a4Block(1),
+		a23CellsPositive(2),
+		a23CellsNegative(3),
+		a3Block(4),
+		a2Block(5)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Type Of Battery"
+	::= { systemParameters 23 }
+
+symLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..50)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Symmetry Limit (Volt*10)"
+	::= { systemParameters 24 }
+
+autoTestFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..4)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the number of automatic battery tests
+		performed per year."
+	::= { systemParameters 25}
+
+startHForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..23)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Start Hour for Automatic Test"
+	::= { systemParameters 26 }
+
+voltLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..3000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Voltage Limit for Battery Test (Volt*10)"
+	::= { systemParameters 27 }
+
+timeLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..600)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Time Limit For Test (minutes)"
+	::= { systemParameters 28 }
+
+ampLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..5000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Amphour Limit For Test (Ah)"
+	::= { systemParameters 29 }
+
+year	OBJECT-TYPE
+	SYNTAX INTEGER(0..99)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Year"
+	::= { systemParameters 30 }
+
+month	OBJECT-TYPE
+	SYNTAX INTEGER(0..12)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Month"
+	::= { systemParameters 31 }
+
+day	OBJECT-TYPE
+	SYNTAX INTEGER(0..1)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Day"
+	::= { systemParameters 32 }
+
+hour	OBJECT-TYPE
+	SYNTAX INTEGER(0..23)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Hour"
+	::= { systemParameters 33 }
+
+minute	OBJECT-TYPE
+	SYNTAX INTEGER(0..60)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Minute"
+	::= { systemParameters 34 }
+
+tempCompFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..1)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Temperature Compensation Flag"
+	::= { systemParameters 35 }
+
+tempCompFactor	OBJECT-TYPE
+	SYNTAX INTEGER(0..20)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Temperature Compensation Factor (Volt*10/10C)"
+	::= { systemParameters 36 }
+
+
+tempLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..1000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Temperature Limit (C*10)"
+	::= { systemParameters 37 }
+
+highLoadLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Load Limit (% of full capacity)"
+	::= { systemParameters 38 }
+
+signals	OBJECT-TYPE
+	SYNTAX INTEGER {
+		resetAlarms(1),
+		reconfigureSystem(2)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Signal byte
+			Bit 0 - Reset Alarms
+			Bit 1 - Reconfigure System
+		
+		"
+	::= { systemParameters 39 }
+
+networkAdr	OBJECT-TYPE
+	SYNTAX INTEGER(1..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Network Address for the PCU/PCS"
+	::= { systemParameters 40 }
+
+shuntA	OBJECT-TYPE
+	SYNTAX INTEGER(0..5000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Shunt Current Rating (A)"
+	::= { systemParameters 41 }
+
+shuntmV	OBJECT-TYPE
+	SYNTAX INTEGER(0..1000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Shunt mV Rating (mV)"
+	::= { systemParameters 42 }
+
+batCurrLimEnabled	OBJECT-TYPE
+	SYNTAX INTEGER {
+		enabled(1),
+		disabled(2)
+	}
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Battery Current Limit Enabled
+		"
+	::= { systemParameters 43 }
+
+currLimRef	OBJECT-TYPE
+	SYNTAX INTEGER(50..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the battery Current Limit reference (Amp*10)"
+	::= { systemParameters 44 }
+
+
+
+
+
+-- Traps
+
+lowVoltTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Low DC Voltage Alarm "
+    ::= 1
+
+
+highVoltTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "High DC Voltage Alarm"
+    ::= 2
+    
+loadBattDisconTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Load/Battery Disconnected"
+    ::= 3
+mainsFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Mains Failure Alarm"
+    ::= 4
+distrFuseTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Distribution Fuse Failure"
+    ::= 5
+earthFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Earth Failure Alarm"
+    ::= 6
+battFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery Failure"
+    ::= 7
+rectifierFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Rectifier Failure"
+    ::= 8
+
+battTempTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery Temperature Alarm"
+    ::= 9
+symmFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Symmetry Fault Alarm"
+    ::= 10
+battFuseTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery Fuse Failure"
+    ::= 11
+highLoadTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "High Load"
+    ::= 12
+electrlLowTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Electrolyte Low"
+    ::= 13
+urgentModFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Urgent Module Failure"
+    ::= 14
+rectModRemTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Rectifier Module Removed"
+    ::= 15
+partLoadDisconTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Partial Load Disconnected"
+    ::= 16
+dischargingTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery is Discharging"
+    ::= 17
+battTestTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery Test in Progress"
+    ::= 18
+alarmsBlockedTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Alarms Are Blocked"
+    ::= 19
+highBattTempTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "High Battery Temperature"
+    ::= 20
+battFuseDisconTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Battery Fuse Disconnected"
+    ::= 21
+comFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Communication Failure"
+    ::= 22
+tempProbeTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Temperature Probe Failure"
+    ::= 23
+ovShutdownTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Overvoltage Shutdown"
+    ::= 24
+commonAlarmTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Common Alarm"
+    ::= 25
+intFuseTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Internal Fuse Failure"
+    ::= 26
+loadDisconTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Load Disconnected"
+    ::= 27
+pcuDeactivTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "PCU Deactivated"
+    ::= 28
+currLimRedTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Current Limit Reduced"
+    ::= 29
+distBattFuseFailTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Distribution/Battery Fuse Failure"
+    ::= 30
+blockedAlarmsTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Alarms are Blocked"
+    ::= 31
+distHighLoadTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "Distribution Load High"
+    ::= 32
+u1NormalTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "System output reference changed to Normal"
+    ::= 33
+u2BoostTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "System output reference changed to Boost"
+    ::= 34
+u3TestTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "System output reference changed to Test"
+    ::= 35
+u4SpareTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "System output reference changed to Spare"
+    ::= 36
+externInput1Trap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "External Input Trap1  - 2 Alarm, 1 Clear"
+    ::= 80
+    
+externInput2Trap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		externalInput2
+    }
+    DESCRIPTION
+            "External Input Trap2 - 2 Alarm, 1 Clear"
+    ::= 81
+       
+pcuComTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "PCU/PCS Communication Fail - 2 Alarm, 1 Clear"
+    ::= 100
+    
+oneTrap TRAP-TYPE
+    ENTERPRISE powecTrap
+    VARIABLES {
+    		trapString
+    }
+    DESCRIPTION
+            "One Trap containing status and Alarm info of the format:
+		  	alarmData1 alarmData2 alarmData3 extraAlarmData1
+			extraAlarmData2 statusData1 statusData2 statusData3
+			externalInput1 externalInput2 comPCU
+		  "
+    ::= 110
+
+  HistoryTable ::= 
+   SEQUENCE { 
+      ahTableIndex
+          INTEGER,
+      ahEntryType
+          INTEGER,
+      ahReason
+          INTEGER,
+      ahTime
+          DisplayString,
+		ahText
+			 DisplayString
+ }
+   
+  SymmetryTable ::= 
+   SEQUENCE { 
+      symmetryIndex
+          INTEGER,
+      symmetry1
+          INTEGER,
+      symmetry2
+          INTEGER,
+      symmetry3
+          INTEGER,
+		symmetry4
+			 INTEGER
+ }
+  ModuleTable ::= 
+   SEQUENCE { 
+      moduleIndex
+          INTEGER,
+      rectifierOk
+          INTEGER,
+      moduleVoltage
+          INTEGER,
+      moduleCurrent
+          INTEGER,
+	 meanCurrent
+		INTEGER,
+	 temperature
+		INTEGER,
+	 moduleComStatus
+		INTEGER,
+	 moduleStatus
+		INTEGER,
+	 moduleFlag
+		INTEGER,
+	 moduleConfig
+		INTEGER,
+	 softVersion 
+	 	DisplayString,
+	 moduleSerialNo
+	 	INTEGER
+
+ }
+  ActiveAlarmTable ::= 
+   SEQUENCE { 
+      alarmIndex
+          INTEGER,
+      alarmText
+          DisplayString,
+      alarmType
+          INTEGER,
+      alarmDate
+          DisplayString
+ }	  
+END

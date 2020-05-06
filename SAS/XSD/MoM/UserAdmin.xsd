@@ -1,0 +1,16 @@
+
+<xsd:schema targetNamespace="http://www.astron.nl/useradmin" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:persistent="http://www.astron.nl/PersistentObjects">
+	<xsd:import namespace="http://www.astron.nl/PersistentObjects" schemaLocation="PersistentObjects.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation>
+			XML Schema for the WSRT user administration datamodel
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="UserRefType">
+		<xsd:complexContent>
+			<xsd:restriction base="persistent:PersistentObjectType">
+				<xsd:attribute name="id" type="xsd:integer" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

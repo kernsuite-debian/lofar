@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT
 from tempfile import mkstemp, mkdtemp
 import os
@@ -66,7 +66,7 @@ class new_bbs(LOFARnodeTCP):
                 "BBDB.Host": db_host,
                 "ParmDB.Sky": parmdb_sky,
                 "ParmDB.Instrument": parmdb_instrument
-            }.iteritems():
+            }.items():
                 kernel_parset.add(key, value)
             kernel_parset.writeFile(parset_file)
             os.close(fd)
@@ -94,7 +94,7 @@ class new_bbs(LOFARnodeTCP):
                     raise CalledProcessError(
                         bbs_kernel_process.returncode, executable
                     )
-            except CalledProcessError, e:
+            except CalledProcessError as e:
                 self.logger.error(str(e))
                 return 1
             finally:

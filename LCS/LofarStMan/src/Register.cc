@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Register.cc 14058 2009-09-18 12:30:43Z diepen $
+//# $Id$
 
 //# Includes
 #include <LofarStMan/Register.h>

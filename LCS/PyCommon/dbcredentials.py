@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Copyright (C) 2012-2015    ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
@@ -17,12 +17,12 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: dbcredentials.py 36496 2017-02-08 15:15:06Z mol $
+# $Id$
 
 from glob import glob
 import os
 import pwd
-from ConfigParser import SafeConfigParser, NoSectionError, DuplicateSectionError
+from configparser import SafeConfigParser, NoSectionError, DuplicateSectionError
 from optparse import OptionGroup
 from os import stat, path, chmod
 import logging
@@ -69,10 +69,10 @@ class Credentials:
     self.config = {}
 
   def __str__(self):
-    return "type={type} addr={host}:{port} auth={user}:{password} db={database}".format(**self.__dict__)
+    return "db={database} addr={host}:{port} auth={user}:{password} type={type}".format(**self.__dict__)
 
   def stringWithHiddenPassword(self):
-    return "type={type} addr={host}:{port} auth={user}:XXXXXX db={database}".format(**self.__dict__)
+    return "db={database} addr={host}:{port} auth={user}:XXXXXX type={type}".format(**self.__dict__)
 
   def pg_connect_options(self):
     """
@@ -159,10 +159,10 @@ class DBCredentials:
 
     # make sure the files are mode 600 to hide passwords
     for file in self.files:
-        if oct(stat(file).st_mode & 0777) != '0600':
+        if oct(stat(file).st_mode & 0o777) != '0o600':
             logger.info('Changing permissions of %s to 600' % file)
             try:
-                chmod(file, 0600)
+                chmod(file, 0o600)
             except Exception as e:
                 logger.error('Error: Could not change permissions on %s: %s' % (file, str(e)))
 
@@ -285,7 +285,9 @@ if __name__ == "__main__":
 
   parser = OptionParser("%prog [options]")
   parser.add_option("-D", "--database", dest="database", type="string", default="",
-                    help="Name of the database")
+                    help="Print credentials of a specific database")
+  parser.add_option("-S", "--shell", dest="shell", action="store_true", default=False,
+                    help="Use machine-readable output for use in shell scripts")
   parser.add_option("-L", "--list", dest="list", action="store_true", default=False,
                     help="List known databases")
   parser.add_option("-F", "--files", dest="files", action="store_true", default=False,
@@ -293,7 +295,7 @@ if __name__ == "__main__":
   (options, args) = parser.parse_args()
 
   if not options.database and not options.list and not options.files:
-    print "Missing database name"
+    print("Missing database name")
     parser.print_help()
     sys.exit(1)
 
@@ -302,16 +304,25 @@ if __name__ == "__main__":
   if options.files:
     """ Print list of configuration files that we've read. """
     if dbc.files:
-      print "\n".join(dbc.files)
+      print("\n".join(dbc.files))
     sys.exit(0)
 
   if options.list:
     """ Print list of databases. """
     databases = dbc.list()
     if databases:
-      print "\n".join(databases)
+      print("\n".join(databases))
     sys.exit(0)
 
   """ Print credentials of a specific database. """
-  print str(dbc.get(options.database))
+  creds = dbc.get(options.database)
+
+  if options.shell:
+    print("DBUSER=%s" % (creds.user,))
+    print("DBPASSWORD=%s" % (creds.password,))
+    print("DBDATABASE=%s" % (creds.database,))
+    print("DBHOST=%s" % (creds.host,))
+    print("DBPORT=%s" % (creds.port,))
+  else:
+    print(str(creds))
 

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GlobalProcessControl.cc 20277 2012-02-28 15:21:58Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -36,8 +36,8 @@
 #include <Common/LofarLogger.h>
 #include <Common/lofar_algorithm.h>
 
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVTime.h>
 
 // sleep()
 #include <unistd.h>
@@ -170,8 +170,8 @@ namespace LOFAR
 
         const vector<string> &window = itsStrategy.timeRange();
 
-        casa::Quantity time;
-        if(!window.empty() && casa::MVTime::read(time, window[0])) {
+        casacore::Quantity time;
+        if(!window.empty() && casacore::MVTime::read(time, window[0])) {
           const pair<size_t, bool> result =
             itsGlobalTimeAxis->find(time.getValue("s"));
 
@@ -180,7 +180,7 @@ namespace LOFAR
           }
         }
 
-        if(window.size() > 1 && casa::MVTime::read(time, window[1])) {
+        if(window.size() > 1 && casacore::MVTime::read(time, window[1])) {
           const pair<size_t, bool> result =
             itsGlobalTimeAxis->find(time.getValue("s"), false);
 
@@ -444,7 +444,7 @@ namespace LOFAR
 
     //##--------   P r i v a t e   m e t h o d s   --------##//
 
-    // Compare two axes for equality within a tolerance (using casa::near()).
+    // Compare two axes for equality within a tolerance (using casacore::near()).
     bool GlobalProcessControl::equal(const Axis::ShPtr &lhs,
         const Axis::ShPtr &rhs) const
     {
@@ -453,14 +453,14 @@ namespace LOFAR
       }
 
       if(lhs->isRegular() && rhs->isRegular()) {
-        return casa::near(lhs->start(), rhs->start())
-          && casa::near(lhs->end(), rhs->end());
+        return casacore::near(lhs->start(), rhs->start())
+          && casacore::near(lhs->end(), rhs->end());
       }
 
       for(size_t i = 0, end = lhs->size(); i < end; ++i)
       {
-        if(casa::near(lhs->center(i), rhs->center(i))
-          && casa::near(lhs->width(i), rhs->width(i))) {
+        if(casacore::near(lhs->center(i), rhs->center(i))
+          && casacore::near(lhs->width(i), rhs->width(i))) {
           continue;
         }
 

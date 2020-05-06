@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema targetNamespace="http://www.astron.nl/MoM2-Lofar" version="3.0" xmlns:persistent="http://www.astron.nl/PersistentObjects" xmlns:mom2="http://www.astron.nl/MoM2" xmlns="http://www.astron.nl/MoM2-Lofar" xmlns:user="http://www.astron.nl/useradmin" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:import schemaLocation="MoM2.xsd" namespace="http://www.astron.nl/MoM2"/>
+	<xsd:import schemaLocation="UserAdmin.xsd" namespace="http://www.astron.nl/useradmin"/>
+	<xsd:import schemaLocation="PersistentObjects.xsd" namespace="http://www.astron.nl/PersistentObjects"/>
+	<xsd:annotation>
+		<xsd:documentation>
+    	XML Schema for the MoM3 datamodel of Lofar, despite the name relating to MoM2
+	</xsd:documentation>
+	</xsd:annotation><!-- Project related declarations -->
+	<xsd:element name="project" substitutionGroup="mom2:project" type="LofarProjectType"/>
+	<xsd:complexType name="LofarProjectType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:ProjectType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="version" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="template" type="LofarTemplateType"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="IndexedLofarProjectInputListType"/>
+					<xsd:element minOccurs="0" name="children" type="IndexedLofarCollectionChildListType"/>
+					<xsd:element minOccurs="0" name="members" nillable="true" type="mom2:IndexedMemberListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="allocation"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="releaseDate" type="xsd:date"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarTemplateType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:string" use="required"/>
+		<xsd:attribute name="author" type="xsd:string" use="required"/>
+		<xsd:attribute name="changedBy" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="allocation" substitutionGroup="mom2:allocation" type="LofarAllocationType"/>
+	<xsd:complexType name="LofarAllocationType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:AllocationType">
+				<xsd:sequence>
+					<xsd:element ref="resource" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="resource" type="LofarResourceType"/>
+	<xsd:complexType name="LofarResourceType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:ResourceType">
+				<xsd:attribute name="queue" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarProjectRefType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarProjectType">
+				<xsd:attribute name="id" type="xsd:integer" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarProjectInputListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element name="item" type="IndexedLofarProjectInputItemType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarProjectInputItemType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="proposalDocument"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="proposalDocument" substitutionGroup="mom2:anyDataProduct" type="LofarProposalDocumentType"/>
+	<xsd:complexType name="LofarProposalDocumentType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:DataProductType">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/><!--
+						The current LofarProject will be the owner! <xsd:element name="ownerMom2Object" type="Mom2ObjectRefType"
+						minOccurs="0"> </xsd:element>
+					-->
+					<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+					<xsd:element minOccurs="0" fixed="PROPOSAL" name="type" type="xsd:string"/><!--
+						timeStamp to be set equal to time of upload! <xsd:element name="timeStamp" type="xsd:dateTime" minOccurs="0">
+						</xsd:element>
+					-->
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Collection related declarations -->
+	<xsd:element name="folder" substitutionGroup="mom2:anyMom2Object" type="LofarCollectionType"/>
+	<xsd:complexType name="LofarGroupCollectionType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:CollectionType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="topology_parent" type="xsd:boolean"/>
+				<xsd:attribute name="update_folder" type="xsd:boolean"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarCollectionType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarGroupCollectionType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:element minOccurs="0" name="children" nillable="true" type="IndexedLofarCollectionChildListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="topology_parent" type="xsd:boolean"/>
+				<xsd:attribute name="update_folder" type="xsd:boolean"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarCollectionChildListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarCollectionChildItemType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarCollectionChildItemType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectItemType">
+				<xsd:choice>
+					<xsd:element ref="folder"/>
+					<xsd:element ref="observation"/>
+					<xsd:element ref="pipeline"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Observation related declarations -->
+	<xsd:element name="observation" substitutionGroup="mom2:anyMom2Object" type="LofarObservationType"/>
+	<xsd:complexType name="LofarObservationType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:CollectionType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="processingCluster" type="ProcessingClusterType"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="predecessor_topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="observationAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="children" type="IndexedLofarObservationChildListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="MemoryStorageUnit">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="byte"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="MemoryStorageType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:attribute name="unit" type="MemoryStorageUnit" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProcessingClusterType">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="partition" type="xsd:string"/>
+			<xsd:element name="numberOfTasks" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="minRAMPerTask" type="MemoryStorageType"/>
+			<xsd:element minOccurs="0" name="minScratchPerTask" type="MemoryStorageType"/>
+			<xsd:element minOccurs="0" name="maxDurationPerTask" type="xsd:duration"/>
+			<xsd:element name="numberOfCoresPerTask" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="runSimultaneous" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="observationAttributes" substitutionGroup="mom2:specificAttributes" type="LofarObservationAttributesType"/>
+	<xsd:complexType name="LofarObservationAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="observationId" type="xsd:nonNegativeInteger" nillable="true"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="projectName" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="instrument" type="LofarInstrumentType"/>
+					<xsd:element minOccurs="0" name="defaultTemplate" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="tbbPiggybackAllowed" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="aartfaacPiggybackAllowed" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="userSpecification" type="LofarObservationSpecificationType"/>
+					<xsd:element minOccurs="0" name="systemSpecification" type="LofarObservationSpecificationType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarObservationSpecificationType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="correlatedData" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="filteredData" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="beamformedData" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="coherentStokesData" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="incoherentStokesData" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="antenna" type="LofarAntennaSetType"/>
+			<xsd:element minOccurs="0" name="clock" type="LofarClockType"/>
+			<xsd:element minOccurs="0" name="instrumentFilter" type="LofarBandFilterType"/>
+			<xsd:element minOccurs="0" name="integrationInterval" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="channelsPerSubband" type="xsd:short"/>
+			<xsd:element minOccurs="0" name="coherentDedisperseChannels" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="tiedArrayBeams" type="LofarArrayBeamsType"/>
+			<xsd:element minOccurs="0" name="stokes" type="LofarStokesType"/>
+			<xsd:element minOccurs="0" name="stationSet" type="LofarStationSelectionType"/><!-- we can't support xsd:element minOccurs="0" name="stations" type="xsd:string"/ -->
+			<xsd:element minOccurs="0" name="stations" type="LofarStationsType"/>
+			<xsd:element minOccurs="0" name="timeFrame">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="UT"/>
+						<xsd:enumeration value="LST"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="startTime" type="xsd:dateTime"/>
+			<xsd:element minOccurs="0" name="endTime" type="xsd:dateTime"/>
+			<xsd:choice>
+			<xsd:element minOccurs="0" name="duration" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="duration" type="xsd:duration"/>
+			</xsd:choice>
+			<xsd:element minOccurs="0" name="bypassPff" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="enableSuperterp" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="numberOfBitsPerSample" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="misc" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarArrayBeamsType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="flyseye" type="xsd:boolean"/><!-- Used at the Observation level-->
+			<xsd:element minOccurs="0" name="nrTabRings" type="xsd:nonNegativeInteger"/><!-- Used at the Measurement level-->
+			<xsd:element minOccurs="0" name="tabRingSize" type="xsd:double" nillable="true"/><!-- Used at the Measurement level-->
+			<xsd:element minOccurs="0" name="tiedArrayBeamList" type="LofarArrayBeamListType"/><!-- Used at the Measurement level-->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarArrayBeamListType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="tiedArrayBeam">
+				<xsd:complexType>
+					<xsd:sequence>
+					 	<xsd:element name="coherent" type="xsd:boolean"/>
+						<xsd:element name="angle1" type="xsd:double"/>
+						<xsd:element name="angle2" type="xsd:double"/>
+					</xsd:sequence>
+					<xsd:attribute name="index" type="xsd:integer"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="StokesSelectionType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="I"/>
+			<xsd:enumeration value="IQUV"/>
+			<xsd:enumeration value="XXYY"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="LofarStokesType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="integrateChannels" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="subbandsPerFileCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="numberCollapsedChannelsCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="stokesDownsamplingStepsCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="whichCS" type="StokesSelectionType" nillable="true"/>
+			<xsd:element minOccurs="0" name="subbandsPerFileIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="numberCollapsedChannelsIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="stokesDownsamplingStepsIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element minOccurs="0" name="whichIS" type="StokesSelectionType" nillable="true"/><!-- xsd:element minOccurs="0" name="integrationSteps" type="xsd:nonNegativeInteger" nillable="true"/ -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarStationSelectionType">
+		<xsd:simpleContent>
+			<xsd:restriction base="AbstractLofarStationSelectionType">
+				<xsd:enumeration value="Single"/>
+				<xsd:enumeration value="Core"/>
+				<xsd:enumeration value="Dutch"/>
+				<xsd:enumeration value="All"/>
+				<xsd:enumeration value="Custom"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractLofarStationSelectionType" abstract="true">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="min" type="xsd:nonNegativeInteger"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarStationsType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="station" type="LofarStationType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarStationType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="location" type="LofarCoordinatesType"/>
+			<xsd:element minOccurs="0" maxOccurs="2" name="antennaField" type="LofarAntennaFieldType"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="LofarAntennaField">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HBA0"/>
+			<xsd:enumeration value="HBA1"/>
+			<xsd:enumeration value="HBA0+1"/>
+			<xsd:enumeration value="HBA"/>
+			<xsd:enumeration value="LBA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="LofarAntennaFieldType">
+		<xsd:sequence>
+			<xsd:element name="name" type="LofarAntennaField"/>
+			<xsd:element name="location" type="LofarCoordinatesType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarCoordinatesType">
+		<xsd:sequence>
+			<xsd:element name="coordinateSystem">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="WGS84"/>
+						<xsd:enumeration value="ITRF2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="x" type="xsd:double"/>
+			<xsd:element name="y" type="xsd:double"/>
+			<xsd:element name="z" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="LofarAntennaSetType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HBA Zero"/>
+			<xsd:enumeration value="HBA One"/>
+			<xsd:enumeration value="HBA Dual"/>
+			<xsd:enumeration value="HBA Joined"/>
+			<xsd:enumeration value="LBA Outer"/>
+			<xsd:enumeration value="LBA Inner"/>
+			<xsd:enumeration value="LBA Sparse Even"/>
+			<xsd:enumeration value="LBA Sparse Odd"/>
+			<xsd:enumeration value="LBA X"/>
+			<xsd:enumeration value="LBA Y"/>
+			<xsd:enumeration value="HBA Zero Inner"/>
+			<xsd:enumeration value="HBA One Inner"/>
+			<xsd:enumeration value="HBA Dual Inner"/>
+			<xsd:enumeration value="HBA Joined Inner"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LofarInstrumentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Beam Observation"/>
+			<xsd:enumeration value="Interferometer"/>
+			<xsd:enumeration value="Tied Array"/>
+			<xsd:enumeration value="Transient Buffer Board"/>
+			<xsd:enumeration value="Direct Data Storage"/>
+			<xsd:enumeration value="Non Standard"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LofarBandFilterType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="10-70 MHz"/>
+			<xsd:enumeration value="30-70 MHz"/>
+			<xsd:enumeration value="10-90 MHz"/>
+			<xsd:enumeration value="30-90 MHz"/>
+			<xsd:enumeration value="110-190 MHz"/>
+			<xsd:enumeration value="170-230 MHz"/>
+			<xsd:enumeration value="210-250 MHz"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="LofarClockType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="channelWidth" type="mom2:Frequency"/>
+			<xsd:element minOccurs="0" name="samplesPerSecond" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="subbandWidth" type="mom2:Frequency"/>
+			<xsd:element minOccurs="0" name="systemClock" type="mom2:Frequency"/>
+		</xsd:sequence>
+		<xsd:attribute name="mode" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="160 MHz"/>
+					<xsd:enumeration value="200 MHz"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarObservationChildListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarObservationChildItemType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarObservationChildItemType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectItemType">
+				<xsd:choice>
+					<xsd:element ref="measurement"/>
+					<xsd:element ref="pipeline"/><!-- WTF -->
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Measurement related declarations -->
+	<xsd:element name="measurement" substitutionGroup="mom2:anyMom2Object" type="LofarMeasurementType"/>
+	<xsd:complexType name="LofarMeasurementType" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:Mom2ObjectType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+    <!-- Beam Measurement related declarations -->
+    <!-- This type is commented out besause it is basically an unused abstract parent class for uv and bf -->
+    <!-- xsd:complexType name="BeamMeasurementType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarMeasurementType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="beamMeasurementAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedLofarBeamResultDataProductListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType -->
+	<!-- xsd:element name="beamMeasurementAttributes" substitutionGroup="mom2:specificAttributes" type="LofarBeamMeasurementAttributesType"/ -->
+	<xsd:complexType name="LofarBeamMeasurementAttributesType" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType"><!-- Lot's of duplication, this probably gets interpreted as the "system specification" -->
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="ra" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="dec" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="equinox" type="EquinoxType"/>
+					<xsd:element minOccurs="0" name="duration" type="xsd:duration"/>
+					<xsd:element minOccurs="0" name="startTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="endTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="centralFrequency" type="mom2:Frequency"/>
+					<xsd:element minOccurs="0" name="bandWidth" type="mom2:Frequency"/>
+					<xsd:element minOccurs="0" name="subbandsSpecification" type="LofarSubbandsSpecificationType"/>
+					<xsd:element minOccurs="0" name="measurementType">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="Target"/>
+								<xsd:enumeration value="Calibration"/>
+								<xsd:enumeration value="Tune Up"/>
+								<xsd:enumeration value="Miscellaneous"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="specification" type="LofarBeamMeasurementSpecificationAttributesType"/><!-- Lot's of duplication, probably related to user/system spec shenanigans -->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarBeamMeasurementSpecificationAttributesType"><!-- Lot's of duplication, this probably gets interpreted as the "User specification" -->
+		<xsd:sequence>
+			<xsd:element name="targetName" type="xsd:string"/>
+			<xsd:element name="ra" type="xsd:double"/>
+			<xsd:element name="dec" type="xsd:double"/>
+			<xsd:element name="equinox" type="EquinoxType"/>
+			<xsd:element name="duration" type="xsd:duration"/>
+			<xsd:element name="subbandsSpecification" type="LofarSubbandsSpecificationType"/>
+			<xsd:element minOccurs="0" name="tiedArrayBeams" type="LofarArrayBeamsType"/><!-- Optional for UVMeasurement -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LofarSubbandsSpecificationType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="bandWidth" type="mom2:Frequency"/>
+			<xsd:element minOccurs="0" name="centralFrequency" type="mom2:Frequency"/>
+			<xsd:element minOccurs="0" name="contiguous" type="xsd:boolean"/>
+			<xsd:element minOccurs="0" name="subbands" type="SubbandArrayType"/>
+		</xsd:sequence>
+	</xsd:complexType><!-- xsd:complexType name="LofarCustomSubbandsSpecificationType"/ -->
+	<xsd:simpleType name="SubbandArrayType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{1,3}(,\d{1,3})*|\d{1,3}\.\.\d{1,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EquinoxType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="J2000"/>
+			<xsd:enumeration value="B1950"/>
+			<xsd:enumeration value="Other"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="IndexedLofarBeamResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarBeamResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarBeamResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="uvDataProduct"/>
+					<xsd:element ref="bfDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- UV Measurement related declarations -->
+	<xsd:complexType name="UVMeasurementType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarMeasurementType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="uvMeasurementAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedLofarUVResultDataProductListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="uvMeasurementAttributes" substitutionGroup="mom2:specificAttributes" type="LofarBeamMeasurementAttributesType"/>
+	<xsd:complexType name="LofarUVMeasurementAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="LofarBeamMeasurementAttributesType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarUVResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="IndexedLofarBeamResultDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarUVResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarUVResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="IndexedLofarBeamResultDataProductType">
+				<xsd:choice>
+					<xsd:element ref="uvDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- BeamFormed Measurement related declarations -->
+	<xsd:complexType name="BFMeasurementType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarMeasurementType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="bfMeasurementAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedLofarBFResultDataProductListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="bfMeasurementAttributes" substitutionGroup="mom2:specificAttributes" type="LofarBFMeasurementAttributesType"/>
+	<xsd:complexType name="LofarBFMeasurementAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="LofarBeamMeasurementAttributesType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarBFResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="IndexedLofarBeamResultDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarBFResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarBFResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="IndexedLofarBeamResultDataProductType">
+				<xsd:choice>
+					<xsd:element ref="uvDataProduct"/>
+					<xsd:element ref="bfDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- TBB Measurement (Event?) related declarations -->
+	<xsd:complexType name="TBBMeasurementType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarMeasurementType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="tbbMeasurementAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedLofarTBBResultDataProductListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="tbbMeasurementAttributes" substitutionGroup="mom2:specificAttributes" type="LofarTBBMeasurementAttributesType"/>
+	<xsd:complexType name="LofarTBBMeasurementAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarTBBResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarTBBResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarTBBResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="tbbDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Generic Measurement related declarations -->
+	<xsd:complexType name="GenericMeasurementType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarMeasurementType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="genericMeasurementAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedLofarGenericResultDataProductListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="genericMeasurementAttributes" substitutionGroup="mom2:specificAttributes" type="LofarTBBMeasurementAttributesType"/>
+	<xsd:complexType name="LofarGenericMeasurementAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarGenericResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarGenericResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarGenericResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="genericDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- General Pipeline related declarations -->
+	<xsd:element name="pipeline" substitutionGroup="mom2:anyMom2Object" type="LofarPipelineType"/>
+	<xsd:complexType name="LofarPipelineType" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:CollectionType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarPipelineAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="pipelineId" type="xsd:nonNegativeInteger"/>
+					<!--<xsd:element minOccurs="0" name="startTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="endTime" type="xsd:dateTime"/>-->
+					<xsd:element minOccurs="0" name="misc" type="xsd:string"/>
+					<!-- xsd:element minOccurs="0" name="userSpecification" type="LofarPipelineSpecificationType"/>
+					<xsd:element minOccurs="0" name="systemSpecification" type="LofarPipelineSpecificationType"/-->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LofarPipelineSpecificationType">
+		<xsd:sequence>
+
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarPipelineChildListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedLofarPipelineChildItemType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedLofarPipelineChildItemType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedMom2ObjectItemType">
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Averaging Pipeline related declarations -->
+	<xsd:complexType name="AveragingPipelineType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarPipelineType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="predecessor_topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="processingCluster" type="ProcessingClusterType"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="averagingPipelineAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/><!-- xsd:element minOccurs="0" name="children" type="IndexedLofarPipelineChildListType"/ --><!--WTF-->
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DemixingParametersType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="averagingFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="averagingTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixAlways" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="demixIfNeeded" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="ignoreTarget" type="xsd:boolean" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BbsParametersType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="averagingFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="averagingTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="demixAlways" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="demixIfNeeded" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="ignoreTarget" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="averagingPipelineAttributes" substitutionGroup="mom2:specificAttributes" type="AveragingPipelineAttributesType"/>
+	<xsd:complexType name="AveragingPipelineAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="LofarPipelineAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="defaultTemplate" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="duration" type="xsd:duration"/>
+					<xsd:element minOccurs="0" name="startTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="endTime" type="xsd:dateTime" nillable="true"/>
+					<xsd:element minOccurs="0" name="demixingParameters" type="DemixingParametersType"/>
+					<xsd:element minOccurs="0" name="bbsParameters" type="BbsParametersType"/>
+					<xsd:element minOccurs="0" name="flaggingStrategy" type="xsd:string"/><!-- xsd:element minOccurs="0" name="frequencyIntegrationStep" type="xsd:nonNegativeInteger"/ --><!-- xsd:element minOccurs="0" name="timeIntegrationStep" type="xsd:nonNegativeInteger"/ -->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<!-- Calibration Pipeline related declarations -->
+	<xsd:complexType name="CalibrationPipelineType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarPipelineType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="predecessor_topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="processingCluster" type="ProcessingClusterType"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="calibrationPipelineAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/><!-- xsd:element minOccurs="0" name="children" type="IndexedLofarPipelineChildListType"/ --><!--WTF-->
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="calibrationPipelineAttributes" substitutionGroup="mom2:specificAttributes" type="CalibrationPipelineAttributesType"/>
+	<xsd:complexType name="CalibrationPipelineAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="AveragingPipelineAttributesType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<!-- Imaging Pipeline related declarations -->
+	<xsd:complexType name="ImagingPipelineType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarPipelineType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="predecessor_topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="processingCluster" type="ProcessingClusterType"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="imagingPipelineAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="IndexedImagingPipelineUsedDataProductListType"/>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="IndexedImagingPipelineResultDataProductListType"/><!-- xsd:element minOccurs="0" name="children" type="IndexedLofarPipelineChildListType"/ --><!--WTF-->
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="imagingPipelineAttributes" substitutionGroup="mom2:specificAttributes" type="ImagingPipelineAttributesType"/>
+	<xsd:complexType name="ImagingPipelineAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="AveragingPipelineAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="imagerIntegrationTime" type="xsd:double"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedImagingPipelineUsedDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedImagingPipelineUsedDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedImagingPipelineUsedDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="uvDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedImagingPipelineResultDataProductListType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductListType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" name="item" type="IndexedImagingPipelineResultDataProductType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedImagingPipelineResultDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="mom2:IndexedDataProductItemType">
+				<xsd:choice>
+					<xsd:element ref="uvDataProduct"/>
+					<xsd:element ref="skyImageDataProduct"/>
+				</xsd:choice>
+				<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Pulsar Pipeline related declarations -->
+	<xsd:complexType name="PulsarPipelineType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarPipelineType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="predecessor_topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="description" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="processingCluster" type="ProcessingClusterType"/>
+					<xsd:element minOccurs="0" name="parent" type="mom2:CollectionRefType"/>
+					<xsd:element minOccurs="0" name="ownerProject" type="mom2:ProjectRefType"/>
+					<xsd:element minOccurs="0" name="statusHistory" type="mom2:StatusHistoryType"/>
+					<xsd:element minOccurs="0" name="currentStatus" type="mom2:CurrentStatusType"/>
+					<xsd:element minOccurs="0" name="generalRemarks" nillable="true" type="mom2:IndexedGeneralRemarkListType"/>
+					<xsd:element minOccurs="0" name="inspectionReports" nillable="true" type="mom2:IndexedInspectionReportListType"/>
+					<xsd:element minOccurs="0" name="specificationRemarks" nillable="true" type="mom2:IndexedSpecificationRemarkListType"/>
+					<xsd:element minOccurs="0" name="schedulingRemarks" nillable="true" type="mom2:IndexedSchedulingRemarkListType"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="pulsarPipelineAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="usedDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:element minOccurs="0" name="resultDataProducts" nillable="true" type="mom2:IndexedDataProductListType"/>
+					<xsd:element minOccurs="0" name="children" type="IndexedLofarPipelineChildListType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2Id" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="pulsarPipelineAttributes" substitutionGroup="mom2:specificAttributes" type="PulsarPipelineAttributesType"/>
+	<xsd:complexType name="PulsarPipelineAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="LofarPipelineAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="defaultTemplate" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="duration" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="_2bf2fitsExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="_8bitConversionSigma" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="decodeNblocks" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="decodeSigma" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="digifilExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="dspsrExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="dynamicSpectrumTimeAverage" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="nofold" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="nopdmp" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="norfi" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="prepdataExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="prepfoldExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="prepsubbandExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="pulsar" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="rawTo8bit" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="rfifindExtraOpts" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="rrats" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="singlePulse" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="skipDsps" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="skipDynamicSpectrum" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="skipPrepfold" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="tsubint" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType><!-- DataProduct related declarations -->
+	<xsd:complexType name="LofarDataProductType" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:DataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+				</xsd:sequence>
+				<xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/>
+				<!-- xsd:attribute name="id" type="xsd:integer" default="0"/ -->
+				<!-- xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/ -->
+				<xsd:attribute name="topology" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="ChecksumAlgorithm">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MD5"/>
+			<xsd:enumeration value="Adler32"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ChecksumTypes">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="checksum" type="ChecksumType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ChecksumType">
+		<xsd:sequence>
+			<xsd:element name="algorithm" type="ChecksumAlgorithm"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType><!-- UV DataProduct related declarations -->
+	<xsd:element name="uvDataProduct" substitutionGroup="mom2:anyDataProduct" type="UVDataProductType"/>
+	<xsd:complexType name="UVDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+				<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificUVDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<!-- xsd:attribute name="id" type="xsd:integer" default="0"/ -->
+				<!-- xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/ -->
+				<xsd:attribute name="topology" type="xsd:string"/>
+		</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="StorageClusterType">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="partition" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="specificUVDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificUVDataProductAttributesType"/>
+	<xsd:complexType name="SpecificUVDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="subband" type="xsd:nonNegativeInteger"/>
+					<xsd:element minOccurs="0" name="stationSubband" type="xsd:nonNegativeInteger"/>
+					<xsd:element minOccurs="0" name="centralFrequency" type="mom2:Frequency"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Beamformed DataProduct related declarations -->
+	<xsd:element name="bfDataProduct" substitutionGroup="mom2:anyDataProduct" type="BFDataProductType"/>
+	<xsd:complexType name="BFDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificBFDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<!-- xsd:attribute name="id" type="xsd:integer" default="0"/ -->
+				<!-- xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/ -->
+				<xsd:attribute name="topology" type="xsd:string"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="specificBFDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificBFDataProductAttributesType"/>
+	<xsd:complexType name="SpecificBFDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType><!-- TBB DataProduct related declarations -->
+	<xsd:element name="tbbDataProduct" substitutionGroup="mom2:anyDataProduct" type="TBBDataProductType"/>
+	<xsd:complexType name="TBBDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificTBBDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:integer" default="0"/>
+				<xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="specificTBBDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificTBBDataProductAttributesType"/>
+	<xsd:complexType name="SpecificTBBDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="numberOfSamples" type="xsd:positiveInteger"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType><!-- PixelMap DataProduct related declarations -->
+	<xsd:complexType name="PixelMapDataProductType" abstract="true">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificPixelMapDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:integer" default="0"/>
+				<xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="specificPixelMapDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificPixelMapDataProductAttributesType"/>
+	<xsd:complexType name="SpecificPixelMapDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="numberOfAxes" type="xsd:positiveInteger"/>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="axis" type="AxisType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AxisType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="number" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="unit" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="length" type="xsd:nonNegativeInteger"/>
+		</xsd:sequence>
+	</xsd:complexType><!-- Sky Image DataProduct related declarations -->
+	<xsd:element name="skyImageDataProduct" substitutionGroup="mom2:anyDataProduct" type="SkyImageDataProductType"/>
+	<xsd:complexType name="SkyImageDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificSkyImageDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:integer" default="0"/>
+				<xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="specificSkyImageDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificSkyImageDataProductAttributesType"/>
+	<xsd:complexType name="SpecificSkyImageDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="SpecificPixelMapDataProductAttributesType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="pointing" type="PointingType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PointingType">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="rightAscension" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="declination" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="equinox" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType><!-- Pulsar Pipeline DataProduct related declarations -->
+	<xsd:element name="pulsarDataProduct" substitutionGroup="mom2:anyDataProduct" type="PulsarDataProductType"/>
+	<xsd:complexType name="PulsarDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="specificBFDataProductAttributes"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence><!-- xsd:attribute name="id" type="xsd:integer" default="0"/ --><!-- xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/ --><!-- xsd:attribute name="topology" type="xsd:string"/ -->
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="specificPulsarDataProductAttributes" substitutionGroup="mom2:specificAttributes" type="SpecificPulsarDataProductAttributesType"/>
+	<xsd:complexType name="SpecificPulsarDataProductAttributesType">
+		<xsd:complexContent>
+			<xsd:extension base="mom2:SpecificAttributesType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType><!-- Generic DataProduct related declarations -->
+	<xsd:element name="genericDataProduct" substitutionGroup="mom2:anyDataProduct" type="GenericDataProductType"/>
+	<xsd:complexType name="GenericDataProductType">
+		<xsd:complexContent>
+			<xsd:restriction base="LofarDataProductType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="status" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="storageCluster" type="StorageClusterType"/>
+					<xsd:element minOccurs="0" name="ownerMom2Object" type="mom2:Mom2ObjectRefType"/>
+					<xsd:choice>
+						<xsd:element minOccurs="0" name="uri" type="xsd:string"/>
+						<xsd:element minOccurs="0" name="locations" type="mom2:DataProductLocationsType"/>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fileFormat" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="type" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="timeStamp" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" default="false" name="released" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" default="false" name="exported" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="storageTicket" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fileSize" type="xsd:unsignedLong"/>
+					<xsd:element minOccurs="0" name="checksums" type="ChecksumTypes"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:integer" default="0"/>
+				<xsd:attribute name="mom2DPId" type="xsd:nonNegativeInteger"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

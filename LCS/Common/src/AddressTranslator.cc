@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: AddressTranslator.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

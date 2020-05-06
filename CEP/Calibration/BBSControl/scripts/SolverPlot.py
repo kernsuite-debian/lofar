@@ -30,7 +30,7 @@ class SolverPlot:
     def save_plot(self):
         file_choices = "PNG (*.png)|*.png"
         
-        path = unicode(QFileDialog.getSaveFileName(self, 
+        path = str(QFileDialog.getSaveFileName(self, 
                         'Save file', '', 
                         file_choices))
         if path:

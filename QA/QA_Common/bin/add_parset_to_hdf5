@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
+# P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
+#
+# This file is part of the LOFAR software suite.
+# The LOFAR software suite is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# The LOFAR software suite is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
+
+if __name__ == '__main__':
+    import logging
+    logger = logging.getLogger(__name__)
+
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                        level=logging.INFO)
+
+    import os
+    import os.path
+    from optparse import OptionParser
+
+    from lofar.messaging import DEFAULT_BROKER, DEFAULT_BUSNAME
+
+    # make sure we run in UTC timezone
+    os.environ['TZ'] = 'UTC'
+
+    # Check the invocation arguments
+    parser = OptionParser(usage='add_parset_to_hdf5 <hdf5_file>',
+                          description='fetch the latest parset from OTDB and store it in the given hdf5 file.')
+    parser.add_option('-b', '--broker', dest='broker', type='string', default=DEFAULT_BROKER, help='Address of the message broker, default: %default')
+    parser.add_option('-e', '--exchange', dest = 'exchange', type = 'string', default = DEFAULT_BUSNAME, help = 'Name of the bus exchange on the broker, default: %default')
+
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        parser.print_help()
+        exit(-1)
+
+    hdf_path = os.path.expanduser(args[0])
+
+    from lofar.qa.hdf5_io import add_parset_to_hypercube
+    from lofar.sas.otdb.otdbrpc import OTDBRPC
+
+    with OTDBRPC.create(exchange=options.exchange, broker=options.broker) as otdbrpc:
+        add_parset_to_hypercube(hdf_path, otdbrpc)

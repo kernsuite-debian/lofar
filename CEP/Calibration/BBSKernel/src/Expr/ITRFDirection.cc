@@ -25,23 +25,23 @@
 
 #include <BBSKernel/Expr/ITRFDirection.h>
 #include <Common/LofarLogger.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasFrame.h>
-#include <measures/Measures/MeasConvert.h>
-#include <casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasFrame.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/casa/Quanta/Quantum.h>
 
 namespace LOFAR
 {
 namespace BBS
 {
 
-ITRFDirection::ITRFDirection(const casa::MPosition &position,
+ITRFDirection::ITRFDirection(const casacore::MPosition &position,
     const Expr<Vector<2> >::ConstPtr &direction)
     :   BasicUnaryExpr<Vector<2>, Vector<3> >(direction),
-        itsPosition(casa::MPosition::Convert(position, casa::MPosition::ITRF)())
+        itsPosition(casacore::MPosition::Convert(position, casacore::MPosition::ITRF)())
 {
 }
 
@@ -55,18 +55,18 @@ const Vector<3>::View ITRFDirection::evaluateImpl(const Grid &grid,
         " directions should be real valued.");
 
     // Initialize reference frame.
-    casa::Quantum<casa::Double> qEpoch(0.0, "s");
-    casa::MEpoch mEpoch(qEpoch, casa::MEpoch::UTC);
-    casa::MeasFrame mFrame(mEpoch, itsPosition);
+    casacore::Quantum<casacore::Double> qEpoch(0.0, "s");
+    casacore::MEpoch mEpoch(qEpoch, casacore::MEpoch::UTC);
+    casacore::MeasFrame mFrame(mEpoch, itsPosition);
 
     // Create conversion engine.
-    casa::MDirection mDirection(casa::MVDirection(direction(0).getDouble(),
+    casacore::MDirection mDirection(casacore::MVDirection(direction(0).getDouble(),
         direction(1).getDouble()),
-        casa::MDirection::Ref(casa::MDirection::J2000));
+        casacore::MDirection::Ref(casacore::MDirection::J2000));
 
     // Setup coordinate transformation engine.
-    casa::MDirection::Convert convertor(mDirection,
-        casa::MDirection::Ref(casa::MDirection::ITRF, mFrame));
+    casacore::MDirection::Convert convertor(mDirection,
+        casacore::MDirection::Ref(casacore::MDirection::ITRF, mFrame));
 
     // Allocate space for the result.
     // TODO: This is a hack! The Matrix class does not support 1xN or Nx1
@@ -86,7 +86,7 @@ const Vector<3>::View ITRFDirection::evaluateImpl(const Grid &grid,
         mFrame.set(mEpoch);
 
         // Compute ITRF direction vector.
-        casa::MVDirection mvITRF(convertor().getValue());
+        casacore::MVDirection mvITRF(convertor().getValue());
         *x_p++ = mvITRF(0);
         *y_p++ = mvITRF(1);
         *z_p++ = mvITRF(2);

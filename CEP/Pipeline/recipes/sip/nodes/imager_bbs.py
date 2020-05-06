@@ -3,7 +3,7 @@
 # Wouter Klijn 2012
 # klijn@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 
 from lofarpipe.support.lofarnode import LOFARnodeTCP
@@ -65,7 +65,7 @@ class imager_bbs(LOFARnodeTCP):
                 return 1    # If bbs failed we need to abort: the concat
                             # is now corrupt
 
-        except OSError, exception:
+        except OSError as exception:
             self.logger.error("Failed to execute bbs: {0}".format(str(
                                                                     exception)))
             return 1

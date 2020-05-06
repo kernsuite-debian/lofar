@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+'''
+do storage queries (on cep4) from the commandline
+'''
+
+if __name__ == '__main__':
+    from lofar.sas.datamanagement.storagequery.rpc import main
+    main()

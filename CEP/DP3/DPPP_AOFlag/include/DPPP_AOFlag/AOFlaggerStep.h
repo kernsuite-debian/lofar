@@ -148,7 +148,7 @@ namespace LOFAR {
       double           itsMoveTime;      //# data move timer (sum all threads)
       double           itsFlagTime;      //# flag timer (sum of all threads)
       double           itsQualTime;      //# quality timer (sum of all threads)
-      casa::Vector<double>  itsFreqs;
+      casacore::Vector<double>  itsFreqs;
       aoflagger::AOFlagger  itsAOFlagger;
       boost::scoped_ptr<aoflagger::Strategy> itsStrategy;
       boost::scoped_ptr<aoflagger::QualityStatistics> itsRfiStats;

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: compiler.h 28204 2014-02-06 09:52:53Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_COMPILER_H
 #define LOFAR_COMMON_COMPILER_H

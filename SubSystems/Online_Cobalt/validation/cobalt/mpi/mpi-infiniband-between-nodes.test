@@ -1,0 +1,41 @@
+#!/bin/bash
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cobalt2
+
+#find latest osu-micro-benchmarks dir
+MPITESTSDIR=$(readlink -f -n "$(dirname $(which mpirun))/../tests")
+OSUMBDIR=$(find $MPITESTSDIR -type d -name 'osu-micro-benchmarks*' | sort | tail -n 1)
+echo "Latest mpi osu-micro-benchmarks dir: $OSUMBDIR"
+
+REQUIRED_BW=90 #in Gbps
+
+EXIT_CODE=0
+
+# check mpi bandwith over infiniband between each pair of cobalt nodes (both ways, and even on the same source/dest)
+for i in {201..213} ; do
+    for j in {201..213} ; do
+        # measure throughput for 4MB blocks, results are in MBps
+        RESULT=$(mpirun -x UCX_SHM_DEVICES="" -H cbm$i,cbm$j $OSUMBDIR/osu_bw)
+        if [ $? -ne 0 ] ; then
+            echo "Could not run infiniband bandwith test between cbm$i and cbm$j: $RESULT"
+            EXIT_CODE=1 ;
+        else
+            THROUGHPUT=`echo "$RESULT" | grep "^4194304s*" | awk '{ print $2 }'`
+
+            #convert to Gbps
+            THROUGHPUT=`echo "$THROUGHPUT*8/1000" | bc`
+
+            echo "infiniband bandwith for 4MB block between cbm$i and cbm$j is $THROUGHPUT Gbps"
+
+            # check if throughput > 90Gbps
+            if [ $THROUGHPUT -lt "$REQUIRED_BW" ] ; then EXIT_CODE=1 ; fi
+        fi
+    done
+done
+
+if [ $EXIT_CODE -ne 0 ] ; then
+    echo "ERROR: not all pairs of cobalt nodes reach required $REQUIRED_BW Gbps over infiniband"
+fi
+
+exit $EXIT_CODE

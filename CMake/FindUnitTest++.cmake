@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindUnitTest++.cmake 32036 2015-07-20 15:12:31Z amesfoort $
+# $Id$
 
 if(NOT UNITTEST++_FOUND)
 

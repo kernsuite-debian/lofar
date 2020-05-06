@@ -1,5 +1,5 @@
 
-#!/usr/bin/python
+#!/usr/bin/env python3
 # Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
 #
@@ -57,5 +57,5 @@ class TaskFeedbackState(MessageContent):
 
 if __name__ == "__main__":
     msg = TaskFeedbackState("FROM", "FORUSER", "SUMMARY", "11111", "22222", True)
-    print msg.content()
+    print(msg.content())
 

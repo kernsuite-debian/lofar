@@ -17,15 +17,15 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarObservation.cc 17624 2011-03-23 13:44:51Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
 #include <MSLofar/MSLofarObservation.h>
-#include <measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MEpoch.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

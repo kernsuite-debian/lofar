@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FileLocator.h 36648 2017-02-21 16:51:57Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_FILELOCATOR_H
 #define LOFAR_COMMON_FILELOCATOR_H
@@ -72,8 +72,8 @@ public:
 	void	removePath     (const string& aPath);
 
 	//# Functions for managing subpath
-	// Use given subdir when searching the files. First the 'basedir' is
-	// tried, then the 'basedir'/'subdir' is tried.
+	// Use given subdir when searching the files. First the 'basedir'/'subdir' is
+	// tried, then the 'basedir' is tried.
 	void			setSubdir  (string	aSubdir);
 	// Clear the subdir
 	inline void		clearSubdir();

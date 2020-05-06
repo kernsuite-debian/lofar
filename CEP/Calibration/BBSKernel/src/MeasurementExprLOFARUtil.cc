@@ -43,8 +43,8 @@
 #include <BBSKernel/Expr/StationShift.h>
 #include <BBSKernel/Expr/StationUVW.h>
 #include <BBSKernel/Expr/TECU2Phase.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCDirection.h>
 
 namespace LOFAR
 {
@@ -52,11 +52,11 @@ namespace BBS
 {
 
 Expr<Vector<2> >::Ptr
-makeDirectionExpr(const casa::MDirection &direction)
+makeDirectionExpr(const casacore::MDirection &direction)
 {
-    casa::MDirection dirJ2000(casa::MDirection::Convert(direction,
-        casa::MDirection::J2000)());
-    casa::Quantum<casa::Vector<casa::Double> > angles = dirJ2000.getAngle();
+    casacore::MDirection dirJ2000(casacore::MDirection::Convert(direction,
+        casacore::MDirection::J2000)());
+    casacore::Quantum<casacore::Vector<casacore::Double> > angles = dirJ2000.getAngle();
 
     Literal::Ptr ra(new Literal(angles.getBaseValue()(0)));
     Literal::Ptr dec(new Literal(angles.getBaseValue()(1)));
@@ -68,30 +68,30 @@ makeDirectionExpr(const casa::MDirection &direction)
 }
 
 Expr<Vector<2> >::Ptr
-makeAzElExpr(const casa::MPosition &position,
+makeAzElExpr(const casacore::MPosition &position,
     const Expr<Vector<2> >::Ptr &direction)
 {
     return Expr<Vector<2> >::Ptr(new AzEl(position, direction));
 }
 
 Expr<Vector<3> >::Ptr
-makeITRFExpr(const casa::MPosition &position,
+makeITRFExpr(const casacore::MPosition &position,
     const Expr<Vector<2> >::Ptr &direction)
 {
     return Expr<Vector<3> >::Ptr(new ITRFDirection(position, direction));
 }
 
 Expr<Vector<3> >::Ptr
-makeLMNExpr(const casa::MDirection &reference,
+makeLMNExpr(const casacore::MDirection &reference,
     const Expr<Vector<2> >::Ptr &direction)
 {
     return Expr<Vector<3> >::Ptr(new LMN(reference, direction));
 }
 
 Expr<Vector<3> >::Ptr
-makeStationUVWExpr(const casa::MPosition &arrayPosition,
-    const casa::MPosition &stationPosition,
-    const casa::MDirection &direction)
+makeStationUVWExpr(const casacore::MPosition &arrayPosition,
+    const casacore::MPosition &stationPosition,
+    const casacore::MDirection &direction)
 {
     return Expr<Vector<3> >::Ptr(new StationUVW(arrayPosition, stationPosition,
         direction));
@@ -357,7 +357,7 @@ makeScalarPhaseExpr(Scope &scope,
 
 Expr<JonesMatrix>::Ptr
 makeIonosphereExpr(const Station::ConstPtr &station,
-    const casa::MPosition &refPosition,
+    const casacore::MPosition &refPosition,
     const Expr<Vector<3> >::Ptr &exprDirection,
     const IonosphereExpr::Ptr &exprIonosphere)
 {

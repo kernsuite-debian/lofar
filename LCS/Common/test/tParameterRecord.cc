@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParameterRecord.cc 20362 2012-03-08 12:00:18Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/ParameterRecord.h>

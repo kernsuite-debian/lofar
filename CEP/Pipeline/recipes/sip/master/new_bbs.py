@@ -7,7 +7,7 @@
 #                                                            klijn@astron.nl
 # -----------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 import subprocess
 import sys
 import os
@@ -30,6 +30,7 @@ from lofarpipe.support.jobserver import job_server
 import lofarpipe.support.utilities as utilities
 import lofarpipe.support.lofaringredient as ingredient
 from lofarpipe.support.utilities import create_directory
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 
 class new_bbs(BaseRecipe):
@@ -120,7 +121,7 @@ class new_bbs(BaseRecipe):
         """
         try:
             self.inputs[in_key] = self.parset.getString(ps_key)
-        except RuntimeError, exceptionobject:
+        except RuntimeError as exceptionobject:
             self.logger.warn(str(exceptionobject))
 
     def _make_bbs_map(self):
@@ -273,7 +274,7 @@ class new_bbs(BaseRecipe):
             #     ComputeJob.dispatch method supplies, so we'll control them
             #                                          with our own threads.
             # --------------------------------------------------------------
-            command = "python %s" % (self.__file__.replace('master', 'nodes'))
+            command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
             jobpool = {}
             bbs_kernels = []
             with job_server(self.logger, jobpool, self.error) as(jobhost,
@@ -344,7 +345,7 @@ class new_bbs(BaseRecipe):
             return 1
         result = self._monitor_process(bbs_kernel_process,
                                        "BBS Kernel on %s" % host)
-        sout, serr = bbs_kernel_process.communicate()
+        sout, serr = communicate_returning_strings(bbs_kernel_process)
         serr = serr.replace("Connection to %s closed.\r\n" % host, "")
         log_process_output("SSH session (BBS kernel)", sout, serr, self.logger)
         return result
@@ -376,7 +377,7 @@ class new_bbs(BaseRecipe):
                     # _monitor_process() needs a convenient kill() method.
                     bbs_control_process.kill = lambda : os.kill(
                                     bbs_control_process.pid, signal.SIGKILL)
-                except OSError, e:
+                except OSError as e:
                     self.logger.error(
                             "Failed to spawn BBS Control (%s)" % str(e))
                     self.killswitch.set()
@@ -387,7 +388,7 @@ class new_bbs(BaseRecipe):
             returncode = self._monitor_process(
                 bbs_control_process, "BBS Control"
             )
-            sout, serr = bbs_control_process.communicate()
+            sout, serr = communicate_returning_strings(bbs_control_process)
         shutil.rmtree(working_dir)
         log_process_output(
             self.inputs['control_exec'], sout, serr, self.logger

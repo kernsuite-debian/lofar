@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ExternalFunction.h 14789 2010-01-13 12:39:15Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_EXTERNALFUNCTION_H
 #define LOFAR_BBSKERNEL_EXPR_EXTERNALFUNCTION_H
@@ -29,7 +29,7 @@
 #include <Common/LofarLogger.h>
 #include <Common/LofarTypes.h>
 
-namespace casa
+namespace casacore
 {
     class Path;
 }
@@ -45,7 +45,7 @@ namespace BBS
 class ExternalFunction
 {
 public:
-    ExternalFunction(const casa::Path &module, const string &name);
+    ExternalFunction(const casacore::Path &module, const string &name);
     ~ExternalFunction();
 
     unsigned int nArguments() const;

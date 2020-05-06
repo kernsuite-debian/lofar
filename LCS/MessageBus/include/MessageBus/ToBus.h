@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ToBus.h 31882 2015-06-22 07:50:04Z mol $
+//# $Id$
 
 #ifndef LOFAR_MESSAGEBUS_MSGBUS_H
 #define LOFAR_MESSAGEBUS_MSGBUS_H
@@ -43,7 +43,7 @@ namespace LOFAR {
 class ToBus
 {
 public:
-  ToBus(const std::string &address, const std::string &options="; {create: never}", const std::string &broker = "amqp:tcp:127.0.0.1:5672") ;
+  ToBus(const std::string &address,  const std::string &broker = "amqp:tcp:127.0.0.1:5672", const std::string &options="; {create: never}");
   ~ToBus(void);
 
   void send(LOFAR::Message &msg);

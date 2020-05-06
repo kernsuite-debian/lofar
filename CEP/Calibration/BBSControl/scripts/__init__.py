@@ -20,6 +20,6 @@
 #
 # $Id: __init__.py 12729 2009-03-02 13:39:59Z diepen $
 
-from solfetch import fetch
-from solplot import normalize, plot, unwrap, unwrap_windowed
-from solflag import flag
+from .solfetch import fetch
+from .solplot import normalize, plot, unwrap, unwrap_windowed
+from .solflag import flag

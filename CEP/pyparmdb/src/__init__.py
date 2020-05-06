@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 27651 2013-12-04 10:01:37Z diepen $
+# $Id$
 
-from _parmdb import ParmDB
+from ._parmdb import ParmDB
 
 class parmdb(ParmDB):
     """
@@ -41,7 +41,7 @@ class parmdb(ParmDB):
 
         import lofar.parmdb
         pdb = parmdb(dbname)     # open existing
-	pdb = 0                  # close
+        pdb = 0                  # close
 
         Almost all functions work on a local as well as a distributed database.
         The exception is :func:`addValues`. For the time being it only works
@@ -65,7 +65,7 @@ class parmdb(ParmDB):
         return self._getRange (parmnamepattern)
 
     def getNames (self, parmnamepattern='', includeDefaults=False):
-	"""Return the list of matching parameter names with actual values.
+        """Return the list of matching parameter names with actual values.
 
         parmnamepattern
           Parameter name pattern given as a shell-like filename pattern.
@@ -78,7 +78,7 @@ class parmdb(ParmDB):
         return self._getNames (parmnamepattern)
 
     def getDefNames (self, parmnamepattern=''):
-	"""Return the list of matching parameter names with default values.
+        """Return the list of matching parameter names with default values.
 
         The pattern must be given as a shell-like filename pattern.
         An empty pattern (the default) means '*' (thus all names).
@@ -87,7 +87,7 @@ class parmdb(ParmDB):
         return self._getDefNames (parmnamepattern)
 
     def getDefValues (self, parmnamepattern=''):
-	"""Return the default values of matching parameter names as a dict.
+        """Return the default values of matching parameter names as a dict.
 
         The pattern must be given as a shell-like filename pattern.
         An empty pattern (the default) means '*' (thus all names).

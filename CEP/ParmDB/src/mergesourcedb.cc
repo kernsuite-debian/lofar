@@ -49,12 +49,12 @@
 #include <Common/SystemUtil.h>
 #include <Common/Exception.h>
 
-#include <casa/Quanta/MVAngle.h>
-#include <casa/Inputs/Input.h>
+#include <casacore/casa/Quanta/MVAngle.h>
+#include <casacore/casa/Inputs/Input.h>
 #include <vector>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 using namespace BBS;
 

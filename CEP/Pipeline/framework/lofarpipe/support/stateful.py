@@ -8,7 +8,7 @@
 from functools import wraps
 
 import os.path
-import cPickle
+import pickle
 
 from lofarpipe.support.baserecipe import BaseRecipe
 from lofarpipe.support.lofarexceptions import PipelineException
@@ -83,9 +83,9 @@ class StatefulRecipe(BaseRecipe):
                 self.config.get('layout', 'job_directory'),
                 'statefile'
             ),
-        'w')
+        'bw')
         state = [self.inputs, self.state]
-        cPickle.dump(state, statefile)
+        pickle.dump(state, statefile)
 
     def go(self):
         super(StatefulRecipe, self).go()
@@ -94,13 +94,13 @@ class StatefulRecipe(BaseRecipe):
             'statefile'
         )
         try:
-            statefile = open(statefile, 'r')
-            inputs, self.state = cPickle.load(statefile)
+            statefile = open(statefile, 'br')
+            inputs, self.state = pickle.load(statefile)
             statefile.close()
 
             # What's the correct thing to do if inputs differ from the saved
             # state? start_time will always change.
-            for key, value in inputs.iteritems():
+            for key, value in inputs.items():
                 if key != "start_time" and self.inputs[key] != value:
                     raise PipelineException(
                         "Input %s (%s) differs from saved state (%s)" %

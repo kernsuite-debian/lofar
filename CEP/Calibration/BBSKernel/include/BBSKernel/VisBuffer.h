@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisBuffer.h 26859 2013-10-03 14:25:49Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_VISBUFFER_H
 #define LOFAR_BBSKERNEL_VISBUFFER_H
@@ -33,7 +33,7 @@
 #include <BBSKernel/Instrument.h>
 #include <BBSKernel/Types.h>
 #include <BBSKernel/VisDimensions.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 #include <boost/multi_array.hpp>
 
 namespace LOFAR
@@ -61,14 +61,14 @@ public:
     void setReferenceFreq(double freq);
     double getReferenceFreq() const;
 
-    void setPhaseReference(const casa::MDirection &reference);
-    const casa::MDirection &getPhaseReference() const;
+    void setPhaseReference(const casacore::MDirection &reference);
+    const casacore::MDirection &getPhaseReference() const;
 
-    void setDelayReference(const casa::MDirection &reference);
-    const casa::MDirection &getDelayReference() const;
+    void setDelayReference(const casacore::MDirection &reference);
+    const casacore::MDirection &getDelayReference() const;
 
-    void setTileReference(const casa::MDirection &reference);
-    const casa::MDirection &getTileReference() const;
+    void setTileReference(const casacore::MDirection &reference);
+    const casacore::MDirection &getTileReference() const;
 
     // Convenience functions that delegate to VisDimensions (refer to the
     // documentation of VisDimensions for their documentation).
@@ -122,11 +122,11 @@ private:
     // Information about the instrument (e.g. station positions).
     Instrument::ConstPtr    itsInstrument;
     // Phase reference direction (J2000).
-    casa::MDirection        itsPhaseReference;
+    casacore::MDirection        itsPhaseReference;
     // Delay reference direction (J2000).
-    casa::MDirection        itsDelayReference;
+    casacore::MDirection        itsDelayReference;
     // Tile beam reference direction (J2000).
-    casa::MDirection        itsTileReference;
+    casacore::MDirection        itsTileReference;
     // Reference frequency (Hz).
     double                  itsReferenceFreq;
 
@@ -164,17 +164,17 @@ inline size_t VisBuffer::nStations() const
     return itsInstrument->nStations();
 }
 
-inline const casa::MDirection &VisBuffer::getPhaseReference() const
+inline const casacore::MDirection &VisBuffer::getPhaseReference() const
 {
     return itsPhaseReference;
 }
 
-inline const casa::MDirection &VisBuffer::getDelayReference() const
+inline const casacore::MDirection &VisBuffer::getDelayReference() const
 {
     return itsDelayReference;
 }
 
-inline const casa::MDirection &VisBuffer::getTileReference() const
+inline const casacore::MDirection &VisBuffer::getTileReference() const
 {
     return itsTileReference;
 }

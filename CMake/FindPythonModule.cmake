@@ -23,10 +23,10 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPythonModule.cmake 39122 2018-02-21 14:06:03Z jurges $
+# $Id$
 
 # Search for the Python interpreter.
-find_package(PythonInterp)
+find_package(PythonInterp 3)
 
 # -----------------------------------------------------------------------------
 # find_python_module(module [REQUIRED])
@@ -42,7 +42,7 @@ find_package(PythonInterp)
 # -----------------------------------------------------------------------------
 include(CMakeParseArguments)
 
-function(find_python_module _module)
+macro(find_python_module _module)
   # Name of module in uppercase.
   string(TOUPPER "${_module}" _MODULE)
 
@@ -75,7 +75,7 @@ function(find_python_module _module)
     # Try to import the python module we need to find, and get its file path.
     if(PYTHON_EXECUTABLE)
       set(ENV{PYTHONPATH} ${PYTHON_${_MODULE}_FIND_HINTS}:$ENV{PYTHONPATH})
-      set(_cmd "import ${_module}; print ${_module}.__file__")
+      set(_cmd "from __future__ import print_function; import ${_module}; print(${_module}.__file__)")
       execute_process(
         COMMAND "${PYTHON_EXECUTABLE}" "-c" "${_cmd}"
         RESULT_VARIABLE _result
@@ -103,4 +103,4 @@ function(find_python_module _module)
     endif(is_required GREATER -1)
   endif(NOT PYTHON_${_MODULE}_FOUND)
 
-endfunction()
+endmacro()

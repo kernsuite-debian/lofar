@@ -5,6 +5,9 @@
 #   casa, coordinates, derivedmscal, fits, images, lattices, meas, 
 #   measures, mirlib, ms, msfits, python, scimath, scimath_f, tables
 #
+# The component python will be replaced by python3 if the version of the
+# python interpreter found is >= 3.
+#
 # Note that most components are dependent on other (more basic) components.
 # In that case, it suffices to specify the "top-level" components; dependent
 # components will be searched for automatically.
@@ -56,7 +59,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindCasacore.cmake 31570 2015-05-07 09:49:56Z loose $
+# $Id$
 
 # - casacore_resolve_dependencies(_result)
 #
@@ -154,6 +157,7 @@ set(Casacore_components
   ms
   msfits
   python
+  python3
   scimath
   scimath_f
   tables
@@ -172,6 +176,7 @@ set(Casacore_mirlib_DEPENDENCIES)
 set(Casacore_ms_DEPENDENCIES            measures scimath tables casa)
 set(Casacore_msfits_DEPENDENCIES        ms fits measures tables casa)
 set(Casacore_python_DEPENDENCIES        casa)
+set(Casacore_python3_DEPENDENCIES       casa)
 set(Casacore_scimath_DEPENDENCIES       scimath_f casa)
 set(Casacore_scimath_f_DEPENDENCIES)
 set(Casacore_tables_DEPENDENCIES        casa)
@@ -219,6 +224,18 @@ else(NOT CASACORE_INCLUDE_DIR)
 
   # Get a list of all dependent Casacore libraries that need to be found.
   casacore_resolve_dependencies(_find_components ${Casacore_FIND_COMPONENTS})
+
+  # For python3, change the python component to python3
+  if("${_find_components}" MATCHES "python")
+    find_package(Python)
+    if(PYTHON_FOUND)
+      if(PYTHON_VERSION_MAJOR GREATER 2)
+        string(REPLACE "python" "python3" _find_components "${_find_components}")
+      endif(PYTHON_VERSION_MAJOR GREATER 2)
+    else(PYTHON_FOUND)
+      message(SEND_ERROR "casacore-python was requested but python was not found.")
+    endif(PYTHON_FOUND)
+  endif("${_find_components}" MATCHES "python")
 
   # Find the library for each component, and handle external dependencies
   foreach(_comp ${_find_components})

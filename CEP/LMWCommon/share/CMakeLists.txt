@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 29698 2014-07-02 12:37:31Z klijn $
+# $Id$
 
 install(FILES
 cep2.clusterdesc

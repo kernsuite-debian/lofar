@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MeasurementExprLOFAR.cc 33006 2015-11-27 11:41:18Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/MeasurementExprLOFAR.h>
@@ -48,11 +48,11 @@
 #include <Common/lofar_algorithm.h>
 #include <Common/lofar_smartptr.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Quanta/Quantum.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCDirection.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCDirection.h>
 
 namespace LOFAR
 {
@@ -62,8 +62,8 @@ namespace BBS
 MeasurementExprLOFAR::MeasurementExprLOFAR(SourceDB &sourceDB,
     const BufferMap &buffers, const ModelConfig &config,
     const Instrument::ConstPtr &instrument, const BaselineSeq &baselines,
-    double refFreq, const casa::MDirection &refPhase,
-    const casa::MDirection &refDelay, const casa::MDirection &refTile,
+    double refFreq, const casacore::MDirection &refPhase,
+    const casacore::MDirection &refDelay, const casacore::MDirection &refTile,
     bool circular)
     :   itsBaselines(baselines),
         itsCachePolicy(new DefaultCachePolicy())
@@ -107,8 +107,8 @@ void MeasurementExprLOFAR::solvablesChanged()
 void MeasurementExprLOFAR::makeForwardExpr(SourceDB &sourceDB,
     const BufferMap &buffers, const ModelConfig &config,
     const Instrument::ConstPtr &instrument, double refFreq,
-    const casa::MDirection &refPhase, const casa::MDirection &refDelay,
-    const casa::MDirection &refTile, bool circular)
+    const casacore::MDirection &refPhase, const casacore::MDirection &refDelay,
+    const casacore::MDirection &refTile, bool circular)
 {
     NSTimer timer;
     timer.start();
@@ -910,7 +910,7 @@ MeasurementExprLOFAR::makePatchList(SourceDB &sourceDB, vector<string> patterns)
 }
 
 PatchExprBase::Ptr MeasurementExprLOFAR::makePatchExpr(const string &name,
-    const casa::MDirection &refPhase,
+    const casacore::MDirection &refPhase,
     SourceDB &sourceDB,
     const BufferMap &buffers)
 {

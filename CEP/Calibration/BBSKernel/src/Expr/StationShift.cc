@@ -18,16 +18,16 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationShift.cc 14737 2009-12-30 10:52:53Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/Expr/StationShift.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

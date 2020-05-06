@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 31238 2015-03-19 13:42:56Z mol $
+# $Id$
 
 # Import all classes to our name space
-from taskfeedbackdataproducts import TaskFeedbackDataproducts
-from taskfeedbackprocessing import TaskFeedbackProcessing
-from taskfeedbackstate import TaskFeedbackState
+from .taskfeedbackdataproducts import TaskFeedbackDataproducts
+from .taskfeedbackprocessing import TaskFeedbackProcessing
+from .taskfeedbackstate import TaskFeedbackState

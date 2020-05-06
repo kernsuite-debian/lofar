@@ -1,0 +1,58 @@
+# rspraw-enable.parset.OBSID: override COBALT settings to enable RSP raw antenna field output
+#
+# $Id$
+
+# Basic Usage: After preparing an observation with desired station and freq settings, but before the MACScheduler
+#              starts it up (~2 mins before observation start time), run as lofarsys (!) on the COBALT head node:
+#
+#   cd /opt/lofar/etc/parset-additions.d/ && cp rspraw-enable.parset.OBSID override/rspraw-enable.parset.123456  # replace 123456 with your SAS ID
+
+# NOTE: This is a COBALT-only expert mode setting adjustment. While you really have to outstrip yourself to
+# screw up the system beyond this observation, little customization effort below is enough to screw up this observation.
+
+# By default, disable correlated and coherent stokes and incoherent stokes (processing and) output.
+# You can comment out or enable these to *also* get correlated and/or coherent stokes and/or incoherent stokes output;
+# provided that you specified all enabled settings properly.
+Observation.DataProducts.Output_Correlated.enabled=false
+Observation.DataProducts.Output_CoherentStokes.enabled=false
+Observation.DataProducts.Output_IncoherentStokes.enabled=false
+
+
+# Enable RSP raw output
+Observation.DataProducts.Output_RSPRaw.enabled=true
+
+# The following RSP raw settings are commented out by default, because then they are auto-detected from
+# correlated and/or beamformed settings, even if those are disabled just above. Feel free to customize.
+
+# Override start/stop times: Observation runs as specified, but RSP raw data is only written out for this interval.
+# The interval must be within the observation start/stop time interval.
+# Default: observation start/stop times
+#Cobalt.RSPRaw.startTime=2017-01-29 10:00:00
+#Cobalt.RSPRaw.stopTime=2017-01-29 11:00:00
+
+# Override station list: Observation uses stations as specified, but RSP raw data is only written for these stations.
+# The list must be a subset of the observation station set.
+# Default: the full set of observation stations
+#Cobalt.RSPRaw.stationList=[CS002, CS003]
+
+# Override beamlets: Observation uses beam and frequency settings as specified,
+# but RSP raw data is only written for the first N beamlets (whatever beams/subbands that corresponds to...).
+# The value is a list: one value per sending RSP board (stream) applied to all antenna fields, thus typically a list of length up to 4.
+# Each value must be within the valid range for the bit mode:
+#   16 bit: [ 61,  61,  61,  61] (thus max 244)
+#    8 bit: [122, 122, 122, 122] (thus max 488)
+#    4 bit: [244, 244, 244, 234] (thus max 966 (not 976: RSP firmware resource limitation))
+# Default: all observation beamlets
+#Cobalt.RSPRaw.nrBeamletsPerBoardList=[122, 122, 122, 122]
+
+# Override filenames and locations where RSP raw data is written to.
+# Note that the hostnames must be on the COBALT/CEP4 infiniband network (10G may also work; you may need to also override the network interface bound to...).
+# Prefer fully qualified domain names (FQDN), or CEP4:/path (per file) and the system will assign CEP4 nodes.
+# Note that you must provide (at least) enough filenames *and* locations (not either)! Typically, 4x the number of antenna fields.
+# Note that for locations, the 'CEP4:' cluster prefix can be used to auto-select CEP4 hostnames. For other output clusters specify real hostnames.
+# Default: Hostnames in locations: round robin over the set of correlated + coherent + incoherent hostnames.
+#          Default filename format: Lxxx_yyy_zzz_rsp.raw where xxx=OBS_ID, yyy=ANT_FIELD_NAME, zzz=BOARD_NR (+ Lxxx_yyy_zzz_rsp.raw.parset files).
+#Observation.DataProducts.Output_RSPRaw.filenames=[L123456_CS002HBA0_0_rsp.raw, L123456_CS002HBA0_1_rsp.raw, L123456_CS002HBA0_2_rsp.raw, L123456_CS002HBA0_3_rsp.raw, L123456_CS002HBA1_0_rsp.raw, L123456_CS002HBA1_1_rsp.raw, L123456_CS002HBA1_2_rsp.raw, L123456_CS002HBA1_3_rsp.raw, L123456_CS003HBA0_0_rsp.raw, L123456_CS003HBA0_1_rsp.raw, L123456_CS003HBA0_2_rsp.raw, L123456_CS003HBA0_3_rsp.raw, L123456_CS003HBA1_0_rsp.raw, L123456_CS003HBA1_1_rsp.raw, L123456_CS003HBA1_2_rsp.raw, L123456_CS003HBA1_3_rsp.raw]
+#Observation.DataProducts.Output_RSPRaw.locations=[CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs,CEP4:/data/projects/2017LOFAROBS/L123456/cs]
+#Observation.DataProducts.Output_RSPRaw.storageClusterName=CEP4
+

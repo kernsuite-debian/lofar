@@ -25,7 +25,7 @@
 
 #include <Common/lofar_iomanip.h>
 #include <BBSKernel/VisBuffer.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 #include <limits>
 
 namespace LOFAR
@@ -93,7 +93,7 @@ void UVWFlagger::process()
     for(size_t i = 0; i < itsBuffer->nFreq(); ++i)
     {
         const double freq = itsBuffer->grid()[FREQ]->center(i);
-        invLambdaSqr[i] = (freq * freq) / (casa::C::c * casa::C::c);
+        invLambdaSqr[i] = (freq * freq) / (casacore::C::c * casacore::C::c);
     }
 
     for(size_t i = 0; i < itsBuffer->nBaselines(); ++i)

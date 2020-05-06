@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Mmap.h 31468 2015-04-13 23:26:52Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_COMMON_MMAP_H 
 #define LOFAR_COMMON_MMAP_H

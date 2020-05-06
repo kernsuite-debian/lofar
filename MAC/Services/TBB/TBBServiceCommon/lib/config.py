@@ -1,0 +1,4 @@
+from lofar.messaging.config import DEFAULT_BUSNAME, DEFAULT_BROKER
+
+DEFAULT_TBB_SERVICENAME = 'TBB.Service'
+DEFAULT_TBB_NOTIFICATION_PREFIX = 'TBB.notification'

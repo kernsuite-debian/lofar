@@ -1,0 +1,214 @@
+V 13
+4
+LANG:1 8 (NoName)
+LANG:10000 8 (NoName)
+LANG:10001 8 (NoName)
+LANG:10027 18 (БезИмени)
+PANEL,-1 -1 1102 107 N "_3DFace" 1
+"$AESREGDOLLAR_SCREENTYPE"
+E E E E E 1 -1 -1 0  -1 -1
+"objects_parampanels/STD_PANELS/AS_ES_Conf_para.pnl"0  1
+E "#uses \"navigator.ctl\"
+
+//Global mainpoint holders
+string 			itsActionDp	= \"\";
+string 			itsEventDp      = \"\";
+dyn_string 	itsSelectionDp  = \"\";
+
+bool   bDoubleClicked  = false;
+
+// routine for single mouse click
+void click(int row) {
+    // set delay in case double click was meant
+  delay(0, 100); 
+  if (!bDoubleClicked) {
+  }
+}
+
+
+// routine for double mouse click
+void dblClick(string dp) 
+{  
+  // indicate this is a doubleClick
+  bDoubleClicked = true; 
+  string selection=\"\";
+  DebugN(\"Double clicked. dp: \" + dp);
+  
+  LOG_TRACE(\"AESRow.pnl:DoubleClicked|doubleClick received on alarmtable dp:\" + dp);
+ 
+
+  if (dpExists(dp) ) {
+    g_currentDatapoint=dp;
+    if (strpos(dp,\"LOFAR_PIC\") >= 0) {
+        selection=\"Hardware\";
+    } else if (strpos(dp,\"LOFAR_ObsSW\") >= 0) {
+      if (strpos(dp,\"Ctrl\") >= 0) {
+        selection=\"Processes\";
+      } else {
+        selection=\"Observations\";
+      }
+    } else if (strpos(dp,\"LOFAR_PermSW\") >= 0) {
+      selection=\"Processes\";
+    }
+    setEvent(selection,\"ChangeTab\");
+  }
+  
+  // set delay to avoid click event will be triggered
+  delay(0, 500);
+  bDoubleClicked = false;  
+}
+
+
+
+// routine for right mouse click
+void rClick(int row) {
+  LOG_TRACE(\"AESRow.pnl:RightMouseClick|Right mouseclick received on alarmtable row: \" + row);  
+}" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+NC
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 6 Layer1
+1 1 0 "" 18
+31 "transform" 0 0 1 0 1 13 -8.5
+0
+1 2 0 "" 19
+31 "transform" 0 0 1 0 1 13 -8.5
+0
+1 3 0 "" 24
+31 "transform" 0 0 1 0 1 13 -8.5
+0
+1 8 0 "" 14
+31 "transform" 0 0 1 0 1 1 -7.5
+0
+1 10 0 "" 25
+31 "transform" 0 0 1 0 0.8333333333333334 0 4.999999999999999
+0
+1 12 0 "" 21
+31 "transform" 0 0 1 0 1 13 -8.500000000000007
+0
+1 13 0 "" 22
+31 "transform" 0 0 1 0 1 13 -8.500000000000007
+0
+1 14 0 "" 0
+31 "transform" 0 0 1 0 0.8333333333333334 0 4.999999999999999
+0
+1 15 0 "" 1
+1 "textFieldOut" 1 1 "main(int row, string column, string value)
+{
+  
+  if (row < 0 || column < 0) return;
+  
+  mapping mTableRow;
+ 
+  synchronized(g_bTableLineSynchronisation)
+  { 
+    int length;
+    dyn_anytype alertRow;  
+    
+    alertRow = this.getLineN(row);
+    
+    length = dynlen(alertRow);
+    for(int i=1; i<=length; i++)
+      mTableRow[this.columnName(i-1)] = alertRow[i];
+  }
+  
+  
+  //read pos of visible lines
+//  setMultiValue( \"ar_currentLine\", \"text\", row+1); // \"current line\" -indicator is 1 based
+
+//  aes_doColumnClick( AESTAB_TOP, row, column, value, mTableRow );
+}
+
+" 0
+ 
+1 "rightClick" 1 1 "main(int row, string column)
+{
+  int i, j;
+  anytype value;
+  mapping mTableMultipleRows;
+  
+  if (row < 0 || column < 0) return;
+  
+  //IM 116642: Trigger table widget once, to avoid timing problems
+  int top, bot;
+  getValue(\"\", \"lineRangeVisible\", top, bot);
+  
+  synchronized(g_bTableLineSynchronisation)
+  { 
+    int length;
+    dyn_anytype alertRow;  
+    
+    getValue( \"\", \"currentCell\", row, column );
+    value=this.cellValue;
+
+    alertRow = this.getLineN(row);
+    length = dynlen(alertRow);
+    
+    for(j=0; j<this.lineCount; j++)
+    {
+      mapping rowHeaderMapping;
+      
+      for(i=1; i<=length; i++)
+        rowHeaderMapping[this.columnName(i-1)] = alertRow[i];
+      
+      mTableMultipleRows[j] = rowHeaderMapping;
+    }
+  }
+  
+  rClick();
+
+//  aes_onRightClick( g_propDpNameTop, AESTAB_TOP, this.name, row, column, value, mTableMultipleRows );
+}" 0
+ 
+35 "verticalSizePolicy" 0 0 0
+35 "horizontalSizePolicy" 0 0 7
+31 "transform" 0 0 0.9797979797979798 0 0.6896551724137932 0.2020202020202022 9.310344827586199
+18 "font" 0 0 4
+LANG:1 26 Arial,-1,11,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0 
+0
+0
+LAYER, 1 
+1
+LANG:1 6 Layer2
+0
+LAYER, 2 
+1
+LANG:1 6 Layer3
+0
+LAYER, 3 
+1
+LANG:1 6 Layer4
+0
+LAYER, 4 
+1
+LANG:1 6 Layer5
+0
+LAYER, 5 
+1
+LANG:1 6 Layer6
+0
+LAYER, 6 
+1
+LANG:1 6 Layer7
+0
+LAYER, 7 
+1
+LANG:1 6 Layer8
+0
+3 0 "" -1
+"" ""
+"vision/aes/AESRow.pnl" 5 15 T 1 1 0 1 63 1235
+1
+"$SCREENTYPE""$AESREGDOLLAR_SCREENTYPE"
+0

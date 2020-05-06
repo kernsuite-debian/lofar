@@ -1,7 +1,7 @@
-#!/usr/bin/env python
-from WSRTrecipe import *
-from job_parser import *
-import os, os.path, time, threading, types, thread, sys
+#!/usr/bin/env python3
+from .WSRTrecipe import *
+from .job_parser import *
+import os, os.path, time, threading, types, _thread, sys
 
 NewJob     = 1
 UpdateJob  = 2
@@ -97,10 +97,10 @@ class pipeline_manager(WSRTrecipe):
     ## Code to generate results ---------------------------------------------
     def startup(self):
         """Tell the user we stared, read the configuration and try to read unfinished jobs from JobDirectory"""
-        print 'WSRT pipeline manager version 0.5'
-        print 'Press Ctrl-C to abort'
+        print('WSRT pipeline manager version 0.5')
+        print('Press Ctrl-C to abort')
         exec(eval("'from %s import *' % self.inputs['ConfigurationFile']"))
-        self.log     = file(self.inputs['LogDirectory'] + '/pipeline_manager.log', 'a', 1)
+        self.log     = open(self.inputs['LogDirectory'] + '/pipeline_manager.log', 'a', 1)
         self.messages.addlogger(message.DebugLevel, self.log)
         self.print_message('----- Logging started -----')
         ExistingJobs = os.listdir(self.inputs['JobsDirectory'])
@@ -118,7 +118,7 @@ class pipeline_manager(WSRTrecipe):
         elif job['Status'] == JobProducing: self.print_notification('Job:' + str(job['ExportID']) + ' Started')
         elif job['Status'] == JobProduced:  self.print_notification('Job:' + str(job['ExportID']) + ' Produced')
         try:
-            if not isinstance(self.client, types.NoneType):
+            if not isinstance(self.client, type(None)):
                 (status, message) = self.client.setStatus(str(job['ExportID']), str(job['Status']))
                 if status: ## we retry, because the client does not do an internal retry, but only reports the problem
                     count = 1
@@ -143,7 +143,7 @@ class pipeline_manager(WSRTrecipe):
         if not results[self.name]: return
         for i in results[self.name]['outputs']['failed_communication']:
             try:
-                if not isinstance(self.client, types.NoneType):
+                if not isinstance(self.client, type(None)):
                     self.print_message(self.client.setStatus(i[0], i[1]))
             except:
                 self.print_error('Could not update job %s status to %s.' % (str(job['ExportID']), str(job['Status'])))
@@ -223,7 +223,7 @@ class pipeline_manager(WSRTrecipe):
     def prepare_recipe_parameters(self, job):
         """Prepare ingedients and message handler for the cook to cook the recipe."""
         import sys
-        logfile = file(self.inputs['LogDirectory'] + '/' + str(job['ExportID']) + '/pipeline_manager.log', 'a', 1)
+        logfile = open(self.inputs['LogDirectory'] + '/' + str(job['ExportID']) + '/pipeline_manager.log', 'a', 1)
         messages = message.WSRTmessages()
         results  = ingredient.WSRTingredient()
         if self.messages.log[sys.stdout] == message.DebugLevel:
@@ -245,21 +245,21 @@ class pipeline_manager(WSRTrecipe):
         logfile, inputs, results, messages = self.prepare_recipe_parameters(job)
         try:
             self.cook_recipe(job['scriptname'], inputs, results, messages)
-        except Exception, e:
+        except Exception as e:
             messages.append(message.ErrorLevel, str(e))
             job['Status'] = JobError
             results       = None
         if results:
             job['Status'] = JobProduced # something more elaborate?
             messages.append(message.VerboseLevel, 'Results:')
-            for o in results.keys():
+            for o in list(results.keys()):
                 messages.append(message.VerboseLevel, str(o) + ' = ' + str(results[o]))
         else: # should a recipe always have results?
             messages.append(message.VerboseLevel, 'No Results!')
             job['Status'] = JobError
         logfile.close()
         ## dump the logfile to the webdav as a dataproduct.
-        if 'repository' in job.keys():
+        if 'repository' in list(job.keys()):
             try:
                 temp = ingredient.WSRTingredient()
                 temp['server']        = job['repository'][0]
@@ -291,9 +291,9 @@ class pipeline_manager(WSRTrecipe):
             while True: ##run forever
                 try:
                     if not self.running_job:
-                        thread.start_new_thread((self.next_job), ())
+                        _thread.start_new_thread((self.next_job), ())
                     self.print_time()
-                    if not isinstance(self.server, types.NoneType):
+                    if not isinstance(self.server, type(None)):
                         self.check_server()
                         time.sleep(1) # temp fix as apparantly check_server can return fast enough to re-enter
                                       # next_job before the previous one gets to self.running_job = j
@@ -305,15 +305,15 @@ class pipeline_manager(WSRTrecipe):
                             raise Exception ("No more jobs and no Server, ending manager.")
                 except KeyboardInterrupt:
                     self.print_notification('Pipeline Manager: Keyboard interupt detected, asking user...')
-                    reply = raw_input('Do you want to end the pipeline manager (y/n)?')
+                    reply = input('Do you want to end the pipeline manager (y/n)?')
                     if 'y' in reply:
                         raise KeyboardInterrupt ('Pipeline Manager: User wants to end program')
-        except KeyboardInterrupt, k:
+        except KeyboardInterrupt as k:
             self.print_notification(str(k))
-        except Exception, inst:
+        except Exception as inst:
             self.print_error('Pipeline Manager: Exception caught: ' + str(type(Exception)) + ' ' + str(inst))
             raise inst
-        if not isinstance(self.server, types.NoneType): ## check if the server is alive
+        if not isinstance(self.server, type(None)): ## check if the server is alive
             self.server.stop_lock.acquire()
             self.server.stop = True ## tell the server to stop
             self.server.stop_lock.release()

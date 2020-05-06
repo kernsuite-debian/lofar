@@ -30,8 +30,8 @@
 #include <Common/StreamUtil.h>
 #include <Common/OpenMP.h>
 
-#include <casa/OS/File.h>
-#include <casa/OS/HostInfo.h>
+#include <casacore/casa/OS/File.h>
+#include <casacore/casa/OS/HostInfo.h>
 
 #include <AOFlagger/msio/image2d.h>
 #include <AOFlagger/msio/mask2d.h>
@@ -55,7 +55,7 @@
 #include <iostream>
 #include <algorithm>
 
-using namespace casa;
+using namespace casacore;
 using namespace rfiStrategy;
 
 namespace LOFAR {

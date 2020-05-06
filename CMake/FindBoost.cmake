@@ -1,11 +1,11 @@
-# - A tiny wrapper around the FindBoost.cmake macro that comes with CMake. 
+# - A tiny wrapper around the FindBoost.cmake macro that comes with CMake.
 # Its purpose is fourfold:
 #  - Set BOOST_ROOT if BOOST_ROOT_DIR is set.
 #  - Set Boost_USE_MULTITHREADED according to the value of USE_THREADS.
 #  - Remove Boost components that have been disabled explicitly from the
 #    Boost_FIND_COMPONENTS list. Raise an error, if the component is
 #    required.
-#  - Define all-uppercase variables for the following variables: 
+#  - Define all-uppercase variables for the following variables:
 #    Boost_INCLUDE_DIRS, Boost_LIBRARIES, and Boost_FOUND.
 #  - Set a HAVE_BOOST_<COMPONENT> variable in the cache for each component
 #    that was found.
@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindBoost.cmake 14879 2010-01-26 11:26:32Z loose $
+# $Id$
 
 # Set BOOST_ROOT if BOOST_ROOT_DIR is set.
 if(BOOST_ROOT_DIR)
@@ -58,10 +58,33 @@ foreach(_comp ${Boost_FIND_COMPONENTS})
   endif(DEFINED USE_BOOST_${_COMP} AND NOT USE_BOOST_${_COMP})
 endforeach(_comp ${Boost_FIND_COMPONENTS})
 
+# For python3, append the python component with a suffix
+if("${Boost_FIND_COMPONENTS}" MATCHES "python" AND NOT "${Boost_FIND_COMPONENTS}" MATCHES "python3")
+  find_package(Python)
+  if(PYTHON_FOUND)
+    if(PYTHON_VERSION_MAJOR GREATER 2)
+      # TODO: add support for CentOS7 here (name should be python3 there)
+      if(APPLE)
+        # On apple (homebrew), boost-python for python 3 is called boost-python3
+        string(REPLACE "python" "python3"
+               Boost_FIND_COMPONENTS "${Boost_FIND_COMPONENTS}")
+      else(APPLE)
+        if(EXISTS "/etc/debian_version")
+            string(REPLACE "python" "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}" Boost_FIND_COMPONENTS "${Boost_FIND_COMPONENTS}")
+        else(EXISTS "/etc/debian_version")
+            string(REPLACE "python" "python3" Boost_FIND_COMPONENTS "${Boost_FIND_COMPONENTS}")
+        endif(EXISTS "/etc/debian_version")
+      endif(APPLE)
+    endif(PYTHON_VERSION_MAJOR GREATER 2)
+  else(PYTHON_FOUND)
+    message(SEND_ERROR "boost-python was requested but python was not found.")
+  endif(PYTHON_FOUND)
+endif("${Boost_FIND_COMPONENTS}" MATCHES "python" AND NOT "${Boost_FIND_COMPONENTS}" MATCHES "python3")
+
 # Call the "real" FindBoost module.
 include(${CMAKE_ROOT}/Modules/FindBoost.cmake)
 
-# Define all-uppercase variables for Boost_INCLUDE_DIRS Boost_LIBRARIES and 
+# Define all-uppercase variables for Boost_INCLUDE_DIRS Boost_LIBRARIES and
 # Boost_FOUND.
 foreach(_var INCLUDE_DIRS LIBRARIES FOUND)
   if(DEFINED Boost_${_var})
@@ -73,7 +96,7 @@ endforeach(_var INCLUDE_DIRS LIBRARIES FOUND)
 foreach(_comp ${Boost_FIND_COMPONENTS})
   string(TOUPPER "${_comp}" _comp)
   if(Boost_${_comp}_FOUND)
-    set(HAVE_BOOST_${_comp} TRUE CACHE INTERNAL 
+    set(HAVE_BOOST_${_comp} TRUE CACHE INTERNAL
       "Set if Boost component ${_comp} was found")
   endif(Boost_${_comp}_FOUND)
 endforeach(_comp ${Boost_FIND_COMPONENTS})

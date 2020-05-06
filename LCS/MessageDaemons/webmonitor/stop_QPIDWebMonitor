@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Script to stop running instance of QPID Web Monitor
+#
+
+webserv=`ps ax --no-headers -o pid,cmd | grep QPIDWebserverJSON | grep -v grep | wc -l`
+
+if [ "$webserv" == "0" ]
+then
+   echo QPID Monitor not running.
+else
+   echo -n QPID status webserver is running, stopping now...
+   wspid=`ps ax --no-headers -o pid,cmd | grep QPIDWebserverJSON | grep -v grep | awk '{ print $1; }'`
+   sudo kill -KILL $wspid
+   sleep 1
+   webserv=`ps ax --no-headers -o pid,cmd | grep QPIDWebserverJSON | grep -v grep | wc -l`
+   if [ "$webserv" != "0" ]; then 
+     echo "    FAILED"
+   else
+     echo "    OK"
+   fi
+fi

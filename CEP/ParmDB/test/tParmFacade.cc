@@ -18,19 +18,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParmFacade.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacade.h>
 #include <Common/StreamUtil.h>
-#include <casa/Containers/Record.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 #include <iostream>
 #include <sstream>
 
 using namespace LOFAR;
 using namespace BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 // tParmFacade.run creates the pdb with parmdb.

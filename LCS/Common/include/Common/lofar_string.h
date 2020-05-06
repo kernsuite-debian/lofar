@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: lofar_string.h 14628 2009-12-08 10:56:48Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_COMMON_STRING_H
 #define LOFAR_COMMON_STRING_H

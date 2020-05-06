@@ -23,9 +23,9 @@
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/StokesRM.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GaussianSource.cc 18775 2011-09-06 13:36:45Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/GaussianSource.h>

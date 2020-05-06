@@ -95,7 +95,7 @@ namespace
         bool            done;
 
         // LSQ solver and current estimates for the coefficients.
-        casa::LSQFit    solver;
+        casacore::LSQFit    solver;
         vector<double>  coeff;
 
         // RMS difference of model and data in this iteration.
@@ -205,7 +205,7 @@ namespace
         const Location &start, const Location &end, const ParmGroup &solvables,
         const EstimateOptions &options, vector<Cell> &cells);
 
-    // Decode casa::LSQFit ready codes and update the status counts.
+    // Decode casacore::LSQFit ready codes and update the status counts.
     void updateIterationStatus(const Cell &cell, IterationStatus &status);
 
     // Write a map that maps parameter names to positions in the solution vector
@@ -727,7 +727,7 @@ namespace
                 // equations are singular. This can also be seen from the result
                 // of LSQFit::isReady(), so we don't update the iteration status
                 // here but do skip the update of the solvables.
-                casa::uInt rank;
+                casacore::uInt rank;
                 if(cell.solver.solveLoop(rank, &(cell.coeff[0]),
                     options.lsqOptions().useSVD))
                 {
@@ -749,7 +749,7 @@ namespace
                     // Re-initialize LSQ solver.
                     size_t nCoeff = cell.coeff.size();
                     cell.solver =
-                        casa::LSQFit(static_cast<casa::uInt>(nCoeff));
+                        casacore::LSQFit(static_cast<casacore::uInt>(nCoeff));
                     configLSQSolver(cell.solver, options.lsqOptions());
 
                     // Update epsilon value.
@@ -764,7 +764,7 @@ namespace
             {
                 // Re-initialize LSQ solver.
                 size_t nCoeff = cell.coeff.size();
-                cell.solver = casa::LSQFit(static_cast<casa::uInt>(nCoeff));
+                cell.solver = casacore::LSQFit(static_cast<casacore::uInt>(nCoeff));
                 configLSQSolver(cell.solver, options.lsqOptions());
 
                 // Reset L1 state.
@@ -819,38 +819,38 @@ namespace
 
     void updateIterationStatus(const Cell &cell, IterationStatus &status)
     {
-        // casa::LSQFit::isReady() is incorrectly labelled non-const.
-        casa::LSQFit &solver = const_cast<casa::LSQFit&>(cell.solver);
+        // casacore::LSQFit::isReady() is incorrectly labelled non-const.
+        casacore::LSQFit &solver = const_cast<casacore::LSQFit&>(cell.solver);
 
         // Decode and record the solver status.
         switch(solver.isReady())
         {
-            case casa::LSQFit::NONREADY:
+            case casacore::LSQFit::NONREADY:
                 ++status.nActive;
                 break;
 
-            case casa::LSQFit::SOLINCREMENT:
-            case casa::LSQFit::DERIVLEVEL:
+            case casacore::LSQFit::SOLINCREMENT:
+            case casacore::LSQFit::DERIVLEVEL:
                 ++status.nConverged;
                 break;
 
-            case casa::LSQFit::MAXITER:
+            case casacore::LSQFit::MAXITER:
                 ++status.nStopped;
                 break;
 
-            case casa::LSQFit::NOREDUCTION:
+            case casacore::LSQFit::NOREDUCTION:
                 ++status.nNoReduction;
                 break;
 
-            case casa::LSQFit::SINGULAR:
+            case casacore::LSQFit::SINGULAR:
                 ++status.nSingular;
                 break;
 
             default:
-                // This assert triggers if an casa::LSQFit ready
+                // This assert triggers if an casacore::LSQFit ready
                 // code is encountered that is not covered above.
                 // The most likely cause is that the
-                // casa::LSQFit::ReadyCode enumeration has changes
+                // casacore::LSQFit::ReadyCode enumeration has changes
                 // in which case the code above needs to be changed
                 // accordingly.
                 ASSERT(false);
@@ -889,8 +889,8 @@ namespace
         // valid for the _previous_ iteration. The solver cannot compute the chi
         // squared directly after an iteration, because it needs the new
         // condition equations for that and these are computed by the kernel.
-        casa::uInt rank, nun, np, ncon, ner, *piv;
-        casa::Double *nEq, *known, *constr, *er, *sEq, *sol, prec, nonlin;
+        casacore::uInt rank, nun, np, ncon, ner, *piv;
+        casacore::Double *nEq, *known, *constr, *er, *sEq, *sol, prec, nonlin;
         cell.solver.debugIt(nun, np, ncon, ner, rank, nEq, known, constr, er,
             piv, sEq, sol, prec, nonlin);
 
@@ -909,7 +909,7 @@ namespace
             && (level.is(ParmDBLoglevel::PERSOLUTION_CORRMATRIX)
             || level.is(ParmDBLoglevel::PERITERATION_CORRMATRIX)))
         {
-            casa::Array<double> corrMatrix(casa::IPosition(1,
+            casacore::Array<double> corrMatrix(casacore::IPosition(1,
                 cell.solver.nUnknowns() * cell.solver.nUnknowns()));
 
             bool status = cell.solver.getCovariance(corrMatrix.data());
@@ -934,7 +934,7 @@ namespace
             cell->done = false;
 
             // Initalize LSQ solver.
-            cell->solver = casa::LSQFit(static_cast<casa::uInt>(nCoeff));
+            cell->solver = casacore::LSQFit(static_cast<casacore::uInt>(nCoeff));
             configLSQSolver(cell->solver, options.lsqOptions());
 
             // Initialize coefficients.

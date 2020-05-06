@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GlobalProcessControl.h 26898 2013-10-08 17:33:06Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_GLOBALPROCESSCONTROL_H
 #define LOFAR_BBSCONTROL_GLOBALPROCESSCONTROL_H
@@ -80,7 +80,7 @@ namespace LOFAR
         N_State
       };
 
-      // Compare two axes for equality within a tolerance (using casa::near()).
+      // Compare two axes for equality within a tolerance (using casacore::near()).
       bool equal(const Axis::ShPtr &lhs, const Axis::ShPtr &rhs) const;
 
       // Get the global time axis and verify consistency across all parts.

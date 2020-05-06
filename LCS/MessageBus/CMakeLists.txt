@@ -1,10 +1,14 @@
-# $Id: CMakeLists.txt 31845 2015-06-18 10:13:45Z mol $
+# $Id$
 
-lofar_package(MessageBus 1.0 DEPENDS Common pyparameterset)
+# Python can be explicitly disabled, if only the C++ libraries are needed
+if(USE_PYTHON)
+  lofar_package(MessageBus 1.0 DEPENDS Common pyparameterset)
+else(USE_PYTHON)
+  lofar_package(MessageBus 1.0 DEPENDS Common)
+endif(USE_PYTHON)
 
 include(LofarFindPackage)
 lofar_find_package(QPID)
-lofar_find_package(LibXMLxx)
 lofar_find_package(UnitTest++)
 
 add_subdirectory(include/MessageBus)

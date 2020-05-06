@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarCTest.cmake 31135 2015-03-04 13:07:17Z loose $
+#  $Id$
 
 ## --------------------------------------------------------------------------
 ## "Auto-tools variable" needed for backward compatibility

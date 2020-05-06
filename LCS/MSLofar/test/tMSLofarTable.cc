@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMSLofarTable.cc 32986 2015-11-26 14:18:22Z mol $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -31,13 +31,13 @@
 #include <MSLofar/MSElementFailureColumns.h>
 #include <Common/LofarLogger.h>
 
-#include <tables/Tables/SetupNewTab.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayLogical.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void checkAntennaField()

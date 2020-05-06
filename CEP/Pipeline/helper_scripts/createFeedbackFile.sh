@@ -58,7 +58,7 @@ createParsetMap.py $sasid 2>&1 1>createParsetMap_${sasid}.log
 
 # Create a feedback file based on MS info; thiswill be used to extract 
 # duration/size/percentagewritten info afterwards (the dynamic keys)
-python $LOFARROOT/lib/python2.6/dist-packages/lofarpipe/recipes/master/get_metadata.py -d -c $LOFARROOT/share/pipeline/pipeline.cfg -j L${sasid} --product-type=Correlated --parset-file=L${sasid}.tmp L${sasid}.map 2>&1 1>get_metadata_${sasid}.log
+python3 $LOFARROOT/lib/python3.4/dist-packages/lofarpipe/recipes/master/get_metadata.py -d -c $LOFARROOT/share/pipeline/pipeline.cfg -j L${sasid} --product-type=Correlated --parset-file=L${sasid}.tmp L${sasid}.map 2>&1 1>get_metadata_${sasid}.log
 
 if [ $? -ne 0 ]; then 
   echo "Could not extract metadata from data; see logfile ${tmpdir}/get_metadata_${sasid}.log"

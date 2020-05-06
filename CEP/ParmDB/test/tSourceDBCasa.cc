@@ -18,18 +18,18 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tSourceDBCasa.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDBCasa.h>
 #include <Common/StreamUtil.h>
 #include <Common/LofarLogger.h>
-#include <tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableRecord.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void testCreate()

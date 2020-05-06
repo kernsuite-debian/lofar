@@ -17,14 +17,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FailedTileInfo.h 22387 2012-10-17 12:53:55Z diepen $
+//# $Id$
 
 #ifndef LOFAR_FAILEDTILEINFO_H
 #define LOFAR_FAILEDTILEINFO_H
 
-#include <tables/Tables/Table.h>
-#include <casa/Quanta/MVEpoch.h>
-#include <casa/Arrays/Matrix.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/casa/Quanta/MVEpoch.h>
+#include <casacore/casa/Arrays/Matrix.h>
 
 #include <Common/lofar_vector.h>
 #include <Common/lofar_map.h>
@@ -40,7 +40,7 @@ namespace LOFAR {
 
     // Construct the object for a failed tile or RCU.
     FailedTileInfo (const string& station, const string& time,
-                    const casa::MVEpoch& epoch, const string& type, int seqnr);
+                    const casacore::MVEpoch& epoch, const string& type, int seqnr);
 
     // Read the broken hardware file giving a map of antenna name to a vector
     // of pairs of tile/RCU and time.
@@ -49,16 +49,16 @@ namespace LOFAR {
 
     // Convert the info per station name to info per antennaId.
     static vector<VectorFailed> antennaConvert
-    (const casa::Table& ms, const map<string,VectorFailed>& broken);
+    (const casacore::Table& ms, const map<string,VectorFailed>& broken);
 
     // Find the tile nr from the given seqnr which can be a tile or rcu.
     // If a tile for the given station type is given, the element is seqnr/2.
     // Otherwise find the matching rcu in the rcuList and return its index.
     static int findTile (const FailedTileInfo&,
-                         const casa::Matrix<casa::Int>& rcus);
+                         const casacore::Matrix<casacore::Int>& rcus);
 
     // Write the failed tile info.
-    static void writeFailed (casa::Table& ms,
+    static void writeFailed (casacore::Table& ms,
                              const vector<VectorFailed>& brokenBefore,
                              const vector<VectorFailed>& brokenDuring);
 
@@ -69,7 +69,7 @@ namespace LOFAR {
   private:
     string        itsStation;
     string        itsTime;
-    casa::MVEpoch itsEpoch;
+    casacore::MVEpoch itsEpoch;
     string        itsType;    //# RCU, LBA, or HBA
     int           itsSeqNr;
   };

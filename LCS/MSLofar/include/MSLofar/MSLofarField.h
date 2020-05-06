@@ -17,19 +17,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarField.h 18309 2011-06-22 09:44:06Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFARFIELD_H
 #define MSLOFAR_MSLOFARFIELD_H
 
-#include <ms/MeasurementSets/MSField.h>
+#include <casacore/ms/MeasurementSets/MSField.h>
 #include <MSLofar/MSLofarTable.h>
 
 namespace LOFAR {
 
-  class MSLofarField: public casa::MSField
+  class MSLofarField: public casacore::MSField
   {
   public:
 
@@ -37,15 +37,15 @@ namespace LOFAR {
     MSLofarField();
 
     // Create from an existing table.
-    MSLofarField (const casa::String& tableName,
-                  casa::Table::TableOption option);
+    MSLofarField (const casacore::String& tableName,
+                  casacore::Table::TableOption option);
 
     // Create a new table.
-    MSLofarField (casa::SetupNewTable& newTab, casa::uInt nrrow,
-                  casa::Bool initialize);
+    MSLofarField (casacore::SetupNewTable& newTab, casacore::uInt nrrow,
+                  casacore::Bool initialize);
 
     // Create from an existing Table object.
-    MSLofarField (const casa::Table& table);
+    MSLofarField (const casacore::Table& table);
 
     // Copy constructor (reference semnatics).
     MSLofarField (const MSLofarField& that);
@@ -57,7 +57,7 @@ namespace LOFAR {
     MSLofarField& operator= (const MSLofarField& that);
   
     // Create the table description containing the required columns. 
-    static casa::TableDesc requiredTableDesc();
+    static casacore::TableDesc requiredTableDesc();
   };
 
 } //# end namespace

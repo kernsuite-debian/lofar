@@ -5,7 +5,7 @@
 # Nicolas Vilchez, 2014
 # vilchez@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import os
 
@@ -73,7 +73,7 @@ class selfcal_bbs(LOFARnodeTCP):
                             "Failed bbs run detected Aborting")
                 return 1
 
-        except OSError, exception:
+        except OSError as exception:
             self.logger.error("Failed to execute bbs: {0}".format(str(
                                                                     exception)))
             return 1

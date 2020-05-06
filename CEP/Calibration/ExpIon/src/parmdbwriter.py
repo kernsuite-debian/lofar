@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import lofar.parmdb
 import lofar.expion.parmdbmain
@@ -20,7 +20,7 @@ Clock_parms = ClockTEC_pdb.getValuesGrid('Clock*')
 TEC_parms = ClockTEC_pdb.getValuesGrid('TEC*')
 
 ionosphere_parms = instrument_parms
-for parm_name in Clock_parms.keys() :
+for parm_name in list(Clock_parms.keys()) :
    parm_name_split = parm_name.split(':')
    pol = parm_name_split[1]
    station = parm_name_split[2]

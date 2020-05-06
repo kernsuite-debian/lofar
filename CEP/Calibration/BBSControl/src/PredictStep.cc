@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PredictStep.cc 30631 2014-12-17 10:43:11Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSControl/PredictStep.h>

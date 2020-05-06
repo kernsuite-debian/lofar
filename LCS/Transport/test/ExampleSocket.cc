@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ExampleSocket.cc 30329 2014-10-31 00:08:27Z amesfoort $
+//# $Id$
 
 #ifdef USE_NOSOCKETS
 int main()

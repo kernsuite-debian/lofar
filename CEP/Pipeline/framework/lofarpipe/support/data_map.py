@@ -66,7 +66,7 @@ class DataMap(object):
         def __iter__(self):
             return self
 
-        def next(self):
+        def __next__(self):
             try:
                 value = self.data[self.index]
             except IndexError:
@@ -86,7 +86,7 @@ class DataMap(object):
         def __iter__(self):
             return self
 
-        def next(self):
+        def __next__(self):
             while(True):
                 try:
                     value = self.data[self.index]
@@ -339,7 +339,7 @@ def validate_data_maps(*args):
     # Next, check if the data products in `args`, when matched by index,
     # reside on the same host. We can use the same trick as before, by
     # checking the size of a set created from a tuple of hostnames.
-    for i in xrange(len(args[0])):
+    for i in range(len(args[0])):
         if len(set(arg[i].host for arg in args)) != 1:
             return False
 
@@ -399,7 +399,7 @@ def tally_data_map(data, glob, logger=None):
     # list of tuples.
     if logger:
         logger.debug("Searching for file: %s" % glob)
-    found = zip(*findFiles(glob, '-1d'))
+    found = list(zip(*findFiles(glob, '-1d')))
 
     # Return a mask containing True if file exists, False otherwise
     return [(f.host, f.file) in found for f in data]

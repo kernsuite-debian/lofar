@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarLocators.h 16185 2010-08-18 10:21:34Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_LOFARLOCATORS_H
 #define LOFAR_COMMON_LOFARLOCATORS_H
@@ -45,11 +45,14 @@ public:
 	#define		CONFIG_SUB_DIR		"etc"
 
 	// Create a ConfigLocator with a default search path.
-	ConfigLocator() : FileLocator()
-		{	setSubdir(CONFIG_SUB_DIR); }
+	ConfigLocator() : FileLocator() {
+		setSubdir(CONFIG_SUB_DIR);
+		addPathAtFront("$HOME/.lofar");
+	}
 	// Create a ConfigLocator with a predefined search path.
-	explicit ConfigLocator (const string&	aPath) : FileLocator(aPath) 
-		{ 	setSubdir(CONFIG_SUB_DIR); }
+	explicit ConfigLocator (const string&	aPath) : FileLocator(aPath) {
+		setSubdir(CONFIG_SUB_DIR);
+	}
 
 private:
 	ConfigLocator(const ConfigLocator&	that);

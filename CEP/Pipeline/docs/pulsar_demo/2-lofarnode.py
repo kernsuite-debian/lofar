@@ -24,7 +24,7 @@ class thumbnail_combine(LOFARnodeTCP):
         try:
             # Run "montage" command
             subprocess.check_call(['/usr/bin/montage'] + input_files + [output_file])
-        except Exception, e:
+        except Exception as e:
             return 1
 
         return 0

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema targetNamespace="http://www.astron.nl/LofarTrigger" version="0.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.astron.nl/LofarTrigger"  xmlns:base="http://www.astron.nl/LofarBase">
+	<xsd:import schemaLocation="LofarBase.xsd" namespace="http://www.astron.nl/LofarBase"/>
+	<xsd:annotation>
+		<xsd:documentation>Definitions for LOFAR project and user submission</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Project entities============================
+	
+		Project and user related objects.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Project">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="description" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="project" type="Project"/>
+</xsd:schema>

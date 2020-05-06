@@ -14,6 +14,7 @@ import subprocess
 import lofarpipe.support.utilities as utilities
 from lofarpipe.support.clusterdesc import get_compute_nodes
 from lofarpipe.support.parset import Parset
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 # Data map methods were moved to a separate module. 
 # Importing them for backward compatibility.
@@ -47,7 +48,7 @@ def group_files(logger, clusterdesc, node_directory, group_size, filenames):
         my_process = subprocess.Popen(
             exec_string, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
-        sout = my_process.communicate()[0]
+        sout,_ = communicate_returning_strings(my_process)
         data[node] = sout.split('\x00')
         data[node] = utilities.group_iterable(
             [element for element in data[node] if element in filenames],
@@ -81,14 +82,14 @@ def gvds_iterator(gvds_file, nproc=4):
         vds  = parset.getString("Part%d.Name" % part)
         data[host].append((file, vds))
 
-    for host, values in data.iteritems():
+    for host, values in data.items():
         data[host] = utilities.group_iterable(values, nproc)
 
     while True:
         yieldable = []
-        for host, values in data.iteritems():
+        for host, values in data.items():
             try:
-                for filename, vds in values.next():
+                for filename, vds in next(values):
                     yieldable.append((host, filename, vds))
             except StopIteration:
                 pass

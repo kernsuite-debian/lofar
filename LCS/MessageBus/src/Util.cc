@@ -1,7 +1,7 @@
 #include "lofar_config.h"
 #include <Common/LofarTypes.h>
 
-#include "Util.h"
+#include <MessageBus/Util.h>
 
 #include <stdlib.h>
 
@@ -37,6 +37,32 @@ namespace LOFAR {
     }
 
     return queueprefix;
+  }
+
+  std::string broker_state()
+  {
+    string lofarenv = getenv_str("LOFARENV");
+
+    if (lofarenv == "PRODUCTION") {
+      return "ccu001.control.lofar";
+    } else if (lofarenv == "TEST") {
+      return "ccu199.control.lofar";
+    } else {
+      return "localhost";
+    }
+  }
+
+  std::string broker_feedback()
+  {
+    string lofarenv = getenv_str("LOFARENV");
+
+    if (lofarenv == "PRODUCTION") {
+      return "mcu001.control.lofar";
+    } else if (lofarenv == "TEST") {
+      return "mcu199.control.lofar";
+    } else {
+      return "localhost";
+    }
   }
 } // namespace LOFAR
 

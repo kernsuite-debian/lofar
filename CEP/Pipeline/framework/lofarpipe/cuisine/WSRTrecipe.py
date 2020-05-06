@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-import ingredient, cook, parset
+#!/usr/bin/env python3
+from . import ingredient, cook, parset
 import sys
 
 from optparse import OptionParser
@@ -74,17 +74,17 @@ class WSRTrecipe(object):
         if handled:
             self.logger.exception('Exception caught: ' + str(e))
         else:
-            print >> sys.stderr, "***** Exception occurred with no log handlers"
-            print >> sys.stderr, "*****", str(e)
+            print("***** Exception occurred with no log handlers", file=sys.stderr)
+            print("*****", str(e), file=sys.stderr)
             print_exc()
 
     def help(self):
         """Shows helptext and inputs and outputs of the recipe"""
-        print self.helptext
+        print(self.helptext)
         self.optionparser.print_help()
-        print '\nOutputs:'
-        for k in self._outfields.keys():
-            print '  ' + k
+        print('\nOutputs:')
+        for k in list(self._outfields.keys()):
+            print('  ' + k)
 
     def main_init(self):
         """Main initialization for stand alone execution, reading input from
@@ -95,7 +95,7 @@ class WSRTrecipe(object):
         opts = sys.argv[1:]
         try:
             myParset = parset.Parset(self.name + ".parset")
-            for p in myParset.keys():
+            for p in list(myParset.keys()):
                 opts[0:0] = "--" + p, myParset.getString(p)
         except IOError:
             logging.debug("Unable to open parset")
@@ -103,7 +103,7 @@ class WSRTrecipe(object):
         if options.help:
             return 1
         else:
-            for key, value in vars(options).iteritems():
+            for key, value in vars(options).items():
                 if value is not None:
                     self.inputs[key] = value
             self.inputs['args'] = args
@@ -132,7 +132,7 @@ class WSRTrecipe(object):
             status = self.go()
             if not self.outputs.complete():
                 self.logger.warn("Note: recipe outputs are not complete")
-        except Exception, e:
+        except Exception as e:
             self._log_error(e)
             self.outputs = None ## We're not generating any results we have
                                 ## confidence in
@@ -152,7 +152,7 @@ class WSRTrecipe(object):
         except:
             return None
         fd.close()
-        if self.name in results.keys():
+        if self.name in list(results.keys()):
             return results[self.name]
         else:
             return None
@@ -183,7 +183,7 @@ class WSRTrecipe(object):
             self.inputs = results[self.name]['inputs']
             self.outputs = results[self.name]['outputs']
             self.run(name)
-        except Exception, e:
+        except Exception as e:
             self._log_error(e)
             self.outputs = None ## We're not generating any results we have
                                 ## confidence in
@@ -200,11 +200,11 @@ class WSRTrecipe(object):
         """Main results display for stand alone execution, displaying results
         on stdout"""
         if self.outputs == None:
-            print 'No results'
+            print('No results')
         else:
-            print 'Results:'
-            for o in self.outputs.keys():
-                print str(o) + ' = ' + str(self.outputs[o])
+            print('Results:')
+            for o in list(self.outputs.keys()):
+                print(str(o) + ' = ' + str(self.outputs[o]))
 
     ## Maybe these cooks should go in some subclass?
     ## Problem is you might need all of them in a recipe describing a pipeline

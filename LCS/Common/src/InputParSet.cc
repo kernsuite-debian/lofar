@@ -18,13 +18,13 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: InputParSet.cc 23074 2012-12-03 07:51:29Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/InputParSet.h>
 #include <Common/Exceptions.h>
 #ifdef HAVE_AIPSPP
-# include <casa/Inputs/Input.h>
+# include <casacore/casa/Inputs/Input.h>
 #endif
 
 // Read input args from command line if given as key=value or as --key value
@@ -40,7 +40,7 @@ namespace LOFAR {
       itsUsePS (false)
   {
 #ifdef HAVE_AIPSPP
-    itsInput = new casa::Input;
+    itsInput = new casacore::Input;
 #endif
   }
 
@@ -126,7 +126,7 @@ namespace LOFAR {
       return pv.getDoubleVector();
     }
 #ifdef HAVE_AIPSPP
-    casa::Block<double> vals (itsInput->getDoubleArray (key));
+    casacore::Block<double> vals (itsInput->getDoubleArray (key));
     return vector<double>(vals.begin(), vals.end());
 #endif
     return vector<double>();
@@ -167,7 +167,7 @@ namespace LOFAR {
       return pv.getIntVector();
     }
 #ifdef HAVE_AIPSPP
-    casa::Block<int> vals (itsInput->getIntArray (key));
+    casacore::Block<int> vals (itsInput->getIntArray (key));
     return vector<int>(vals.begin(), vals.end());
 #endif
     return vector<int>();

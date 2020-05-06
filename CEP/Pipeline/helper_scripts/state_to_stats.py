@@ -17,7 +17,7 @@ def usage():
     usage: python state_to_stats.py <path_of_state_file> <output_path_of_stats>
     """
 
-    print usage_string
+    print(usage_string)
 
 
 def open_file_and_parse_to_python_data(path):
@@ -31,8 +31,8 @@ def open_file_and_parse_to_python_data(path):
         data = pickle.load(f)
 
     except:
-        print "failed opening statefile: "
-        print path
+        print("failed opening statefile: ")
+        print(path)
         exit(1)
 
     return data
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         # parse the name and create a xml_node with this name
         step_name = entry[0]
 
-        print "processing step: {0}".format(step_name)
+        print("processing step: {0}".format(step_name))
         local_document = xml.Document()                
         step_node = local_document.createElement(step_name)
         step_node.setAttribute("duration", "0")
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     
     f = open(xml_stats_path, 'w')
     f.write(xml_node.toxml())
-    print "wrote file: "
-    print xml_stats_path 
+    print("wrote file: ")
+    print(xml_stats_path) 
 
 
     

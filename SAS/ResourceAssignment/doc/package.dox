@@ -1,0 +1,11 @@
+/**
+
+\ingroup SAS
+\defgroup ResourceAssignment ResourceAssignment
+\ref resource_assignment module overview
+
+ResourceAssignment contains packages for the estimation and assignment of LOFAR resources,
+for the scheduling of (observation and pipeline) tasks, and for the interaction with this 
+data by the user.
+
+*/

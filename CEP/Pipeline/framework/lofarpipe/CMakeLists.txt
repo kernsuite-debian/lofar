@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39416 2018-04-20 08:59:00Z renting $
+# $Id$
 
 include(PythonInstall)
 
@@ -19,6 +19,7 @@ python_install(
   support/clusterdesc.py
   support/control.py
   support/data_map.py
+  support/feedback_version.py
   support/group_data.py
   support/jobserver.py
   support/lofarexceptions.py

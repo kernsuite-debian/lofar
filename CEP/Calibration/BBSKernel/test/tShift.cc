@@ -18,20 +18,20 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tShift.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/LofarLogger.h>
 #include <Common/LofarTypes.h>
 #include <Common/Timer.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 #include <vector>
 #include <cmath>
 #include <stdexcept>
 
 using namespace LOFAR;
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 // Define some constants.
 

@@ -17,19 +17,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarAntenna.h 17582 2011-03-18 15:29:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFARANTENNA_H
 #define MSLOFAR_MSLOFARANTENNA_H
 
-#include <ms/MeasurementSets/MSAntenna.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
 #include <MSLofar/MSLofarTable.h>
 
 namespace LOFAR {
 
-  class MSLofarAntenna: public casa::MSAntenna
+  class MSLofarAntenna: public casacore::MSAntenna
   {
   public:
 
@@ -37,15 +37,15 @@ namespace LOFAR {
     MSLofarAntenna();
 
     // Create from an existing table.
-    MSLofarAntenna (const casa::String& tableName,
-                    casa::Table::TableOption option);
+    MSLofarAntenna (const casacore::String& tableName,
+                    casacore::Table::TableOption option);
 
     // Create a new table.
-    MSLofarAntenna (casa::SetupNewTable& newTab, casa::uInt nrrow,
-                    casa::Bool initialize);
+    MSLofarAntenna (casacore::SetupNewTable& newTab, casacore::uInt nrrow,
+                    casacore::Bool initialize);
 
     // Create from an existing Table object.
-    MSLofarAntenna (const casa::Table& table);
+    MSLofarAntenna (const casacore::Table& table);
 
     // Copy constructor (reference semnatics).
     MSLofarAntenna (const MSLofarAntenna& that);
@@ -57,7 +57,7 @@ namespace LOFAR {
     MSLofarAntenna& operator= (const MSLofarAntenna& that);
   
     // Create the table description containing the required columns. 
-    static casa::TableDesc requiredTableDesc();
+    static casacore::TableDesc requiredTableDesc();
   };
 
 } //# end namespace

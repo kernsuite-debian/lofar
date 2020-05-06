@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: MSCreate.h 34753 2016-06-20 10:43:42Z schaap $
+//#  $Id$
 
 #ifndef BB_MS_MSCREATE_H
 #define BB_MS_MSCREATE_H
@@ -29,11 +29,11 @@
 
 //# Includes
 #include <Common/LofarTypes.h>
-#include <casa/aips.h>
+#include <casacore/casa/aips.h>
 #include <Common/lofar_vector.h>
 
 //# Forward Declarations
-namespace casa
+namespace casacore
 {
   class String;
   class MPosition;
@@ -74,7 +74,7 @@ public:
   // created and column FLAG is mapped to it.
   MSCreate (const std::string& msName,
 	    double startTime, double timeStep, int nfreq, int ncorr,
-            const casa::Matrix<double>& antPos,
+            const casacore::Matrix<double>& antPos,
 	    const std::string& antennaTableName,
 	    bool writeAutoCorr,
 	    int tileSizeFreq, int tileSize,
@@ -90,10 +90,10 @@ public:
 
   // Add the extra columns needed for lwimager for every column not existing.
   // These are CORRECTED_DATA, MODEL_DATA, and IMAGING_WEIGHT.
-  // Furthermore it sets the CHANNEL_SELECTION keyword for casa::VisSet.
+  // Furthermore it sets the CHANNEL_SELECTION keyword for casacore::VisSet.
   void addImagerColumns()
     { addImagerColumns (*itsMS); }
-  static void addImagerColumns (casa::MeasurementSet&);
+  static void addImagerColumns (casacore::MeasurementSet&);
 
   // Add the definition of the next frequency band.
   // 1, 2 or 4 polarizations can be given.
@@ -148,17 +148,17 @@ private:
   // </group>
 
   // Create the MS and fill its subtables as much as possible.
-  void createMS (const casa::String& msName,
-                 const casa::String& antennaTableName, 
-		 const casa::Block<casa::MPosition>& antPos,
+  void createMS (const casacore::String& msName,
+                 const casacore::String& antennaTableName, 
+		 const casacore::Block<casacore::MPosition>& antPos,
 		 int tileSizeFreq, int tileSize,
-                 const casa::String& flagColumn, int nflagBits,
+                 const casacore::String& flagColumn, int nflagBits,
                  bool mapFlagBits);
 
   // Set the band.
   int addBand (int npolarizations, int nchannels,
-	       double refFreq, const casa::Vector<double>& chanFreqs,
-	       const casa::Vector<double>& chanWidths);
+	       double refFreq, const casacore::Vector<double>& chanFreqs,
+	       const casacore::Vector<double>& chanWidths);
 
   // Add a polarization to the subtable.
   // Return the row number where it is added.
@@ -166,8 +166,8 @@ private:
 
   // Fill the various subtables (at the end).
   // <group>
-  void fillAntenna (const casa::Block<casa::MPosition>& antPos,
-                    const casa::String& antennaTableName);
+  void fillAntenna (const casacore::Block<casacore::MPosition>& antPos,
+                    const casacore::String& antennaTableName);
   void fillFeed();
   void fillObservation();
   void fillProcessor();
@@ -190,15 +190,15 @@ private:
   int itsNrTimes;                    //# nr of exposures
   double itsTimeStep;                //# duration of each exposure (sec)
   double itsStartTime;               //# start time of observation (sec)
-  casa::Block<casa::Int>* itsNrPol;  //# nr of polarizations for each band
-  casa::Block<casa::Int>* itsNrChan; //# nr of channels for each band
-  casa::Block<casa::Int>* itsPolnr;  //# rownr in POL subtable for each band
-  casa::Block<casa::MBaseline>* itsAntBL; //# Baseline vector for each antenna
-  casa::MPosition*      itsArrayPos; //# Position of array center
-  casa::MeasFrame*      itsFrame;    //# Frame to convert to apparent coordinates
-  casa::Block<casa::MDirection>* itsPhaseDir;   //# Phase directions of fields
-  casa::MeasurementSet* itsMS;
-  casa::MSMainColumns*  itsMSCol;
+  casacore::Block<casacore::Int>* itsNrPol;  //# nr of polarizations for each band
+  casacore::Block<casacore::Int>* itsNrChan; //# nr of channels for each band
+  casacore::Block<casacore::Int>* itsPolnr;  //# rownr in POL subtable for each band
+  casacore::Block<casacore::MBaseline>* itsAntBL; //# Baseline vector for each antenna
+  casacore::MPosition*      itsArrayPos; //# Position of array center
+  casacore::MeasFrame*      itsFrame;    //# Frame to convert to apparent coordinates
+  casacore::Block<casacore::MDirection>* itsPhaseDir;   //# Phase directions of fields
+  casacore::MeasurementSet* itsMS;
+  casacore::MSMainColumns*  itsMSCol;
 };
 
 // @}

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import os
 import socket
@@ -22,13 +22,13 @@ field_table.close()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((masterhost, port))
-s.sendall(partnr)
+s.sendall(partnr.encode("ascii"))
 s.recv(1024)
-s.sendall(repr(name_col))
+s.sendall(repr(name_col).encode("ascii"))
 s.recv(1024)
-s.sendall(repr(position_col))
+s.sendall(repr(position_col).encode("ascii"))
 s.recv(1024)
-s.sendall(repr(phase_dir_col))
+s.sendall(repr(phase_dir_col).encode("ascii"))
 s.recv(1024)
 
 s.close()

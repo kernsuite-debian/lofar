@@ -174,7 +174,7 @@ class dppp(BaseRecipe, RemoteCommandRecipeMixIn):
         # ********************************************************************
         # 2. Load parmdb and sourcedb
         # Load parmdb-mapfile, if one was given.         
-        if self.inputs.has_key('parmdb_mapfile'):
+        if 'parmdb_mapfile' in self.inputs:
             self.logger.debug(
                 "Loading parmdb mapfile: %s" % self.inputs['parmdb_mapfile']
             )
@@ -185,7 +185,7 @@ class dppp(BaseRecipe, RemoteCommandRecipeMixIn):
                 item.file = ''
 
         # Load sourcedb-mapfile, if one was given.         
-        if self.inputs.has_key('sourcedb_mapfile'):
+        if 'sourcedb_mapfile' in self.inputs:
             self.logger.debug(
                 "Loading sourcedb mapfile: %s" % self.inputs['sourcedb_mapfile']
             )
@@ -212,7 +212,7 @@ class dppp(BaseRecipe, RemoteCommandRecipeMixIn):
         # ********************************************************************
         # 3. Call the node side of the recipe
         # Create and schedule the compute jobs
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         indata.iterator = outdata.iterator = DataMap.SkipIterator
         parmdbdata.iterator = sourcedbdata.iterator = DataMap.SkipIterator
         jobs = []

@@ -56,7 +56,7 @@ means there is 1 element) by dtype.itemsize.
 
 """
 
-import cPickle
+import pickle
 
 import numpy
 from numpy.lib.utils import safe_eval
@@ -106,7 +106,7 @@ def read_magic(fp):
     if magic_str[:-2] != MAGIC_PREFIX:
         msg = "the magic string is not correct; expected %r, got %r"
         raise ValueError(msg % (MAGIC_PREFIX, magic_str[:-2]))
-    major, minor = map(ord, magic_str[-2:])
+    major, minor = list(map(ord, magic_str[-2:]))
     return major, minor
 
 def dtype_to_descr(dtype):
@@ -248,13 +248,13 @@ def read_array_header_1_0(fp):
     #   "descr" : dtype.descr
     try:
         d = safe_eval(header)
-    except SyntaxError, e:
+    except SyntaxError as e:
         msg = "Cannot parse header: %r\nException: %r"
         raise ValueError(msg % (header, e))
     if not isinstance(d, dict):
         msg = "Header is not a dictionary: %r"
         raise ValueError(msg % d)
-    keys = d.keys()
+    keys = list(d.keys())
     keys.sort()
     if keys != ['descr', 'fortran_order', 'shape']:
         msg = "Header does not contain the correct keys: %r"
@@ -262,7 +262,7 @@ def read_array_header_1_0(fp):
 
     # Sanity-check the values.
     if (not isinstance(d['shape'], tuple) or
-        not numpy.all([isinstance(x, (int,long)) for x in d['shape']])):
+        not numpy.all([isinstance(x, int) for x in d['shape']])):
         msg = "shape is not valid: %r"
         raise ValueError(msg % (d['shape'],))
     if not isinstance(d['fortran_order'], bool):
@@ -270,7 +270,7 @@ def read_array_header_1_0(fp):
         raise ValueError(msg % (d['fortran_order'],))
     try:
         dtype = numpy.dtype(d['descr'])
-    except TypeError, e:
+    except TypeError as e:
         msg = "descr is not a valid dtype descriptor: %r"
         raise ValueError(msg % (d['descr'],))
 
@@ -312,7 +312,7 @@ def write_array(fp, array, version=(1,0)):
     if array.dtype.hasobject:
         # We contain Python objects so we cannot write out the data directly.
         # Instead, we will pickle it out with version 2 of the pickle protocol.
-        cPickle.dump(array, fp, protocol=2)
+        pickle.dump(array, fp, protocol=2)
     elif array.flags.f_contiguous and not array.flags.c_contiguous:
         # Use a suboptimal, possibly memory-intensive, but correct way to
         # handle Fortran-contiguous arrays.
@@ -359,7 +359,7 @@ def read_array(fp):
     # Now read the actual data.
     if dtype.hasobject:
         # The array contained Python objects. We need to unpickle the data.
-        array = cPickle.load(fp)
+        array = pickle.load(fp)
     else:
         if isinstance(fp, file):
             # We can use the fast fromfile() function.
@@ -425,7 +425,7 @@ def open_memmap(filename, mode='r+', dtype=None, shape=None,
     numpy.memmap
 
     """
-    if not isinstance(filename, basestring):
+    if not isinstance(filename, str):
         raise ValueError("Filename must be a string.  Memmap cannot use" \
                          " existing file handles.")
 

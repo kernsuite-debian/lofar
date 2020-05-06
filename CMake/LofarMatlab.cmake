@@ -6,7 +6,7 @@
 # Furthermore, the generated library is added to the list of libraries for 
 # the current package (global property ${PACKAGE_NAME}_LIBRARIES).
 
-# $Id: LofarMatlab.cmake 16653 2010-11-02 10:18:35Z loose $
+# $Id$
 #
 # Copyright (C) 2010
 # ASTRON (Netherlands Institute for Radio Astronomy)

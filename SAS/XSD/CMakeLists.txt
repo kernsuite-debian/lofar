@@ -1,0 +1,11 @@
+lofar_package(XSD 0.1)
+
+lofar_add_data_files(SAS/LofarTrigger.xsd)
+lofar_add_data_files(SAS/LofarBase.xsd)
+lofar_add_data_files(SAS/LofarProject.xsd)
+lofar_add_data_files(SAS/LofarHistorical.xsd)
+lofar_add_data_files(SAS/LofarSpecification.xsd)
+lofar_add_data_files(MoM/LofarMoM2.xsd)
+lofar_add_data_files(MoM/MoM2.xsd)
+lofar_add_data_files(MoM/PersistentObjects.xsd)
+lofar_add_data_files(MoM/UserAdmin.xsd)

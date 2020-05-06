@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Messages.cc 16068 2010-07-23 19:53:58Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -31,9 +31,9 @@
 #include <Blob/BlobAipsIO.h>
 #include <Blob/BlobSTL.h>
 
-#include <casa/Containers/Record.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/BasicSL/String.h>
 
 namespace LOFAR
 {

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from WSRTrecipe import *
+#!/usr/bin/env python3
+from .WSRTrecipe import *
 
 JobError     = -1
 JobHold      =  0
@@ -58,7 +58,7 @@ class job_parser(WSRTrecipe):
             if self.outputs['ExportID']: ## we need an export ID to identify the job
                 self.outputs['Status'] = JobScheduled
                 return
-        except Exception, inst:
+        except Exception as inst:
             self.print_notification('Failed importing job: ' + self.inputs['Job'] + '; Error: ' + str(inst))
         self.outputs['Status'] = JobError
 

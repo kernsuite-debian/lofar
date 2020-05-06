@@ -1,0 +1,6 @@
+/**
+
+\ingroup SAS
+\defgroup XSD XSD
+\ref XML_generator A package that contains all the XML templates for the LOFAR software
+*/

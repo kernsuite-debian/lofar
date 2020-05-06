@@ -28,7 +28,7 @@ def getClusters(clusterf,skymodel,max_nr_clusters=1000):
     tot_nr_sol=0
     nrSB=0
     for line in clusterfile:
-        print "adding cluster",line
+        print("adding cluster",line)
         if line.strip()[0]=='#':
             continue;
         splitted=line.split()
@@ -68,9 +68,9 @@ def get_freq_data(sol,clusters,tot_nr_sol):
     data=np.array(data);
     nrStations=(max(indices)+1)/8
     nrTimes=data.shape[0]/(8*nrStations)
-    print data.shape,nrTimes,nrStations,8
+    print(data.shape,nrTimes,nrStations,8)
     if data.shape[0]!=nrTimes*nrStations*8:
-        print "wrong shape"
+        print("wrong shape")
         return -1
     data=data.reshape(nrTimes,nrStations,8,tot_nr_sol)
     start=0
@@ -111,15 +111,15 @@ def remove_unitary(clusters,freqs,store_intermediate=False):
         cdata=cluster['real']+1.j*cluster['imag']
         cluster['real']=[]
         cluster['imag']=[]
-        print cdata.shape
+        print(cdata.shape)
         cdata=np.swapaxes(cdata,0,1)
-        print cdata.shape
+        print(cdata.shape)
         cdata=np.swapaxes(cdata,3,4)
-        print cdata.shape
+        print(cdata.shape)
         cdata=np.swapaxes(cdata,2,3)
-        print cdata.shape
+        print(cdata.shape)
         cdata=np.swapaxes(cdata,1,2)
-        print cdata.shape,nrTimes*cluster['nrsol'],nrSB,nrStations,4
+        print(cdata.shape,nrTimes*cluster['nrsol'],nrSB,nrStations,4)
         cdata=cdata.reshape(nrTimes*cluster['nrsol'],nrSB,nrStations,4)
 
 
@@ -144,9 +144,9 @@ def remove_unitary(clusters,freqs,store_intermediate=False):
 def fill_sb(clusters,solpath,solpath_end,subbandlist,tot_nr_sol,store_intermediate=False):
     freqs=[]
     for isb,sb in enumerate(subbandlist):
-        print "opening",solpath+str(sb)+solpath_end
+        print("opening",solpath+str(sb)+solpath_end)
         if not os.path.isfile(solpath+str(sb)+solpath_end):
-            print "skipping",sb
+            print("skipping",sb)
             continue;
         sol=open(solpath+str(sb)+solpath_end)
         if get_freq_data(sol,clusters,tot_nr_sol)>0:

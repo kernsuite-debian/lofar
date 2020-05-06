@@ -1,3 +1,5 @@
+
+
 import os
 import os.path
 import re
@@ -58,7 +60,7 @@ def checkSAP_SB (fileNames, bandsPerBeam):
     for name in fileNames:
         parts = sapre.split (name)
         if len(parts) != 2:
-            print "File name %s does not contain a single string _SAP" % name
+            print("File name %s does not contain a single string _SAP" % name)
             return False
         assert (len(parts) == 2)
         sap = int(parts[1][0:3])
@@ -69,17 +71,17 @@ def checkSAP_SB (fileNames, bandsPerBeam):
             sbmax   = sb
         else:
             if sap != sapUsed:
-                print "Error: multiple SAP numbers found in file names"
+                print("Error: multiple SAP numbers found in file names")
                 return -1
             if sb < sbmin:
                 sbmin = sb
             if sb > sbmax:
                 sbmax = sb
     if sbmax - sbmin + 1 > bandsPerBeam:
-        print 'Error: SB number range in file names exceeds bands per beam', bandsPerBeam
+        print('Error: SB number range in file names exceeds bands per beam', bandsPerBeam)
         return -1
     if sbmax - sbmin + 1 < bandsPerBeam:
-        print 'Warning: SB number range in file names < bands per beam', bandsPerBeam
+        print('Warning: SB number range in file names < bands per beam', bandsPerBeam)
     return sapUsed
 
 
@@ -90,10 +92,10 @@ def movemss (srcPattern, dstPattern, userName, bandsPerBeam=80, dryrun=False):
     (srcHosts, srcFiles) = findDirs(srcPattern)
     (dstHosts, dstFiles) = findDirs(dstPattern)
     if len(dstFiles) == 0:
-        print 'Error: no files found matching', dstPattern
+        print('Error: no files found matching', dstPattern)
         return False
     if len(srcFiles) < len(dstFiles):
-        print 'Error: fewer SRC files', srcPattern, 'found than DST files', dstPattern
+        print('Error: fewer SRC files', srcPattern, 'found than DST files', dstPattern)
         return False
     srcSAP = checkSAP_SB(srcFiles, bandsPerBeam)
     dstSAP = checkSAP_SB(dstFiles, bandsPerBeam)
@@ -130,15 +132,15 @@ def movemss (srcPattern, dstPattern, userName, bandsPerBeam=80, dryrun=False):
         srcSB = dstSB - (dstSAP-srcSAP)*bandsPerBeam 
         # See if the SRC is already on the right node.
         srcName = srcTemplate % srcSB
-        if srcNodeMap.has_key(dstHosts[i] + '-' + srcName):
+        if dstHosts[i] + '-' + srcName in srcNodeMap:
             nInPlace += 1
         else:
             # Has DST to be moved from another node?
-            if not srcMap.has_key(srcName):
-                print 'Src', srcName, 'not found for DST', dstFiles[i]
+            if srcName not in srcMap:
+                print('Src', srcName, 'not found for DST', dstFiles[i])
             else:
                 inx = srcMap[srcName]
-                print 'Move', srcName, 'from', srcHosts[inx], 'to', dstHosts[i]
+                print('Move', srcName, 'from', srcHosts[inx], 'to', dstHosts[i])
                 srcDir = os.path.dirname(srcName)
                 cmd = ''
                 if createDir:
@@ -149,10 +151,10 @@ def movemss (srcPattern, dstPattern, userName, bandsPerBeam=80, dryrun=False):
                     userName + '@' + dstHosts[i] + ':' + srcDir + \
                     ' && rm -rf ' + srcName + '"'
 #                      '" &'
-                print cmd
+                print(cmd)
                 if not dryrun:
                     os.system (cmd)
-    print nInPlace, "source files are already on the correct destination mode"
+    print(nInPlace, "source files are already on the correct destination mode")
 
 def addfileglob (filename, pattern):
     """ If needed, add the glob pattern to the filename
@@ -187,18 +189,18 @@ def getSBmap (names, nsubbands):
     sbnrs = np.array([int(patt2.sub ('', patt1.sub('',x))) for x in names])
     firstSB = 0
     if len(sbnrs) == 0:
-        print 'no subbands found'
+        print('no subbands found')
     else:
         firstSB = sbnrs[0] / nsubbands * nsubbands
         if len(sbnrs) != nsubbands:
-            print 'subbands are missing for', patt3.sub('',names[0])
+            print('subbands are missing for', patt3.sub('',names[0]))
     sbs = [-1 for i in range(nsubbands)]
     for i in range(len(sbnrs)):
         sbs[sbnrs[i] % nsubbands] = i
     if len(sbnrs) > 0:
         for i in range(len(sbs)):
             if sbs[i] < 0:
-                print '  subband', firstSB+i, 'seems to be missing'
+                print('  subband', firstSB+i, 'seems to be missing')
     return (sbs,firstSB)
 
 def getNamesSkip (locs, names, nsubbands):
@@ -344,7 +346,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
 """
     # Open parset and get all keywords.
     ps = lofar.parameterset.parameterset (parsetin)
-    pskeys = ps.keys()
+    pskeys = list(ps.keys())
     # See if ngroups parameter is given.
     havegroups = False
     nsbpergroup = 1
@@ -353,7 +355,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
         havegroups  = True
     # Check and initialize.
     if nodeindex < 0  or  nodeindex >= nsbpergroup:
-        raise ValueError, "Argument ngroups or nodeindex has an invalid value"
+        raise ValueError("Argument ngroups or nodeindex has an invalid value")
 
     # Process input keywords. They must be present.
     inkeys = keymap["in"]
@@ -368,7 +370,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
         # Otherwise it defines the glob patterns.
         if isinstance(keyin, str):
             if keyin not in pskeys:
-                raise KeyError, "keyword " + keyin + " not found in parset " + parsetin
+                raise KeyError("keyword " + keyin + " not found in parset " + parsetin)
             # Get the file name pattern(s)
             patterns = ps.getStringVector(keyin)
             ps.remove (keyin)
@@ -426,18 +428,18 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
     # Process output keywords if they are present.
     if 'out' in keymap:
         if len(nameslist) == 0:
-            raise ValueError, "No input datasets have been defined"
+            raise ValueError("No input datasets have been defined")
         outkeys = keymap["out"]
         nrproc += 1
         for (keyin,keyout) in outkeys:
             if isinstance(keyin, str):
                 if keyin not in pskeys:
-                    raise KeyError, "keyword " + keyin + " not found in parset " + parsetin
+                    raise KeyError("keyword " + keyin + " not found in parset " + parsetin)
                 name = ps.getString(keyin)
                 ps.remove (keyin)
             else:
                 if len(keyin) != 1:
-                    raise KeyError, "Output key " + keyin + " is not a string, thus should be a sequence of length 1"
+                    raise KeyError("Output key " + keyin + " is not a string, thus should be a sequence of length 1")
                 name = keyin[0]
             locs  = []
             names = []
@@ -479,7 +481,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
                 # If given, use nodes to find the node to run on.
                 if len(nodes) > 0:
                     if i >= len(nodes):
-                        raise ValueError, "Image seqnr " + str(i) + " beyond nodes list"
+                        raise ValueError("Image seqnr " + str(i) + " beyond nodes list")
                     locparts[0] = nodes[i]
                 # Find OBSID, SAP, SB, and TYPE (as in L12345_SAP000_SB000_uv)
                 # Make sure at least 4 entries.
@@ -506,7 +508,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
 
     # Check if all keymap keywords have been processed.
     if nrproc != len(keymap):
-        raise ValueError, "Only keys 'in' and 'out' are possible in the keymap argument"
+        raise ValueError("Only keys 'in' and 'out' are possible in the keymap argument")
     # Write the resulting parset.
     ps.writeFile (parsetout)
-    print "Created output parset " + parsetout
+    print("Created output parset " + parsetout)

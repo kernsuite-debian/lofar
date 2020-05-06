@@ -1,7 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 from optparse import OptionParser
-import sys, time
-from qpid.messaging import *
+import proton
+import proton.utils
+
 parser = OptionParser()
 parser.add_option("-a", "--address", dest="address", default="testqueue",
                   help="address (name of queue or topic)", metavar="QUEUENAME")
@@ -15,58 +16,36 @@ parser.add_option("-f", "--file", dest="filename", default="void",
                   help="name of file to be sent")
 parser.add_option("-s", "--subject", dest="subject", default="void",
                   help="subject of messages to be sent")
- 
+
 (options, args) = parser.parse_args()
- 
-#print "options :" ,
-#print options
-#print "args :" ,
-#print args
- 
-broker=options.__dict__['broker']
-address=options.__dict__['address']
-count=int(options.__dict__['count'])
-message=options.__dict__['message']
-filename=options.__dict__['filename']
-subject=options.__dict__['subject']
- 
-if filename!="void":
+
+broker = options.__dict__['broker']
+address = options.__dict__['address']
+count = int(options.__dict__['count'])
+message = options.__dict__['message']
+filename = options.__dict__['filename']
+subject = options.__dict__['subject']
+
+if filename != "void":
     f = open(filename, 'r')
-    message=f.read()
- 
-#print " setup connection with ",
-#print broker
-#print " on queue or topic :",
-#print address
-#print " count of messages :",
-#print count
- 
-connection = Connection(broker)
- 
+    message = f.read()
+
+connection = proton.utils.BlockingConnection(broker)
+
 try:
-  connection.open()
-  #print " opened "
-  session = connection.session() 
-  #print " session "
-  sender = session.sender(address)
-  #print " sending message "
-  while count >0:
-	#time.sleep(2)
-	#print 'send message: Hello world! %d' %(count)
-	if message=="void":
-		print 'sending message: Hello world! %d' %(count)
-                msg= Message('Hello world! %d' %(count))
-                msg.durable=True
-		sender.send(msg)
-	else:
-                #print 'sending message: %s' %(message)
-                msg=Message(message)
-                msg.durable=True
-		sender.send(msg)
-	count -= 1
- 
- 
-except MessagingError,m:
-  print m
+    sender = connection.create_sender(address)
+    while count > 0:
+        if message == "void":
+            print('sending message: Hello world! %d' % (count))
+            msg = proton.Message('Hello world! %d' % (count))
+            msg.durable = True
+            sender.send(msg)
+        else:
+            msg = proton.Message(message)
+            msg.durable = True
+            sender.send(msg)
+        count -= 1
+except proton.ProtonException as m:
+    print(m)
 
 connection.close()

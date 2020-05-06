@@ -39,7 +39,7 @@
 #include <Common/lofar_map.h>
 #include <Common/lofar_string.h>
 #include <Common/lofar_vector.h>
-#include <casa/OS/Path.h>
+#include <casacore/casa/OS/Path.h>
 
 namespace LOFAR
 {
@@ -55,7 +55,7 @@ class CommandHandlerReducer: public CommandVisitor
 public:
     CommandHandlerReducer(const ProcessGroup &group,
       const Measurement::Ptr &measurement, const ParmDB &parmDB,
-      const SourceDB &sourceDB, const casa::Path &logPath);
+      const SourceDB &sourceDB, const casacore::Path &logPath);
 
     // Returns true if a FinalizeCommand has been received.
     bool hasFinished() const;
@@ -96,7 +96,7 @@ private:
     Measurement::Ptr                      itsMeasurement;
     ParmDB                                itsParmDB;
     SourceDB                              itsSourceDB;
-    casa::Path                            itsLogPath;
+    casacore::Path                            itsLogPath;
 
     bool                                  itsHasFinished;
     int                                   itsChunkCount;

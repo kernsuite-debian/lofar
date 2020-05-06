@@ -1,0 +1,15 @@
+#!/bin/bash -ve
+
+# Our own hostname must be resolvable
+
+if [ `hostname` == `hostname -f` ] ; then
+  echo "hostname should not contain domain suffix"
+  exit 1
+fi
+
+if [ `hostname` != `hostname -s` ] ; then
+  echo "hostname should be equal to short hostname"
+  exit 1
+fi
+
+exit 0

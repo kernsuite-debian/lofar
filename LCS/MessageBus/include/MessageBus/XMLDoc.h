@@ -18,14 +18,10 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: XMLDoc.h 31882 2015-06-22 07:50:04Z mol $
+//# $Id$
 
 #ifndef LOFAR_MESSAGEBUS_XMLDOC_H
 #define LOFAR_MESSAGEBUS_XMLDOC_H
-
-#ifdef HAVE_LIBXMLXX
-#include <libxml++/parsers/domparser.h>
-#endif
 
 #include <string>
 #include <ostream>
@@ -39,11 +35,6 @@ class XMLDoc
 {
 public:
   XMLDoc(const std::string &);
-
-#ifdef HAVE_LIBXMLXX
-  // Allow copying even though we have non-copyable mmbers
-  XMLDoc(const XMLDoc &);
-#endif
 
   // Extract a subset from another XML document
   XMLDoc(const XMLDoc &other, const std::string &key);
@@ -65,23 +56,7 @@ public:
   void insertXML(const std::string& key, const std::string& xml);
 
 protected:
-#ifdef HAVE_LIBXMLXX
-  // Locates and returns a node given by its XPATH key ("/a/b/c")
-  xmlpp::Element *getXMLnode(const std::string &name) const;
-#endif
-
-  // -- datamembers -- 
-#ifdef HAVE_LIBXMLXX
-  // itsParser is the owner of the XML Document and Elements that
-  // will be accessed. It takes care of the memory management and
-  // thus free all elements at destruction.
-  //
-  // If itsParser == 0, we did not use a parser, and we own itsDocument.
-  xmlpp::DomParser *itsParser;   // NOTE: non-copyable
-  xmlpp::Document *itsDocument; // NOTE: non-copyable
-#else
   std::string itsContent;
-#endif
 };
 
 inline std::ostream &operator<<(std::ostream &os, const XMLDoc &xml)

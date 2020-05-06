@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SPWCombine.cc 14046 2009-09-18 07:54:49Z diepen $
+//# $Id$
 //#
 //# @author Adriaan Renting
 
@@ -27,7 +27,7 @@ namespace LOFAR
 {
   namespace CS1
   {
-    using namespace casa;
+    using namespace casacore;
 
     //===============>>>  SPWCombine::SPWCombine  <<<===============
 

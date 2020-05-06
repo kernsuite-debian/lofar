@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Counter.h 23223 2012-12-07 14:09:42Z schoenmakers $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

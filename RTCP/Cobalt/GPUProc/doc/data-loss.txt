@@ -1,0 +1,213 @@
+This document describes how COBALT logs and processes data loss. Two forms of loss can be distinguished: input data loss and output data loss.
+
+---------------------
+Input data loss
+---------------------
+
+The data path for station input is:
+
+  station RSP board --> Ethernet --> COBALT server
+
+Total input loss occurs when:
+
+  * The station does not emit the datagrams from the RSP boards. See
+      * "rspctl --datastream" on the station's LCU to see if the data stream is enabled
+
+  * The station does not send the datagrams to the UDP port COBALT listens on:
+      * $LOFARROOT/etc/parset-additions.d/default/StationStreams.parset contains the addresses COBALT listens to
+      * $LOFARROOT/etc/RSPDriver.conf (on the station) contains the addresses the station sends to
+      * MAC, IP and port numbers need to match. Note that each station sends to the following ports for easy identification:
+
+             16093
+             ||_|\_ 1-digit bord number (0..3, and 6..9 for HBA1)
+             | \___ 3-digit station number
+             \_____ fixed prefix
+      * For international stations, the receiving COBALT node needs to have the right VLANs configured. If not, the packets will
+        arrive on eth5 (cbt00x-10GB04), but dropped as the destination IP (belonging to the VLAN) does not exist.
+
+      * As root on COBALT, run "tcpdump -i <interface> udp -c 100", and check if the packets are received and correctly addressed.
+
+      * For international stations, the receiving COBALT node needs to have the right VLANs configured. If not, the packets will
+        arrive on eth5 (cbt00x-10GB04), but dropped as the destination IP (belonging to the VLAN) does not exist. Check with
+        "ip addr" which IPs exist, if you see packets arriving to VLAN IPs.
+
+  * The network drops the datagrams due to routing issues. Trace the station route through the network:
+      https://www.astron.nl/lofarwiki/doku.php?id=wanarea:start
+
+Fractional or total input loss occurs when:
+
+  * The network drops the datagrams due to throughput issues.
+
+  * The COBALT server IP stack drops the datagrams:
+      * This log line indicates that the packets were received but not processed.
+
+        >>> WARN  RTCP.Cobalt.GPUProc - Kernel dropped XXX UDP packets
+
+        - This counter indicates how many UDP packets were listened for but did not reach the application in time.
+        - This counter is node-specific and is thus reported in pairs as every host runs two instances.
+        - Each station emits ~50k packets per second, so judge the dropped counter accordingly.
+        - Possible causes:
+          * The COBALT server CPUs are overloaded. Run "top" to see if a specific core is loaded >95%.
+          * COBALT froze, for example due to InfiniBand errors. In that case, the above line is the only one being printed.
+          * OS scheduling inefficiencies occasionally cause the above log line to appear.
+
+  * The packets are received by COBALT but are not usable in the observation:
+      * The following log line indicates the packet receive rate and how many packets were discarded:
+
+        >>> INFO  RTCP.Cobalt.InputProc - [station CS005LBA] [board 0]  [PacketReader] 12207.1 pps: received 131072 packets: 0 bad timestamps, 0 bad clock/bitmode, 1 payload errors, 0 otherwise bad packets
+
+        - "bad timestamps" means the packet has timestamp -1 (0xFFFFFFFF), indicating problems with the station clock.
+        - "bad clock/bitmode" means the packet does not have the same clock (200/160) or bitmode (16/8/4) as the observation.
+        - "payload error" means the packet is marked as incomplete by the station.
+        - "otherwise bad" means the packet header is corrupted.
+
+      * The impact of payload errors is signficant. They arrive scattered over time, and any flagged input is smeared over hundreds of samples
+        during processing due to the FIR filter. For a 64-channel interferometry observation, we measured the following:
+
+                    % payload errors    % visibilities flagged
+                    --------------------------------------------
+                    3.5%                91%
+                    1.9%                73%
+                    1.5%                63%
+                    1.06%               44%
+                    0.22%               14%
+                    0.19%               12%
+                    0.10%                6.7%
+                    0.002%               0.13%
+
+  * COBALT is not running at real time, and is thus unable to keep up with the input data. This triggers many errors, but all cases devolve into printing:
+  
+        >>> ERROR RTCP.Cobalt.GPUProc - [block 1] Not running at real time! Deadline was 1.23456 seconds ago
+
+    Causes include:
+
+        - COBALT started after the start time of the observation. The error is then printed for block -1 and beyond. It may or may not catch up again.
+        - A CPU is overloaded (see "top" on all nodes).
+        - A GPU is overloaded, resulting in this log line at the end of an observation:
+
+      >>> ERROR RTCP.Cobalt.CoInterface - process                  : ran at 101.464843% of run-time budget
+
+Flagging
+---------------------
+
+Missing and corrupted/unacceptable station input results in those data being flagged. As we employ a conservative flagging strategy, the amount of data flagged is typically a lot higher than the amount of data not received correctly.
+
+---------------------
+Output data loss
+---------------------
+
+COBALT strives to write output data regardless of what input actually arrived. The input is collected into /blocks/ of typically ~1s. All blocks travel along the path:
+
+  Ethernet -> CPU (GPUProc) -> InfiniBand -> CPU (GPUProc) -> GPU -> CPU (GPUProc)
+
+after which the data are forwarded to the storage nodes (OutputProc). From that point on, data can be dropped if the system cannot sustain the data rates involved. Due to the way correlated (interferometry) and beamformed data are collected, we have to distinguish these two cases.
+
+// NOTES for log-line interpretation: //
+
+  * Each log line is printed as a summary at the end of the observation
+  * Lines are only printed if any loss occurred.
+  * Each processing step logs three metrics:
+      - "WARN  - Did not receive XX% of the data ...", indicates how much data arrived at that step.
+      - "ERROR - I lost XX% of the data ...", indicates how much data was dropped in THIS step.
+      - "WARN  - Did not send XX% of the data ...", indicates how much data was forwarded to the next step.
+
+Furthermore, several steps are monitored to keep up with real-time behaviour. Essentially, each 1s of data needs to be processed by a step within 1s. A budget overrun does not directly cause loss. Only if buffering before the step could not cover the jitter will loss occur. If a step overruns this budget significantly, a log is generated:
+
+      >>> WARN  RTCP.Cobalt.CoInterface - Run-time budget exceeded: transposeInput ran at 300.353% (took 0.11198 s, budget is 0.0372827 s)
+
+Statistics covering all runs of such a step is reported at the end. If more than 100% is reported, data loss is certain:
+
+      >>> INFO  RTCP.Cobalt.CoInterface - process                  : ran at 0.464843% of run-time budget
+
+Correlated data loss
+---------------------
+
+Each block represents an integration period of one subband when emitted from GPUProc, typically ~1s in size. Observations consist of at most 488 subbands in the common 8-bit mode (244 in 16-bit mode). The blocks of each subband are sent to the storage node that was assigned to store it.
+
+        1. The input data is collected in ~1s blocks and distributed over the Infiniband network over all the sockets (the first transpose). This is a lossless process, which means that any stalls propagate to the next loss point. [StationTranspose.cc]
+
+        2. Each socket collects each block from all stations, receiving only the subbands the socket is assigned to process. [Pipeline.cc]
+
+        3. For every subband, each block is forwarded to the GPU for processing, and the result is subsequently fetched back from the GPU, resulting in one or more blocks of output. If the integration period < block size, multiple integration periods are produced by the GPU per block of input. [Pipeline.cc, SubbandProc.cc]
+
+        4. If the integration period > block size, it is always a multiple. Multiple blocks are integrated on the CPU. [CorrelatorStep.cc]
+
+        5. The block size now represents the integration period, with block numbers to match. Data are sent to the data writer processes (OutputProc) running on the target storage cluster. This is the first loss point. Loss is summarised at the end of the observation, if any occurred: [Pipeline.cc]
+
+        >>> ERROR RTCP.Cobalt.GPUProc - [Correlator] I lost 5.1234% of the data for subband 3 to cpu05.cep4.control.lofar
+        >>> WARN  RTCP.Cobalt.GPUProc - [Correlator] Did not send 5.1234% of the data for subband 3 to cpu05.cep4.control.lofar
+
+        In case of loss, the real-time processor produces all blocks, but could not send all of them over the network to the storage node. Reasons include:
+          * The network cannot sustain the required throughput.
+          * The receiving storage node cannot sustain the required throughput to disk.
+          * The receiving storage node or OutputProc instance crashed (the the logs for outputproc@<hostname>).
+          * The receiving storage node or OutputProc instance started too late (check the timestamps in the log for outputProc@<hostname>).
+        It is not easy to distinguish between network and disk bottlenecks. OutputProc logging may provide clues whether it had problems processing
+        the data it received.
+
+        In the Correlated pipeline, this is the ONLY place in which loss can occur (barring OS/system errors). If the chain downstream (network,
+        OutputProc) cannot sustain the required rate, this is the place data is dropped. To analyse where the actual bottleneck lies, one needs
+        to look at the timers (see below).
+
+        6. OutputProc receives all blocks. Loss is reported at the end, and should mirror the loss reported by GPUProc for sending the data: [InputThread.cc]
+
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [InputThread] Did not receive 5.1234% of the data
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [InputThread] Did not send 5.1234% of the data
+
+        The input side of OutputProc also reports what it does not receive (and thus not forward), but cannot lose data by itself.
+
+        7. OutputProc will forward all received blocks to disk. Loss, if any, is reported at the end: [OutputThread.cc]
+
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [SubbandOutputThread] Did not receive 5.1234% of the data
+        >>> ERROR RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [SubbandOutputThread] I lost 1.0000% of the data
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [SubbandOutputThread] Did not send 6.1234% of the data
+
+        In rare cases, OutputProc itself drops data:
+          * If the target disk is full.
+          * If writing data to the target disk fails (file-system errors, etc).
+
+        8. Total end-to-end output loss is reported for ALL data products produced: [OutputThread.cc]
+
+        >>> INFO  RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [SubbandOutputThread] Total output data loss is 0.0000%.
+        >>> ERROR RTCP.Cobalt.OutputProc - [stream 3 file L123456_SAP000_SB003.MS] [SubbandOutputThread] Total output data loss is 6.1234%.
+
+        The line at INFO is there if there is no loss, ERROR otherwise. Note that this line is NOT printed if OutputProc did not start or crashed.
+
+
+Beam-formed data loss
+---------------------
+
+Each block represents an integration period of one subband when emitted from GPUProc, typically ~1s in size. Each TAB generates one block per subband. These blocks are subsequently transposed over the network to the storage nodes. Each storage node process (OutputProc) receives blocks for all the subbands that are part of the TABs that are to be stored on that node. Due to this additional complexity, loss can occur in more places than forr correlated data.
+
+        1. The Correlator pipeline steps are followed, up until results are produced by the GPU. For all beam-formed data product classes (Coherent, Incoherent), a block of output data is retrieved from the GPU, each representing ~1s. This block size persists throughout this process. Again, no loss occurs here.
+
+        2. The data are sent to the data-writer processes (OutputProc) running on the target storage cluster. A second transpose occurs here, in which for each subband, the data of the individual tied-array beams (TABs) are spread across the OutputProc processes that write those beams. Each OutputProc can write multiple TABs, which are multiplexed along a single connection with each GPUProc socket that provides input. Loss of data towards each node is reported at the end, if any: [Pipeline.cc, TABTranspose.cc]
+
+        >>> ERROR RTCP.Cobalt.CoInterface - [BeamFormer] I lost 5.1234% of the data to cpu05.cep4.control.lofar
+        >>> WARN  RTCP.Cobalt.CoInterface - [BeamFormer] Did not send 5.1234% of the data to cpu05.cep4.control.lofar
+
+        3. OutputProc receives subband data for each TAB from multiple GPUProc sockets. It has a buffer of 1s blocks of data to collect input for (BlockCollector::maxBlocksInFlight). If not all subband data is received in time, the block is forcefully emitted to the next step of the pipeline. In that case, loss occurs, which is reported at the end, if any: [TABTranspose.cc]:
+
+        >>> WARN  RTCP.Cobalt.CoInterface - [BlockCollector] Did not receive 5.1234% of the data
+        >>> ERROR RTCP.Cobalt.CoInterface - [BlockCollector] I lost 1.0000% of the data
+        >>> WARN  RTCP.Cobalt.CoInterface - [BlockCollector] Did not send 6.1234% of the data
+
+        Loss from this stage onwards indicates either all data is lost for a block, or some subbands are. Both are accumulated into
+        a single loss percentage.
+
+        An additional hint printed by OutputProc indicating that the network has throughput issues which could be mitigated with
+        bigger buffers. The reported loss is already included in the earlier figures:
+
+        >>> ERROR RTCP.Cobalt.CoInterface - [BlockCollector] Received 0.500% of the data too late. Consider increasing maxBlocksInFlight.
+
+        4. Collected blocks are sent to the OutputThread, which is responsible for writing them to disk. Loss here is rare, reasons are the same as those in the Correlator pipeline: [OutputThread.cc]
+
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_S000_B003_P000.h5] [TABOutputThread] Did not receive 5.1234% of the data
+        >>> ERROR RTCP.Cobalt.OutputProc - [stream 3 file L123456_S000_B003_P000.h5] [TABOutputThread] I lost 1.0000% of the data
+        >>> WARN  RTCP.Cobalt.OutputProc - [stream 3 file L123456_S000_B003_P000.h5] [TABOutputThread] Did not send 6.1234% of the data
+
+        5. For each data product, a final loss percentage is printed, like in the Correlator pipeline. Note that this line is NOT printed if OutputProc did not start or crashed. [OutputThread.cc]:
+
+        >>> INFO  RTCP.Cobalt.OutputProc - [stream 3 file L123456_S000_B003_P000.h5] [TABOutputThread] Total output data loss is 0.0000%.
+        >>> ERROR RTCP.Cobalt.OutputProc - [stream 3 file L123456_S000_B003_P000.hS] [TABOutputThread] Total output data loss is 6.1234%.
+

@@ -5,7 +5,7 @@
 #                                                                loose@astron.nl
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 import os.path
 import sys
 
@@ -23,7 +23,7 @@ class compression_pipeline(control):
         self.parset = parameterset()
 
     def usage(self):
-        print >> sys.stderr, "Usage: %s [options] <parset-file>" % sys.argv[0]
+        print("Usage: %s [options] <parset-file>" % sys.argv[0], file=sys.stderr)
         return 1
 
     def pipeline_logic(self):
@@ -74,7 +74,7 @@ class compression_pipeline(control):
         self.parset.adoptFile(parset_file)
         # Set job-name to basename of parset-file w/o extension, if it's not
         # set on the command-line with '-j' or '--job-name'
-        if not self.inputs.has_key('job_name'):
+        if 'job_name' not in self.inputs:
             self.inputs['job_name'] = (
                 os.path.splitext(os.path.basename(parset_file))[0]
                 )

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Observation.h 37552 2017-06-01 08:43:15Z mol $
+//# $Id$
 
 #ifndef LOFAR_APPLCOMMON_OBSERVATION_H
 #define LOFAR_APPLCOMMON_OBSERVATION_H

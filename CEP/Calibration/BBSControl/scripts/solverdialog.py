@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Solver statistics dialog
 #
@@ -96,7 +96,7 @@ class SolverAppForm(QMainWindow):
     def save_plot(self):
         file_choices = "PNG (*.png)|*.png"
 
-        path = unicode(QFileDialog.getSaveFileName(self, 'Save file', '', file_choices))
+        path = str(QFileDialog.getSaveFileName(self, 'Save file', '', file_choices))
 
         if path:
             self.canvas.print_figure(path, dpi=self.dpi)
@@ -116,7 +116,7 @@ class SolverAppForm(QMainWindow):
         else:
             setDir=QString('')
 
-        path = unicode(QFileDialog.getExistingDirectory(self, 'Load table', setDir, QFileDialog.ShowDirsOnly))
+        path = str(QFileDialog.getExistingDirectory(self, 'Load table', setDir, QFileDialog.ShowDirsOnly))
         path=str(path)  # Convert to string so that it can be used by load table
 
         if path:
@@ -129,7 +129,7 @@ class SolverAppForm(QMainWindow):
 
             self.open_table(path)
         else:
-            print "load_table: invalid path"
+            print("load_table: invalid path")
 
 
     # Open a table (on startup, if a command line argument is given)
@@ -137,7 +137,7 @@ class SolverAppForm(QMainWindow):
     def open_table(self, tableName):
         # If a table is already loaded, close it:
         if self.table == True:
-            print "open_table() we already have a table!"   # DEBUG
+            print("open_table() we already have a table!")   # DEBUG
             self.close_table()    # close currently opened table
 
         # Check if path exists and it is a director (i.e. a table)
@@ -179,7 +179,7 @@ class SolverAppForm(QMainWindow):
     # Close the table that is currently loaded
     #
     def close_table(self):
-        print "close_table() removing now widgets"  # DEBUG
+        print("close_table() removing now widgets")  # DEBUG
 
         # Remove table specific widgets
         self.xAxisComboBox.deleteLater()
@@ -231,7 +231,7 @@ class SolverAppForm(QMainWindow):
     # TODO: What is the proper way to close the parmDB?
     #
     def close_parmDB(self):
-        print "close_parmDB()"   # DEBUG
+        print("close_parmDB()")   # DEBUG
         self.parametersComboBox.deleteLater()
         self.parmValueComboBox.deleteLater()
         del self.parametersComboBox
@@ -252,10 +252,10 @@ class SolverAppForm(QMainWindow):
       if date==None:
         raise ValueError
       elif isinstance(date, np.ndarray):
-        print "array"
+        print("array")
         for i in range(0, len(date)):
           q=pq.quantity(date[i], 's')
-          print q
+          print(q)
           dateString[i].append(q.formatted('YMD'))
       elif isinstance(date, float):
         dateString=""
@@ -345,7 +345,7 @@ class SolverAppForm(QMainWindow):
     # Function to handle frequency index slider has changed
     #
     def on_frequencyStartSlider(self, index):
-        print "on_frequencyStartSlider(self, index):"
+        print("on_frequencyStartSlider(self, index):")
         # Read frequency at index
         self.solverQuery.getTimeSlots()
         startfreq=self.solverQuery.timeSlots[index]['STARTTIME']
@@ -356,7 +356,7 @@ class SolverAppForm(QMainWindow):
     # Function to handle frequency index slider has changed
     #
     def on_frequencyEndSlider(self, index):
-        print "on_frequencyEndSlider(self, index):"
+        print("on_frequencyEndSlider(self, index):")
         # Read frequency at index
         self.solverQuery.getTimeSlots()
         startfreq=self.solverQuery.timeSlots[index]['STARTTIME']
@@ -421,7 +421,7 @@ class SolverAppForm(QMainWindow):
     # fileformat      - format to export to default=ASCII
     #
     def on_export(self, fileformat='ASCII'):
-        print "on_export()"        # DEBUG
+        print("on_export()")        # DEBUG
         
         self.parmsComboBox.currentText()
         parm=self.parmsComboBox.currentText()             # Parameter from Solution, e.g. Gain:1:1:LBA001
@@ -451,7 +451,7 @@ class SolverAppForm(QMainWindow):
         #print "on_export() filename_parameter", filename_parameter     # DEBUG
 
         # use exportData() function
-        print "on_export() fileformat = ", fileformat   # DEBUG
+        print("on_export() fileformat = ", fileformat)   # DEBUG
         if fileformat=="ASCII":
             self.exportDataASCII(filename_physparm, parmvalue)     # export the physical parameter
             self.exportDataASCII(filename_parameter, parameter)    # export the solver parameter
@@ -486,7 +486,7 @@ class SolverAppForm(QMainWindow):
         self.createWidgets()    # create all the widgets
 
     def createWidgets(self):
-        print "createWidgets()"   # DEBUG
+        print("createWidgets()")   # DEBUG
 
         # Create buttons to access solverStatistics
         self.loadButton=QPushButton("&Load solver table")      # Load MS/solver button
@@ -639,7 +639,7 @@ class SolverAppForm(QMainWindow):
     # Remove widgets - executed on loading of a new table
     #
     def removeWidgets(self):
-       print "removeWidgets()"    # DEBUG
+       print("removeWidgets()")    # DEBUG
 
        # Remove plotting widgets
        self.buttonsLayout.removeWidget(self.plottingOptions)
@@ -771,7 +771,7 @@ class SolverAppForm(QMainWindow):
         #
         for p in parameterNames:
             if p=="CORRMATRIX" and (self.tableType=="PERITERATION" or self.tableType=="PERSOLUTION"):
-                print
+                print()
             else:
                 self.parametersComboBox.addItem(p)
 
@@ -785,7 +785,7 @@ class SolverAppForm(QMainWindow):
     # maybe should be moved to the class attribute?)
     #
     def createxAxisCombo(self):
-       print "solverDialog::createAxisCombo()"  # DEBUG
+       print("solverDialog::createAxisCombo()")  # DEBUG
        
        plotableAxes=[]   # define plotable axes
 
@@ -802,7 +802,7 @@ class SolverAppForm(QMainWindow):
     # TODO: This is at the moment hard coded to Amplitude & Phase
     #
     def create_parms_value_dropdown(self):
-        print "create_parms_value_dropdown()"   # DEBUG
+        print("create_parms_value_dropdown()")   # DEBUG
 
         self.parmValueComboBox=QComboBox()
         self.parmValueComboBox.setMaximumWidth(170)
@@ -840,7 +840,7 @@ class SolverAppForm(QMainWindow):
     # Create a status bar at the bottom of the MainWindow
     #
     def create_status_bar(self):
-        print "create_status_bar()"
+        print("create_status_bar()")
         self.status_text = QLabel("Solver statistics")
         self.statusBar().addWidget(self.status_text, 1)
 
@@ -865,22 +865,22 @@ class SolverAppForm(QMainWindow):
         if self.solutions_plot == True:    # TODO
             self.y1=self.getSolutions(perIteration=self.perIteration)
         else:
-            print  # do we need an else here?
+            print()  # do we need an else here?
             self.y1=self.getSolutions(perIteration=self.perIteration)
 
         self.x, self.y2=self.getParameter(parameter)   # get parameter to plot
         self.getMessages()                             # get dictionary with solver messages
 
-      	# TODO: get current PlotWindow
+        # TODO: get current PlotWindow
         self.plots.append(lofar.bbs.plotwindow.PlotWindow(self))  # call PlotWindow class with this class as parent
         #self.plots.append(plotwindow.PlotWindow(self))  # DEBUG
-        print "on_plot() finished drawing"
+        print("on_plot() finished drawing")
 
 
     # Get the last plot Window
     #
     def getLastPlot(self):
-       print "solverDialog::getCurrentPlot()"
+       print("solverDialog::getCurrentPlot()")
        length=len(self.plotWindows)
        return self.plotWindows[length-1]
 
@@ -888,7 +888,7 @@ class SolverAppForm(QMainWindow):
     # Get the current number of plot Windows
     #
     def getNumberOfPlots(self):
-       print "solverDialog::getNumberPlots()"
+       print("solverDialog::getNumberPlots()")
        numPlots=len(self.plotWindows)
 
        return numPlots
@@ -897,7 +897,7 @@ class SolverAppForm(QMainWindow):
     # Get the current plot Window
     #
     def getCurrentPlot(self):
-       print "getCurrentPlot()"
+       print("getCurrentPlot()")
 
        # Loop over all plotWindows (parent attribute)
        for plot in parent.plotWindows:
@@ -912,7 +912,7 @@ class SolverAppForm(QMainWindow):
     # num       - number of PlotWindow to look for
     # 
     def getPlotNumber(self, num):
-       print "getPlotNumber()"
+       print("getPlotNumber()")
 
        return self.plotWindows(num)
 
@@ -921,7 +921,7 @@ class SolverAppForm(QMainWindow):
     # TODO: be called on closing of a plotWindow
     #
     def deletePlotWindow(self, num):
-       print "deletePlotWindow()"
+       print("deletePlotWindow()")
        parent.plotWindows.remove(num)   # remove the plotWindow with that number from the list
 
 
@@ -949,7 +949,7 @@ class SolverAppForm(QMainWindow):
     # Trigger handling of physical interpretation of parameters
     #
     def on_physicalValues(self):
-        print "on_physicalValue()"      # DEBUG
+        print("on_physicalValue()")      # DEBUG
         self.physicalValues=self.physicalValuesCheckBox.isChecked()
 
     def on_convertDate(self):
@@ -1005,7 +1005,7 @@ class SolverAppForm(QMainWindow):
     # If xAxis has been changed in ComboBox
     #
     def on_xAxis(self):
-       print "solverDialog::on_xAxis()"   # DEBUG
+       print("solverDialog::on_xAxis()")   # DEBUG
 
        self.xAxis=self.xAxisComboBox.currentText()
        self.xLabel=self.xAxis    
@@ -1023,7 +1023,7 @@ class SolverAppForm(QMainWindow):
             self.perIteration=True
 
 
-        print "determineTableType() self.tableType = ", self.tableType   # DEBUG
+        print("determineTableType() self.tableType = ", self.tableType)   # DEBUG
 
 
     # Set the X label property accordingly (time or frequency)
@@ -1031,7 +1031,7 @@ class SolverAppForm(QMainWindow):
     # TODO: react to all possible cases
     #
     def setXLabel(self):
-        print "setXLabel()"                 # DEBUG
+        print("setXLabel()")                 # DEBUG
 
         if self.xAxisType == "Time":
             # first check we have a valid self.x
@@ -1053,7 +1053,7 @@ class SolverAppForm(QMainWindow):
     # Set the Y label property according to the parameter
     #
     def setYLabel(self):
-        print "setYLabel()"
+        print("setYLabel()")
 
         parameter=self.parametersComboBox.currentText()
         solverParm=self.parmValueComboBox.currentText()
@@ -1061,7 +1061,7 @@ class SolverAppForm(QMainWindow):
         if len(parameter) > 10:
           parameter=parameter[0:math.floor(len(parameter))] + "\n" + parameter[math.ceil(len(parameter)):]
         
-        print "parameter = ", parameter  # DEBUG
+        print("parameter = ", parameter)  # DEBUG
         
         self.y1Label=parameter
         self.y2Label=solverParm
@@ -1114,7 +1114,7 @@ class SolverAppForm(QMainWindow):
             # If we only plot per solution
             if self.perIteration == False:
                 if parameter == "CORRMATRIX":
-                    print "getParameter(): CORRMATRIX"             # DEBUG
+                    print("getParameter(): CORRMATRIX")             # DEBUG
                     corrmatrix, x, ranks=self.solverQuery.getCorrMatrix(start_time, end_time, start_freq, end_freq, getStartTimes=True, getRank=True)
                     rank=self.solverQuery.getRank()
 
@@ -1126,7 +1126,7 @@ class SolverAppForm(QMainWindow):
 
                 # "Normal parameter"
                 else:
-                    print "readParameter() start_time = ", start_time, " end_time = ", end_time      # DEBUG
+                    print("readParameter() start_time = ", start_time, " end_time = ", end_time)      # DEBUG
 
                     # This solverQuery functions fetches the parameter along with the corresponding time stamps
                     y, x=self.solverQuery.readParameter(parameter, start_time, end_time, start_freq, end_freq)
@@ -1137,21 +1137,21 @@ class SolverAppForm(QMainWindow):
                 self.xAxisType="Iteration"
                 y, x=self.solverQuery.readParameter(parameter, start_time, end_time, start_freq, end_freq, iteration='all')
                 # Set x to go from iteration 1 to the last one found in the dictionary for y
-                x = range(1, len(y))
+                x = list(range(1, len(y)))
                 y = self.rearrangeIteration(y)
                 return x, y
 
 
         # (2) Getting a range of values over a time interval
         elif singleCell==False:
-            print "getParameter(): plotting a time interval from time_start till time_end"  # DEBUG
+            print("getParameter(): plotting a time interval from time_start till time_end")  # DEBUG
 
             #x=self.solverQuery.getMidTimes(start_time, end_time)
 
             # Get data from table per iterations
             # Check if special parameter is asked for, e.g. getSolution
             if parameter == "SOLUTION":
-                print "getSolutions() start_time = ", start_time, " end_time = ", end_time      # DEBUG
+                print("getSolutions() start_time = ", start_time, " end_time = ", end_time)      # DEBUG
 
                 y, x=self.solverQuery.getSolution(start_time, end_time, start_freq, end_freq)
                 return y, x
@@ -1164,19 +1164,19 @@ class SolverAppForm(QMainWindow):
 
             # "Normal parameter"
             else:
-                print "getParameter(): Normal parameter"   # DEBUG
+                print("getParameter(): Normal parameter")   # DEBUG
 
                 y, x = self.solverQuery.readParameter(parameter, start_time, end_time, start_freq, end_freq)
                 #y=self.solverQuery.readParameter(parameter, start_time, end_time, start_freq, end_freq)
                 #x=self.solverQuery.getMidTimes(start_time, end_time)
 
-                print "x=",x  # DEBUG
-                print "y=",y  # DEBUG
+                print("x=",x)  # DEBUG
+                print("y=",y)  # DEBUG
 
                 return x, y['last']
 
         else:
-            print "getParameter(): can't plot with these options"
+            print("getParameter(): can't plot with these options")
 
 
 
@@ -1196,7 +1196,7 @@ class SolverAppForm(QMainWindow):
 
         if perIteration == True:
             solutions=self.solverQuery.getSolution(start_time, end_time, start_freq, end_freq, iteration='all')
-            x=range(1, len(solutions)+1)
+            x=list(range(1, len(solutions)+1))
 
             for iter in range(1, len(solutions)):
                 solutions_array.append(solutions[iter])
@@ -1216,7 +1216,7 @@ class SolverAppForm(QMainWindow):
         #print "getSolutions() physValue = ", physValue  # DEBUG
 
         if perIteration == True:
-            x=range(1, len(solutions))   # why do we need the +1?
+            x=list(range(1, len(solutions)))   # why do we need the +1?
         else:
             x=self.solverQuery.getMidTimes(start_time, end_time)
 
@@ -1234,7 +1234,7 @@ class SolverAppForm(QMainWindow):
     # Get the solver messages for this time and freq range (or per iteration)
     #
     def getMessages(self):
-        print "getMessages()"   # DEBUG
+        print("getMessages()")   # DEBUG
 
         # Get time and frequency intervals from the QWidgets
         start_time=self.solverQuery.timeSlots[self.timeStartSlider.value()]['STARTTIME']
@@ -1398,7 +1398,7 @@ class SolverAppForm(QMainWindow):
             self.useScipy=True
             return True
         except ImportError:        # Catches every error
-            print "No module scipy found, you can not export data to Matlab format"
+            print("No module scipy found, you can not export data to Matlab format")
             self.useScipy=False
         return False
 
@@ -1410,20 +1410,20 @@ class SolverAppForm(QMainWindow):
     #
     def importModule(self, module):
         try:                       # try to import module
-            print "importModule(", module, ")"   # DEBUG
+            print("importModule(", module, ")")   # DEBUG
             __import__(module)
             return True
         except ImportError:        # Catches every error
-            print "No module ", module, " found"
+            print("No module ", module, " found")
             return False
 
 
     # Check if a particular module has been imported
     #
     def haveModule(self, module):
-        print "haveModule() module = ", module
+        print("haveModule() module = ", module)
         #print "haveModule() sys.modules = ", sys.modules
-        print "module in sys = ", module in sys.modules
+        print("module in sys = ", module in sys.modules)
 
         if module in sys.modules:
             return True
@@ -1448,7 +1448,7 @@ class SolverAppForm(QMainWindow):
         #print "rearrangeIteration()"    # DEBUG
 
         if isinstance(parameterDict, dict) == False:
-            print "plotIterations(): parameterDict is not a dictionary"
+            print("plotIterations(): parameterDict is not a dictionary")
             return False     # return an error
 
         y=[]    # list to hold individual iteration results
@@ -1463,7 +1463,7 @@ class SolverAppForm(QMainWindow):
     # Get all the ranks for the current selection
     #
     def getRanks(self, start_time, end_time, start_freq, end_freq):
-        print "solverDialog::getRanks()"    # DEBUG
+        print("solverDialog::getRanks()")    # DEBUG
         ranks=self.solverQuery.getRank()
 
         return ranks
@@ -1473,7 +1473,7 @@ class SolverAppForm(QMainWindow):
     #
     def delAllAxes(self):
         for ax in self.fig.axes:
-            print "delAllAxes(): deleting ", ax    # DEBUG
+            print("delAllAxes(): deleting ", ax)    # DEBUG
             ax.delaxes()
 
 
@@ -1482,13 +1482,13 @@ class SolverAppForm(QMainWindow):
         i=0
         for ax in self.fig.axes:
             i=i+1
-            print "printAllAxes(): ax(%2d) = %s" % (i, ax)
+            print("printAllAxes(): ax(%2d) = %s" % (i, ax))
 
 
     # Set the title for this figure
     #
     def setTitle(self, title=""):
-        print "setTitle(): "   # DEBUG
+        print("setTitle(): ")   # DEBUG
         self.fig.set_title(title)
 
 
@@ -1497,7 +1497,7 @@ class SolverAppForm(QMainWindow):
     #
     #
     def computeRelativeTimes(self, times):
-       print "computeRelativeTimes()"
+       print("computeRelativeTimes()")
 
        relativeTimes=np.ndarray(len(times))     # array to hold relative times which has equal lenght as midtimes
 
@@ -1519,15 +1519,15 @@ class SolverAppForm(QMainWindow):
     # parameter      - parameter to export
     #
     def exportDataASCII(self, filename, parameter):
-        print "export_data()"   # DEBUG
+        print("export_data()")   # DEBUG
         fh=open(filename, 'w')
 
-        print "exportDataASCII() parameter = ", parameter   # DEBUG
+        print("exportDataASCII() parameter = ", parameter)   # DEBUG
 
         # if parameter is a physical parameter
         if self.parmValueComboBox.findText(parameter) != -1:
 
-            print "exportDataASCII() physical parameter"   # DEBUG
+            print("exportDataASCII() physical parameter")   # DEBUG
 
             if isinstance(self.y1, float) or isinstance(self.y2, float):
                 line=str(self.x)  + "\t"  + str(self.y1) + "\n"
@@ -1539,7 +1539,7 @@ class SolverAppForm(QMainWindow):
         # if parameter is part of the Solver parameters
         elif self.parametersComboBox.findText(parameter) != -1:
 
-            print "exportDataASCII() solver parameter"   # DEBUG
+            print("exportDataASCII() solver parameter")   # DEBUG
 
             if isinstance(self.y1, float) or isinstance(self.y2, float):
                 line=str(self.x)  + "\t"  + str(self.y2) + "\n"
@@ -1564,19 +1564,19 @@ class SolverAppForm(QMainWindow):
     # compress    - use Matlab compression for Matrices (default=False)
     #
     def exportDataMatlab(self, filename, parameter, compress=False):
-        print "exportDataMatlab()"
+        print("exportDataMatlab()")
 
         # Check if we have scipy.io imported
         imported_modules=sys.modules()
         if scipy.io not in imported_modules:
-            print "exportDataMatlab() scipy.io needed to export to Matlab format"
+            print("exportDataMatlab() scipy.io needed to export to Matlab format")
             return False
         else:
-            print "generating Matlab file"
+            print("generating Matlab file")
             dctionary={}
             dictionary[parameter]=parameter
 
-            print "exportDataMatlab() dictionary = ", dictionary    # DEBUG
+            print("exportDataMatlab() dictionary = ", dictionary)    # DEBUG
 
             scipy.io.savemat(filename, appendmat=True, do_compression=compress)
 
@@ -1587,10 +1587,10 @@ class SolverAppForm(QMainWindow):
     # fileformat     - file format to write to ("ASCII"=default, "Matlab")
     #
     def exportCorrMatrix(self, filename, fileformat="ASCII"):
-        print "exportCorrMatrix()"       # DEBUG
+        print("exportCorrMatrix()")       # DEBUG
 
         # self.y2 stores correlation matrix if parameter was selected
-        print "self.y2 = ", self.y2      # DEBUG
+        print("self.y2 = ", self.y2)      # DEBUG
 
         # Save in ASCII format
         if fileFormat=="ASCII":
@@ -1610,7 +1610,7 @@ class SolverAppForm(QMainWindow):
             # we need to write the matrix as a dictionary
             mdict['CorrMatrix']=self.y2
 
-            print "exportData() Matlab file format"     # DEBUG
+            print("exportData() Matlab file format")     # DEBUG
             # This apparantly only works with scipy (which is installed on the cluster)
             scipy.io.savemat(filename, mdict)
 
@@ -1626,12 +1626,12 @@ class SolverAppForm(QMainWindow):
     # filename - name of file to write to
     #
     def exportPlot(self, subplot, filename):
-        print "export_plot()"          # DEBUG
+        print("export_plot()")          # DEBUG
 
         fh=open(filename, 'w')   # open "filename" for writing
 
         if fh == 0:   # If we did not get a file handle
-            print "export_plot() could not open file ", filename, " for writing."
+            print("export_plot() could not open file ", filename, " for writing.")
             return False
         else:
             # Get currently displayed data points from Matplotlib
@@ -1661,7 +1661,7 @@ class SolverAppForm(QMainWindow):
             parms=self.parmDB.getNames()  # get parmNames from parmDB
         else:                             # otherwise get them from the ParmMap
             if isinstance(parms, dict):
-                parms=parms.keys()
+                parms=list(parms.keys())
 
         for parm in parms:
             split = parm.split(":")
@@ -1741,7 +1741,7 @@ class SolverAppForm(QMainWindow):
         for key in keywords:                                    # loop over all the keywords found in the TableKeywords
             for parmName in parmNames:                          # loop over the list of all allowed parmNames
                 if parmName in key.lower():                     # if an allowed parmName is found in the key
-		    index=keywords.index(key)			# better to use index for getkeyword to avoid . conflict
+                    index=keywords.index(key)                   # better to use index for getkeyword to avoid . conflict
                     indices=self.solverQuery.solverTable.getkeyword(index)  # extract the indices
                     parmMap[key]=indices                                    # and write them into the python map
 
@@ -1869,7 +1869,7 @@ class SolverAppForm(QMainWindow):
         #print "computeAmplitude() parmMap = ", self.parmMap  # DEBUG
 
         # Insert REAL and Imag into parameter
-	pos=parameter.find("Gain")	# this works for Gain: and DirectionalGain
+        pos=parameter.find("Gain")    # this works for Gain: and DirectionalGain
         parameterReal=parameter[:(pos+8)] + ":Real" + parameter[(pos+8):]
         parameterImag=parameter[:(pos+8)] + ":Imag" + parameter[(pos+8):]
 
@@ -1906,7 +1906,7 @@ class SolverAppForm(QMainWindow):
     # Compute phase for parameter
     #
     def computePhase(self, parameter, solutions):
-        print "computePhase(): parameter = ", parameter   # DEBUG
+        print("computePhase(): parameter = ", parameter)   # DEBUG
 
         phase=[]
         parameter=str(parameter)   # convert QString to string
@@ -1914,7 +1914,7 @@ class SolverAppForm(QMainWindow):
         self.parmMap=self.createParmMap()
 
         # Insert REAL and Imag into parameter
-	pos=parameter.find("Gain")	# this works for Gain: and DirectionalGain
+        pos=parameter.find("Gain")    # this works for Gain: and DirectionalGain
         parameterReal=parameter[:(pos+8)] + ":Real" + parameter[(pos+8):]
         parameterImag=parameter[:(pos+8)] + ":Imag" + parameter[(pos+8):]
 
@@ -1923,12 +1923,12 @@ class SolverAppForm(QMainWindow):
 
         # Decide on data type of solutions
         if isinstance(solutions, int):
-            print "int"
+            print("int")
             phase=math.atan(solutions[imag_idx]/solutions[real_idx])
             #phase=math.sqrt(solutions[real_idx]^2 + solutions[imag_idx]^2)
 
         elif isinstance(solutions, np.ndarray) or isinstance(solutions, list):
-            print "np.ndarray"    # DEBUG
+            print("np.ndarray")    # DEBUG
 
             length=len(solutions)
 

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceDBCasa.h 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 // @file
 // @brief Base class for a table holding sources and their parameters
@@ -32,7 +32,7 @@
 #include <ParmDB/PatchInfo.h>
 #include <Common/lofar_vector.h>
 #include <Common/lofar_set.h>
-#include <tables/Tables/Table.h>
+#include <casacore/tables/Tables/Table.h>
 
 
 namespace LOFAR {
@@ -171,7 +171,7 @@ namespace BBS {
                      double ra, double dec, uint rownr);
 
     // Find the duplicate patches or sources.
-    vector<string> findDuplicates (casa::Table& table,
+    vector<string> findDuplicates (casacore::Table& table,
                                    const string& columnName);
 
     // Fill the patch and source set object from the tables.
@@ -179,10 +179,10 @@ namespace BBS {
     void fillSets();
 
     // Read all sources from the table and return them as a vector.
-    std::vector<SourceInfo> readSources (const casa::Table& table);
+    std::vector<SourceInfo> readSources (const casacore::Table& table);
 
     // Create the patches subset matching the given arguments.
-    casa::Table selectPatches (int category,
+    casacore::Table selectPatches (int category,
                                const string& pattern,
                                double minBrightness,
                                double maxBrightness) const;
@@ -191,12 +191,12 @@ namespace BBS {
     double getDefaultParmValue(const string& name);
 
     //# Data members
-    casa::Table      itsPatchTable;
-    casa::Table      itsSourceTable;
+    casacore::Table      itsPatchTable;
+    casacore::Table      itsSourceTable;
     set<std::string> itsPatchSet;
     set<std::string> itsSourceSet;
     bool             itsSetsFilled;
-    casa::Vector<casa::uInt> itsRowNr;
+    casacore::Vector<casacore::uInt> itsRowNr;
   };
 
   // @}

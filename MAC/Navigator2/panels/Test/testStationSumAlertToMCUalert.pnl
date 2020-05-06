@@ -1,0 +1,388 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 500 400 N "_3DFace" 0
+"main()
+{
+  Init();
+}" 0
+ E E E E 1 -1 -1 0  40 30
+""0  1
+E "
+
+void Init()
+{
+  string strSysName;
+  
+  strSysName = strrtrim( getSystemName(), \":\" );
+  
+  string strQuery = \"SELECT ALERT '_alert_hdl.._prior', '_alert_hdl.._ackable' \" + 
+                    \"FROM '{LOFAR_ObsSW.status.childSumAlert,LOFAR_PermSW.status.childSumAlert,LOFAR_PIC.status.childSumAlert}' \" +
+                    \"REMOTE ALL \" +
+                    \"WHERE _SYS != \\\"\" + strSysName + \"\\\"\"; 
+  
+  dpQueryConnectSingle( \"CallbackAlertLCU\", true, \"\", strQuery );
+}
+
+
+
+void CallbackAlertLCU( string strIdent, dyn_dyn_anytype ddaAlerts )
+{
+  int x, y, iHighestPrio;
+  bool bCame, bRetVal;
+  string strHighestAlertClass;
+  
+  DebugTN( \"CallbackAlertLCU: =================================================\" );
+
+  
+  for( x=2; x<=dynlen(ddaAlerts); x++ )
+  {
+    //DebugN( \" ---------------------------------------------------------------------------------------\" );
+    //DebugN( ddaAlerts[x] );
+        
+    // Declaration and initialization of variables
+    dyn_string dsStationDPEs;
+    string strStation, strStationDP, strStationDistChildSumAlertDPE;
+    int iActState ;       
+    dyn_int diPrios;
+    
+    int iPrio        = ddaAlerts[x][3];
+    bool bAckable    = ddaAlerts[x][4];
+
+    // Get stationname and remove ':' on the end
+    strStation = dpSubStr( ddaAlerts[x][1], DPSUB_SYS );
+    strStation = strrtrim( strStation, \":\" );
+    
+    // Determine station DP to use, based on DPE name: LOFAR_ObsSW, LOFAR_PermSW or LOFAR_PIC
+    if( patternMatch( \"*LOFAR_ObsSW*\", ddaAlerts[x][1] ) )
+    {
+      dsStationDPEs = dpNames( \"LOFAR_ObsSW*\" + strStation, \"Station\"  );
+    }
+    else if( patternMatch( \"*LOFAR_PermSW*\", ddaAlerts[x][1] ) )
+    {
+      dsStationDPEs = dpNames( \"LOFAR_PermSW*\" + strStation, \"Station\"  );
+    }
+    else if( patternMatch( \"*LOFAR_PIC*\", ddaAlerts[x][1] ) )
+    {
+      dsStationDPEs = dpNames( \"LOFAR_PIC_*\" + strStation, \"Station\"  );
+    }
+    else
+    {
+      DebugTN( __FUNCTION__ + \"(): unrecognized alert '\" + ddaAlerts[x][1] + \"', skipp it !!\" );
+      continue;
+    }
+    
+    // Normally only one DPE should be found: take it
+    if( dynlen(dsStationDPEs) >= 1 )
+    {
+      strStationDP = dpSubStr( dsStationDPEs[1], DPSUB_DP );
+    }
+    else
+    {
+      DebugTN( __FUNCTION__ + \"(): strStationDP NOT FOUND FOR ALERT '\" + ddaAlerts[x][1] + \"' !!\" );
+      continue;
+    }
+    
+    strStationDistChildSumAlertDPE = strStationDP + \".dist_childSumAlert\";
+    
+    // Get actual state and list of summed-prios's (because they can't be get by the dpConnect)   
+    dpGet( ddaAlerts[x][1] + \":_alert_hdl.._act_state\",    iActState,
+           ddaAlerts[x][1] + \":_alert_hdl.._summed_prios\", diPrios );
+
+    
+    // First deactivate the alert to go to a 'default' state
+    dpSet( strStationDistChildSumAlertDPE, 0 );
+    dpDeactivateAlert( strStationDistChildSumAlertDPE, bRetVal );
+
+    // Now set the highest/actual prio of the sumalert as alert, this raises the alert
+    dpActivateAlert( strStationDistChildSumAlertDPE, bRetVal );        
+    dpSet( strStationDistChildSumAlertDPE, iPrio );
+   
+    // If sum-alert is acked: ack our alert also
+    if( iActState == DPATTR_ALERTSTATE_APP_ACK )
+    {
+      dpSet( strStationDistChildSumAlertDPE + \":_alert_hdl.._ack\", DPATTR_ACKTYPE_SINGLE );
+    }
+    
+    // If sum-alert is went-unacked: detect prio that cames below our prio and do dpSet, this causes the alert to go to the went-unacked state
+    if( ( iActState == DPATTR_ALERTSTATE_APP_DISAPP_NOT_ACK ) ||
+        ( iActState == DPATTR_ALERTSTATE_DISAPP_NOT_ACK ) )
+    {
+      int iNextPrio;
+      
+      dynSort( diPrios );
+      
+      for( y=1; y<=dynlen(diPrios); y++ )
+      {
+        // If this is prio is higher or equal then our current sumalert prio: stop
+        if( diPrios[y] >= iPrio )
+        {
+          break;
+        }
+        
+        // If this prio is higher then the previous one: takeover
+        if( diPrios[y] > iNextPrio )
+        {
+          iNextPrio = diPrios[y];
+        }
+      }
+
+      // dpSet determined prio
+      dpSet( strStationDistChildSumAlertDPE, iNextPrio );
+
+    }
+   
+    DebugTN( \"Copied alert '\" + ddaAlerts[x][1] + \"' to strStationDistChildSumAlertDPE '\" + strStationDistChildSumAlertDPE + \"'\" );
+  }  
+  
+  
+}
+
+
+
+
+
+void CallbackAlertLCU_TESTMvdJ( string strIdent, dyn_dyn_anytype ddaAlerts )
+{
+  int x, y, iHighestPrio;
+  bool bCame, bRetVal;
+  string strHighestAlertClass;
+  
+  DebugTN( \"CallbackAlertLCU: =================================================\" );
+
+  
+  for( x=2; x<=dynlen(ddaAlerts); x++ )
+  {
+    bool bDirection  = ddaAlerts[x][3];
+    int iPrio        = ddaAlerts[x][4];
+    bool bAckable    = ddaAlerts[x][5];
+//    string strClass  = ddaAlerts[x][5];
+
+    
+    // Get actuale state and list of summed-prios's (because they can't be get by the dpConnect)
+    int iActState ;       
+    dyn_int diPrios;
+    
+    dpGet( ddaAlerts[x][1] + \":_alert_hdl.._act_state\",    iActState,
+           ddaAlerts[x][1] + \":_alert_hdl.._summed_prios\", diPrios );
+
+    DebugTN( \"   \" + ddaAlerts[x][1] + \"  --------------------------------------\" );
+    DebugN( ddaAlerts );
+    DebugN( \"iActState = \" + iActState );
+/*
+    anytype at;
+    dpGet( ddaAlerts[x][1] + \":_alert_hdl.._summed_prios\", at );
+    DebugN( \"_summed_prios = \", at );
+    
+    anytype at;
+    dpGet( ddaAlerts[x][1] + \":_alert_hdl.._summed_states\", at );
+    DebugN( \"_summed_states = \", at );
+    
+    anytype at;
+    dpGet( ddaAlerts[x][1] + \":_alert_hdl.._summed_alerts\", at );
+    DebugN( \"_summed_alerts = \", at );
+*/    
+
+    // First deactivate the alert to go to a 'default' state
+    dpSet( \"MCU001:RS310_ChildSumAlert.\", 0 );
+    dpDeactivateAlert( \"MCU001:RS310_ChildSumAlert.\", bRetVal );
+
+    // Now set the highest/actual prio of the sumalert as alert, this raises the alert
+    dpActivateAlert( \"MCU001:RS310_ChildSumAlert.\", bRetVal );        
+    dpSet( \"MCU001:RS310_ChildSumAlert.\", iPrio );
+   
+    // If sum-alert is acked: ack our alert also
+    if( iActState == DPATTR_ALERTSTATE_APP_ACK )
+    {
+      dpSet( \"MCU001:RS310_ChildSumAlert.:_alert_hdl.._ack\", DPATTR_ACKTYPE_SINGLE );
+    }
+    
+    // If sum-alert is went-unacked: detect prio that cames below our prio and do dpSet, this causes the alert to go to the went-unacked state
+    if( ( iActState == DPATTR_ALERTSTATE_APP_DISAPP_NOT_ACK ) ||
+        ( iActState == DPATTR_ALERTSTATE_DISAPP_NOT_ACK ) )
+    {
+      int iNextPrio;
+      
+      dynSort( diPrios );
+      
+      for( y=1; y<=dynlen(diPrios); y++ )
+      {
+        // If this is prio is higher or equal then our current sumalert prio: stop
+        if( diPrios[y] >= iPrio )
+        {
+          break;
+        }
+        
+        // If this prio is higher then the previous one: takeover
+        if( diPrios[y] > iNextPrio )
+        {
+          iNextPrio = diPrios[y];
+        }
+      }
+
+      DebugTN( \"Next determined prio: \" + iNextPrio );
+      // dpSet determined prio
+      dpSet( \"MCU001:RS310_ChildSumAlert.\", iNextPrio );
+
+    }
+   
+    
+continue;    
+    // Skip went alerts
+    if( !bDirection )
+      continue;
+    
+    bCame = true;
+    
+    // Came alert, if prio heigher then takeover alertclass
+    if( iPrio >= iHighestPrio )
+    {
+ //     strHighestAlertClass = strClass;
+      
+      iHighestPrio = iPrio;
+    }
+    
+    if( bAckable )
+    {
+      
+    }
+  }  
+  
+  return;
+  
+  
+  
+  
+  
+//  DebugN( \"strHighestAlertClass = \" + strHighestAlertClass );
+  DebugN( \"iHighestPrio = \" + iHighestPrio );
+
+//  dpDeactivateAlert( \"MCU001:RS310_ChildSumAlert.\", bRetVal );
+  
+  dpSet( \"MCU001:RS310_ChildSumAlert.\", iHighestPrio );
+  
+//  if( !bAckable )
+//  {
+//    dpSet( \"MCU001:RS310_ChildSumAlert.:_alert_hdl.._ack\", DPATTR_ACKTYPE_SINGLE );
+//  }
+ 
+
+  
+  
+  
+  
+  
+  
+  
+  
+return;  
+  // Now get state of alert
+  if( bCame )
+  {
+    // Convert class from system to this sytem
+    strreplace( strHighestAlertClass, \"RS310:\", \"MCU001:\" );
+    
+    DebugTN( \"Setting alert to class: \" + strHighestAlertClass );
+    
+    dpDeactivateAlert( \"MCU001:RS310_SumAlert.\", bRetVal );
+    
+    // Change class and set alert to true
+    dpSet( \"MCU001:RS310_SumAlert.:_alert_hdl.._class\", strHighestAlertClass,
+           \"MCU001:RS310_SumAlert.\", true );
+    
+    dpActivateAlert( \"MCU001:RS310_SumAlert.\", bRetVal );
+  }  
+  else
+  {
+    DebugTN( \"Reset alert\" );
+    dpDeactivateAlert( \"MCU001:RS310_SumAlert.\", bRetVal );
+    dpSet( \"MCU001:RS310_SumAlert.\", false );
+  }
+}
+
+
+
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+13 1
+"PUSH_BUTTON2"
+""
+1 100 50 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  98 48 332 152
+
+T 
+1
+LANG:1 12 PUSH_BUTTON2
+"main()
+{
+  
+ // just a testbutton....  
+  
+return;
+
+
+
+  int iState;
+//  dpGet( \"MCU001:RS310_SumAlert.:_alert_hdl.._act_state\", iState );
+//  dpGet( \"MCU001:RS310_SumAlert.:_alert_hdl.._act_state\", iState );
+  dpGet( \"RS310:LOFAR_PIC.status.childSumAlert:_alert_hdl.._act_state\", iState );
+  
+  DebugN( \"iState = \" + iState );
+
+  string strColor;
+//  dpGet( \"MCU001:RS310_SumAlert.:_alert_hdl.._act_state_color\", strColor );
+  anytype at;
+  dpGet( \"RS310:LOFAR_PIC.status.childSumAlert:_alert_hdl.._summed_alerts\", at );
+  DebugN( at );
+}
+" 0
+ E E E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

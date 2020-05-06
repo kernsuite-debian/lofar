@@ -17,17 +17,17 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: pyparmdb.cc 31487 2015-04-16 11:28:17Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacade.h>
 
-#include <casa/aips.h>
-#if defined(casacore)
-#include <python/Converters/PycExcp.h>
-#include <python/Converters/PycBasicData.h>
-#include <python/Converters/PycRecord.h>
-#include <python/Converters/PycBasicData.h>
+#include <casacore/casa/aips.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/python/Converters/PycExcp.h>
+#include <casacore/python/Converters/PycBasicData.h>
+#include <casacore/python/Converters/PycRecord.h>
+#include <casacore/python/Converters/PycBasicData.h>
 #define pyrap python
 #else
 #include <pyrap/Converters/PycExcp.h>
@@ -41,7 +41,7 @@
 #include "Package__Version.cc"
 
 using namespace boost::python;
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR { namespace BBS  {
 
@@ -159,11 +159,11 @@ namespace LOFAR { namespace BBS  {
 // Define the python module itself.
 BOOST_PYTHON_MODULE(_parmdb)
 {
-  casa::pyrap::register_convert_excp();
-  casa::pyrap::register_convert_basicdata();
-  casa::pyrap::register_convert_std_vector<double>();
-  casa::pyrap::register_convert_std_vector<std::string>();
-  casa::pyrap::register_convert_casa_record();
+  casacore::pyrap::register_convert_excp();
+  casacore::pyrap::register_convert_basicdata();
+  casacore::pyrap::register_convert_std_vector<double>();
+  casacore::pyrap::register_convert_std_vector<std::string>();
+  casacore::pyrap::register_convert_casa_record();
 
   LOFAR::BBS::pyparmdb();
 }

@@ -5,7 +5,7 @@ Although it should be runnable as it stands, the user is encouraged to copy it
 to a job directory and customise it as appropriate for the particular task at
 hand.
 """
-from __future__ import with_statement
+
 from contextlib import closing
 from itertools import repeat
 import sys

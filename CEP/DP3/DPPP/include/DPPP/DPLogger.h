@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPLogger.h 29033 2014-04-22 12:24:05Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

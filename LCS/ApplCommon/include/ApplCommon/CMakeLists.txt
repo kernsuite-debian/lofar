@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 27371 2013-11-12 14:55:11Z loose $
+# $Id$
 
 # List of header files that will be installed.
 set(inst_HEADERS

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Types.h 28194 2014-02-05 14:41:55Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_TYPES_H
 #define LOFAR_BBSKERNEL_TYPES_H

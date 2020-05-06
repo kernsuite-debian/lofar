@@ -1,0 +1,4 @@
+lofar_package(TriggerEmailService 1.0)
+
+lofar_add_package(TriggerEmailServiceCommon Common)
+lofar_add_package(TriggerEmailServiceServer Server)

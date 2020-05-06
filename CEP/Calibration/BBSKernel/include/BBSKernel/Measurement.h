@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Measurement.h 18524 2011-07-19 16:40:34Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_MEASUREMENT_H
 #define LOFAR_BBSKERNEL_MEASUREMENT_H
@@ -29,7 +29,7 @@
 #include <BBSKernel/VisDimensions.h>
 #include <BBSKernel/VisSelection.h>
 
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -70,9 +70,9 @@ public:
     virtual BaselineMask asMask(const string &filter) const = 0;
 
     double getReferenceFreq() const;
-    const casa::MDirection &getPhaseReference() const;
-    const casa::MDirection &getDelayReference() const;
-    const casa::MDirection &getTileReference() const;
+    const casacore::MDirection &getPhaseReference() const;
+    const casacore::MDirection &getDelayReference() const;
+    const casacore::MDirection &getTileReference() const;
 
     Instrument::ConstPtr instrument() const;
     const VisDimensions &dims() const;
@@ -93,9 +93,9 @@ public:
 
 protected:
     double                  itsReferenceFreq;
-    casa::MDirection        itsPhaseReference;
-    casa::MDirection        itsDelayReference;
-    casa::MDirection        itsTileReference;
+    casacore::MDirection        itsPhaseReference;
+    casacore::MDirection        itsDelayReference;
+    casacore::MDirection        itsTileReference;
     Instrument::Ptr         itsInstrument;
     VisDimensions           itsDims;
 };
@@ -120,17 +120,17 @@ inline double Measurement::getReferenceFreq() const
     return itsReferenceFreq;
 }
 
-inline const casa::MDirection &Measurement::getPhaseReference() const
+inline const casacore::MDirection &Measurement::getPhaseReference() const
 {
     return itsPhaseReference;
 }
 
-inline const casa::MDirection &Measurement::getDelayReference() const
+inline const casacore::MDirection &Measurement::getDelayReference() const
 {
     return itsDelayReference;
 }
 
-inline const casa::MDirection &Measurement::getTileReference() const
+inline const casacore::MDirection &Measurement::getTileReference() const
 {
     return itsTileReference;
 }

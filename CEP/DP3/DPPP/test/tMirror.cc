@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMirror.cc 24221 2013-03-12 12:24:48Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -25,12 +25,12 @@
 #include <Common/LofarTypes.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/Arrays/Matrix.h>
-#include <casa/Utilities/LinearSearch.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Utilities/LinearSearch.h>
 #include <Common/StreamUtil.h>
 #include <Common/lofar_vector.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 using namespace LOFAR;
 

@@ -1,0 +1,12 @@
+# $Id$
+
+# Whether we should obtain the broken-antenna information in the first place.
+# If disabled, empty sets will be forwarded to outputProc.
+Cobalt.FinalMetaDataGatherer.enabled = true
+
+# The credentials must be stored in $HOME/.lofar/etc/FinalMetaDataGatherer.conf
+#FinalMetaDataGatherer.database.host = sasdb.control.lofar
+#FinalMetaDataGatherer.database.port =
+#FinalMetaDataGatherer.database.name =
+#FinalMetaDataGatherer.database.username =
+

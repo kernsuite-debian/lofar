@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: pystationresponse.cc 33141 2015-12-16 15:10:19Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -27,23 +27,23 @@
 #include <StationResponse/LofarMetaDataUtil.h>
 #include <StationResponse/Station.h>
 
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Cube.h>
-#include <casa/Containers/ValueHolder.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <ms/MeasurementSets/MSColumns.h>
-#include <measures/Measures/MeasTable.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MCDirection.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Containers/ValueHolder.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/ms/MeasurementSets/MSColumns.h>
+#include <casacore/measures/Measures/MeasTable.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MCDirection.h>
 
-#if defined(casacore)
-#include <python/Converters/PycExcp.h>
-#include <python/Converters/PycBasicData.h>
-#include <python/Converters/PycValueHolder.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/python/Converters/PycExcp.h>
+#include <casacore/python/Converters/PycBasicData.h>
+#include <casacore/python/Converters/PycValueHolder.h>
 #define pyrap python
 #else
 #include <pyrap/Converters/PycExcp.h>
@@ -56,7 +56,7 @@
 
 #include "Package__Version.cc"
 
-using namespace casa;
+using namespace casacore;
 using namespace boost::python;
 using namespace LOFAR::StationResponse;
 
@@ -68,18 +68,18 @@ namespace BBS
   {
     /*!
      *  \brief Convert an ITRF position given as a StationResponse::vector3r_t
-     *  instance to a casa::MPosition.
+     *  instance to a casacore::MPosition.
      */
     MPosition toMPositionITRF(const vector3r_t &position);
 
     /*!
-     *  \brief Convert a casa::MPosition instance to a
+     *  \brief Convert a casacore::MPosition instance to a
      #  StationResponse::vector3r_t instance.
      */
     vector3r_t fromMPosition(const MPosition &position);
 
     /*!
-     *  \brief Convert a casa::MDirection instance to a
+     *  \brief Convert a casacore::MDirection instance to a
      *  StationResponse::vector3r_t instance.
      */
     vector3r_t fromMDirection(const MDirection &direction);
@@ -761,9 +761,9 @@ namespace BBS
 // Define the python module itself.
 BOOST_PYTHON_MODULE(_stationresponse)
 {
-  casa::pyrap::register_convert_excp();
-  casa::pyrap::register_convert_basicdata();
-  casa::pyrap::register_convert_casa_valueholder();
+  casacore::pyrap::register_convert_excp();
+  casacore::pyrap::register_convert_basicdata();
+  casacore::pyrap::register_convert_casa_valueholder();
 
   LOFAR::BBS::pystationresponse();
 }

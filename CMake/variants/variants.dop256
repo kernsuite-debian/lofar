@@ -1,10 +1,8 @@
 # Alexander's variants file
 #
-# $Id: variants.dop256 36940 2017-03-26 01:24:18Z amesfoort $
+# $Id$
 
 option(USE_MPI       "Use MPI"       ON)
-option(USE_CUDA      "Use CUDA"      ON)
-#option(USE_OPENCL    "Use OpenCL"    OFF)
 #set(GNU_COMPILE_DEFINITIONS   -DCL_USE_DEPRECATED_OPENCL_1_1_APIS)
 #set(CLANG_COMPILE_DEFINITIONS -DCL_USE_DEPRECATED_OPENCL_1_1_APIS)
 
@@ -14,7 +12,7 @@ option(USE_CUDA      "Use CUDA"      ON)
 set(QPID_ROOT_DIR /opt/qpid)
 
 # This is a Python runtime dependency and thus shouldn't be needed here. But let's fix the build for the mo.
-set(BDSF_ROOT_DIR  /usr/local/lib/python2.7/dist-packages)
+set(BDSF_ROOT_DIR  /usr/local/lib/python3.4/dist-packages)
 
 # Enable ccache symlinks to accelerate recompilation (/usr/bin/ccache).
 #set(GNU_C         /usr/lib64/ccache/gcc)

@@ -17,14 +17,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarFieldColumns.h 19654 2011-12-22 08:59:57Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFARFIELDCOLUMNS_H
 #define MSLOFAR_MSLOFARFIELDCOLUMNS_H
 
-#include <ms/MeasurementSets/MSFieldColumns.h>
+#include <casacore/ms/MeasurementSets/MSFieldColumns.h>
 
 namespace LOFAR {
 
@@ -38,7 +38,7 @@ namespace LOFAR {
   // column. Access to non-predefined columns will still have to be done with
   // explicit declarations.
 
-  class ROMSLofarFieldColumns: public casa::ROMSFieldColumns
+  class ROMSLofarFieldColumns: public casacore::ROMSFieldColumns
   {
   public:
 
@@ -50,9 +50,9 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    const casa::ROArrayColumn<casa::Double>& tileBeamDir() const
+    const casacore::ROArrayColumn<casacore::Double>& tileBeamDir() const
       { return tileBeamDir_p; }
-    const casa::ROScalarMeasColumn<casa::MDirection>& tileBeamDirMeasCol() const
+    const casacore::ROScalarMeasColumn<casacore::MDirection>& tileBeamDirMeasCol() const
       { return tileBeamDirMeas_p; }
     // </group>
 
@@ -71,9 +71,9 @@ namespace LOFAR {
     ROMSLofarFieldColumns& operator=(const ROMSLofarFieldColumns&);
 
     //# required columns
-    casa::ROArrayColumn<casa::Double> tileBeamDir_p;
+    casacore::ROArrayColumn<casacore::Double> tileBeamDir_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MDirection> tileBeamDirMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MDirection> tileBeamDirMeas_p;
   };
 
 
@@ -84,7 +84,7 @@ namespace LOFAR {
   // for every predefined column. Access to non-predefined columns will still
   // have to be done with explicit declarations.
 
-  class MSLofarFieldColumns: public casa::MSFieldColumns
+  class MSLofarFieldColumns: public casacore::MSFieldColumns
   {
   public:
 
@@ -96,24 +96,24 @@ namespace LOFAR {
 
     // Read-write access to required columns.
     // <group>
-    const casa::ROArrayColumn<casa::Double>& tileBeamDir() const
+    const casacore::ROArrayColumn<casacore::Double>& tileBeamDir() const
       { return roTileBeamDir_p; }
-    casa::ArrayColumn<casa::Double>& tileBeamDir()
+    casacore::ArrayColumn<casacore::Double>& tileBeamDir()
       { return rwTileBeamDir_p; }
-    const casa::ROScalarMeasColumn<casa::MDirection>& tileBeamDirMeasCol() const
+    const casacore::ROScalarMeasColumn<casacore::MDirection>& tileBeamDirMeasCol() const
       { return roTileBeamDirMeas_p; }
-    casa::ScalarMeasColumn<casa::MDirection>& tileBeamDirMeasCol()
+    casacore::ScalarMeasColumn<casacore::MDirection>& tileBeamDirMeasCol()
       { return rwTileBeamDirMeas_p; }
     // </group>
 
     // Set the direction reference type for all direction columns.
     // This can only be done when the table has no rows.
     // Trying to do so at other times will throw an exception.
-    void setDirectionRef(casa::MDirection::Types ref);
+    void setDirectionRef(casacore::MDirection::Types ref);
 
     // Same as above, but the LOFAR_TILE_BEAM_DIR can have a different type.
-    void setDirectionRef(casa::MDirection::Types ref,
-                         casa::MDirection::Types tileBeamDirRef);
+    void setDirectionRef(casacore::MDirection::Types ref,
+                         casacore::MDirection::Types tileBeamDirRef);
 
     // Set the direction offset for all direction columns.
     // This can only be done when the table has no rows.
@@ -140,11 +140,11 @@ namespace LOFAR {
     MSLofarFieldColumns& operator=(const MSLofarFieldColumns&);
 
     //# required columns
-    casa::ROArrayColumn<casa::Double> roTileBeamDir_p;
-    casa::ArrayColumn<casa::Double>   rwTileBeamDir_p;
+    casacore::ROArrayColumn<casacore::Double> roTileBeamDir_p;
+    casacore::ArrayColumn<casacore::Double>   rwTileBeamDir_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MDirection> roTileBeamDirMeas_p;
-    casa::ScalarMeasColumn<casa::MDirection>   rwTileBeamDirMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MDirection> roTileBeamDirMeas_p;
+    casacore::ScalarMeasColumn<casacore::MDirection>   rwTileBeamDirMeas_p;
   };
 
 } //# end namespace

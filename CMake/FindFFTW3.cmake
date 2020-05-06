@@ -32,7 +32,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindFFTW3.cmake 15918 2010-06-25 11:12:42Z loose $
+# $Id$
 
 # Use double precision by default.
 if(FFTW3_FIND_COMPONENTS MATCHES "^$")

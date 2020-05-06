@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: solfetch.py 15272 2010-03-18 14:10:09Z zwieten $
+# $Id$
 
 import numpy
 

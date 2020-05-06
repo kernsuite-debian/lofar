@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Combiner.cc 21558 2012-07-12 09:35:39Z loose $
+//# $Id$
 //#
 //# @author Adriaan Renting
 

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 22196 2012-10-03 05:47:41Z diepen $
+# $Id$
 
 # Data files
 install(FILES

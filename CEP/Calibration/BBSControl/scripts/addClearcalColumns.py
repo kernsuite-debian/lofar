@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Script that creates (if not already present) MODEL_DATA and CORRECTED_DATA
 # columns in a MS
@@ -20,7 +20,7 @@ import pyrap.tables as pt
 # This script does not do any command argument parsing with getopt
 # Simply: 1st argument (sys.arg[1]) is the MS to add the columns to
 if sys.argc != 2:
-   print "usage: ", sys.argv[0], "<MSfile>"
+   print("usage: ", sys.argv[0], "<MSfile>")
    sys.exit(0)
 else:
    filename = sys.argv[1]
@@ -55,7 +55,7 @@ def addClearcalColumns(filename):
 
    # Check if MODEL_DATA column is already present
    if hasColumn(table, "MODEL_DATA") == False:      
-      print "addClearcalColumns() adding MODEL_DATA"     # DEBUG
+      print("addClearcalColumns() adding MODEL_DATA")     # DEBUG
       table.addcolumn("MODEL_DATA")
 
       nFreq=getNFreqs(table)
@@ -67,7 +67,7 @@ def addClearcalColumns(filename):
 
    # Check if CORRECTED_DATA column is already present
    if hasColumn(table, "CORRECTED_DATA") == False:
-      print "addClearcalColumns() adding CORRECTED_DATA"     # DEBUG
+      print("addClearcalColumns() adding CORRECTED_DATA")     # DEBUG
       table.addcolumn("CORRECTED_DATA")
 
 
@@ -75,7 +75,7 @@ def addClearcalColumns(filename):
 # specified in the gds
 #
 def executeGDS(filename):
-   print "executeGDS()"      # DEBUG
+   print("executeGDS()")      # DEBUG
    
    MSfilenames=parseGD(filename)
    multipleFiles(MSfilenames)
@@ -93,7 +93,7 @@ def getNFreqs(table):
 # returns list of individual MS filenames
 #
 def parseGDS(gdsFilename):
-   print "parseGDS()"   # DEBUG
+   print("parseGDS()")   # DEBUG
 
    MSfilenames=[]
 
@@ -114,7 +114,7 @@ def parseGDS(gdsFilename):
          pos=line.find("=")+2       # because it is " = " with space
          MSfilename.append(line[pos:])
 
-   print "parseGDS() MSfilenames = ", MSfilenames    # DEBUG
+   print("parseGDS() MSfilenames = ", MSfilenames)    # DEBUG
 
    return MSfilenames    # return list of filenames
 
@@ -123,7 +123,7 @@ def parseGDS(gdsFilename):
 #        
 def multipleFiles(MSfilenames):
    if not isinstance(MSfilename, list):
-      print "multipleFiles() MSfilenames is not a list"
+      print("multipleFiles() MSfilenames is not a list")
    else:
       for filename in MSfilenames:
          addClearcalColumns(filename)

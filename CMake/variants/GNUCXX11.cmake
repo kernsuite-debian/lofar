@@ -1,6 +1,6 @@
 # Definitions file for the GNUCXX11 compiler suite.
 #
-# $Id: GNUCXX11.cmake 35708 2016-10-14 13:57:51Z loose $
+# $Id$
 
 
 # Compiler suite

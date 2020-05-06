@@ -1,0 +1,31 @@
+[license]
+code              = "wop57 30513624712"
+version           = 31600002
+comment           = "MCU.Apertif Central system"
+sn                = "471_3031_Astron_Central_4"
+expire            = 0000.00.00;00:00:00,000
+redundancy        = 1
+ui                = 14
+para              = 4
+dde               = 5
+event             = 1
+api               = 80
+excelreport       = 5
+http              = 19
+infoserver        = 5000
+ios               = 100000
+comcenter         = 5
+maintenance       = 0
+scheduler         = 0
+ssi               = 0
+s7                = 1
+distributed       = 255
+ultralight        = 5
+mobile_app        = 1
+s7plus            = 8
+uifix             = 0
+parafix           = 0
+pararemote        = 0
+ctrlext           = 1
+update            = 0
+

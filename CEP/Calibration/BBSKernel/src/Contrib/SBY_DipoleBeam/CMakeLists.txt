@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 14741 2009-12-30 15:07:42Z zwieten $
+# $Id$
 
 set(element_beam_YATAWATTA_LBA_phi_SRCS   beam_dr_phi.c)
 set(element_beam_YATAWATTA_LBA_theta_SRCS beam_dr_theta.c)

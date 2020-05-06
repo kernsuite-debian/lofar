@@ -1,51 +1,123 @@
 #
 # base
 #
-FROM lofar-base:${LOFAR_TAG}
 
-ENV AOFLAGGER_VERSION=2.8.0
+# Allow to specify a specific base image version.
+ARG LOFAR_BASE_IMAGE_VERSION=latest
+FROM lofar-base:${LOFAR_BASE_IMAGE_VERSION}
+# Docker mandates that this has to be done again
+ARG LOFAR_BASE_IMAGE_VERSION=latest
+ENV LOFAR_BASE_IMAGE_VERSION=${LOFAR_BASE_IMAGE_VERSION}
+
+# Add build date to the environment
+ARG DOCKER_IMAGE_BUILD_DATE="The build date has to be set by a --build-arg parameter!"
+ENV DOCKER_IMAGE_BUILD_DATE=${DOCKER_IMAGE_BUILD_DATE}
+
+# Allow to specify the LOFAR branch at build time of the image.
+# Use master as the default if nothing is specified.
+ARG LOFAR_VERSION=latest
+ENV LOFAR_VERSION=${LOFAR_VERSION}
+
+
+ENV AOFLAGGER_VERSION=v2.14.0 \
+    PYBDSF_VERSION=v1.9.0 \
+    DYSCO_VERSION=v1.2 \
+    BLITZ_VERSION=1.0.1 \
+    LIBLAPACK_VERSION=3 \
+    LIBLOG4CPLUS_VERSION=1.1-9 \
+    LIBSIGCPP_VERSION=2.0 \
+    LIBXMLPP_VERSION=2.6 \
+    LIBGSL_VERSION=23 \
+    LIBPQXX_VERSION=4.0v5 \
+    DAL_VERSION=v3.3.1 \
+    XMLRUNNER_VERSION=1.7.7 \
+    MONETDB_VERSION=11.19.3.2
+
 
 # Run-time dependencies
-RUN apt-get update && apt-get install -y python-xmlrunner python-scipy liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libboost-signals${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libgsl2 openssh-client libboost-regex${BOOST_VERSION}.0 gettext-base rsync python-matplotlib ipython slurm-client libhdf5-cpp-11 && \
-    apt-get -y install python-pip python-dev && \
-    pip install pyfits pywcs python-monetdb && \
-    apt-get -y purge python-pip python-dev && \
-    apt-get -y autoremove --purge
+RUN aptitude install -y liblog4cplus-${LIBLOG4CPLUS_VERSION} libxml2-utils libpng-tools libsigc++-${LIBSIGCPP_VERSION}-0v5 libxml++${LIBXMLPP_VERSION}-2v5 libgsl${LIBGSL_VERSION} openssh-client gettext-base rsync python3-matplotlib ipython3 libhdf5-${LIBHDF5_VERSION} libcfitsio-bin libwcs5 && \
+    aptitude clean && \
+    aptitude autoclean
+
+# Install
+RUN export BUILD_PACKAGES="python3-pip python3-dev python3-setuptools liblog4cplus-dev libpng-dev libsigc++-${LIBSIGCPP_VERSION}-dev libxml++${LIBXMLPP_VERSION}-dev libgsl-dev libcfitsio-dev wcslib-dev libhdf5-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
+    pip3 install xmlrunner==${XMLRUNNER_VERSION} python-monetdb==${MONETDB_VERSION} && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
 #
 # *******************
 #   PyBDSF
 # *******************
 #
+# 2018-05-30, Thomas:
+# ATTENTION!  PyBDSF <= 1.8.14 needs Boost < 1.65!
+# There is an unresolved symbol thing when importing bdsf in Python:
+#
+# root@768bb78135d4:/# PYTHONPATH=/opt/pybdsf/lib/python2.7/site-packages/ python
+# Python 2.7.15rc1 (default, Apr 15 2018, 21:51:34) [GCC 7.3.0] on linux2
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>> import bdsf
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+#   File "/opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/__init__.py", line 19, in <module>
+#     from collapse import Op_collapse
+#   File "/opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/collapse.py", line 10, in <module>
+#     import _cbdsm
+# ImportError: /opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/_cbdsm.so: undefined symbol: _ZN5boost6python5numpy6detail13get_int_dtypeILi64ELb0EEENS1_5dtypeEv
+# >>>
+#
+# Run-time dependencies
+RUN aptitude install -y libboost-python${BOOST_VERSION}.1 libboost-numpy${BOOST_VERSION}.1 && \
+    aptitude clean && \
+    aptitude autoclean
 
-ENV PYBDSF_VERSION=1.8.12
-
-RUN apt-get update && apt-get install -y git g++ gfortran libboost-python-dev python-setuptools && \
+# Install
+RUN export BUILD_PACKAGES="git g++ gfortran libboost-python${BOOST_VERSION}-dev libboost-numpy${BOOST_VERSION}-dev python3-setuptools python3-numpy-dev swig3.0" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir ${INSTALLDIR}/pybdsf && \
-    cd ${INSTALLDIR}/pybdsf && git clone https://github.com/lofar-astron/pybdsf && \
-    cd ${INSTALLDIR}/pybdsf/pybdsf && git checkout tags/v${PYBDSF_VERSION} && \
+    git clone --depth 1 --shallow-submodules --branch ${PYBDSF_VERSION//latest/master} https://github.com/lofar-astron/pybdsf.git ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    cd ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
     mkdir -p ${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ && \
-    export PYTHONPATH=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/pybdsf/lib64/python${PYTHON_VERSION}/site-packages:$PYTHONPATH && cd ${INSTALLDIR}/pybdsf/pybdsf && python setup.py install --prefix=${INSTALLDIR}/pybdsf/ && \
-    apt-get -y purge git g++ gfortran libboost-python-dev python-setuptools
+    export PYTHONPATH=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/pybdsf/lib64/python${PYTHON_VERSION}/site-packages:${PYTHONPATH} && \
+    cd ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    python3 setup.py install --prefix=${INSTALLDIR}/pybdsf/ && \
+    cd .. && \
+    rm -rf ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
 
 #
 # *******************
 #   AOFlagger
 # *******************
 #
+# Run-time dependencies
+RUN aptitude install -y libxml++${LIBXMLPP_VERSION}-2v5 libpng-tools libfftw3-bin libboost-python${BOOST_VERSION}.1 libboost-filesystem${BOOST_VERSION}.1 libboost-date-time${BOOST_VERSION}.1 libboost-signals${BOOST_VERSION}.1 libboost-thread${BOOST_VERSION}.1 libpython2.7 && \
+    aptitude clean && \
+    aptitude autoclean
 
-RUN apt-get update && apt-get install -y wget cmake g++ libxml++2.6-dev libpng12-dev libfftw3-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-signals${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libcfitsio3-dev libopenblas-dev && \
-    mkdir -p ${INSTALLDIR}/aoflagger/build && \
-    bash -c "cd ${INSTALLDIR}/aoflagger && wget --retry-connrefused http://downloads.sourceforge.net/project/aoflagger/aoflagger-${AOFLAGGER_VERSION%%.?}.0/aoflagger-${AOFLAGGER_VERSION}.tar.bz2" && \
-    cd ${INSTALLDIR}/aoflagger && tar xf aoflagger-${AOFLAGGER_VERSION}.tar.bz2 && \
-    cd ${INSTALLDIR}/aoflagger/build && cmake -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS="--std=c++11 -O2 -DNDEBUG" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/aoflagger ../aoflagger-${AOFLAGGER_VERSION} && \
-    cd ${INSTALLDIR}/aoflagger/build && make -j ${J} && \
-    cd ${INSTALLDIR}/aoflagger/build && make install && \
+# Install
+RUN export BUILD_PACKAGES="doxygen git cmake g++ libxml++${LIBXMLPP_VERSION}-dev libpng-dev libfftw3-dev libboost-python${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-signals${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libcfitsio-dev libopenblas-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/aoflagger && \
+    git clone --depth 1 --shallow-submodules --branch ${AOFLAGGER_VERSION//latest/master} https://git.code.sf.net/p/aoflagger/code ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && \
+    cd ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && git checkout ${AOFLAGGER_VERSION//latest/master} && \
+    mkdir ${INSTALLDIR}/aoflagger/build && \
+    cd ${INSTALLDIR}/aoflagger/build && \
+    cmake -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DPORTABLE=True -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -DNDEBUG" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/aoflagger ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && \
+    make -j ${J} && \
+    make install && \
+    cd .. && \
+    rm -rf ${INSTALLDIR}/aoflagger/{build,aoflagger-${AOFLAGGER_VERSION}} && \
     bash -c "strip ${INSTALLDIR}/aoflagger/{lib,bin}/* || true" && \
-    bash -c "rm -rf ${INSTALLDIR}/aoflagger/{build,aoflagger-${AOFLAGGER_VERSION}}" && \
-    bash -c "rm -rf ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION}.tar.bz2" && \
-    apt-get -y purge wget cmake g++ libxml++2.6-dev libpng12-dev libfftw3-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-signals${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libcfitsio3-dev libopenblas-dev && \
-    apt-get -y autoremove --purge
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
 
 #
@@ -53,21 +125,27 @@ RUN apt-get update && apt-get install -y wget cmake g++ libxml++2.6-dev libpng12
 #   DYSCO
 # *******************
 #
+# Run-time dependencies
+RUN aptitude install -y libgsl${LIBGSL_VERSION} libhdf5-${LIBHDF5_VERSION} && \
+    aptitude clean && \
+    aptitude autoclean
 
-ENV DYSCO_VERSION=1.0.1
-
-RUN apt-get update && apt-get install -y git cmake g++ doxygen libboost-all-dev libgsl0-dev libhdf5-dev && \
+RUN export BUILD_PACKAGES="git cmake g++ python3-setuptools doxygen libgsl0-dev libopenblas-dev libboost-date-time${BOOST_VERSION}-dev libhdf5-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir ${INSTALLDIR}/dysco && \
-    cd ${INSTALLDIR}/dysco && git clone https://github.com/aroffringa/dysco && \
-    cd ${INSTALLDIR}/dysco/dysco && git checkout tags/v${DYSCO_VERSION} && \
+    git clone --depth 1 --shallow-submodules --branch ${DYSCO_VERSION//latest/master} https://github.com/aroffringa/dysco.git ${INSTALLDIR}/dysco/dysco-${DYSCO_VERSION} && \
+    cd ${INSTALLDIR}/dysco && \
     mkdir build && \
     cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/dysco/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ ../ && \
-    make -j 4 && \
+    cmake -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" -DPORTABLE=True -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/dysco/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ ${INSTALLDIR}/dysco/dysco-${DYSCO_VERSION} && \
+    make -j ${J} && \
     make install && \
     #mkdir -p ${INSTALLDIR}/dysco/lib/python${PYTHON_VERSION}/site-packages/ && \
-    #export PYTHONPATH=${INSTALLDIR}/dysco/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/dysco/lib64/python${PYTHON_VERSION}/site-packages:$PYTHONPATH && \
-    apt-get -y purge git cmake g++ doxygen libboost-all-dev libgsl0-dev libhdf5-dev
+    #export PYTHONPATH=${INSTALLDIR}/dysco/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/dysco/lib64/python${PYTHON_VERSION}/site-packages:${PYTHONPATH} && \
+    rm -rf ${INSTALLDIR}/dysco/{build,dysco-${DYSCO_VERSION}} && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
  ENV LD_LIBRARY_PATH=${INSTALLDIR}/dysco/lib:${LD_LIBRARY_PATH}
  ENV PATH=${INSTALLDIR}/dysco/bin:${PATH}
@@ -75,32 +153,90 @@ RUN apt-get update && apt-get install -y git cmake g++ doxygen libboost-all-dev 
 
 #
 # *******************
+#   Blitz++
+# *******************
+#
+# Run-time dependencies
+RUN aptitude install -y libboost-mpi-dev libboost-serialization${BOOST_VERSION}-dev libboost-serialization${BOOST_VERSION}.1 && \
+    aptitude clean && \
+    aptitude autoclean
+
+RUN export BUILD_PACKAGES="git g++ gfortran autoconf automake make python" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/blitz && \
+    git clone --depth 1 --shallow-submodules --branch ${BLITZ_VERSION//latest/master} https://github.com/blitzpp/blitz.git ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    cd ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    autoreconf -fiv && ./configure --prefix=${INSTALLDIR}/blitz/ && \
+    make -j ${J} lib && \
+    make install && \
+    rm -rf ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
+ENV LD_LIBRARY_PATH=${INSTALLDIR}/blitz/lib:${LD_LIBRARY_PATH}
+ENV PATH=${INSTALLDIR}/blitz/bin:${PATH}
+
+
+#
+# *******************
+#   DAL
+# *******************
+#
+#
+# Run-time dependencies
+RUN aptitude install -y libhdf5-${LIBHDF5_VERSION} python3 && \
+    aptitude clean && \
+    aptitude autoclean
+
+RUN export BUILD_PACKAGES="git cmake g++ swig3.0 python3-setuptools python3-dev libhdf5-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/DAL/build && \
+    git clone --depth 1 --shallow-submodules --branch ${DAL_VERSION//latest/master} https://git.astron.nl/ro/dal2.git ${INSTALLDIR}/DAL/DAL.src && \
+    cd ${INSTALLDIR}/DAL/build && \
+    cmake -DPYTHON_INCLUDE_DIR=/usr/include/python${PYTHON_VERSION} -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython${PYTHON_VERSION}m.so -DBUILD_TESTING=OFF -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -fpermissive" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/DAL ${INSTALLDIR}/DAL/DAL.src && \
+    make -j ${J} && \
+    make install && \
+    bash -c "rm -rf ${INSTALLDIR}/DAL/{DAL.src,build}" && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
+
+#
+# *******************
 #   LOFAR
 # *******************
 #
+# Run-time dependencies
+RUN aptitude install -y libncurses${NCURSES_VERSION} liblog4cplus-${LIBLOG4CPLUS_VERSION} libhdf5-${LIBHDF5_VERSION} libboost-chrono${BOOST_VERSION}.1 libboost-program-options${BOOST_VERSION}.1 libboost-python${BOOST_VERSION}.1 libboost-regex${BOOST_VERSION}.1 python3 libxml2 libpng-tools liblapack${LIBLAPACK_VERSION} libfftw3-bin libxml++${LIBXMLPP_VERSION}-2v5 libgsl${LIBGSL_VERSION} libreadline${READLINE_VERSION} binutils libcfitsio-bin libwcs5 libopenblas-base libpqxx-${LIBPQXX_VERSION} libqpid-proton8 libqpid-proton-cpp8 python3-qpid-proton python3-pg python3-psycopg2 python3-requests libarmadillo8 && \
+    aptitude clean && \
+    aptitude autoclean
 
-# Tell image build information
-ENV LOFAR_BRANCH=${LOFAR_BRANCH_NAME} \
-    LOFAR_REVISION=${LOFAR_REVISION} \
-    LOFAR_BUILDVARIANT=gnucxx11_optarch
-
+# Apply a finger print to force a rebuild if the source code changes. Supply a unique ID here to force a rebuild.
+ARG LOFAR_FINGERPRINT=whatever
+ENV LOFAR_FINGERPRINT=${LOFAR_FINGERPRINT}
 
 # Install
-RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison flex liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python-dev python-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libgsl-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libboost-regex${BOOST_VERSION} binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
+RUN export BUILD_PACKAGES="git cmake g++ gfortran python3-setuptools bison flex libncurses-dev liblog4cplus-dev libboost${BOOST_VERSION}-all-dev libboost-python${BOOST_VERSION}-dev python3-dev libxml2-dev pkg-config libpng-dev liblapack-dev libfftw3-dev libunittest++-dev libxml++${LIBXMLPP_VERSION}-dev libgsl-dev libreadline-dev binutils-dev libcfitsio-dev wcslib-dev libopenblas-dev libqpid-proton-dev libqpid-proton-cpp-dev libpqxx-dev libhdf5-dev libarmadillo-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir -p ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
-    cd ${INSTALLDIR}/lofar && \
-    svn --non-interactive -q co -r ${LOFAR_REVISION} -N ${LOFAR_BRANCH_URL} src; \
-    svn --non-interactive -q up src/CMake && \
-    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && cmake -DBUILD_PACKAGES=Offline -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASAREST_ROOT_DIR=${INSTALLDIR}/casarest/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DAOFLAGGER_ROOT_DIR=${INSTALLDIR}/aoflagger/ -DBDSF_ROOT_DIR=/opt/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ -DQPID_ROOT_DIR=/opt/qpid/ -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
-    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && sed -i '29,31d' include/ApplCommon/PosixTime.h && \
-    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make -j ${J} && \
-    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make install && \
-    bash -c "mkdir -p ${INSTALLDIR}/lofar/var/{log,run}" && \
-    bash -c "chmod a+rwx  ${INSTALLDIR}/lofar/var/{log,run}" && \
+    git clone --depth 1 --shallow-submodules --branch ${LOFAR_VERSION//latest/master} https://git.astron.nl/ro/lofar.git ${INSTALLDIR}/lofar/src && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
+    sed -i "s/ABI=0/ABI=${CXX_ABI}/g" ../../src/CMake/variants/GNUCXX11.cmake && \
+    cmake -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" -DBUILD_PACKAGES=Offline -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCASAREST_ROOT_DIR=${INSTALLDIR}/casarest/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DBLITZ_ROOT_DIR=${INSTALLDIR}/blitz -DAOFLAGGER_ROOT_DIR=${INSTALLDIR}/aoflagger/ -DBDSF_ROOT_DIR=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ -DQPID_ROOT_DIR=/opt/qpid/ -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
+    sed -i '29,31d' include/ApplCommon/PosixTime.h && \
+    make -j ${J} && \
+    make install && \
+    mkdir -p ${INSTALLDIR}/lofar/var/{log,run} && \
+    chmod a+rwx  ${INSTALLDIR}/lofar/var/{log,run} && \
     bash -c "strip ${INSTALLDIR}/lofar/{bin,sbin,lib64}/* || true" && \
-    bash -c "rm -rf ${INSTALLDIR}/lofar/{build,src}" && \
-    apt-get purge -y subversion cmake g++ gfortran bison flex liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python-dev python-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libgsl-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
-    apt-get autoremove -y --purge
+    rm -rf ${INSTALLDIR}/lofar/{build,src} && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
 # install additional bashrc files
 COPY ["bashrc.d",  "${INSTALLDIR}/bashrc.d/"]
+RUN find /opt/ ! -perm -a+r -exec chmod a+r {} +
+

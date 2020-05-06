@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixRep.h 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_MATRIXREP_H
 #define LOFAR_BBSKERNEL_EXPR_MATRIXREP_H
@@ -30,7 +30,7 @@
 #include <Common/lofar_complex.h>
 //#include <Common/lofar_iostream.h>
 #include <iostream>
-#include <casa/iosfwd.h>
+#include <casacore/casa/iosfwd.h>
 
 #if defined _OPENMP
 #include <omp.h>

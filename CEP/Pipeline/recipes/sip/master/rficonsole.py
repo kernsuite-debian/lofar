@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 
 from contextlib import nested
 from collections import defaultdict
@@ -86,21 +86,21 @@ class rficonsole(BaseRecipe, RemoteCommandRecipeMixIn):
         hostlist = defaultdict(lambda: list([[]]))
         for host, filename in data:
             if (
-                self.inputs.has_key('nmeasurementsets') and
+                'nmeasurementsets' in self.inputs and
                 len(hostlist[host][-1]) >= self.inputs['nmeasurementsets']
             ):
                 hostlist[host].append([filename])
             else:
                 hostlist[host][-1].append(filename)
 
-        if self.inputs.has_key('strategy'):
+        if 'strategy' in self.inputs:
             strategy = self.inputs['strategy']
         else:
             strategy = None
 
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         jobs = []
-        for host, file_lists in hostlist.iteritems():
+        for host, file_lists in hostlist.items():
             for file_list in file_lists:
                 jobs.append(
                     ComputeJob(

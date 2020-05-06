@@ -21,10 +21,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-# $Id: PythonInstall.cmake 32905 2015-11-17 15:31:54Z schaap $
+# $Id$
 
 # Search for the Python interpreter.
-find_package(PythonInterp)
+find_package(PythonInterp 3.4 REQUIRED)
 
 # Derive the Python site-packages installation directory and build directory.
 if(PYTHON_EXECUTABLE)

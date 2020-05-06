@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tFileLocator.cc 30651 2014-12-19 13:47:36Z mol $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -27,19 +27,44 @@
 #include <Common/LofarLocators.h>
 #include <Common/StringUtil.h>
 #include <Common/SystemUtil.h>
+#include <Common/lofar_fstream.h>
 #include <cstdlib>                // for setenv()
 
-#define CHECK(cond)						\
-	do {							\
-		if (!(cond)) {					\
-			errors++;				\
+#define CHECK(cond)									\
+	do {											\
+		if (!(cond)) {								\
+			errors++;								\
 			LOG_ERROR("Check '" #cond "' failed.");	\
-		}						\
+		}											\
+	} while(0)
+
+#define CHECK_EQUAL(a,b)									\
+	do {											\
+		if ((a) != (b)) {								\
+			errors++;								\
+			LOG_ERROR_STR("Check '" #a " == " #b "' failed: " << a << " != " << b);	\
+		}											\
 	} while(0)
 
 using namespace LOFAR;
 
 int errors;
+
+// Helper function that creates some files and directories that will be used by
+// some of the tests below.
+// Note that the test framework will do an automatic cleanup.
+void setup(const string& progname)
+{
+	string tmpdir(progname + "_tmp");
+	string subdir(tmpdir + "/foo");
+	// Ignore mkdir() errors; they will be caught later anyway.
+	mkdir(tmpdir.c_str(), S_IRWXU);
+	mkdir(subdir.c_str(), S_IRWXU);
+	ASSERT(ofstream((tmpdir + "/bar.baz").c_str()));
+	ASSERT(ofstream((subdir + "/bar.baz").c_str()));
+	ASSERT(chdir(tmpdir.c_str()) == 0);
+}
+
 
 // Helper function that expands environment variables in a path. Do not try to
 // be smart, we only handle the case where the environment variable itself is
@@ -66,17 +91,33 @@ string expandPath(const string& path)
 int main (int, char *argv[]) {
  
 	using LOFAR::basename;
+	string progname(argv[0]);
 
 	// Read in the log-environment configuration
-	INIT_LOGGER(argv[0]);
+	INIT_LOGGER(progname);
 
 	// Show operator were are on the air
-	LOG_INFO (formatString("Program %s has started", argv[0]));
+	LOG_INFO_STR ("Program " << progname << " has started");
 
+	// Setup test environment
+	try {
+		setup(progname);
+	} catch (Exception& err) {
+		LOG_FATAL_STR ("Test setup failed: " << err.what());
+		return 1;
+	}
+	LOG_INFO_STR ("Test environment setup done");
+	
 	LOG_INFO ("Creating fileLocator with path: /usr");
 	FileLocator		Locator1("/usr");
 	LOG_INFO_STR ("registered path = " << Locator1.getPath());
 	CHECK(Locator1.getPath() == "/usr");
+
+	Locator1.setSubdir("bin");
+	LOG_INFO ("Searching file 'wc' in subdir (bin)");
+	LOG_INFO_STR ("fullname = " << Locator1.locate("wc"));
+	CHECK(Locator1.locate("wc") == "/usr/bin/wc");
+	Locator1.setSubdir("");
 
 	LOG_INFO ("Adding '/usr/bin:./' at end of chain");
 	Locator1.addPathAtBack("/usr/bin:./");
@@ -127,19 +168,15 @@ int main (int, char *argv[]) {
 	LOG_INFO_STR ("fullname = " << Locator1.locate("../namewithslash"));
 	CHECK(Locator1.locate("../namewithslash") == "");
 
-	LOG_INFO ("Searching myself");
-	LOG_INFO_STR ("fullname = " << Locator1.locate(basename(argv[0])));
-	CHECK(Locator1.locate(basename(argv[0])) != "");
-
 #if RESOLVE_INPUT_NOT_PRIVATE
 	LOG_INFO_STR("'$iserniet': " <<  Locator1.resolveInput("$iserniet"));
 	LOG_INFO_STR("'$LOFARROOT': " <<  Locator1.resolveInput("$LOFARROOT"));
 	LOG_INFO_STR("'$LOFARROOT/bin': " <<  
-						Locator1.resolveInput("$LOFARROOT/bin"));
+				 Locator1.resolveInput("$LOFARROOT/bin"));
 	LOG_INFO_STR("'/sbin:$LOFARROOT/bin': " <<  
-						Locator1.resolveInput("/sbin:$LOFARROOT/bin"));
+				 Locator1.resolveInput("/sbin:$LOFARROOT/bin"));
 	LOG_INFO_STR("'/sbin:$LOFARROOT/bin:/usr/sbin': " <<  
-						Locator1.resolveInput("/sbin:$LOFARROOT/bin:/usr/sbin"));
+				 Locator1.resolveInput("/sbin:$LOFARROOT/bin:/usr/sbin"));
 #endif	
 
 	LOG_INFO ("FOR THE NEXT TESTS THE ENVVAR $LOFARROOT IS SET TO /usr/local");
@@ -149,8 +186,12 @@ int main (int, char *argv[]) {
 	FileLocator		Locator2;
 	LOG_INFO_STR ("registered path = " << Locator2.getPath());
 	CHECK(Locator2.getPath() == expandPath(BASE_SEARCH_DIR) + ":" +
-		dirname(getExecutablePath()) + ":" +
-		dirname(dirname(getExecutablePath())));
+		  dirname(getExecutablePath()) + ":" +
+		  dirname(dirname(getExecutablePath())));
+
+	LOG_INFO ("Searching myself");
+	LOG_INFO_STR ("fullname = " << Locator2.locate(progname));
+	CHECK(Locator2.locate(progname) != "");
 
 	path1 = Locator2.hasPath("$LOFARROOT");
 	path2 = Locator2.hasPath("/opt/lofar/");
@@ -168,8 +209,8 @@ int main (int, char *argv[]) {
 	LOG_INFO_STR ("registered path = " << Locator2.getPath());
 	LOG_INFO_STR ("registered subdir = " << Locator2.getSubdir());
 	CHECK(Locator2.getPath() == expandPath(BASE_SEARCH_DIR) + ":" +
-		dirname(getExecutablePath()) + ":" + 
-		dirname(dirname(getExecutablePath())));
+		  dirname(getExecutablePath()) + ":" + 
+		  dirname(dirname(getExecutablePath())));
 	CHECK(Locator2.getSubdir() == "foo");
 
 	path1 = Locator2.hasPath("/opt/lofar/foo");
@@ -179,28 +220,77 @@ int main (int, char *argv[]) {
 	LOG_INFO ("Searching file 'ServiceBroker.conf'");
 	LOG_INFO_STR ("fullname = " << Locator2.locate("ServiceBroker.conf"));
 	CHECK(Locator2.locate("ServiceBroker.conf") == "");
+
+	// Note: the files and directories used in the two tests below
+	//       were created by the setup() function.
+
+  // Locate file with no subdir set
+	string filename("bar.baz");
+	string subdir;
+	string refpath;
+	LOG_INFO_STR ("Setting subdir to '" << subdir << "'");
+	Locator2.setSubdir(subdir);
+	LOG_INFO_STR ("Trying to locate file '" << filename << "'");
+	refpath = "./" + (subdir.empty() ? "" : subdir + "/") + filename;
+	LOG_INFO_STR("fullname = " << Locator2.locate(filename));
+	CHECK_EQUAL(Locator2.locate(filename), realpath(refpath));
+
+  // Locate file in a subdir
+	subdir += "foo";
+	LOG_INFO_STR ("Setting subdir to '" << subdir << "'");
+	Locator2.setSubdir(subdir);
+	LOG_INFO_STR ("Trying to locate file '" << filename << "'");
+	refpath = "./" + (subdir.empty() ? "" : subdir + "/") + filename;
+	LOG_INFO_STR("fullname = " << Locator2.locate(filename));
+	CHECK_EQUAL(Locator2.locate(filename), realpath(refpath));
   
-  LOG_INFO ("Creating fileLocator with two variables");
-  FileLocator   Locator3("$LOFARROOT:$LOFARROOT");
-  LOG_INFO_STR ("Locator3.getPath() = " <<Locator3.getPath());
-  CHECK(Locator3.getPath() == "/usr/local:/usr/local");
+	LOG_INFO ("Creating fileLocator with two variables");
+	FileLocator   Locator3("$LOFARROOT:$LOFARROOT");
+	LOG_INFO_STR ("Locator3.getPath() = " <<Locator3.getPath());
+	CHECK(Locator3.getPath() == "/usr/local:/usr/local");
 
 	LOG_INFO ("Testing ConfigLocator");
 	ConfigLocator	aCL;
 	LOG_INFO_STR ("registered path = " << aCL.getPath());
 	LOG_INFO_STR ("registered subdir = " << aCL.getSubdir());
-	CHECK(aCL.getPath() == expandPath(BASE_SEARCH_DIR) + ":" +
-		dirname(getExecutablePath()) + ":" + 
-		dirname(dirname(getExecutablePath())));
+	// getenv might return a NULL but ignoring that and accepting the exception when HOME is not set
+  	string homedir = string(getenv("HOME"));
+	CHECK(aCL.getPath() == homedir + "/.lofar" + ":" + expandPath(BASE_SEARCH_DIR) + ":" +
+		  dirname(getExecutablePath()) + ":" + 
+		  dirname(dirname(getExecutablePath())));
 	CHECK(aCL.getSubdir() == "etc");
+
+	LOG_INFO("Locating foo.conf ...");
+	string fooConf(aCL.locate("foo.conf"));
+	if (fooConf.empty()) {
+		LOG_ERROR("Failed to locate foo.conf");
+		++errors;
+	} else {
+		LOG_INFO_STR("Found foo.conf: " << fooConf);
+		LOG_INFO("Locating foo.conf with result of previous call ...");
+		string newFooConf(aCL.locate(fooConf));
+		if (newFooConf.empty()) {
+			LOG_ERROR("Failed to locate foo.conf");
+			++errors;
+		} else {
+			LOG_INFO_STR("Found foo.conf: " << newFooConf);
+			if (fooConf != newFooConf) {
+				LOG_ERROR_STR("Results \"" << fooConf << "\" and \"" <<
+							  newFooConf << "\" are not identical!");
+				++errors;
+			// } else {
+			// 	LOG_INFO("Second call yields same result");
+			}
+		}
+	}
 
 
 	if(errors) {
 		LOG_FATAL_STR("**** " << errors << " error" << 
-			  (errors > 1 ? "s" : "") << " detected.");
-        } else {
+					  (errors > 1 ? "s" : "") << " detected.");
+	} else {
 		LOG_INFO("Normal termination of program");
-        }
+	}
 	return (errors ? 1 : 0);
 }
 

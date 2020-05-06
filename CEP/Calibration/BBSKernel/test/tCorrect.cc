@@ -18,22 +18,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tCorrect.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Prediffer.h>
 #include <Common/LofarLogger.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
 #ifdef AIPS_NO_TEMPLATE_SRC
-#include <casa/Arrays/ArrayLogical.cc>   //include .cc for template
+#include <casacore/casa/Arrays/ArrayLogical.cc>   //include .cc for template
 #endif
 #include <stdexcept>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 // Note:
 // demo3.MS contains 50 frequency channels of 500000 Hz with

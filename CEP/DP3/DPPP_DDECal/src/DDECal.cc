@@ -37,6 +37,7 @@
 #include <DPPP_DDECal/TECConstraint.h>
 #include <DPPP_DDECal/RotationConstraint.h>
 #include <DPPP_DDECal/RotationAndDiagonalConstraint.h>
+#include <DPPP_DDECal/SmoothnessConstraint.h>
 
 #include <ParmDB/ParmDB.h>
 #include <ParmDB/ParmValue.h>
@@ -79,6 +80,7 @@ namespace LOFAR {
                       const string& prefix)
       : itsInput         (input),
         itsName          (prefix),
+        itsUseModelColumn(parset.getBool (prefix + "usemodelcolumn", false)),
         itsAvgTime       (0),
         itsSols          (),
         itsH5ParmName    (parset.getString (prefix + "h5parm",
@@ -93,6 +95,7 @@ namespace LOFAR {
         itsNChan         (parset.getInt (prefix + "nchan", 1)),
         itsUVWFlagStep   (input, parset, prefix),
         itsCoreConstraint(parset.getDouble (prefix + "coreconstraint", 0.0)),
+	itsSmoothnessConstraint(parset.getDouble (prefix + "smoothnessconstraint", 0.0)),
         itsScreenCoreConstraint(parset.getDouble (prefix + "tecscreen.coreconstraint", 0.0)),
         itsFullMatrixMinimalization(false),
         itsApproximateTEC(false),
@@ -102,12 +105,8 @@ namespace LOFAR {
       ss << parset;
       itsParsetString = ss.str();
 
-      vector<string> strDirections = 
-         parset.getStringVector (prefix + "directions",
-                                 vector<string> ());
-         
       itsMultiDirSolver.set_max_iterations(parset.getInt(prefix + "maxiter", 50));
-      double tolerance = parset.getDouble(prefix + "tolerance", 1.e-5);
+      double tolerance = parset.getDouble(prefix + "tolerance", 1.e-4);
       itsMultiDirSolver.set_accuracy(tolerance);
       itsMultiDirSolver.set_constraint_accuracy(parset.getDouble(prefix + "approxtolerance", tolerance*10.0));
       itsMultiDirSolver.set_step_size(parset.getDouble(prefix + "stepsize", 0.2));
@@ -116,20 +115,29 @@ namespace LOFAR {
       if(!itsStatFilename.empty())
 	itsStatStream.reset(new std::ofstream(itsStatFilename));
       
-      // Default directions are all patches
-      if (strDirections.empty()) {
-        string sourceDBName = parset.getString(prefix+"sourcedb");
-        BBS::SourceDB sourceDB(BBS::ParmDBMeta("", sourceDBName), false);
-        vector<string> patchNames = makePatchList(sourceDB, vector<string>());
-        itsDirections.resize(patchNames.size());
-        for (uint i=0; i<patchNames.size(); ++i) {
-          itsDirections[i] = vector<string>(1, patchNames[i]);
-        }
+      vector<string> strDirections;
+      if (itsUseModelColumn) {
+        itsModelData.resize(itsSolInt);
+        strDirections.push_back("pointing");
+        itsDirections.push_back(vector<string>());
       } else {
-        itsDirections.resize(strDirections.size());
-        for (uint i=0; i<strDirections.size(); ++i) {
-          ParameterValue dirStr(strDirections[i]);
-          itsDirections[i] = dirStr.getStringVector();
+        strDirections = parset.getStringVector (prefix + "directions",
+                                                vector<string> ());
+        // Default directions are all patches
+        if (strDirections.empty()) {
+          string sourceDBName = parset.getString(prefix+"sourcedb");
+          BBS::SourceDB sourceDB(BBS::ParmDBMeta("", sourceDBName), false);
+          vector<string> patchNames = makePatchList(sourceDB, vector<string>());
+          itsDirections.resize(patchNames.size());
+          for (uint i=0; i<patchNames.size(); ++i) {
+            itsDirections[i] = vector<string>(1, patchNames[i]);
+          }
+        } else {
+          itsDirections.resize(strDirections.size());
+          for (uint i=0; i<strDirections.size(); ++i) {
+            ParameterValue dirStr(strDirections[i]);
+            itsDirections[i] = dirStr.getStringVector();
+          }
         }
       }
 
@@ -139,6 +147,10 @@ namespace LOFAR {
       if(itsCoreConstraint != 0.0) {
         itsConstraints.push_back(casacore::CountedPtr<Constraint>(
           new CoreConstraint()));
+      }
+      if(itsSmoothnessConstraint != 0.0) {
+	itsConstraints.push_back(casacore::CountedPtr<Constraint>(
+        new SmoothnessConstraint(itsSmoothnessConstraint))); 
       }
       switch(itsMode) {
         case GainCal::COMPLEXGAIN:
@@ -235,9 +247,13 @@ namespace LOFAR {
       }
 
       const size_t nDir = itsDirections.size();
-      itsPredictSteps.resize(nDir);
-      for (size_t dir=0; dir<nDir; ++dir) {
-        itsPredictSteps[dir]=Predict(input, parset, prefix, itsDirections[dir]);
+      if (itsUseModelColumn) {
+        ASSERT(nDir == 1);
+      } else {
+        itsPredictSteps.resize(nDir);
+        for (size_t dir=0; dir<nDir; ++dir) {
+          itsPredictSteps[dir]=Predict(input, parset, prefix, itsDirections[dir]);
+        }
       }
     }
 
@@ -256,10 +272,10 @@ namespace LOFAR {
       info() = infoIn;
       info().setNeedVisData();
 
-      const size_t nDir=itsDirections.size();
+      const size_t nDir = itsDirections.size();
 
       itsUVWFlagStep.updateInfo(infoIn);
-      for (size_t dir=0; dir<nDir; ++dir) {
+      for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
         itsPredictSteps[dir].updateInfo(infoIn);
       }
 
@@ -282,8 +298,8 @@ namespace LOFAR {
       itsDataResultStep = ResultStep::ShPtr(new ResultStep());
       itsUVWFlagStep.setNextStep(itsDataResultStep);
 
-      itsResultSteps.resize(nDir);
-      for (size_t dir=0; dir<nDir; ++dir) {
+      itsResultSteps.resize(itsPredictSteps.size());
+      for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
         itsResultSteps[dir] = MultiResultStep::ShPtr(new MultiResultStep(itsSolInt));
         itsPredictSteps[dir].setNextStep(itsResultSteps[dir]);
       }
@@ -315,8 +331,18 @@ namespace LOFAR {
       itsH5Parm.addAntennas(antennaNames, antennaPos);
 
       std::vector<std::pair<double, double> > sourcePositions(itsDirections.size());
-      for (uint i=0; i<itsDirections.size(); ++i) {
-        sourcePositions[i] = itsPredictSteps[i].getFirstDirection();
+      if (itsUseModelColumn) {
+         MDirection dirJ2000(MDirection::Convert(infoIn.phaseCenter(),
+                                                 MDirection::J2000)());
+         Quantum<Vector<Double> > angles = dirJ2000.getAngle();
+         sourcePositions[0] = std::pair<double, double> (
+                                     angles.getBaseValue()[0],
+                                     angles.getBaseValue()[1]);
+ 
+      } else {
+        for (uint i=0; i<itsDirections.size(); ++i) {
+          sourcePositions[i] = itsPredictSteps[i].getFirstDirection();
+        }
       }
       itsH5Parm.addSources(getDirectionNames(), sourcePositions);
 
@@ -327,6 +353,7 @@ namespace LOFAR {
       itsConstraintSols.resize(nSolTimes);
 
       size_t nChannelBlocks = info().nchan()/itsNChan;
+      itsChanBlockStart.resize(nChannelBlocks+1);
       itsChanBlockFreqs.resize(nChannelBlocks);
       for(size_t chBlock=0; chBlock!=nChannelBlocks; ++chBlock) {
         const size_t
@@ -337,19 +364,29 @@ namespace LOFAR {
             info().chanFreqs().data()+channelIndexStart,
             info().chanFreqs().data()+channelIndexEnd,
             0.0) / curChannelBlockSize;
+        itsChanBlockStart[chBlock] = channelIndexStart;
         itsChanBlockFreqs[chBlock] = meanfreq;
       }
+      itsChanBlockStart[itsChanBlockStart.size()-1] = info().nchan();
+
+      itsWeights.assign(itsChanBlockFreqs.size()*info().nantenna(), 0.0);
 
       for (uint i=0; i<itsConstraints.size();++i) {
+        // Initialize the constraint with some common metadata
+        itsConstraints[i]->InitializeDimensions(info().antennaNames().size(),
+                                                itsDirections.size(),
+                                                nChannelBlocks);
+
         // Different constraints need different information. Determine if the constraint is
         // of a type that needs more information, and if so initialize the constraint.
         CoreConstraint* coreConstraint = dynamic_cast<CoreConstraint*>(itsConstraints[i].get());
         if(coreConstraint != 0)
         {
+          // Take antenna with index 0 as reference station
           double
-            refX = antennaPos[i][0],
-            refY = antennaPos[i][1],
-            refZ = antennaPos[i][2];
+            refX = antennaPos[0][0],
+            refY = antennaPos[0][1],
+            refZ = antennaPos[0][2];
           std::set<size_t> coreAntennaIndices;
           const double coreDistSq = itsCoreConstraint*itsCoreConstraint;
           for(size_t ant=0; ant!=antennaPos.size(); ++ant)
@@ -362,21 +399,13 @@ namespace LOFAR {
             if(distSq <= coreDistSq)
               coreAntennaIndices.insert(ant);
           }
-          coreConstraint->initialize(info().antennaNames().size(),
-            itsDirections.size(),
-            info().nchan(),
-            coreAntennaIndices);
+          coreConstraint->initialize(coreAntennaIndices);
         }
         
         ScreenConstraint* screenConstraint = dynamic_cast<ScreenConstraint*>(itsConstraints[i].get());
         if(screenConstraint != 0)
         {
-          screenConstraint->initialize(
-              info().antennaNames().size(),
-              itsDirections.size(),
-              nChannelBlocks,
-              &(itsChanBlockFreqs[0])
-          );
+          screenConstraint->initialize(&(itsChanBlockFreqs[0]));
           screenConstraint->setAntennaPositions(antennaPos);
           screenConstraint->setDirections(sourcePositions);
           screenConstraint->initPiercePoints();
@@ -404,24 +433,15 @@ namespace LOFAR {
         }
         
         TECConstraintBase* tecConstraint = dynamic_cast<TECConstraintBase*>(itsConstraints[i].get());
-        if(tecConstraint != 0)
+        if(tecConstraint != nullptr)
         {
-          tecConstraint->initialize(info().antennaNames().size(),
-              itsDirections.size(),
-              nChannelBlocks,
-              &(itsChanBlockFreqs[0]));
+          tecConstraint->initialize(&itsChanBlockFreqs[0]);
         }
-
-        RotationAndDiagonalConstraint* rotationAndDiagonalConstraint = dynamic_cast<RotationAndDiagonalConstraint*>(itsConstraints[i].get());
-        if(rotationAndDiagonalConstraint != 0)
-        {
-          rotationAndDiagonalConstraint->initialize(info().antennaNames().size(), itsDirections.size(), nChannelBlocks);
-        }
-        RotationConstraint* rotationConstraint = dynamic_cast<RotationConstraint*>(itsConstraints[i].get());
-        if(rotationConstraint != 0)
-        {
-          rotationConstraint->initialize(info().antennaNames().size(), itsDirections.size(), nChannelBlocks);
-        }
+	SmoothnessConstraint* sConstraint = dynamic_cast<SmoothnessConstraint*>(itsConstraints[i].get());
+	if(sConstraint != nullptr)
+	{
+	  sConstraint->Initialize(&itsChanBlockFreqs[0]);
+	}
       }
 
       uint nSt = info().antennaNames().size();
@@ -435,15 +455,21 @@ namespace LOFAR {
 
     void DDECal::show (std::ostream& os) const
     {
-      os << "DDECal " << itsName << endl;
-      os << "  H5Parm:              " << itsH5ParmName <<endl;
-      os << "  solint:              " << itsSolInt <<endl;
-      os << "  nchan:               " << itsNChan <<endl;
-      os << "  directions:          " << itsDirections << endl;
-      os << "  mode (constraints):  " << GainCal::calTypeToString(itsMode) 
-         << endl;
-      os << "  coreconstraint:      " << itsCoreConstraint << endl;
-      os << "  approximate fitter:  " << itsApproximateTEC << endl;
+      os
+	<< "DDECal " << itsName << '\n'
+        << "  H5Parm:              " << itsH5ParmName << '\n'
+        << "  solint:              " << itsSolInt << '\n'
+        << "  nchan:               " << itsNChan << '\n'
+        << "  directions:          " << itsDirections << '\n'
+        << "  use model column:    " << boolalpha << itsUseModelColumn << '\n'
+        << "  tolerance:           " << itsMultiDirSolver.get_accuracy() << '\n'
+        << "  max iter:            " << itsMultiDirSolver.max_iterations() << '\n'
+        << "  detect stalling:     " << std::boolalpha << itsMultiDirSolver.get_detect_stalling() << '\n'
+        << "  step size:           " << itsMultiDirSolver.get_step_size() << '\n'
+        << "  mode (constraints):  " << GainCal::calTypeToString(itsMode) << '\n'
+        << "  coreconstraint:      " << itsCoreConstraint << '\n'
+	<< "  smoothnessconstraint:" << itsSmoothnessConstraint << '\n'
+        << "  approximate fitter:  " << itsApproximateTEC << '\n';
       for (uint i=0; i<itsPredictSteps.size(); ++i) {
         itsPredictSteps[i].show(os);
       }
@@ -587,11 +613,17 @@ namespace LOFAR {
 
 //      if(itsPredictSteps.size() < LOFAR::OpenMP::maxThreads())
 //        LOFAR::OpenMP::setNested(true);
+      if (itsUseModelColumn) {
+        itsInput->getModelData (itsBufs[itsStepInSolInt].getRowNrs(),
+                                itsModelData[itsStepInSolInt]);
+        itsModelDataPtrs[itsStepInSolInt][0] = itsModelData[itsStepInSolInt].data();
+      } else {
 #pragma omp parallel for schedule(dynamic) if(itsPredictSteps.size()>1)
-      for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
-        itsPredictSteps[dir].process(itsBufs[itsStepInSolInt]);
-        itsModelDataPtrs[itsStepInSolInt][dir] =
-                 itsResultSteps[dir]->get()[itsStepInSolInt].getData().data();
+        for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
+          itsPredictSteps[dir].process(itsBufs[itsStepInSolInt]);
+          itsModelDataPtrs[itsStepInSolInt][dir] =
+                   itsResultSteps[dir]->get()[itsStepInSolInt].getData().data();
+        }
       }
 
       // Handle weights and flags
@@ -599,25 +631,39 @@ namespace LOFAR {
       const size_t nCh = info().nchan();
       const size_t nCr = 4;
       
+      size_t nchanblocks = itsChanBlockFreqs.size();
+      size_t chanblock = 0;
+
+      double weightFactor = 1./(nCh*(info().nantenna()-1)*nCr*itsSolInt);
+
       for (size_t ch=0; ch<nCh; ++ch) {
+        if (ch == itsChanBlockStart[chanblock+1]) {
+          chanblock++;
+        }
         for (size_t bl=0; bl<nBl; ++bl) {
           for (size_t cr=0; cr<nCr; ++cr) {
             if (itsBufs[itsStepInSolInt].getFlags().data()[bl*nCr*nCh+ch*nCr+cr]) {
               // Flagged points: set data and model to 0
               itsDataPtrs[itsStepInSolInt][bl*nCr*nCh+ch*nCr+cr] = 0;
-              for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
+              for (size_t dir=0; dir<itsModelDataPtrs[0].size(); ++dir) {
                 itsModelDataPtrs[itsStepInSolInt][dir][bl*nCr*nCh+ch*nCr+cr] = 0;
               }
             } else {
               // Premultiply non-flagged data with sqrt(weight)
-              double weight = sqrt(itsBufs[itsStepInSolInt].getWeights().data()[bl*nCr*nCh+ch*nCr+cr]);
-              itsDataPtrs[itsStepInSolInt][bl*nCr*nCh+ch*nCr+cr] *= weight;
-              for (size_t dir=0; dir<itsPredictSteps.size(); ++dir) {
-                itsModelDataPtrs[itsStepInSolInt][dir][bl*nCr*nCh+ch*nCr+cr] *= weight;
+              double weight = itsBufs[itsStepInSolInt].getWeights().data()[bl*nCr*nCh+ch*nCr+cr];
+              itsDataPtrs[itsStepInSolInt][bl*nCr*nCh+ch*nCr+cr] *= sqrt(weight);
+              itsWeights[info().getAnt1()[bl]*nchanblocks + chanblock] += weight;
+              itsWeights[info().getAnt2()[bl]*nchanblocks + chanblock] += weight;
+              for (size_t dir=0; dir<itsModelDataPtrs[0].size(); ++dir) {
+                itsModelDataPtrs[itsStepInSolInt][dir][bl*nCr*nCh+ch*nCr+cr] *= sqrt(weight);
               }
             }
           }
         }
+      }
+
+      for (auto& weight: itsWeights) {
+        weight *= weightFactor;
       }
 
       itsTimerPredict.stop();
@@ -625,9 +671,16 @@ namespace LOFAR {
       itsAvgTime += itsAvgTime + bufin.getTime();
 
       if (itsStepInSolInt==itsSolInt-1) {
+        for (uint constraint_num = 0; constraint_num < itsConstraints.size(); ++constraint_num) {
+          itsConstraints[constraint_num]->SetWeights(itsWeights);
+        }
+
         doSolve();
-            itsStepInSolInt=0;
+
+        // Clean up, prepare for next iteration
+        itsStepInSolInt=0;
         itsAvgTime=0;
+        itsWeights.assign(itsWeights.size(), 0.);
         for (size_t dir=0; dir<itsResultSteps.size(); ++dir) {
           itsResultSteps[dir]->clear();
         }
@@ -814,15 +867,29 @@ namespace LOFAR {
             vector<double> sols(numSols);
             vector<double>::iterator nextpos = sols.begin();
             for (uint time=0; time<itsSols.size(); ++time) {
+              ASSERTSTR(itsConstraintSols[time].size()==itsConstraintSols[0].size(), "Constraints did not produce enough output at time step "<<time);
               nextpos = std::copy(
                 itsConstraintSols[time][constraintNum][solNameNum].vals.begin(),
                 itsConstraintSols[time][constraintNum][solNameNum].vals.end(),
                 nextpos);
             }
 
+            // Put solution weights in a contiguous piece of memory
+            vector<double> weights;
+            if (!itsConstraintSols[0][constraintNum][solNameNum].weights.empty()) {
+              weights.resize(numSols);
+              vector<double>::iterator nextpos = weights.begin();
+              for (uint time=0; time<itsSols.size(); ++time) {
+                nextpos = std::copy(
+                  itsConstraintSols[time][constraintNum][solNameNum].weights.begin(),
+                  itsConstraintSols[time][constraintNum][solNameNum].weights.end(),
+                  nextpos);
+              }
+            }
+
             string solTabName = firstResult.name+"000";
             H5Parm::SolTab soltab = itsH5Parm.createSolTab(solTabName, firstResult.name, axes);
-            soltab.setValues(sols, vector<double>(),
+            soltab.setValues(sols, weights,
                              "CREATE by DPPP\n" +
                              Version::getInfo<DPPPVersion>("DPPP", "top") + "\n" +
                              "step " + itsName + " in parset: \n" +
@@ -879,7 +946,6 @@ namespace LOFAR {
             soltab.setFreqs(chanBlockFreqs);
  
             soltab.setTimes(solTimes);
-            // End TODO 
           }
         }
       }

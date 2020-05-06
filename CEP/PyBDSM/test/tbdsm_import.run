@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Set the python path
+source setpythonpath.run_script
+
+python3 -c "import sys; print '\n'.join(sys.path); import lofar.bdsm"

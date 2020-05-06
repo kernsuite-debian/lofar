@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007
 # ASTRON (Netherlands Institute for Radio Astronomy)
@@ -40,12 +40,12 @@ import scipy.optimize
 
 # import user modules
 #from files import *
-import client
-from acalc import *
-import sphere
-from error import *
+from . import client
+from .acalc import *
+from . import sphere
+from .error import *
 import tables
-import PosTools
+from . import PosTools
 
 ###############################################################################
 
@@ -108,14 +108,14 @@ class IonosphericModel:
       
    def calculate_piercepoints(self, time_steps = [], station_select=[],height = 200.e3):
       if ( len( time_steps ) == 0 ):
-         n_list = range( self.times[:].shape[0] )
+         n_list = list(range( self.times[:].shape[0]))
       else:
          n_list = time_steps
       self.n_list = n_list
       if 'n_list' in self.hdf5.root: self.hdf5.root.n_list.remove()
       self.hdf5.createArray(self.hdf5.root, 'n_list', self.n_list)
       if ( len( station_select ) == 0 ):
-         stat_select = range( self.stations[:].shape[0] )
+         stat_select = list(range( self.stations[:].shape[0]))
       else:
          stat_select = station_select
       self.stat_select = stat_select
@@ -134,7 +134,7 @@ class IonosphericModel:
       self.piercepoints.attrs.height = self.height
       piercepoints_row = self.piercepoints.row
       p = ProgressBar(len(n_list), "Calculating piercepoints: ")
-      for (n, counter) in zip(n_list, range(len(n_list))):
+      for (n, counter) in zip(n_list, list(range(len(n_list)))):
          p.update(counter)
          
          piercepoints=PosTools.getPiercePoints(self.times[n],self.source_positions,self.station_positions[:][self.stat_select[:]],height=self.height)
@@ -149,14 +149,14 @@ class IonosphericModel:
 
    def calculate_Sage_piercepoints(self, sage_group=0,time_steps = [], station_select=[],height = 200.e3):
       if ( len( time_steps ) == 0 ):
-         n_list = range( self.times[:].shape[0] )
+         n_list = list(range( self.times[:].shape[0]))
       else:
          n_list = time_steps
       self.sage_n_list = n_list
       if 'sage%d_n_list'%sage_group in self.hdf5.root: self.hdf5.removeNode('\sage%d_n_list'%sage_group)
       self.hdf5.createArray(self.hdf5.root, 'sage%d_n_list'%sage_group, self.sage_n_list)
       if ( len( station_select ) == 0 ):
-         stat_select = range( self.stations[:].shape[0] )
+         stat_select = list(range( self.stations[:].shape[0]))
       else:
          stat_select = station_select
       self.sage_stat_select = stat_select
@@ -176,7 +176,7 @@ class IonosphericModel:
       piercepoints_row = self.sage_piercepoints.row
       source_positions=self.hdf5.getNode('sage_radec%d'%sage_group)[:]
       p = ProgressBar(len(n_list), "Calculating piercepoints: ")
-      for (n, counter) in zip(n_list, range(len(n_list))):
+      for (n, counter) in zip(n_list, list(range(len(n_list)))):
          p.update(counter)
          
          piercepoints=PosTools.getPiercePoints(self.times[n],source_positions,self.station_positions[:][self.stat_select[:]],height=self.sage_height)
@@ -203,7 +203,7 @@ class IonosphericModel:
       self.U_list = []
       self.S_list = []
       p = ProgressBar(len(self.piercepoints), "Calculating base vectors: ")
-      for (piercepoints, counter) in zip(self.piercepoints, range(len(self.piercepoints))):
+      for (piercepoints, counter) in zip(self.piercepoints, list(range(len(self.piercepoints)))):
          p.update( counter )
          Xp_table = reshape(piercepoints['positions_xyz'], (N_piercepoints, 3) )
          
@@ -361,7 +361,7 @@ class IonosphericModel:
       R = 6378137
       taskids = []
       
-      print "Making movie..."
+      print("Making movie...")
       p = ProgressBar( len( self.n_list ), 'Submitting jobs: ' )
       for i in range(len(self.n_list)) :
          p.update(i)
@@ -431,7 +431,7 @@ class IonosphericModel:
       self.facet_names = self.facets[:]['name']
       self.facet_positions = self.facets[:]['position']
 
-      print self.n_list
+      print(self.n_list)
       if 'STEC_facets' in self.hdf5.root: self.hdf5.root.STEC_facets.remove()
       self.STEC_facets = self.hdf5.createCArray(self.hdf5.root, 'STEC_facets', tables.Float32Atom(), shape = (self.N_pol, self.n_list[:].shape[0],  self.N_facets, self.N_stations))
 
@@ -470,7 +470,7 @@ class IonosphericModel:
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
-    pools = map(tuple, args) * kwds.get('repeat', 1)
+    pools = list(map(tuple, args)) * kwds.get('repeat', 1)
     result = [[]]
     for pool in pools:
         result = [x+[y] for x in result for y in pool]
@@ -478,8 +478,8 @@ def product(*args, **kwds):
         yield tuple(prod)
 
 def fillarray( a, v ) :
-   print a.shape, a.chunkshape
-   for idx in product(*[xrange(0, s, c) for s, c in zip(a.shape, a.chunkshape)]) :
+   print(a.shape, a.chunkshape)
+   for idx in product(*[range(0, s, c) for s, c in zip(a.shape, a.chunkshape)]) :
       s = tuple([slice(i,min(i+c,s)) for i,s,c in zip(idx, a.shape, a.chunkshape)])
       a[s] = v
    
@@ -515,7 +515,7 @@ def get_interpolated_TEC(Xp_table,v,beta,r_0,pp):
    N_piercepoints = Xp_table.shape[0]
    n_axes=Xp_table.shape[1]
    if n_axes!=pp.shape[0]:
-      print "wrong number of axes, original:",n_axes,"requested:",pp.shape[0]
+      print("wrong number of axes, original:",n_axes,"requested:",pp.shape[0])
       return -1
    P = eye(N_piercepoints) - ones((N_piercepoints, N_piercepoints)) / N_piercepoints
    # calculate structure matrix

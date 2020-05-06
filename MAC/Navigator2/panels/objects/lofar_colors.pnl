@@ -1,0 +1,941 @@
+V 13
+1
+LANG:1 20 Colors used by LOFAR
+PANEL,-1 -1 943 749 N "_3DFace" 0
+E E E E E 1 -1 -1 0  30 110
+""0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+6 31
+"RECTANGLE15"
+""
+1 0 10 E E E 1 E 1 E N {0,0,0} E N "_3DFace" E E
+ E E
+58 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E 1 0 1.083333333333333 8 -11.83333333333333 1 E 0 10 510 370
+2 1
+"PRIMITIVE_TEXT1"
+""
+1 18 9 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 18 9 151 24
+0 2 2 "0s" 0 0 0 192 0 0  18 9 1
+1
+LANG:1 33 MS Shell Dlg,-1,13,5,75,0,0,0,0,0
+0 1
+LANG:1 20 Lofar General Colors
+2 2
+"PRIMITIVE_TEXT2"
+""
+1 18 129 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 18 129 145 144
+0 2 2 "0s" 0 0 0 192 0 0  18 129 1
+1
+LANG:1 33 MS Shell Dlg,-1,13,5,75,0,0,0,0,0
+0 1
+LANG:1 19 Lofar Status Colors
+6 3
+"RECTANGLE1"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_dpdoesnotexist" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+1
+LANG:1 21 Lofar_dpdoesnotexists
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 0 1 E 110 30 184 44
+2 4
+"PRIMITIVE_TEXT3"
+""
+1 108 33 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+5 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 33 341 45
+0 2 2 "0s" 0 0 0 192 0 0  108 33 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 48 The datapoint you are looking for does not exist
+6 5
+"RECTANGLE2"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_dpOffline" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+1
+LANG:1 15 Lofar_dpOffline
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 19 1 E 110 30 184 44
+2 6
+"PRIMITIVE_TEXT4"
+""
+1 108 52 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 52 412 64
+0 2 2 "0s" 0 0 0 192 0 0  108 52 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 63 The system where that datapoint belongs to is currently offline
+6 7
+"RECTANGLE3"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_invalid" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+1
+LANG:1 13 Lofar_invalid
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 38 1 E 110 30 184 44
+2 8
+"PRIMITIVE_TEXT5"
+""
+1 108 71 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+13 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 71 366 83
+0 2 2 "0s" 0 0 0 192 0 0  108 71 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 54 The datapoint you are looking for has an invalid state
+6 9
+"RECTANGLE4"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_highLight" E E
+ E E
+15 0 0 0 0 0
+E E E
+0
+1
+LANG:1 15 Lofar_highlight
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 57 1 E 110 30 184 44
+2 10
+"PRIMITIVE_TEXT6"
+""
+1 108 90 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+17 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 90 259 102
+0 2 2 "0s" 0 0 0 192 0 0  108 90 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 32 The highlight color for symbols.
+6 11
+"RECTANGLE5"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_off" E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:1 9 Lofar_off
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 119 1 E 110 30 184 44
+2 12
+"PRIMITIVE_TEXT7"
+""
+1 108 151 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+21 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 151 305 163
+0 2 2 "0s" 0 0 0 192 0 0  108 151 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 41 The object is currently not used by Lofar
+6 13
+"RECTANGLE6"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_operational" E E
+ E E
+23 0 0 0 0 0
+E E E
+0
+1
+LANG:1 17 Lofar_operational
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 139 1 E 110 30 184 44
+2 14
+"PRIMITIVE_TEXT8"
+""
+1 108 171 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+25 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 171 275 183
+0 2 2 "0s" 0 0 0 192 0 0  108 171 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 35 The object is currently working ok.
+6 15
+"RECTANGLE7"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_maintenance" E E
+ E E
+27 0 0 0 0 0
+E E E
+0
+1
+LANG:1 17 Lofar_maintenance
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 159 1 E 110 30 184 44
+2 16
+"PRIMITIVE_TEXT9"
+""
+1 108 191 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+29 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 191 296 203
+0 2 2 "0s" 0 0 0 192 0 0  108 191 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 39 The object is currently in maintenance.
+6 17
+"RECTANGLE8"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_test" E E
+ E E
+31 0 0 0 0 0
+E E E
+0
+1
+LANG:1 10 Lofar_test
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 179 1 E 110 30 184 44
+2 18
+"PRIMITIVE_TEXT10"
+""
+1 108 211 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+33 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 211 283 223
+0 2 2 "0s" 0 0 0 192 0 0  108 211 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 37 The object is currently in test mode.
+6 19
+"RECTANGLE9"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_suspicious" E E
+ E E
+35 0 0 0 0 0
+E E E
+0
+1
+LANG:1 16 Lofar_suspicious
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 199 1 E 110 30 184 44
+2 20
+"PRIMITIVE_TEXT11"
+""
+1 108 231 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+37 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 231 360 243
+0 2 2 "0s" 0 0 0 192 0 0  108 231 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 50 The object is marked suspicious, and acknowledged.
+6 21
+"RECTANGLE10"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_suspicious_went" E E
+ E E
+39 0 0 0 0 0
+E E E
+0
+1
+LANG:1 21 Lofar_suspicious_went
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 219 1 E 110 30 184 44
+2 22
+"PRIMITIVE_TEXT12"
+""
+1 108 251 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+41 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 251 507 263
+0 2 2 "0s" 0 0 0 192 0 0  108 251 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 80 The object was marked suspicious, but this state went again without acknowledge.
+6 23
+"RECTANGLE11"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_suspicious_came" E E
+ E E
+43 0 0 0 0 0
+E E E
+0
+1
+LANG:1 21 Lofar_suspicious_came
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 239 1 E 110 30 184 44
+2 24
+"PRIMITIVE_TEXT13"
+""
+1 108 271 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+45 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 271 420 283
+0 2 2 "0s" 0 0 0 192 0 0  108 271 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 61 The object was marked suspicious, and has to be acknowledged.
+6 25
+"RECTANGLE12"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_broken" E E
+ E E
+47 0 0 0 0 0
+E E E
+0
+1
+LANG:1 12 Lofar_broken
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 259 1 E 110 30 184 44
+2 26
+"PRIMITIVE_TEXT14"
+""
+1 108 291 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+49 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 291 358 303
+0 2 2 "0s" 0 0 0 192 0 0  108 291 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 50 The object is in alarm, and has been acknowledged.
+6 27
+"RECTANGLE13"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_broken_went" E E
+ E E
+51 0 0 0 0 0
+E E E
+0
+1
+LANG:1 17 Lofar_broken_went
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 279 1 E 110 30 184 44
+2 28
+"PRIMITIVE_TEXT15"
+""
+1 108 311 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+53 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 311 446 323
+0 2 2 "0s" 0 0 0 192 0 0  108 311 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 69 The object is in alarm, but the alarm went again without acknowledge.
+6 29
+"RECTANGLE14"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_broken_came" E E
+ E E
+55 0 0 0 0 0
+E E E
+0
+1
+LANG:1 17 Lofar_broken_came
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 299 1 E 110 30 184 44
+2 30
+"PRIMITIVE_TEXT16"
+""
+1 108 331 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+57 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 331 355 343
+0 2 2 "0s" 0 0 0 192 0 0  108 331 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 50 The object is in alarm and has to be acknowledged.
+6 33
+"RECTANGLE17"
+""
+1 0 10 E E E 1 E 1 E N {0,0,0} E N "_3DFace" E E
+ E E
+60 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E 1.784313725490196 0 0.9999999999999998 10 403.9999999999999 1 E 0 10 510 370
+2 34
+"PRIMITIVE_TEXT17"
+""
+1 32 426 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+61 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 32 426 76 438
+0 2 2 "0s" 0 0 0 192 0 0  32 426 1
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 7 swlevel
+6 35
+"RECTANGLE18"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "green" E E
+ E E
+62 0 0 0 0 0
+E E E
+0
+1
+LANG:1 7 Level 6
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 0.7142857142857143 -90 354 1 E 140 140 150 210
+6 36
+"RECTANGLE19"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "yellow" E E
+ E E
+63 0 0 0 0 0
+E E E
+0
+1
+LANG:1 9 Level 2-5
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 0.7142857142857143 -90 404 1 E 140 140 150 210
+6 37
+"RECTANGLE20"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N {255,170,0} E E
+ E E
+64 0 0 0 0 0
+E E E
+0
+1
+LANG:1 7 Level 1
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 0.7142857142857143 -90 454 1 E 140 140 150 210
+6 38
+"RECTANGLE21"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "red" E E
+ E E
+65 0 0 0 0 0
+E E E
+0
+1
+LANG:1 7 Level 0
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 0.7142857142857143 -90 504 1 E 140 140 150 210
+2 39
+"PRIMITIVE_TEXT18"
+""
+1 122 426 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+66 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 122 426 165 438
+0 2 2 "0s" 0 0 0 192 0 0  122 426 1
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 6 stream
+6 40
+"RECTANGLE22"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "green" E E
+ E E
+67 0 0 0 0 0
+E E E
+0
+1
+LANG:1 13 datastream on
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.428571428571429 0 253.9999999999999 1 E 140 140 150 210
+6 41
+"RECTANGLE23"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "red" E E
+ E E
+68 0 0 0 0 0
+E E E
+0
+1
+LANG:1 14 datastream off
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.428571428571429 0 353.9999999999999 1 E 140 140 150 210
+2 42
+"PRIMITIVE_TEXT19"
+""
+1 212 426 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+69 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 212 426 297 453
+0 2 2 "0s" 0 0 0 192 0 0  212 426 2
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 14 softwarelevels
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 0 
+6 43
+"RECTANGLE24"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "green" E E
+ E E
+70 0 0 0 0 0
+E E E
+0
+1
+LANG:1 13 datastream on
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.428571428571429 110 253.9999999999999 1 E 140 140 150 210
+6 44
+"RECTANGLE25"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "red" E E
+ E E
+71 0 0 0 0 0
+E E E
+0
+1
+LANG:1 14 datastream off
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.428571428571429 110 353.9999999999999 1 E 140 140 150 210
+6 45
+"RECTANGLE26"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "green" E E
+ E E
+72 0 0 0 0 0
+E E E
+0
+1
+LANG:1 6 all ok
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -600 294 1 E 970 160 980 200
+6 46
+"RECTANGLE27"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "yellow" E E
+ E E
+73 0 0 0 0 0
+E E E
+0
+1
+LANG:1 13 33% > 66% bad
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -600 314 1 E 970 220 980 260
+6 47
+"RECTANGLE28"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N {255,170,0} E E
+ E E
+74 0 0 0 0 0
+E E E
+0
+1
+LANG:1 14 66% > 100% bad
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -600 324 1 E 970 250 980 290
+6 48
+"RECTANGLE29"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "red" E E
+ E E
+75 0 0 0 0 0
+E E E
+0
+1
+LANG:1 13 100% bad data
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -600 334 1 E 970 280 980 320
+6 49
+"RECTANGLE30"
+""
+1 140 140 E E E 1 E 1 E N {0,0,0} E N "Lofar_test" E E
+ E E
+76 0 0 0 0 0
+E E E
+0
+1
+LANG:1 12 0% > 33% bad
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -600 304 1 E 970 190 980 230
+2 50
+"PRIMITIVE_TEXT20"
+""
+1 330 424 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+77 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 330 424 412 436
+0 2 2 "0s" 0 0 0 192 0 0  330 424 1
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 13 brokenstation
+6 51
+"RECTANGLE31"
+""
+1 110 30 E E E 1 E 1 E N {0,0,0} E N "Lofar_beyond_repair" E E
+ E E
+78 0 0 0 0 0
+E E E
+0
+1
+LANG:1 17 Lofar_broken_came
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 -92 318.5 1 E 110 30 184 44
+2 52
+"PRIMITIVE_TEXT21"
+""
+1 108 348.5 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+79 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  1 E 108 348.5 245 361
+0 2 2 "0s" 0 0 0 192 0 0  108 348.5 1
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 28 The object is beyond repair.
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

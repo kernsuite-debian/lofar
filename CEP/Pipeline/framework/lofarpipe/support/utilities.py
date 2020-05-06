@@ -7,25 +7,26 @@
 #                                                                loose@astron.nl
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
 
-from itertools import islice, repeat, chain, izip
+
+from itertools import islice, repeat, chain
 from contextlib import closing, contextmanager
-from time import sleep
 from random import randint
+from lofar.common.subprocess_utils import communicate_returning_strings
 import warnings
 
 import os
 import errno
 import shutil
 import sys
+import time
 
 try:
     import subprocess27 as subprocess
-    print >> sys.stderr, __file__, ": Using Python 2.7 subprocess module!"
+    print(__file__, ": Using Python 2.7 subprocess module!", file=sys.stderr)
 except ImportError:
     import subprocess
-    print >> sys.stderr, __file__, ": Using default subprocess module!"
+    print(__file__, ": Using default subprocess module!", file=sys.stderr)
 
 from lofarpipe.support.pipelinelogging import log_process_output
 
@@ -72,7 +73,7 @@ def create_directory(dirname):
     try:
         if dirname:
             os.makedirs(dirname)
-    except OSError, failure:
+    except OSError as failure:
         if failure.errno != errno.EEXIST:
             raise failure
 
@@ -83,7 +84,7 @@ def delete_directory(dirname):
     """
     try:
         shutil.rmtree(dirname)
-    except OSError, e:
+    except OSError as e:
         if not e.errno == errno.ENOENT:
             raise e
 
@@ -93,7 +94,7 @@ def disk_usage(*paths):
     """
     cmd = ['du', '-s', '-b']
     proc = subprocess.Popen(cmd + list(paths), stdout = subprocess.PIPE)
-    sout = proc.communicate()[0]
+    sout = communicate_returning_strings(proc)[0]
     if sout:
         return sum([int(s.split('\t')[0]) for s in sout.strip().split('\n')])
     else:
@@ -149,7 +150,7 @@ def is_iterable(obj):
         return True
 
 try:
-    from itertools import izip_longest
+    from itertools import zip_longest
 except ImportError:
     def izip_longest(*args, **kwds):
         """
@@ -163,7 +164,7 @@ except ImportError:
         fillers = repeat(fillvalue)
         iters = [chain(it, sentinel(), fillers) for it in args]
         try:
-            for tup in izip(*iters):
+            for tup in zip(*iters):
                 yield tup
         except IndexError:
             pass
@@ -178,9 +179,9 @@ def group_iterable(iterable, size):
     (4, 5)
     """
     return (
-        filter(lambda x: x is not None, x)
-        for x in izip_longest(
-            *[islice(iterable, n, None, size) for n in xrange(size)]
+        [x for x in x if x is not None]
+        for x in zip_longest(
+            *[islice(iterable, n, None, size) for n in range(size)]
         )
     )
 
@@ -204,9 +205,9 @@ def read_initscript(logger, filename, shell = "/bin/sh"):
             stderr = subprocess.PIPE,
             close_fds = True
         )
-        so, se = p.communicate()
+        so, se = communicate_returning_strings(p)
         environment = [x.split('=', 1) for x in so.strip().split('\n')]
-        environment = filter(lambda x: len(x) == 2, environment)
+        environment = [x for x in environment if len(x) == 2]
         return dict(environment)
 
 def string_to_list(my_string):
@@ -242,7 +243,7 @@ def spawn_process(cmd, logger, cwd = None, env = None, max_tries = 2, max_timeou
             process = subprocess.Popen(
                 cmd, cwd = cwd, env = env, stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE
             )
-        except OSError, e:
+        except OSError as e:
             logger.warn(
                 "Failed to spawn external process %s (%s)" % (" ".join(cmd), str(e))
             )
@@ -253,7 +254,7 @@ def spawn_process(cmd, logger, cwd = None, env = None, max_tries = 2, max_timeou
                     (timeout, max_tries - trycounter - 1)
                 )
                 trycounter += 1
-                sleep(timeout)
+                time.sleep(timeout)
             else:
                 raise
         else:
@@ -278,11 +279,10 @@ def catch_segfaults(cmd, cwd, env, logger, max = 1, cleanup = lambda: None,
             usageStats.addPID(process.pid)
 
         if 'casa' in cmd[0]:
-	    import time
             while process.returncode is None:
                 process.poll()
                 time.sleep(1)
-        sout, serr = process.communicate()
+        sout, serr = communicate_returning_strings(process)
         log_process_output(cmd[0], sout, serr, logger)
         if process.returncode == 0:
             break
@@ -307,11 +307,11 @@ def socket_recv(socket, numbytes):
     Raises IOError if connection has closed before all data could be read.
     """
 
-    data = ""
+    data = b""
     while numbytes > 0:
         try:
             chunk = socket.recv(numbytes)
-        except IOError, e:
+        except IOError as e:
             if e.errno == errno.EINTR:
                 continue
             else:

@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import logging
+from lofar.mac.tbbservice.client import TBBRPC
+from lofar.mac.tbb.tbb_load_firmware import parse_args
+
+
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    args = parse_args()
+
+    with TBBRPC.create(timeout=5*60) as rpc:
+        rpc.switch_firmware(args.stations, args.mode)
+

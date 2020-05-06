@@ -2,4 +2,4 @@
 
 source MessageFuncs.sh
 
-python tPyProtocols.py
+python3 tPyProtocols.py

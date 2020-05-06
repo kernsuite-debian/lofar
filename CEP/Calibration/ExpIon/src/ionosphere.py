@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007
 # ASTRON (Netherlands Institute for Radio Astronomy)
@@ -37,18 +37,18 @@ import scipy.optimize
 
 # import user modules
 #from files import *
-import client
-from acalc import *
-import sphere
+from . import client
+from .acalc import *
+from . import sphere
 import lofar.parmdb
 import lofar.parameterset
 import pyrap.tables as pt
-from mpfit import *
-from error import *
-import readms
-import io
+from .mpfit import *
+from .error import *
+from . import readms
+from . import io
 
-import parmdbmain
+from . import parmdbmain
 import tables
 
 
@@ -88,7 +88,7 @@ class IonosphericModel:
          self.RotationEnable = RotationEnable
          self.polarizations = polarizations
          self.N_pol = len(polarizations)
-         print "RotationEnable:", self.RotationEnable
+         print("RotationEnable:", self.RotationEnable)
          self.load_gds(gdsfiles, clusterdesc, globaldb, sky_name, instrument_name, stations, sources)
 
    def load_globaldb ( self, globaldb ) :
@@ -168,12 +168,12 @@ class IonosphericModel:
          self.instrumentdb_name_list.append(instrumentdb_name)
          
       gdsfiles = []   
-      for (idx, gdsfile) in zip(range(len(self.gdsfiles)), self.gdsfiles):
+      for (idx, gdsfile) in zip(list(range(len(self.gdsfiles))), self.gdsfiles):
          gdsfiles.extend( splitgds( gdsfile, wd = self.globaldb, id = 'part-%i' % idx) )
       self.gdsfiles = gdsfiles
 
       instrumentdb_name_list = []   
-      for (idx, instrumentdb_name) in zip(range(len(self.instrumentdb_name_list)), self.instrumentdb_name_list):
+      for (idx, instrumentdb_name) in zip(list(range(len(self.instrumentdb_name_list))), self.instrumentdb_name_list):
          instrumentdb_name_list.extend( splitgds( instrumentdb_name, wd = self.globaldb, id = 'instrument-%i' % idx) )
       self.instrumentdb_name_list = instrumentdb_name_list
       
@@ -251,8 +251,8 @@ class IonosphericModel:
                dec = skydb.getDefValues( 'Dec:' + source )['Dec:' + source][0][0]
             except KeyError:
                # Source not found in skymodel parmdb, try to find components
-               RA = numpy.array(skydb.getDefValues( 'Ra:' + source + '.*' ).values()).mean()
-               dec = numpy.array(skydb.getDefValues( 'Dec:' + source + '.*' ).values()).mean()
+               RA = numpy.array(list(skydb.getDefValues( 'Ra:' + source + '.*' ).values())).mean()
+               dec = numpy.array(list(skydb.getDefValues( 'Dec:' + source + '.*' ).values())).mean()
             self.source_positions.append([RA, dec])
       else:
          self.sources = ["Pointing"]
@@ -292,7 +292,7 @@ class IonosphericModel:
           self.freqs = numpy.concatenate([self.freqs, freqs])
           self.freqwidths = numpy.concatenate([self.freqwidths, v0['freqwidths']])
         except:
-          print "Error opening " + instrumentdb_name
+          print("Error opening " + instrumentdb_name)
           exit()
       # Sort frequencies, find both the forward and inverse mapping
       # Mappings are such that
@@ -301,8 +301,8 @@ class IonosphericModel:
       # We will use the following form
       #    sorted_freqs[inverse_sorted_freq_idx[selection]] = unsorted_freqs[selection]
       # to process chunks (=selections) of unsorted data and store them in sorted order
-      sorted_freq_idx = sorted(range(len(self.freqs)), key = lambda idx: self.freqs[idx])
-      inverse_sorted_freq_idx = sorted(range(len(self.freqs)), key = lambda idx: sorted_freq_idx[idx])
+      sorted_freq_idx = sorted(list(range(len(self.freqs))), key = lambda idx: self.freqs[idx])
+      inverse_sorted_freq_idx = sorted(list(range(len(self.freqs))), key = lambda idx: sorted_freq_idx[idx])
       
       self.freqs = self.freqs[sorted_freq_idx]
       self.freqwidths = self.freqwidths[sorted_freq_idx]
@@ -326,8 +326,8 @@ class IonosphericModel:
       self.flags = self.hdf5.createCArray(self.hdf5.root, 'flags', tables.Float32Atom(), shape=(self.N_times, self.N_freqs))
 
       freq_idx = 0
-      for gdsfile, instrumentdb_name, gdsfile_idx in zip(gdsfiles, self.instrumentdb_name_list, range(len(gdsfiles))) :
-         print ('-Reading %s (%i/%i)' % (gdsfile, gdsfile_idx+1, len(gdsfiles))),
+      for gdsfile, instrumentdb_name, gdsfile_idx in zip(gdsfiles, self.instrumentdb_name_list, list(range(len(gdsfiles)))) :
+         print(('-Reading %s (%i/%i)' % (gdsfile, gdsfile_idx+1, len(gdsfiles))), end=' ')
          shapemismatch = False
 
          instrumentdb = lofar.parmdb.parmdb( instrumentdb_name )
@@ -341,8 +341,8 @@ class IonosphericModel:
          except KeyError:
             pass
          
-         for pol, pol_idx in zip(self.polarizations, range(len(self.polarizations))):
-            for station, station_idx in zip(self.stations, range(len(self.stations))):
+         for pol, pol_idx in zip(self.polarizations, list(range(len(self.polarizations)))):
+            for station, station_idx in zip(self.stations, list(range(len(self.stations)))):
               if self.GainEnable:
                  parmname0 = ':'.join(['Gain', str(pol), str(pol), infix[0], station])
                  parmname1 = ':'.join(['Gain', str(pol), str(pol), infix[1], station])
@@ -363,7 +363,7 @@ class IonosphericModel:
                    self.phases[:, sorted_freq_selection, station_idx, :, pol_idx] = numpy.resize(numpy.arctan2(gain_imag.T, gain_real.T),(self.N_sources, N_freqs, self.N_times)).T
                    self.amplitudes[:, sorted_freq_selection, station_idx, :, pol_idx] = numpy.resize(numpy.sqrt(gain_imag.T**2 + gain_real.T**2),(self.N_sources, N_freqs, self.N_times)).T
               if self.DirectionalGainEnable:
-                for source, source_idx in zip(self.sources, range(len(self.sources))) :
+                for source, source_idx in zip(self.sources, list(range(len(self.sources)))) :
                   parmname0 = ':'.join(['DirectionalGain', str(pol), str(pol), infix[0], station, source])
                   parmname1 = ':'.join(['DirectionalGain', str(pol), str(pol), infix[1], station, source])
                   if self.PhasorsEnable:
@@ -387,8 +387,8 @@ class IonosphericModel:
                     self.phases[0:l, sorted_freq_selection, station_idx, source_idx, pol_idx]  += numpy.arctan2(gain_imag, gain_real)
                     self.amplitudes[0:l, sorted_freq_selection, station_idx, source_idx, pol_idx] *= numpy.sqrt(gain_real**2 + gain_imag**2)
          if self.RotationEnable:
-           for station, station_idx in zip(self.stations, range(len(self.stations))):
-             for source, source_idx in zip(self.sources, range(len(self.sources))) :
+           for station, station_idx in zip(self.stations, list(range(len(self.stations)))):
+             for source, source_idx in zip(self.sources, list(range(len(self.sources)))) :
                parmname = ':'.join(['RotationAngle', station, source])
                rotation = instrumentdb.getValuesGrid( parmname )[ parmname ]['values']
                l = min(rotation.shape[0], self.rotation.shape[0])
@@ -396,14 +396,14 @@ class IonosphericModel:
                  shapemismatch = True
                self.rotation[:l, sorted_freq_selection, station_idx, source_idx] = rotation[:l,:]
          freq_idx += N_freqs
-         print ["","*"][shapemismatch]
+         print(["","*"][shapemismatch])
 
-      if self.flags.shape <>  self.phases.shape[0:2] :
+      if self.flags.shape !=  self.phases.shape[0:2] :
          self.flags = numpy.zeros(self.phases.shape[0:2])
          
    def calculate_piercepoints(self, time_steps = [], height = 200.e3):
       if ( len( time_steps ) == 0 ):
-         n_list = range( self.times.shape[0] )
+         n_list = list(range( self.times.shape[0]))
       else:
          n_list = time_steps
       self.n_list = n_list
@@ -420,7 +420,7 @@ class IonosphericModel:
       self.piercepoints.attrs.height = self.height
       piercepoints_row = self.piercepoints.row
       p = ProgressBar(len(n_list), "Calculating piercepoints: ")
-      for (n, counter) in zip(n_list, range(len(n_list))):
+      for (n, counter) in zip(n_list, list(range(len(n_list)))):
          p.update(counter)
          piercepoints =  PiercePoints( self.times[ n ], self.pointing, self.array_center, self.source_positions, self.station_positions, height = self.height )
          piercepoints_row['positions'] = piercepoints.positions
@@ -445,7 +445,7 @@ class IonosphericModel:
       self.U_list = []
       self.S_list = []
       p = ProgressBar(len(self.piercepoints), "Calculating base vectors: ")
-      for (piercepoints, counter) in zip(self.piercepoints, range(len(self.piercepoints))):
+      for (piercepoints, counter) in zip(self.piercepoints, list(range(len(self.piercepoints)))):
          p.update( counter )
          Xp_table = reshape(piercepoints['positions_xyz'], (N_piercepoints, 3) )
          
@@ -530,7 +530,7 @@ class IonosphericModel:
       beta = self.TECfit.attrs.beta
       r_0 = self.TECfit.attrs.r_0
       
-      print "Making movie..."
+      print("Making movie...")
       p = ProgressBar( len( self.n_list ), 'Submitting jobs: ' )
       for i in range(len(self.n_list)) :
          p.update(i)
@@ -600,7 +600,7 @@ class IonosphericModel:
       self.facet_names = self.facets[:]['name']
       self.facet_positions = self.facets[:]['position']
 
-      print self.n_list
+      print(self.n_list)
       if 'STEC_facets' in self.hdf5.root: self.hdf5.root.STEC_facets.remove()
       self.STEC_facets = self.hdf5.createCArray(self.hdf5.root, 'STEC_facets', tables.Float32Atom(), shape = (self.N_pol, self.n_list.shape[0],  self.N_facets, self.N_stations))
 
@@ -753,7 +753,7 @@ class IonosphericModel:
                identifier = station
             PiercepointX_parm = parm.copy()
             parmname = ':'.join(['Piercepoint', 'X', identifier])
-            print n_source, n_station
+            print(n_source, n_station)
             x = self.piercepoints[:]['positions_xyz'][:,n_source, n_station,0]
             PiercepointX_parm['values'] = x
             parms[ parmname ] = PiercepointX_parm
@@ -818,7 +818,7 @@ class IonosphericModel:
          parm[ 'freqwidths' ] = spectral_table[0]['CHAN_WIDTH']
          spectral_table.close()
 
-         for (pol, pol_idx) in zip(self.polarizations, range(len(self.polarizations))):
+         for (pol, pol_idx) in zip(self.polarizations, list(range(len(self.polarizations)))):
             for n_station in range(len(self.stations)):
                station = self.stations[n_station]
                
@@ -829,7 +829,7 @@ class IonosphericModel:
                   #Clock_parm[ 'values' ] = self.Clock[n_pol, :, n_station]
                   #parms[ parmname ] = Clock_parm
 
-               for (facet, facet_idx) in zip(self.facets[:]['name'], range(len(self.facets))):
+               for (facet, facet_idx) in zip(self.facets[:]['name'], list(range(len(self.facets)))):
                   v = exp(1j * self.STEC_facets[pol_idx, :, facet_idx, n_station].reshape((N_times,1)) * \
                       8.44797245e9 / freqs.reshape((1, N_freqs)))
                   identifier = ':'.join([str(pol), str(pol), 'Real', station, facet])
@@ -865,7 +865,7 @@ class IonosphericModel:
 def product(*args, **kwds):
     # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
     # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
-    pools = map(tuple, args) * kwds.get('repeat', 1)
+    pools = list(map(tuple, args)) * kwds.get('repeat', 1)
     result = [[]]
     for pool in pools:
         result = [x+[y] for x in result for y in pool]
@@ -873,8 +873,8 @@ def product(*args, **kwds):
         yield tuple(prod)
 
 def fillarray( a, v ) :
-   print a.shape, a.chunkshape
-   for idx in product(*[xrange(0, s, c) for s, c in zip(a.shape, a.chunkshape)]) :
+   print(a.shape, a.chunkshape)
+   for idx in product(*[range(0, s, c) for s, c in zip(a.shape, a.chunkshape)]) :
       s = tuple([slice(i,min(i+c,s)) for i,s,c in zip(idx, a.shape, a.chunkshape)])
       a[s] = v
    
@@ -927,13 +927,13 @@ def fit_Clock_or_TEC( phase, freqs, flags, ClockEnable ):
 
    taskids = []
    for i in range(0,phase.shape[0]):
-      print i+1, '/', phase.shape[0]
+      print(i+1, '/', phase.shape[0])
       maptask = client.MapTask(fit_Clock_or_TEC_worker, ( phase[i, :, :], flags[i, :], A1,A2))
       taskids.append(tc.run(maptask))
    i = 0
    for taskid in taskids :
       i += 1
-      print i, '/', len(taskids)
+      print(i, '/', len(taskids))
       (residual_std, p) = tc.get_task_result(taskid, block = True)
       rr.append(residual_std)
       p22.append(p)      
@@ -1040,15 +1040,15 @@ def fit_Clock_and_TEC( phase, freqs, flags ):
    tc = client.TaskClient(  )
 
    taskids = []
-   for i in xrange(0,phase.shape[0]):
-      print i+1, '/', phase.shape[0]
+   for i in range(0,phase.shape[0]):
+      print(i+1, '/', phase.shape[0])
       sys.stdout.flush()
       maptask = client.MapTask(fit_Clock_and_TEC_worker, ( phase[i, :, :], flags[i, :], A1,A2,dp))
       taskids.append(tc.run(maptask))
    i = 0
    for taskid in taskids :
       i += 1
-      print i, '/', len(taskids)
+      print(i, '/', len(taskids))
       sys.stdout.flush()
       (residual_std, p) = tc.get_task_result(taskid, block = True)
       rr.append(residual_std)
@@ -1083,8 +1083,8 @@ def fit_Clock_and_TEC1( phase, freqs, flags ):
    residual_std1 = []
 
    rr = []
-   for i in xrange(0,phase.shape[0]):
-      print i+1, '/', phase.shape[0]
+   for i in range(0,phase.shape[0]):
+      print(i+1, '/', phase.shape[0])
       sys.stdout.flush()
       residual_std, p = fit_Clock_and_TEC_worker ( phase[i, :, :], flags[i, :], A1,A2,dp)
       rr.append(residual_std)
@@ -1247,7 +1247,7 @@ def get_source_list( pdb, source_pattern_list ):
       source_list.extend([n.split(':')[-1] for n in parmname_list])
       parmname_list = pdb.getNames( 'RotationAngle:*:' + pattern )
       source_list.extend([n.split(':')[-1] for n in parmname_list])
-   print source_list
+   print(source_list)
    return sorted(set(source_list))
 
 def get_source_list_from_ionospheredb( pdb ):

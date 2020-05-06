@@ -20,7 +20,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: gen_LofarPackageList_cmake.sh 31155 2015-03-09 12:41:29Z mol $
+#  $Id$
 
 # This script generates the file LofarPackageList.cmake, which initializes the
 # <pkg>_SOURCE_DIR variables for each LOFAR package.

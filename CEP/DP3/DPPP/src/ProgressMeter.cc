@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProgressMeter.cc 26661 2013-09-24 13:09:47Z dijkema $
+//# $Id$
 
 #include <DPPP/ProgressMeter.h>
 #include <Common/lofar_iostream.h>

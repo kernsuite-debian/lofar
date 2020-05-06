@@ -1,9 +1,8 @@
 # Variants file of LOFAR DRAGNET cluster nodes (CentOS 7)
 #
-# $Id: variants.dragnet 38573 2017-10-06 13:06:56Z schoenmakers $
+# $Id$
 
 option(USE_MPI       "Use MPI"       ON)
-option(USE_CUDA      "Use CUDA"      ON)
 
 # Default search path for LOFAR deps (see CMake/variants/variants): /opt/lofar/external:/usr/local
 # The dirs thereunder must be lower case, e.g. unittest++/ or dal/

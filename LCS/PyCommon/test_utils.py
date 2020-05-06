@@ -26,6 +26,8 @@ This package contains different utilities that are common for LOFAR software tes
 
 from lxml.doctestcompare import LXMLOutputChecker, PARSE_XML
 from doctest import Example
+import unittest
+import os
 
 def assertEqualXML(test, expected):
     output_checker = LXMLOutputChecker()
@@ -40,3 +42,10 @@ def assertEqualXML(test, expected):
         if msg == "":
             msg = diff
         raise AssertionError(msg)
+
+
+# decorators for selective tests
+integration_test = unittest.skipIf(os.environ.get('SKIP_INTEGRATION_TESTS', default='False').lower() in ['1', 'true'],
+                                   'Integration tests are disabled via env SKIP_INTEGRATION_TESTS')
+unit_test = unittest.skipIf(os.environ.get('SKIP_UNIT_TESTS', default='False').lower() in ['1', 'true'],
+                            'Unit tests are disabled via env SKIP_UNIT_TESTS')

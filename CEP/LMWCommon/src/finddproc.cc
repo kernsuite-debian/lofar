@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: finddproc.cc 21558 2012-07-12 09:35:39Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 #include <LMWCommon/VdsDesc.h>

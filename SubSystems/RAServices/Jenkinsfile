@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                cmakeBuild([installation: "InSearchPath", cmakeArgs: "-Wdev -DBUILD_PACKAGES=RAServices -DCMAKE_INSTALL_PREFIX=/opt/lofar"])            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}

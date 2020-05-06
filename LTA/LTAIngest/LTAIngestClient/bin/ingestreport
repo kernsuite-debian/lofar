@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import logging
+from lofar.lta.ingest.client.rpc import IngestRPC, DEFAULT_BROKER, DEFAULT_BUSNAME, DEFAULT_INGEST_SERVICENAME
+
+import pprint
+from optparse import OptionParser
+
+logger = logging.getLogger(__name__)
+
+def main():
+    # Check the invocation arguments
+    parser = OptionParser('%prog [options] <export_group_id>',
+                          description='''Print report of current status of the given export_group_id (or all if no id given)\n
+export_group_id is the mom_id of the export job''')
+    parser.add_option('-q', '--broker', dest='broker', type='string', default=DEFAULT_BROKER, help='Address of the qpid broker, default: %default')
+    parser.add_option('-b', '--busname', dest='busname', type='string', default=DEFAULT_BUSNAME, help='Name of the bus exchange on the qpid broker, default: %default')
+    parser.add_option('-s', '--service_name', dest='service_name', type='string', default=DEFAULT_INGEST_SERVICENAME, help='Name for this service, default: %default')
+    parser.add_option('-d', '--detailed', dest='detailed', action='store_true', help='get a detail (developers) report')
+    (options, args) = parser.parse_args()
+
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                        level=logging.INFO)
+
+    with IngestRPC(exchange=options.busname, service_name=options.service_name, broker=options.broker) as rpc:
+        if options.detailed:
+            pprint.pprint(rpc.getStatusReport())
+        else:
+            if args:
+                export_group_ids = [int(args[0])]
+            else:
+                export_group_ids = rpc.getExportIds()
+                print(export_group_ids)
+
+            for export_group_id in export_group_ids:
+                print(rpc.getReport(export_group_id))
+
+if __name__ == '__main__':
+    main()

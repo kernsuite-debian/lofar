@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 38968 2018-01-26 11:31:15Z dijkema $
+# $Id$
 
 lofar_add_package(DPPP)
 lofar_add_package(TestDynDPPP)
@@ -10,8 +10,9 @@ lofar_find_package(Armadillo)
 if(${ARMADILLO_FOUND})
   if(CMAKE_CXX_FLAGS MATCHES ".*\\+\\+11.*")
     lofar_add_package(DPPP_DDECal)
+lofar_add_package(DPPP_Interpolate)
   else()
-    message(WARNING "DPPP_DDECal will not build if you have no C++11 support, please build in directory gnucxx11_opt")
+    message(WARNING "DPPP_DDECal and DPPP_Interpolate will not build if you have no C++11 support, please build in directory gnucxx11_opt")
   endif()
 else()
   message(WARNING "Armadillo was not found, NOT building DPPP_DDECal")

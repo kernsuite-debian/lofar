@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSWriter.cc 37169 2017-04-19 12:41:21Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -31,7 +31,7 @@
 #include <MS/VdsMaker.h>
 #include <Common/ParameterSet.h>
 #include <casacore/tables/Tables/TableCopy.h>
-#if defined(casacore)
+#if defined(HAVE_CASACORE)
 #include <casacore/tables/DataMan/DataManInfo.h>
 #else
 #include <casacore/tables/DataMan/DataManInfo.h>

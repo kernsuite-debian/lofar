@@ -4,7 +4,7 @@
 #                                                             Marcel Loose, 2011
 #                                                                loose@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os
 import sys
 import copy
@@ -122,7 +122,7 @@ class gainoutliercorrection(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # ********************************************************************
         # 3. Call node side of the recipe
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         indata.iterator = outdata.iterator = DataMap.SkipIterator
         jobs = []
         for inp, outp in zip(indata, outdata):

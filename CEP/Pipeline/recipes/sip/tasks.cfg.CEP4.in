@@ -11,12 +11,6 @@ nproc = 0
 [vdsmaker]
 nproc = 0
 
-[rficonsole]
-nproc = 0
-
-[imager_prepare]
-nthreads = 2
-
 [long_baseline]
 nproc = 0
 rficonsole_executable = /opt/aoflagger/bin/aoflagger
@@ -34,6 +28,7 @@ nthreads = 2
 executable = /opt/aoflagger/bin/aoflagger
 max_per_node = 0 
 nthreads = 2
+nproc = 0
 
 [imager_prepare]
 rficonsole_executable = /opt/aoflagger/bin/aoflagger

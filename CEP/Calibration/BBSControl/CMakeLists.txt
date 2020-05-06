@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 20437 2012-03-14 09:13:53Z loose $
+# $Id$
 
 # Do not split the following line, otherwise makeversion will fail!
 lofar_package(BBSControl 1.0 DEPENDS BBSKernel Blob Common LMWCommon ParmDB PLC Transport)

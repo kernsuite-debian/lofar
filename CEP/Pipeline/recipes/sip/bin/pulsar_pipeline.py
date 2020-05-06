@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # pulsar_pipeline.py is a wrapper around the actual pulsar pipeline pulp.py
 # It is supplied with a pipeline parset which it will digest.
@@ -144,7 +144,7 @@ class pulsar_pipeline(control):
 
         if self.globalfs:
           # patch for Pulp in case of DOCKER
-          for k in [x for x in self.pulsar_parms.keys() if x.endswith("_extra_opts")]:
+          for k in [x for x in list(self.pulsar_parms.keys()) if x.endswith("_extra_opts")]:
             self.pulsar_parms.replace(k, self.pulsar_parms[k].getString().replace(" ","\\\\ "))
 
         self.pulsar_parms.writeFile(pulsar_parset)
@@ -185,7 +185,7 @@ class pulsar_pipeline(control):
         # Read and forward the feedback
         try:
           metadata = parameterset(self.parset_feedback_file)
-        except IOError, e:
+        except IOError as e:
           self.logger.error("Could not read feedback from %s: %s" % (metadata_file,e))
           return 1
 

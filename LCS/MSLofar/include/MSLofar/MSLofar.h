@@ -17,14 +17,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofar.h 32355 2015-08-31 10:00:31Z schoenmakers $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFAR_H
 #define MSLOFAR_MSLOFAR_H
 
-#include <ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
 #include <MSLofar/MSLofarAntenna.h>
 #include <MSLofar/MSLofarField.h>
 #include <MSLofar/MSLofarObservation.h>
@@ -38,7 +38,7 @@ namespace LOFAR {
   // It is derived from the casacore MeasurementSet class and adds the
   // LOFAR specific columns and subtables.
 
-  class MSLofar: public casa::MeasurementSet
+  class MSLofar: public casacore::MeasurementSet
   {
   public:
 
@@ -47,23 +47,23 @@ namespace LOFAR {
     MSLofar();
 
     // Construct from an existing LOFAR MS table using default locking options.
-    MSLofar (const casa::String &tableName,
-             casa::Table::TableOption = casa::Table::Old);
+    MSLofar (const casacore::String &tableName,
+             casacore::Table::TableOption = casacore::Table::Old);
 
     // Construct from an existing LOFAR MS table using given locking options.
-    MSLofar (const casa::String &tableName, const casa::TableLock& lockOptions,
-             casa::Table::TableOption = casa::Table::Old);
+    MSLofar (const casacore::String &tableName, const casacore::TableLock& lockOptions,
+             casacore::Table::TableOption = casacore::Table::Old);
 
     // Construct a new LOFAR MS using default locking options.
-    MSLofar (casa::SetupNewTable &newTab,casa:: uInt nrrow = 0,
-             casa::Bool initialize = casa::False);
+    MSLofar (casacore::SetupNewTable &newTab,casacore:: uInt nrrow = 0,
+             casacore::Bool initialize = casacore::False);
 
     // Construct a new LOFAR MS using given locking options.
-    MSLofar (casa::SetupNewTable &newTab, const casa::TableLock& lockOptions,
-             casa::uInt nrrow = 0, casa::Bool initialize = casa::False);
+    MSLofar (casacore::SetupNewTable &newTab, const casacore::TableLock& lockOptions,
+             casacore::uInt nrrow = 0, casacore::Bool initialize = casacore::False);
 
     // Construct from an existing Table object.
-    MSLofar (const casa::Table &table);
+    MSLofar (const casacore::Table &table);
 
     // Copy constructor (reference semantics).
     MSLofar (const MSLofar &other);
@@ -83,16 +83,16 @@ namespace LOFAR {
     // model visibilities are stored as new DATA columns in an MS which 
     // references the raw MS for the other columns. Except for these special
     // cases, the use of this function will be rare.
-    MSLofar referenceCopy (const casa::String& newTableName,
-                        const casa::Block<casa::String>& writableColumns) const;
+    MSLofar referenceCopy (const casacore::String& newTableName,
+                        const casacore::Block<casacore::String>& writableColumns) const;
 
     // Return the name of each of the LOFAR specific subtables.
     // This should be used by the filler to create the subtables in the
     // correct location.
     // <group>
-    casa::String stationTableName() const;
-    casa::String antennaFieldTableName() const;
-    casa::String elementFailureTableName() const;
+    casacore::String stationTableName() const;
+    casacore::String antennaFieldTableName() const;
+    casacore::String elementFailureTableName() const;
     // </group>
     
     // Access functions for the LOFAR specific subtables, using the MS-like
@@ -116,7 +116,7 @@ namespace LOFAR {
     // this only if you assign new subtables to the table keywords.
     // This also checks for validity of the table and its subtables.
     // Set clear to True to clear the subtable references (used in assignment)
-    void initRefs (casa::Bool clear=casa::False);
+    void initRefs (casacore::Bool clear=casacore::False);
 
     // Create default subtables: fills the required subtable keywords with
     // tables of the correct type, mainly for testing and as an example of
@@ -124,19 +124,19 @@ namespace LOFAR {
     // often have more things specified, like dimensions of arrays and
     // storage managers for the various columns.
     void createDefaultSubtables
-    (casa::Table::TableOption option=casa::Table::Scratch);
+    (casacore::Table::TableOption option=casacore::Table::Scratch);
 
     // Flush all the tables and subtables associated with this
     // MeasurementSet. This function calls the Table::flush() function on the
     // main table and all the standard subtables including optional
     // subtables. See the Table class for a description of the sync argument.
-    void flush (casa::Bool sync=casa::False);
+    void flush (casacore::Bool sync=casacore::False);
 
     // Remove MEASINFO keywords TabVarTypes and TabVarCodes, because
     // old CASA cannot handle them since Dirk Petry added frequency
     // type Undefined.
-    static void removeMeasKeys (casa::Table& table,
-                                const casa::String& colName);
+    static void removeMeasKeys (casacore::Table& table,
+                                const casacore::String& colName);
 
   private:
     //# keep references to the subtables

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 37648 2017-06-16 08:29:25Z schoenmakers $
+# $Id$
 
 lofar_package(StaticMetaData 1.0)
 

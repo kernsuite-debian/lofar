@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParameterValue.cc 31197 2015-03-13 10:46:34Z amesfoort $
+//# $Id$
 
 #include<lofar_config.h>
 #include <Common/ParameterValue.h>

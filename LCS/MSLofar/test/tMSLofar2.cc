@@ -23,29 +23,29 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: tMSLofar2.cc 32222 2015-08-18 13:31:42Z diepen $
+//# $Id$
 
 //# Includes
 
 #include <MSLofar/MSLofar.h>
 
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayUtil.h>
-#include <casa/Exceptions/Error.h>
-#include <tables/Tables.h>
-#include <tables/Tables/RowCopier.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Utilities/Fallible.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MFrequency.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayUtil.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/tables/Tables.h>
+#include <casacore/tables/Tables/RowCopier.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Utilities/Fallible.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MFrequency.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 
 
 // test addColumnToDesc static for all possible columns 

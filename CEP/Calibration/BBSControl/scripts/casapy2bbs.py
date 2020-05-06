@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import numpy
@@ -85,8 +85,8 @@ def build_index(available, requested, mandatory=True):
 # For example: [4,2,9,11] => [1,0,2,3]
 #
 def renumber(sequence):
-    index = sorted(range(len(sequence)), key=lambda x: sequence[x])
-    return sorted(range(len(index)), key=lambda x: index[x])
+    index = sorted(list(range(len(sequence))), key=lambda x: sequence[x])
+    return sorted(list(range(len(index))), key=lambda x: index[x])
 
 # Load pixel data from the input CASA image and create a slice that contains
 # only the requested axes in order. Zero is used as the coordinate for each
@@ -124,7 +124,7 @@ def main(options, args):
 
     # Make sure Stokes I is available.
     if stokes_index[0] is None:
-        print "error: incompatible CLEAN component image format: Stokes I unavailable."
+        print("error: incompatible CLEAN component image format: Stokes I unavailable.")
         sys.exit(1)
 
     # Find locations of all CLEAN components (pixels with non-zero flux).
@@ -133,13 +133,13 @@ def main(options, args):
 
     # Compute statistics.
     total_component_count = len(components[0])
-    print "info: total number of CLEAN components: %d" % total_component_count
+    print("info: total number of CLEAN components: %d" % total_component_count)
     if total_component_count == 0:
-        print "error: no CLEAN components found in CASA image:", args[0]
+        print("error: no CLEAN components found in CASA image:", args[0])
         sys.exit(1)
 
     total_component_flux = numpy.sum(component_flux[components])
-    print "info: total flux in CLEAN components: %.2f Jy" % total_component_flux
+    print("info: total flux in CLEAN components: %.2f Jy" % total_component_flux)
 
     have_mask = not options.mask is None
     if have_mask:
@@ -149,13 +149,13 @@ def main(options, args):
 
         # Sanity check mask image dimensions.
         if mask.shape != component_flux.shape:
-            print "error: CASA mask image should have the same dimensions as the CLEAN component image."
+            print("error: CASA mask image should have the same dimensions as the CLEAN component image.")
             sys.exit(1)
 
         # Find islands in the mask image.
         (island_label, island_count) = scipy.ndimage.measurements.label(mask)
         if island_count == 0:
-            print "error: no islands found in CASA mask image:", options.mask
+            print("error: no islands found in CASA mask image:", options.mask)
             sys.exit(1)
 
         # Assign CLEAN components to the corresponding (co-located) islands and
@@ -185,15 +185,15 @@ def main(options, args):
             total_flux += flux
 
         # Prune islands that do not contain any CLEAN components.
-        islands = filter(lambda x: len(x[1]) > 0, islands)
+        islands = [x for x in islands if len(x[1]) > 0]
 
         # Print total number of non-empty island.
-        print "info: total number of non-empty islands: %d" % len(islands)
-        print "info: total flux in non-empty islands: %.2f Jy" % total_flux
+        print("info: total number of non-empty islands: %d" % len(islands))
+        print("info: total flux in non-empty islands: %.2f Jy" % total_flux)
 
         # Determine clip level.
         clip_flux = options.clip_level / 100.0 * total_flux
-        print "info: clipping at: %.2f Jy" % clip_flux
+        print("info: clipping at: %.2f Jy" % clip_flux)
 
         # Sort islands by absolute flux (descending).
         islands = sorted(islands, key = lambda x: abs(x[0]), reverse = True)
@@ -211,16 +211,16 @@ def main(options, args):
             component_count += len(island[1])
             patches.append(island[1])
 
-        print "info: number of non-empty islands selected: %d" % len(patches),
+        print("info: number of non-empty islands selected: %d" % len(patches), end=' ')
         if len(islands) > 0:
-            print "(%.2f%%)" % ((100.0 * len(patches)) / len(islands))
+            print("(%.2f%%)" % ((100.0 * len(patches)) / len(islands)))
         else:
-            print "(100.00%)"
+            print("(100.00%)")
         if len(patches) == 0:
-            print "warning: no non-empty islands selected; you may need to raise the clip level (option -c)."
+            print("warning: no non-empty islands selected; you may need to raise the clip level (option -c).")
 
-        print "info: number of CLEAN components in selected non-empty islands: %d (%.2f%%)" % (component_count, (100.0 * component_count) / total_component_count)
-        print "info: flux in selected non-empty islands: %.2f Jy (%.2f%%)" % (sum_flux, (100.0 * sum_flux) / total_flux)
+        print("info: number of CLEAN components in selected non-empty islands: %d (%.2f%%)" % (component_count, (100.0 * component_count) / total_component_count))
+        print("info: flux in selected non-empty islands: %.2f Jy (%.2f%%)" % (sum_flux, (100.0 * sum_flux) / total_flux))
     else:
         # Without a mask we are selecting CLEAN components, so the total
         # absolute flux is equal to the sum of the absolute flux of all CLEAN
@@ -229,7 +229,7 @@ def main(options, args):
 
         # Determine clip level.
         clip_flux = options.clip_level / 100.0 * total_flux
-        print "info: clipping at: %.2f Jy" % clip_flux
+        print("info: clipping at: %.2f Jy" % clip_flux)
 
         # Sort CLEAN components on absolute flux (descending).
         components = sorted(zip(*components),
@@ -251,31 +251,31 @@ def main(options, args):
         if len(patch) > 0:
             patches.append(patch)
 
-        print "info: number of CLEAN components selected: %d (%.2f%%)" % (len(patch), (100.0 * len(patch)) / total_component_count)
+        print("info: number of CLEAN components selected: %d (%.2f%%)" % (len(patch), (100.0 * len(patch)) / total_component_count))
         if len(patch) == 0:
-            print "warning: no CLEAN components selected; you may need to raise the clip level (option -c)."
-        print "info: flux in selected CLEAN components: %.2f Jy (%.2f%%)" % (sum_flux, (100.0 * sum_flux) / total_flux)
+            print("warning: no CLEAN components selected; you may need to raise the clip level (option -c).")
+        print("info: flux in selected CLEAN components: %.2f Jy (%.2f%%)" % (sum_flux, (100.0 * sum_flux) / total_flux))
 
     # Open output file.
     out = sys.stdout
     if len(args) == 1:
-        out = file("%s.catalog" % args[0], 'w')
+        out = open("%s.catalog" % args[0], 'w')
     elif args[1] != "-":
-        out = file(args[1], 'w')
+        out = open(args[1], 'w')
 
     # Write the catalog header.
     if options.use_patches:
-        print >>out, "# (Name, Type, Patch, Ra, Dec, I, Q, U, V) = format"
+        print("# (Name, Type, Patch, Ra, Dec, I, Q, U, V) = format", file=out)
     else:
-        print >>out, "# (Name, Type, Ra, Dec, I, Q, U, V) = format"
+        print("# (Name, Type, Ra, Dec, I, Q, U, V) = format", file=out)
 
-    print >>out
-    print >>out, "# CLEAN component list converted from:", args[0]
+    print(file=out)
+    print("# CLEAN component list converted from:", args[0], file=out)
     if not options.mask is None:
-        print >>out, "# Mask:", options.mask
-    print >>out, "# Total flux in CLEAN components: %.2f Jy" % total_flux
-    print >>out, "# Percentage of total flux kept: %.2f%%" % options.clip_level
-    print >>out
+        print("# Mask:", options.mask, file=out)
+    print("# Total flux in CLEAN components: %.2f Jy" % total_flux, file=out)
+    print("# Percentage of total flux kept: %.2f%%" % options.clip_level, file=out)
+    print(file=out)
 
     # Output all the patches in BBS catalog file format.
     patch_count = 0
@@ -285,7 +285,7 @@ def main(options, args):
     for patch in patches:
         # Output patch definition.
         if options.use_patches:
-            print >>out, ", , patch-%d, 00:00:00, +90.00.00" % patch_count
+            print(", , patch-%d, 00:00:00, +90.00.00" % patch_count, file=out)
 
         # When using patches, reset the component count at the start of each
         # patch. Thus, components within a patch are counted from zero.
@@ -297,15 +297,15 @@ def main(options, args):
         # Output all the CLEAN components in the patch.
         for component in patch:
             if options.use_patches:
-                print >>out, "patch-%d-%d, POINT, patch-%d," % (patch_count, component_count, patch_count),
+                print("patch-%d-%d, POINT, patch-%d," % (patch_count, component_count, patch_count), end=' ', file=out)
             else:
-                print >>out, "component-%d, POINT," % (component_count),
+                print("component-%d, POINT," % (component_count), end=' ', file=out)
 
             pixel_coord[axis_index[1]] = component[0]
             pixel_coord[axis_index[2]] = component[1]
             world_coord = component_map_im.toworld(pixel_coord)
-            print >>out, "%s," % ra2str(rad2ra(world_coord[axis_index[2]])),
-            print >>out, "%s," % dec2str(rad2dec(world_coord[axis_index[1]])),
+            print("%s," % ra2str(rad2ra(world_coord[axis_index[2]])), end=' ', file=out)
+            print("%s," % dec2str(rad2dec(world_coord[axis_index[1]])), end=' ', file=out)
 
             for i in range(len(stokes_index)):
                 if stokes_index[i] is None:
@@ -313,10 +313,10 @@ def main(options, args):
                 else:
                     stokes_desc[i] = "%f" % component_map[(stokes_index[i], component[0], component[1])]
 
-            print >>out, ", ".join(stokes_desc)
+            print(", ".join(stokes_desc), file=out)
             component_count += 1
 
-        print >>out
+        print(file=out)
         patch_count += 1
 
 parser = OptionParser(usage="%prog [options] <CLEAN component image> [output catalog file]")

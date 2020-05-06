@@ -2,7 +2,7 @@
 
 #include <MessageBus/ToBus.h>
 #include <MessageBus/Exceptions.h>
-#include "Util.h"
+#include <MessageBus/Util.h>
 
 #include <Common/LofarLogger.h>
 
@@ -15,7 +15,7 @@ using namespace qpid::messaging;
 
 namespace LOFAR {
 
-  ToBus::ToBus(const std::string &address, const std::string &options, const std::string &broker) 
+  ToBus::ToBus(const std::string &address, const std::string &broker, const std::string &options) 
   try:
     itsConnection(broker,"{reconnect:true}")
   {

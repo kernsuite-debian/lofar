@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarAntennaColumns.cc 17582 2011-03-18 15:29:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -25,7 +25,7 @@
 #include <MSLofar/MSLofarAntennaColumns.h>
 #include <MSLofar/MSLofarAntenna.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

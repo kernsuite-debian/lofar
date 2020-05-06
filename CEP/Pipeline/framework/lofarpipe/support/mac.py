@@ -64,7 +64,7 @@ class MAC_control(control):
             raise PipelineQuit
         try:
             super(MAC_control, self).run_task(configblock, datafiles)
-        except PipelineException, message:
+        except PipelineException as message:
             self.logger.warn(message)
 #            raise PipelineQuit
 
@@ -230,7 +230,7 @@ if __name__ == "__main__":
             job_name = "hello"
             
         def pipeline_logic(self):
-            print "Hello World"
+            print("Hello World")
         
     import sys
     sys.exit(HelloWorldPipeline().main())

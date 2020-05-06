@@ -59,7 +59,7 @@ class bbs_reducer(LOFARnodeTCP):
                     os.path.basename(executable),
                 ) as logger:
                     catch_segfaults(cmd, scratch_dir, self.environment, logger)
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 self.logger.error(str(err))
                 return 1
             finally:

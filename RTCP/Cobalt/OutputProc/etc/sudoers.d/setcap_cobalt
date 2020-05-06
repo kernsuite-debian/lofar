@@ -1,0 +1,5 @@
+## Allows lofarbuild to add the listed capabilities to any single writable file for automated roll-out.
+## Attempts to disallow adding another set of capabilities.
+## Does not attempt to disallow adding the listed capabilities to other files, which would be trivial to bypass.
+Cmnd_Alias SETCAP_COBALT = /sbin/setcap cap_net_raw\,cap_sys_nice\,cap_sys_resource\,cap_ipc_lock=ep *, ! /sbin/setcap cap_net_raw\,cap_sys_nice\,cap_sys_resource\,cap_ipc_lock=ep * *
+lofarbuild ALL = (root) NOPASSWD: SETCAP_COBALT

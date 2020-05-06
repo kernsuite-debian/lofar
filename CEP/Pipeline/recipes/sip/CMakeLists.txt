@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39390 2018-04-16 11:43:17Z klazema $
+# $Id$
 
 include(PythonInstall)
 

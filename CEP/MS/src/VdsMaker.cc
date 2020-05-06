@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VdsMaker.cc 19275 2011-11-16 08:03:59Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <MS/VdsMaker.h>
@@ -27,37 +27,37 @@
 #include <Common/StreamUtil.h>
 #include <Common/LofarLogger.h>
 
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <ms/MeasurementSets/MSMainColumns.h>
-#include <ms/MeasurementSets/MSAntenna.h>
-#include <ms/MeasurementSets/MSAntennaColumns.h>
-#include <ms/MeasurementSets/MSField.h>
-#include <ms/MeasurementSets/MSFieldColumns.h>
-#include <ms/MeasurementSets/MSPolarization.h>
-#include <ms/MeasurementSets/MSPolColumns.h>
-#include <ms/MeasurementSets/MSDataDescription.h>
-#include <ms/MeasurementSets/MSDataDescColumns.h>
-#include <ms/MeasurementSets/MSSpectralWindow.h>
-#include <ms/MeasurementSets/MSSpWindowColumns.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MCDirection.h>
-#include <casa/Quanta/MVAngle.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Containers/Record.h>
-#include <casa/Utilities/LinearSearch.h>
-#include <casa/OS/Path.h>
-#include <casa/OS/File.h>
-#include <casa/OS/HostInfo.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/ms/MeasurementSets/MSMainColumns.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
+#include <casacore/ms/MeasurementSets/MSAntennaColumns.h>
+#include <casacore/ms/MeasurementSets/MSField.h>
+#include <casacore/ms/MeasurementSets/MSFieldColumns.h>
+#include <casacore/ms/MeasurementSets/MSPolarization.h>
+#include <casacore/ms/MeasurementSets/MSPolColumns.h>
+#include <casacore/ms/MeasurementSets/MSDataDescription.h>
+#include <casacore/ms/MeasurementSets/MSDataDescColumns.h>
+#include <casacore/ms/MeasurementSets/MSSpectralWindow.h>
+#include <casacore/ms/MeasurementSets/MSSpWindowColumns.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/casa/Quanta/MVAngle.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Utilities/LinearSearch.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/OS/File.h>
+#include <casacore/casa/OS/HostInfo.h>
+#include <casacore/casa/Exceptions/Error.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 using namespace LOFAR;
 using namespace LOFAR::CEP;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void VdsMaker::getFreqInfo (MS& ms, vector<int>& nrchan,
@@ -337,7 +337,7 @@ void VdsMaker::combine (const string& gdsName,
   for (uint j=0; j<vdsNames.size(); ++j) {
     VdsPartDesc* vpd = new VdsPartDesc(ParameterSet(vdsNames[j]));
     // Skip a VDS with an empty time (it has no data).
-    casa::Path path(vdsNames[j]);
+    casacore::Path path(vdsNames[j]);
     // File name gets the original MS name.
     // Name gets the name of the VDS file.
     vpd->setFileName (vpd->getName());

@@ -18,7 +18,7 @@
 -- You should have received a copy of the GNU General Public License along
 -- with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 --
--- $Id: create_blackboard_tables.sql 17855 2011-04-26 11:36:27Z zwieten $
+-- $Id$
 
 --------------------
 -- SESSION STATES --

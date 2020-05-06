@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tRunOnNode.cc 16043 2010-07-16 07:33:44Z loose $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

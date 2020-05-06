@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CalSession.h 28194 2014-02-05 14:41:55Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_CALSESSION_H
 #define LOFAR_BBSCONTROL_CALSESSION_H
@@ -37,7 +37,7 @@
 #include <Common/lofar_smartptr.h>
 #include <Common/lofar_string.h>
 #include <pqxx/connection>
-#include <pqxx/trigger>
+#include <pqxx/notification>
 #include <functional>
 
 namespace LOFAR
@@ -178,7 +178,7 @@ public:
 private:
     // Trigger class handles notifications received from the database backend by
     // raising the flag associated with the notification.
-    class Trigger : public pqxx::trigger
+    class Trigger : public pqxx::notification_receiver
     {
     public:
         // Valid trigger types.
@@ -198,7 +198,7 @@ private:
 
         // Handle the notification, by raising the flag associated with the
         // received trigger.
-        virtual void operator()(int be_pid);
+        virtual void operator()(const std::string& payload, int be_pid);
 
         // Test if any of the \a flags are raised.
         static Type testFlags(Type flags)

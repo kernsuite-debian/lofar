@@ -1,0 +1,9 @@
+/*
+\ingroup OTB
+\defgroup OTB OTB \\Observation-Tree Browser
+\ref otb
+
+Package for browsing the OTDB to inspect observation specification
+
+*/
+

@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from contextlib import contextmanager
 
 import os
@@ -258,10 +258,10 @@ class cimager(BaseRecipe, RemoteCommandRecipeMixIn):
                             convert_process.returncode, convert_exec
                         )
                     return converted_parset
-            except OSError, e:
+            except OSError as e:
                 self.logger.error("Failed to spawn convertimagerparset (%s)" % str(e))
                 raise
-            except subprocess.CalledProcessError, e:
+            except subprocess.CalledProcessError as e:
                 self.logger.error(str(e))
                 raise
 
@@ -300,7 +300,7 @@ class cimager(BaseRecipe, RemoteCommandRecipeMixIn):
                 cimager_parset = convert_mwimager_parset(self.inputs['parset'])
             elif self.inputs['parset_type'] == "cimager":
                 cimager_parset = populate_cimager_parset(self.inputs['parset'])
-        except Exception, e:
+        except Exception as e:
             self.logger.exception("Failed to generate imager parset")
             raise
 

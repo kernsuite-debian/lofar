@@ -2,7 +2,7 @@
 
 lofar_package(PyCommon 1.0)
 
-lofar_find_package(Python 2.6 REQUIRED)
+lofar_find_package(Python 3.4 REQUIRED)
 include(PythonInstall)
 
 include(FindPythonModule)
@@ -10,6 +10,10 @@ find_python_module(psycopg2)
 
 set(_py_files
   __init__.py
+  ssh_utils.py
+  cep4_utils.py
+  threading_utils.py
+  lcu_utils.py
   cache.py
   dbcredentials.py
   defaultmailaddresses.py
@@ -20,9 +24,13 @@ set(_py_files
   postgres.py
   datetimeutils.py
   flask_utils.py
-  subprocess.py
+  h5_utils.py
+  subprocess_utils.py
+  xmlparse.py
   test_utils.py)
 
 python_install(${_py_files} DESTINATION lofar/common)
+
+lofar_add_bin_scripts(dbcredentials)
 
 add_subdirectory(test)

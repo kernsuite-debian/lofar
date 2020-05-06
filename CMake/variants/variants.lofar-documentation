@@ -1,17 +1,18 @@
-option(USE_CUDA "Use CUDA" ON)
 option(USE_MPI "Use MPI" ON)
 option(USE_OPENMP "Use OPENMP" ON)
-option(USE_OPENCL "Don't use OPENCL" OFF)
 
 
 set(WINCC_ROOT_DIR /opt/WinCC_OA/3.14)
 set(CASACORE_ROOT_DIR /opt/casacore)
 set(CASAREST_ROOT_DIR /opt/casarest)
 set(CASA_ROOT_DIR /opt/casarest/casarest-1.4.2)
-set(AOFLAGGER_LIBRARY /opt/aoflagger-2.9.0/build/lib/libaoflagger.so)
-set(AOFLAGGER_INCLUDE_DIR /opt/aoflagger-2.9.0/build/include)
+set(AOFLAGGER_ROOT_DIR "/opt/aoflagger-2.9.0/build")
 set(DAL_LIBRARY /opt/dal/DAL-master/build/lib/liblofardal.so)
 set(DAL_INCLUDE_DIR /opt/dal/DAL-master/build/include)
 set(CUDA_SDK_ROOT_DIR /usr/local/cuda-8.0)
 set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda)
 set(MPI_ROOT_DIR /usr/lib64/openmpi)
+set(BDSF_ROOT_DIR "/opt/pybdsf-1.8.9/PyBDSF-1.8.9/lib64/python2.7/site-packages/")
+
+#set(AOFLAGGER_LIBRARY /opt/aoflagger-2.9.0/build/lib/libaoflagger.so)
+#set(AOFLAGGER_INCLUDE_DIR /opt/aoflagger-2.9.0/build/include)

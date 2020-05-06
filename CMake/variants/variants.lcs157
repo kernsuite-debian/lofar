@@ -2,7 +2,17 @@
 # AS: put under comment as LOFAR general rule is to use shared libs now. 
 #option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-set(WINCC_ROOT_DIR /opt/WinCC_OA/3.14)
+set(WINCC_ROOT_DIR /opt/WinCC_OA/3.16)
 set(CASACORE_ROOT_DIR "/opt/casacore")
+set(CASAREST_ROOT_DIR "/opt/casarest")
+set(PYRAP_ROOT_DIR "/opt/pyrap")
+set(AOFLAGGER_ROOT_DIR "/opt/aoflagger/build")
+set(BDSF_ROOT_DIR "/opt/PyBDSF/lib64/python3.4/site-packages/")
+set(DAL_ROOT_DIR "/opt/DAL")
 #set(QPID_ROOT_DIR /opt/qpid)
 
+# Overwrite the compiler paths on CentOS7
+set(GNUCXX11_C          /opt/rh/devtoolset-6/root/usr/bin/gcc)      # GNU C compiler
+set(GNUCXX11_CXX        /opt/rh/devtoolset-6/root/usr/bin/g++)       # GNU C+ compiler
+set(GNUCXX11_Fortran    /opt/rh/devtoolset-6/root/usr/bin/gfortran) # GNU Fortran compiler
+set(GNUCXX11_ASM        /opt/rh/devtoolset-6/root/usr/bin/gcc)      # GNU assembler

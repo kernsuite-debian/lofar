@@ -1,0 +1,29 @@
+[license]
+code        = "wop57 50113937526"
+version     = 31500002
+sn          = "471_3031_Astron_Station_4/2"
+date        = 2017.06.01;10:26:38,000 
+comment     = "Apertif WinCC-OA host"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+

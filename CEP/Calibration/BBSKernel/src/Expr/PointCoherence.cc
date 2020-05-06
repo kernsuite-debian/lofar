@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PointCoherence.cc 17229 2011-01-28 13:44:36Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 

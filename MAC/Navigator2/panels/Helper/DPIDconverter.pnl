@@ -1,0 +1,403 @@
+V 13
+2
+LANG:1 0 
+LANG:0 0 
+PANEL,-1 -1 881 242 N "_3DFace" 0
+E E E E E 1 -1 -1 0  107 65
+""0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+2 0
+"PRIMITIVE_TEXT1"
+""
+1 416 41 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+0 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 216 41 616 72
+0 2 2 "0s" 0 0 0 193 0 0  416 41 1
+2
+LANG:1 26 Arial,-1,27,5,50,0,0,0,0,0
+LANG:0 26 Arial,20,-1,5,50,0,0,0,0,0
+0 2
+LANG:1 29 DP ID <--> DP Name Conversion
+LANG:0 29 DP ID <--> DP Name Konversion
+13 1
+"PUSH_BUTTON1"
+""
+1 35 113 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  33 111 75 153
+
+P 
+4294967295
+"pictures/tree.png"
+2
+LANG:1 12 PUSH_BUTTON1
+LANG:0 12 PUSH_BUTTON1
+"main()
+{
+  string sName;
+  dpSelector(sName);
+  DPNAME.text = sName;
+}" 0
+ E E E
+13 2
+"PUSH_BUTTON2"
+""
+1 534 111 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+2 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  532 109 574 132
+
+T 
+2
+LANG:1 2 >>
+LANG:0 2 >>
+"main()
+{
+  
+  unsigned id1; 
+  int id2; 
+  bool x;
+  DPID.text = \"---\";
+  ELID.text = \"---\";  
+  
+  if( dpExists(DPNAME.text))
+  {
+    
+    x =dpGetId(DPNAME.text, id1, id2);
+    DPID.text = id1;
+    ELID.text = id2;
+  }
+  
+}
+" 0
+ E E E
+14 3
+"DPNAME"
+""
+1 84 114 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  82 112 524 150
+3 "0s" 0 0 0 0 0 -1  E E E
+14 4
+"DPID"
+""
+1 580 114 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  578 112 700 150
+3 "0s" 0 0 0 0 0 -1  E E E
+2 5
+"PRIMITIVE_TEXT2"
+""
+1 211 96 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+5 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 183 96 239 111
+0 2 2 "0s" 0 0 0 193 0 0  211 96 1
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0 2
+LANG:1 7 DP Name
+LANG:0 7 DP Name
+2 8
+"PRIMITIVE_TEXT3"
+""
+1 635 95 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 618 95 652 110
+0 2 2 "0s" 0 0 0 193 0 0  635 95 1
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0 2
+LANG:1 5 DP ID
+LANG:0 5 DP ID
+2 9
+"PRIMITIVE_TEXT4"
+""
+1 765 95 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 726 95 804 110
+0 2 2 "0s" 0 0 0 193 0 0  765 95 1
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0 2
+LANG:1 10 ELEMENT ID
+LANG:0 10 ELEMENT ID
+14 10
+"ELID"
+""
+1 706 115 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+10 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  704 113 826 151
+3 "0s" 0 0 0 0 0 -1  E E E
+13 11
+"PUSH_BUTTON3"
+""
+1 534 131 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  532 129 574 152
+
+T 
+2
+LANG:1 2 <<
+LANG:0 2 <<
+"main()
+{
+  dyn_string dsList;
+  string sDp;
+  
+  unsigned id1,idCheck; 
+  int id2,elCheck; 
+  bool x;
+  DPNAME.text = \" ??? \";
+  idCheck = DPID.text;
+  dsList = dpNames(\"*.\");
+  sDp = \"\";
+  
+  // search dpnames
+  for (int i = 1; i<= dynlen(dsList);i++)
+  {
+     x =dpGetId(dsList[i], id1, id2);  
+     if (id1 == idCheck)
+     {
+       //DebugN(\"Erwischt DP\"+dsList[i]);
+       sDp = dsList[i];
+       
+       break;
+     }  
+  }
+  if (sDp != \"\")
+  {
+    elCheck = ELID.text;
+    if (elCheck != \"\")
+    {
+      dsList = dpNames(dpSubStr( sDp,DPSUB_SYS_DP )  + \".**\");
+      
+      for (int i = 1; i<= dynlen(dsList);i++)
+      {
+        x =dpGetId(dsList[i], id1, id2);  
+        if (id2 == elCheck)
+        {
+          //DebugN(\"Erwischt EL\"+dsList[i]);
+          DPNAME.text = dsList[i];
+          break;
+        }  
+      }   
+    }
+  }  
+  
+  
+}
+" 0
+ E E E
+30 12
+"FRAME1"
+""
+1 8 7 E E E 1 E 1 E N "_WindowText" E N {0,0,0} E E
+ E E
+12 0 0 0 0 0
+E E E
+1
+2
+LANG:1 0 
+LANG:0 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 0 1 0 1 E 1 0 0.7954545454545454 0 1.431818181818182 0 E 8 7 865 228
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0 2
+LANG:1 0 
+LANG:0 0 
+13 13
+"PUSH_BUTTON4"
+""
+1 735 200 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+13 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+0
+2
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:0 26 Arial,10,-1,5,50,0,0,0,0,0
+0  733 198 866 233
+
+T 
+2
+LANG:1 5 Close
+LANG:0 10 Schliessen
+"// SimpleCtrlScriptStart {valid}
+main()
+{
+  EP_panelOff();
+}
+
+EP_panelOff()
+{
+  PanelOff();
+}
+
+// SimpleCtrlScript {EP_panelOff}
+// Function {PanelOff}
+// Panel {}
+// Module {}
+// SimpleCtrlScriptEnd {EP_panelOff}
+" 0
+ E E E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

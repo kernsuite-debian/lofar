@@ -1,0 +1,5 @@
+/**
+\ingroup ResourceAssignment
+\defgroup RATaskSpecifiedService RATaskSpecifiedService
+\ref resource_assigner_ra_task_specified_service module overview
+*/

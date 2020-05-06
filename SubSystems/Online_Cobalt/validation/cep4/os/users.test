@@ -1,0 +1,19 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+# Restrict the users allowed on the CPU nodes
+[[ `hostname` =~ "cpu" ]] || exit 0
+
+# lofarsys should exist
+id lofarsys || exit 1
+
+# lofarbuild should exist
+id lofarbuild || exit 1
+
+# mol should exist
+id mol || exit 1
+
+
+exit 0

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: OpenMP.h 27642 2013-12-04 08:05:36Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen <diepen at astron dot nl>
 

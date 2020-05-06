@@ -4,7 +4,7 @@
 #                                                            John Swinbank, 2010
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os.path
 import sys
 
@@ -33,7 +33,7 @@ class count_timesteps(LOFARnodeTCP):
                 self.outputs['end_time'] = taql(
                     "CALC MAX([SELECT TIME from %s])" % infile
                 )[0]
-            except Exception, e:
+            except Exception as e:
                 self.logger.error(str(e))
                 return 1
 

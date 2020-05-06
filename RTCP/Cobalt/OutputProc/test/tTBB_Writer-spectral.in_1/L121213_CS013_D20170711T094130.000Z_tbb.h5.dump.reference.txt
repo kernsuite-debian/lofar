@@ -1,0 +1,385 @@
+HDF5 "L121213_CS013_D20170711T094130.000Z_tbb.h5" {
+ATTRIBUTE "TELESCOPE" {
+   DATATYPE  H5T_STRING {
+      STRSIZE H5T_VARIABLE;
+      STRPAD H5T_STR_NULLTERM;
+      CSET H5T_CSET_ASCII;
+      CTYPE H5T_C_S1;
+   }
+   DATASPACE  SCALAR
+   DATA {
+   (0): "LOFAR"
+   }
+}
+ATTRIBUTE "OPERATING_MODE" {
+   DATATYPE  H5T_STRING {
+      STRSIZE H5T_VARIABLE;
+      STRPAD H5T_STR_NULLTERM;
+      CSET H5T_CSET_ASCII;
+      CTYPE H5T_C_S1;
+   }
+   DATASPACE  SCALAR
+   DATA {
+   (0): "spectral"
+   }
+}
+GROUP "STATION_CS013" {
+   ATTRIBUTE "BEAM_DIRECTION" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+      DATA {
+      (0): 0.929345, 0.952576
+      }
+   }
+   ATTRIBUTE "BEAM_DIRECTION_FRAME" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "J2000"
+      }
+   }
+   ATTRIBUTE "BEAM_DIRECTION_UNIT" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "m"
+      }
+   }
+   ATTRIBUTE "CLOCK_OFFSET" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SCALAR
+      DATA {
+      (0): 8.7085e-06
+      }
+   }
+   ATTRIBUTE "CLOCK_OFFSET_UNIT" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "s"
+      }
+   }
+   ATTRIBUTE "GROUPTYPE" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "StationGroup"
+      }
+   }
+   ATTRIBUTE "NOF_DIPOLES" {
+      DATATYPE  H5T_STD_U32LE
+      DATASPACE  SCALAR
+      DATA {
+      (0): 0
+      }
+   }
+   ATTRIBUTE "STATION_NAME" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "CS013"
+      }
+   }
+   ATTRIBUTE "STATION_POSITION" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+      DATA {
+      (0): 3.82636e+06, 460815, 5.06507e+06
+      }
+   }
+   ATTRIBUTE "STATION_POSITION_FRAME" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "ITRF"
+      }
+   }
+   ATTRIBUTE "STATION_POSITION_UNIT" {
+      DATATYPE  H5T_STRING {
+         STRSIZE H5T_VARIABLE;
+         STRPAD H5T_STR_NULLTERM;
+         CSET H5T_CSET_ASCII;
+         CTYPE H5T_C_S1;
+      }
+      DATASPACE  SCALAR
+      DATA {
+      (0): "m"
+      }
+   }
+   GROUP "DIPOLE_013001010" {
+      ATTRIBUTE "ANTENNA_NORMAL_VECTOR" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  NULL
+         DATA {
+         }
+      }
+      ATTRIBUTE "ANTENNA_POSITION" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+         DATA {
+         (0): 3.82632e+06, 460863, 5.0651e+06
+         }
+      }
+      ATTRIBUTE "ANTENNA_POSITION_FRAME" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "ITRF"
+         }
+      }
+      ATTRIBUTE "ANTENNA_POSITION_UNIT" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m"
+         }
+      }
+      ATTRIBUTE "ANTENNA_ROTATION_MATRIX" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  NULL
+         DATA {
+         }
+      }
+      ATTRIBUTE "GROUPTYPE" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "DipoleGroup"
+         }
+      }
+      ATTRIBUTE "NYQUIST_ZONE" {
+         DATATYPE  H5T_STD_U32LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 2
+         }
+      }
+      ATTRIBUTE "RCU_ID" {
+         DATATYPE  H5T_STD_U32LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 10
+         }
+      }
+      ATTRIBUTE "RSP_ID" {
+         DATATYPE  H5T_STD_U32LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 1
+         }
+      }
+      ATTRIBUTE "SAMPLE_FREQUENCY" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 200
+         }
+      }
+      ATTRIBUTE "SAMPLE_FREQUENCY_UNIT" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "MHz"
+         }
+      }
+      ATTRIBUTE "STATION_ID" {
+         DATATYPE  H5T_STD_U32LE
+         DATASPACE  SCALAR
+         DATA {
+         (0): 13
+         }
+      }
+      ATTRIBUTE "TILE_BEAM" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 2 ) / ( 2 ) }
+         DATA {
+         (0): 0, 0
+         }
+      }
+      ATTRIBUTE "TILE_BEAM_FRAME" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "J2000"
+         }
+      }
+      ATTRIBUTE "TILE_BEAM_UNIT" {
+         DATATYPE  H5T_STRING {
+            STRSIZE H5T_VARIABLE;
+            STRPAD H5T_STR_NULLTERM;
+            CSET H5T_CSET_ASCII;
+            CTYPE H5T_C_S1;
+         }
+         DATASPACE  SCALAR
+         DATA {
+         (0): "m"
+         }
+      }
+      DATASET "SB_000" {
+         DATATYPE  H5T_STD_I16LE
+         DATASPACE  SIMPLE { ( 0 ) / ( H5S_UNLIMITED ) }
+         DATA {
+         }
+         ATTRIBUTE "BANDWIDTH" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "BANDWIDTH_UNIT" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "not filled in"
+            }
+         }
+         ATTRIBUTE "BAND_NUMBER" {
+            DATATYPE  H5T_STD_U32LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "CENTRAL_FREQUENCY" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "CENTRAL_FREQUENCY_UNIT" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "not filled in"
+            }
+         }
+         ATTRIBUTE "DATA_LENGTH" {
+            DATATYPE  H5T_STD_U64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "GROUPTYPE" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "SubbandDataset"
+            }
+         }
+         ATTRIBUTE "SAMPLES_PER_FRAME" {
+            DATATYPE  H5T_STD_U32LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "SLICE_NUMBER" {
+            DATATYPE  H5T_STD_U32LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "TIME" {
+            DATATYPE  H5T_STD_U32LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "TIME_RESOLUTION" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SCALAR
+            DATA {
+            (0): 0
+            }
+         }
+         ATTRIBUTE "TIME_RESOLUTION_UNIT" {
+            DATATYPE  H5T_STRING {
+               STRSIZE H5T_VARIABLE;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            }
+            DATASPACE  SCALAR
+            DATA {
+            (0): "not filled in"
+            }
+         }
+      }
+   }
+}
+}

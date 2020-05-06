@@ -1,0 +1,20 @@
+#!/bin/bash -ve
+TESTNAME=`basename "${0%%.run}"`
+
+INDIR=${PWD}/${TESTNAME}.input
+OUTDIR=${PWD}/${TESTNAME}.output
+mkdir -p $INDIR $OUTDIR
+
+# Generate input
+yes 1 2 3 4 | generateRSP -f '2013-12-05 14:15:00' -t '2013-12-05 14:15:02' -s 2 > $INDIR/tRSPRaw_tmp.raw1.udp
+yes 5 6 7 8 | generateRSP -f '2013-12-05 14:15:00' -t '2013-12-05 14:15:02' -s 2 > $INDIR/tRSPRaw_tmp.raw2.udp
+
+# Replace input/output keys in parset (for now append; TODO: replace)
+(
+echo "PIC.Core.CS002HBA0.RSP.sources=[file:${INDIR}/tRSPRaw_tmp.raw1.udp]"
+echo "PIC.Core.CS501HBA0.RSP.sources=[file:${INDIR}/tRSPRaw_tmp.raw2.udp]"
+echo "Observation.DataProducts.Output_RSPRaw.locations="\
+     "[2*localhost:${OUTDIR}]"
+) >> ${TESTNAME}.parset
+
+../runtest.sh "$TESTNAME"

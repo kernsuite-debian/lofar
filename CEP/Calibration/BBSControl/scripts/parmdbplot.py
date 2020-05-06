@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Authors:
 # Joris van Zwieten
@@ -204,7 +204,7 @@ def plot(fig, y, x=None, clf=True, sub=None, scatter=False, stack=False,
         axes.set_ylabel(ylabel)
 
     if x is None:
-        x = [range(len(yi)) for yi in y]
+        x = [list(range(len(yi))) for yi in y]
 
     offset = 0.
     med = 0.
@@ -606,7 +606,7 @@ class PlotWindow(QFrame):
         reference_name = parm._name.replace(parm._antenna, reference_antenna)
         reference_parm = next((p for p in self.parms if p._name == reference_name), None)
         if reference_parm == None:
-            print "ERROR: cannot find a suitable reference (", reference_name ,") for", parm._name
+            print("ERROR: cannot find a suitable reference (", reference_name ,") for", parm._name)
             return  None
         else:
 #            print "DEBUG: using reference ", reference_name ," for", parm._name
@@ -764,7 +764,7 @@ class PlotWindow(QFrame):
                     xvalues.append(parm._freqs/1.e6)
 
                 if not self.valuesonxaxis:
-                    xvalues[-1] = range(len(xvalues[-1]))
+                    xvalues[-1] = list(range(len(xvalues[-1])))
     
                 self.xminmax=[xvalues[0][0],xvalues[0][-1]]
                
@@ -784,8 +784,8 @@ class PlotWindow(QFrame):
 
         if plot_type == 'double':
             # put nans to 0
-            [numpy.putmask(amp[i], amp[i]!=amp[i], 0) for i in xrange(len(amp))]
-            [numpy.putmask(phase[i], phase[i]!=phase[i], 0) for i in xrange(len(phase))]
+            [numpy.putmask(amp[i], amp[i]!=amp[i], 0) for i in range(len(amp))]
+            [numpy.putmask(phase[i], phase[i]!=phase[i], 0) for i in range(len(phase))]
             if self.polar:
                     self.valminmax[0] = plot(self.fig, amp, x=xvalues, sub="211", labels=labels, show_legend=legend, xlabel=xlabel, ylabel="Amplitude", scatter=self.use_points)
                     self.valminmax[1] = plot(self.fig, phase, x=xvalues, clf=False, sub="212", stack=True, scatter=True, labels=labels, show_legend=legend, xlabel=xlabel, ylabel=phaselabel)
@@ -794,11 +794,11 @@ class PlotWindow(QFrame):
                     self.valminmax[1] = plot(self.fig, phase, x=xvalues, clf=False, sub="212", labels=labels, show_legend=legend, xlabel=xlabel, ylabel="Imaginary", scatter=self.use_points)
         elif plot_type == 'ph':
             # put nans to 0
-            [numpy.putmask(phase[i], phase[i]!=phase[i], 0) for i in xrange(len(phase))]
+            [numpy.putmask(phase[i], phase[i]!=phase[i], 0) for i in range(len(phase))]
             self.valminmax[0] = plot(self.fig, phase, x=xvalues, sub="111", stack=True, scatter=True, labels=labels, show_legend=legend, xlabel=xlabel, ylabel=phaselabel)
         elif plot_type == 'amp':
             # put nans to 0
-            [numpy.putmask(amp[i], amp[i]!=amp[i], 0) for i in xrange(len(amp))]
+            [numpy.putmask(amp[i], amp[i]!=amp[i], 0) for i in range(len(amp))]
             self.valminmax[0] = plot(self.fig, amp, x=xvalues, sub="111", labels=labels, show_legend=legend, xlabel=xlabel, ylabel="Amplitude", scatter=self.use_points)
 
         self.resize_plot()
@@ -996,13 +996,13 @@ class MainWindow(QFrame):
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1 or sys.argv[1] == "--help":
-        print "usage: parmdbplot.py <parmdb>"
+        print("usage: parmdbplot.py <parmdb>")
         sys.exit(1)
 
     try:
         db = parmdb.parmdb(sys.argv[1])
     except:
-        print "ERROR:", sys.argv[1], "is not a valid parmdb."
+        print("ERROR:", sys.argv[1], "is not a valid parmdb.")
         sys.exit(1)
 
     app = QApplication(sys.argv)

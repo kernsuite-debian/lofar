@@ -1,0 +1,5 @@
+/**
+\ingroup ResourceAssignment
+\defgroup RAtoOTDBTaskSpecificationPropagator RAtoOTDBTaskSpecificationPropagator
+\ref ra_to_otdb_task_specification_propagator module overview
+*/

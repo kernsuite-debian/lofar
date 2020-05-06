@@ -1,0 +1,479 @@
+# $Id$
+# Describes the properties of each node known to Cobalt. 
+
+# A generic configuration for 'localhost'
+
+PIC.Core.Cobalt.localhost.host=localhost
+PIC.Core.Cobalt.localhost.cpu=0
+PIC.Core.Cobalt.localhost.mpi_nic=
+PIC.Core.Cobalt.localhost.out_nic=
+PIC.Core.Cobalt.localhost.gpus=[0]
+
+# CEP4 staging
+
+# data: create ni a Lustre dir with the right stripe count
+PIC.Core.CEP4.dataStagingDirTargetFS = /data/scratch/observation-data
+# metadata: do not create structures on Lustre as that's slow
+PIC.Core.CEP4.metaDataStagingDirCreateFS = /dev/shm
+# metadata: move onto Lustre into a dir with the right stripe count
+PIC.Core.CEP4.metaDataStagingDirTargetFS = /data/scratch/observation-metadata
+
+# DAS-4 nodes
+
+PIC.Core.Cobalt.gpu01_0.host=gpu01
+PIC.Core.Cobalt.gpu01_0.cpu=0
+PIC.Core.Cobalt.gpu01_0.mpi_nic=
+PIC.Core.Cobalt.gpu01_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.gpu01_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.gpu01_1.host=gpu01
+PIC.Core.Cobalt.gpu01_1.cpu=1
+PIC.Core.Cobalt.gpu01_1.mpi_nic=
+PIC.Core.Cobalt.gpu01_1.gpus=[2, 3]
+
+# The Cobalt2 cluster
+
+PIC.Core.Cobalt.cbt201_0.host=cbm201
+PIC.Core.Cobalt.cbt201_0.cpu=0
+PIC.Core.Cobalt.cbt201_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt201_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt201_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt201_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt201_1.host=cbm201
+PIC.Core.Cobalt.cbt201_1.cpu=1
+PIC.Core.Cobalt.cbt201_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt201_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt201_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt201_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt202_0.host=cbm202
+PIC.Core.Cobalt.cbt202_0.cpu=0
+PIC.Core.Cobalt.cbt202_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt202_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt202_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt202_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt202_1.host=cbm202
+PIC.Core.Cobalt.cbt202_1.cpu=1
+PIC.Core.Cobalt.cbt202_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt202_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt202_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt202_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt203_0.host=cbm203
+PIC.Core.Cobalt.cbt203_0.cpu=0
+PIC.Core.Cobalt.cbt203_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt203_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt203_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt203_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt203_1.host=cbm203
+PIC.Core.Cobalt.cbt203_1.cpu=1
+PIC.Core.Cobalt.cbt203_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt203_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt203_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt203_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt204_0.host=cbm204
+PIC.Core.Cobalt.cbt204_0.cpu=0
+PIC.Core.Cobalt.cbt204_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt204_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt204_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt204_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt204_1.host=cbm204
+PIC.Core.Cobalt.cbt204_1.cpu=1
+PIC.Core.Cobalt.cbt204_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt204_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt204_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt204_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt205_0.host=cbm205
+PIC.Core.Cobalt.cbt205_0.cpu=0
+PIC.Core.Cobalt.cbt205_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt205_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt205_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt205_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt205_1.host=cbm205
+PIC.Core.Cobalt.cbt205_1.cpu=1
+PIC.Core.Cobalt.cbt205_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt205_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt205_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt205_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt206_0.host=cbm206
+PIC.Core.Cobalt.cbt206_0.cpu=0
+PIC.Core.Cobalt.cbt206_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt206_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt206_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt206_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt206_1.host=cbm206
+PIC.Core.Cobalt.cbt206_1.cpu=1
+PIC.Core.Cobalt.cbt206_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt206_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt206_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt206_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt207_0.host=cbm207
+PIC.Core.Cobalt.cbt207_0.cpu=0
+PIC.Core.Cobalt.cbt207_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt207_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt207_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt207_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt207_1.host=cbm207
+PIC.Core.Cobalt.cbt207_1.cpu=1
+PIC.Core.Cobalt.cbt207_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt207_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt207_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt207_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt208_0.host=cbm208
+PIC.Core.Cobalt.cbt208_0.cpu=0
+PIC.Core.Cobalt.cbt208_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt208_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt208_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt208_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt208_1.host=cbm208
+PIC.Core.Cobalt.cbt208_1.cpu=1
+PIC.Core.Cobalt.cbt208_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt208_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt208_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt208_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt209_0.host=cbm209
+PIC.Core.Cobalt.cbt209_0.cpu=0
+PIC.Core.Cobalt.cbt209_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt209_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt209_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt209_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt209_1.host=cbm209
+PIC.Core.Cobalt.cbt209_1.cpu=1
+PIC.Core.Cobalt.cbt209_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt209_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt209_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt209_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt210_0.host=cbm210
+PIC.Core.Cobalt.cbt210_0.cpu=0
+PIC.Core.Cobalt.cbt210_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt210_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt210_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt210_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt210_1.host=cbm210
+PIC.Core.Cobalt.cbt210_1.cpu=1
+PIC.Core.Cobalt.cbt210_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt210_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt210_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt210_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt211_0.host=cbm211
+PIC.Core.Cobalt.cbt211_0.cpu=0
+PIC.Core.Cobalt.cbt211_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt211_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt211_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt211_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt211_1.host=cbm211
+PIC.Core.Cobalt.cbt211_1.cpu=1
+PIC.Core.Cobalt.cbt211_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt211_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt211_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt211_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt212_0.host=cbm212
+PIC.Core.Cobalt.cbt212_0.cpu=0
+PIC.Core.Cobalt.cbt212_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt212_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt212_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt212_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt212_1.host=cbm212
+PIC.Core.Cobalt.cbt212_1.cpu=1
+PIC.Core.Cobalt.cbt212_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt212_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt212_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt212_1.gpus=[1]
+
+PIC.Core.Cobalt.cbt213_0.host=cbm213
+PIC.Core.Cobalt.cbt213_0.cpu=0
+PIC.Core.Cobalt.cbt213_0.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt213_0.mpi_nic=mlx5_0
+PIC.Core.Cobalt.cbt213_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt213_0.gpus=[0]
+
+PIC.Core.Cobalt.cbt213_1.host=cbm213
+PIC.Core.Cobalt.cbt213_1.cpu=1
+PIC.Core.Cobalt.cbt213_1.avoidCores=[0..7]
+PIC.Core.Cobalt.cbt213_1.mpi_nic=mlx5_1
+PIC.Core.Cobalt.cbt213_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt213_1.gpus=[1]
+
+# The Cobalt1 cluster
+
+PIC.Core.Cobalt.cbt001_0.host=cbt001
+PIC.Core.Cobalt.cbt001_0.cpu=0
+PIC.Core.Cobalt.cbt001_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt001_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt001_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt001_1.host=cbt001
+PIC.Core.Cobalt.cbt001_1.cpu=1
+PIC.Core.Cobalt.cbt001_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt001_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt001_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt002_0.host=cbt002
+PIC.Core.Cobalt.cbt002_0.cpu=0
+PIC.Core.Cobalt.cbt002_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt002_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt002_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt002_1.host=cbt002
+PIC.Core.Cobalt.cbt002_1.cpu=1
+PIC.Core.Cobalt.cbt002_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt002_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt002_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt003_0.host=cbt003
+PIC.Core.Cobalt.cbt003_0.cpu=0
+PIC.Core.Cobalt.cbt003_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt003_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt003_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt003_1.host=cbt003
+PIC.Core.Cobalt.cbt003_1.cpu=1
+PIC.Core.Cobalt.cbt003_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt003_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt003_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt004_0.host=cbt004
+PIC.Core.Cobalt.cbt004_0.cpu=0
+PIC.Core.Cobalt.cbt004_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt004_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt004_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt004_1.host=cbt004
+PIC.Core.Cobalt.cbt004_1.cpu=1
+PIC.Core.Cobalt.cbt004_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt004_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt004_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt005_0.host=cbt005
+PIC.Core.Cobalt.cbt005_0.cpu=0
+PIC.Core.Cobalt.cbt005_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt005_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt005_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt005_1.host=cbt005
+PIC.Core.Cobalt.cbt005_1.cpu=1
+PIC.Core.Cobalt.cbt005_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt005_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt005_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt006_0.host=cbt006
+PIC.Core.Cobalt.cbt006_0.cpu=0
+PIC.Core.Cobalt.cbt006_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt006_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt006_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt006_1.host=cbt006
+PIC.Core.Cobalt.cbt006_1.cpu=1
+PIC.Core.Cobalt.cbt006_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt006_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt006_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt007_0.host=cbt007
+PIC.Core.Cobalt.cbt007_0.cpu=0
+PIC.Core.Cobalt.cbt007_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt007_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt007_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt007_1.host=cbt007
+PIC.Core.Cobalt.cbt007_1.cpu=1
+PIC.Core.Cobalt.cbt007_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt007_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt007_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt008_0.host=cbt008
+PIC.Core.Cobalt.cbt008_0.cpu=0
+PIC.Core.Cobalt.cbt008_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt008_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt008_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt008_1.host=cbt008
+PIC.Core.Cobalt.cbt008_1.cpu=1
+PIC.Core.Cobalt.cbt008_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt008_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt008_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt009_0.host=cbt009
+PIC.Core.Cobalt.cbt009_0.cpu=0
+PIC.Core.Cobalt.cbt009_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt009_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt009_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt009_1.host=cbt009
+PIC.Core.Cobalt.cbt009_1.cpu=1
+PIC.Core.Cobalt.cbt009_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt009_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt009_1.gpus=[2, 3]
+
+PIC.Core.Cobalt.cbt010_0.host=cbt010
+PIC.Core.Cobalt.cbt010_0.cpu=0
+PIC.Core.Cobalt.cbt010_0.mpi_nic=mlx4_0
+PIC.Core.Cobalt.cbt010_0.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.Cobalt.cbt010_0.gpus=[0, 1]
+
+PIC.Core.Cobalt.cbt010_1.host=cbt010
+PIC.Core.Cobalt.cbt010_1.cpu=1
+PIC.Core.Cobalt.cbt010_1.mpi_nic=mlx4_1
+PIC.Core.Cobalt.cbt010_1.out_nic=[CEP4:ib1,DRAGNET:ib1]
+PIC.Core.Cobalt.cbt010_1.gpus=[2, 3]
+
+# The DRAGNET cluster (without dragnet head node and dragproc node)
+
+PIC.Core.DRAGNET.drg01.host=drg01
+PIC.Core.DRAGNET.drg01.cpu=-1
+PIC.Core.DRAGNET.drg01.mpi_nic=
+PIC.Core.DRAGNET.drg01.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg01.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg02.host=drg02
+PIC.Core.DRAGNET.drg02.cpu=-1
+PIC.Core.DRAGNET.drg02.mpi_nic=
+PIC.Core.DRAGNET.drg02.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg02.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg03.host=drg03
+PIC.Core.DRAGNET.drg03.cpu=-1
+PIC.Core.DRAGNET.drg03.mpi_nic=
+PIC.Core.DRAGNET.drg03.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg03.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg04.host=drg04
+PIC.Core.DRAGNET.drg04.cpu=-1
+PIC.Core.DRAGNET.drg04.mpi_nic=
+PIC.Core.DRAGNET.drg04.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg04.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg05.host=drg05
+PIC.Core.DRAGNET.drg05.cpu=-1
+PIC.Core.DRAGNET.drg05.mpi_nic=
+PIC.Core.DRAGNET.drg05.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg05.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg06.host=drg06
+PIC.Core.DRAGNET.drg06.cpu=-1
+PIC.Core.DRAGNET.drg06.mpi_nic=
+PIC.Core.DRAGNET.drg06.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg06.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg07.host=drg07
+PIC.Core.DRAGNET.drg07.cpu=-1
+PIC.Core.DRAGNET.drg07.mpi_nic=
+PIC.Core.DRAGNET.drg07.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg07.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg08.host=drg08
+PIC.Core.DRAGNET.drg08.cpu=-1
+PIC.Core.DRAGNET.drg08.mpi_nic=
+PIC.Core.DRAGNET.drg08.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg08.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg09.host=drg09
+PIC.Core.DRAGNET.drg09.cpu=-1
+PIC.Core.DRAGNET.drg09.mpi_nic=
+PIC.Core.DRAGNET.drg09.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg09.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg10.host=drg10
+PIC.Core.DRAGNET.drg10.cpu=-1
+PIC.Core.DRAGNET.drg10.mpi_nic=
+PIC.Core.DRAGNET.drg10.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg10.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg11.host=drg11
+PIC.Core.DRAGNET.drg11.cpu=-1
+PIC.Core.DRAGNET.drg11.mpi_nic=
+PIC.Core.DRAGNET.drg11.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg11.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg12.host=drg12
+PIC.Core.DRAGNET.drg12.cpu=-1
+PIC.Core.DRAGNET.drg12.mpi_nic=
+PIC.Core.DRAGNET.drg12.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg12.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg13.host=drg13
+PIC.Core.DRAGNET.drg13.cpu=-1
+PIC.Core.DRAGNET.drg13.mpi_nic=
+PIC.Core.DRAGNET.drg13.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg13.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg14.host=drg14
+PIC.Core.DRAGNET.drg14.cpu=-1
+PIC.Core.DRAGNET.drg14.mpi_nic=
+PIC.Core.DRAGNET.drg14.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg14.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg15.host=drg15
+PIC.Core.DRAGNET.drg15.cpu=-1
+PIC.Core.DRAGNET.drg15.mpi_nic=
+PIC.Core.DRAGNET.drg15.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg15.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg16.host=drg16
+PIC.Core.DRAGNET.drg16.cpu=-1
+PIC.Core.DRAGNET.drg16.mpi_nic=
+PIC.Core.DRAGNET.drg16.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg16.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg17.host=drg17
+PIC.Core.DRAGNET.drg17.cpu=-1
+PIC.Core.DRAGNET.drg17.mpi_nic=
+PIC.Core.DRAGNET.drg17.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg17.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg18.host=drg18
+PIC.Core.DRAGNET.drg18.cpu=-1
+PIC.Core.DRAGNET.drg18.mpi_nic=
+PIC.Core.DRAGNET.drg18.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg18.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg19.host=drg19
+PIC.Core.DRAGNET.drg19.cpu=-1
+PIC.Core.DRAGNET.drg19.mpi_nic=
+PIC.Core.DRAGNET.drg19.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg19.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg20.host=drg20
+PIC.Core.DRAGNET.drg20.cpu=-1
+PIC.Core.DRAGNET.drg20.mpi_nic=
+PIC.Core.DRAGNET.drg20.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg20.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg21.host=drg21
+PIC.Core.DRAGNET.drg21.cpu=-1
+PIC.Core.DRAGNET.drg21.mpi_nic=
+PIC.Core.DRAGNET.drg21.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg21.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg22.host=drg22
+PIC.Core.DRAGNET.drg22.cpu=-1
+PIC.Core.DRAGNET.drg22.mpi_nic=
+PIC.Core.DRAGNET.drg22.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg22.gpus=[0, 1, 2, 3]
+
+PIC.Core.DRAGNET.drg23.host=drg23
+PIC.Core.DRAGNET.drg23.cpu=-1
+PIC.Core.DRAGNET.drg23.mpi_nic=
+PIC.Core.DRAGNET.drg23.out_nic=[CEP4:ib0,DRAGNET:ib0]
+PIC.Core.DRAGNET.drg23.gpus=[0, 1, 2, 3]
+

@@ -5,7 +5,7 @@
 #                                                      s.froehlich@fz-juelich.de
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import os
 import sys
@@ -74,7 +74,7 @@ class executable_casa(LOFARnodeTCP):
             else:
                 nodeparset = Parset()
                 sublist = []
-                for k, v in kwargs.items():
+                for k, v in list(kwargs.items()):
                     nodeparset.add(k, v)
                     if str(k).find('.'):
                         if not str(k).split('.')[0] in sublist:
@@ -85,7 +85,7 @@ class executable_casa(LOFARnodeTCP):
                 for sub in sublist:
                     subpar = nodeparset.makeSubset(nodeparset.fullModuleName(sub) + '.')
                     casastring = sub + '('
-                    for k in subpar.keys():
+                    for k in list(subpar.keys()):
                         if str(subpar[k]).find('/') == 0:
                             casastring += str(k) + '=' + "'" + str(subpar[k]) + "'" + ','
                         elif str(subpar[k]).find('casastr/') == 0:
@@ -169,11 +169,11 @@ class executable_casa(LOFARnodeTCP):
                     catch_segfaults(
                         cmd, casapydir, self.environment, logger
                     )
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 # CalledProcessError isn't properly propagated by IPython
                 self.logger.error(str(err))
                 return 1
-            except Exception, err:
+            except Exception as err:
                 self.logger.error(str(err))
                 return 1
 

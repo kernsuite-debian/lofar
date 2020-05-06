@@ -1,0 +1,13 @@
+#!/bin/bash -ve
+
+for USER in lofarsys lofarbuild mol schaap teun jasmin reinoud
+do
+  HOMEDIR=`bash -c "readlink -f ~$USER"`
+  echo "$USER -> $HOMEDIR.."
+  [ -d $HOMEDIR ] || exit 1
+done
+
+# lofarsys needs a homedir in /localhome
+# see localhome.test in this test dir
+
+exit 0

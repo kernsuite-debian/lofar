@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: AntField.h 35890 2016-11-03 13:16:09Z schoenmakers $
+//#  $Id$
 
 #ifndef LOFAR_APPLCOMMON_ANTFIELD_H
 #define LOFAR_APPLCOMMON_ANTFIELD_H

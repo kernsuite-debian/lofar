@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Backtrace.h 17099 2011-01-14 16:01:11Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_BACKTRACE_H
 #define LOFAR_COMMON_BACKTRACE_H

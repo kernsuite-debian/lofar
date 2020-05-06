@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema targetNamespace="http://www.astron.nl/LofarSpecification" version="0.3" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:spec="http://www.astron.nl/LofarSpecification" xmlns:base="http://www.astron.nl/LofarBase">
+<xsd:import schemaLocation="LofarBase.xsd" namespace="http://www.astron.nl/LofarBase"/>
+	<xsd:annotation>
+		<xsd:documentation>Definitions for LOFAR specification submission
+		
+		This is a document that uses the LofarBase and extends that with objects that are specific to the needs of being able to
+		specify activities, their relations and entities. This is partially compatible with the W3C provenance model in its naming.
+		
+		Compared to the old MoM XSD, this does not contain a project object. It is assumed the project exists, a specification should
+		not be able to edit it or add a new one. Thus only a reference to a project is in the specification.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification containers============================
+	
+		Currently we only support MoM folders as a container.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Container">
+		<xsd:sequence>
+			<xsd:element name="temporaryIdentifier" type="base:Identifier"/>
+			<xsd:element name="addToExistingContainer" type="xsd:boolean"/> <!-- update_folder=true in LofarMoM3, maybe we need a more generic spec update mechanic? -->
+			<xsd:choice><!--Or should we be specific to the subtypes here?-->
+				<xsd:element name="folder" type="base:Folder"/>
+				<!-- Might be a SchedulingBlock and other types of containers in the future -->
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification activities============================
+	
+		Activities that the system can do and their related types and objects.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Duration"> <!-- this is a specification, not a historical duration -->
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="duration" type="xsd:duration"/>
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="minimumDuration" type="xsd:duration"/>
+				<xsd:element name="maximumDuration" type="xsd:duration"/>
+			</xsd:sequence>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:simpleType name="TimeFrameType"> <!-- Should probably move to LofarBase -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UT"/>
+			<xsd:enumeration value="LST"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ActivityTimeWindow"> <!-- An activity will also have an actual (resolved/allocated) time window, this is specific to specifying -->
+		<xsd:sequence>
+			<xsd:element name="timeFrame" type="spec:TimeFrameType" default="UT">
+			</xsd:element>
+			<xsd:choice><!--How much flexibility do we want to support? -->
+				<xsd:sequence><!-- Specifies a window larger than duration -->
+					<xsd:element name="minStartTime" type="xsd:dateTime"/>
+					<xsd:element name="maxEndTime" type="xsd:dateTime"/>
+					<xsd:element name="duration" type="spec:Duration"/><!-- Should be less than End - Start, othterwise use one of the other options -->
+				</xsd:sequence>
+				<!-- xsd:sequence><This one seems redundant with startTime/duration?>
+					<xsd:element name="startTime" type="xsd:dateTime"/>
+					<xsd:element name="endTime" type="xsd:dateTime"/>
+				</xsd:sequence -->
+				<xsd:sequence><!-- EndTime is implicit as startTime+duration -->
+					<xsd:element name="startTime" type="xsd:dateTime"/>
+					<xsd:element name="duration" type="spec:Duration"/>
+				</xsd:sequence>
+				<xsd:sequence> <!-- Start time is dependent on other activities/events  -->
+					<xsd:element name="duration" type="spec:Duration"/>
+				</xsd:sequence>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="LofarStationSelectionType">
+		<xsd:restriction base="xsd:string">
+			<!-- This list equals the station resource_groups in SAS/ResourceAssignment/ResourceAssignmentDatabase/radb/sql/create_add_virtual_instrument.py -->
+			<!-- When marshalling to MoM, these need to be replaced with Custom as the Alwin Scheduler and OTDB do not support anything else -->
+			<xsd:enumeration value="CORE"/>
+			<xsd:enumeration value="REMOTE"/>
+			<xsd:enumeration value="INTERNATIONAL"/>
+			<xsd:enumeration value="SUPERTERP"/>
+			<xsd:enumeration value="ALL"/>
+			<xsd:enumeration value="NL"/>
+			<xsd:enumeration value="CoreSansST"/>
+			<xsd:enumeration value="VLBI"/>
+			<xsd:enumeration value="AARTFAAC"/>
+			<xsd:enumeration value="Core2KM"/>
+			<xsd:enumeration value="LORA"/>
+
+			<xsd:enumeration value="Custom"/> <!-- only one currently supported by the Alwin Scheduler and OTDB -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="StationSetSelection">
+		<xsd:sequence>
+			<xsd:element name="stationSet" type="spec:LofarStationSelectionType"/>
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element name="minimumConstraint" type="xsd:integer"/>
+				</xsd:sequence>
+				<xsd:element name="stations" minOccurs="0" type="base:Stations"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StationSet">
+		<xsd:sequence>
+			<xsd:element name="stationSelection" maxOccurs="unbounded" type="spec:StationSetSelection"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Observation">
+		<xsd:complexContent>
+			<xsd:extension base="base:Observation">
+				<xsd:sequence>
+					<xsd:element name="stationSelectionSpecification" type="spec:StationSet"/>
+					<xsd:element name="timeWindowSpecification" type="spec:ActivityTimeWindow"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="QualityOfServiceType">
+		<xsd:restriction base="xsd:string"><!-- These names are not very clear to me without explanation. JDM will have a look at better names -->
+			<xsd:enumeration value="THROUGHPUT"/> <!-- The current and default behavior -->
+			<xsd:enumeration value="LATENCY"/> <!-- This job needs to be optimized for fast data delivery -->
+			<xsd:enumeration value="IDLE"/> <!-- Jobs that should only be ran if the telescope is idle (test jobs for example). -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StatusType"> <!-- FIXME This might need to be extended/restricted and a version moved to LofarBase/Historical -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="opened"/>
+			<xsd:enumeration value="approved"/>
+			<!-- xsd:enumeration value="scheduled"/ -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	 <xsd:simpleType name="PriorityType"> <!-- some of these might need to be in base: -->
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="1"/>
+			<xsd:maxInclusive value="1600000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Activity">
+		<xsd:sequence>
+			<xsd:element name="temporaryIdentifier" type="base:Identifier"/>
+			<xsd:choice>
+				<xsd:element name="observation" type="spec:Observation"/>
+				<xsd:element name="measurement" type="base:Measurement"/><!-- Should be explicit part of Observation but makes it hard to make Relations-->
+				<xsd:element name="pipeline" type="base:Pipeline"/>
+				<xsd:element name="ingest" type="base:Ingest"/>
+				<xsd:element name="cleanup" type="base:Cleanup"/>
+			</xsd:choice>
+			<xsd:element name="status" minOccurs="0" type="xsd:string"/><!-- default would be opened, might need to be come an enum -->
+			<xsd:element name="qualityOfService" type="spec:QualityOfServiceType" default="THROUGHPUT"/><!-- qualityOfService and TriggerId might need to move to the base: classes -->
+			<xsd:element name="priority" type="spec:PriorityType"/>
+			<xsd:element name="triggerId" minOccurs="0" type="base:Identifier"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification entities============================
+
+		Entities describe datasets not individual data products.
+	            MoM calls this "Placeholder dataproducts" and it is implemented this way for backward compatibility with that system.
+	            We don't need actual dataproducts here, as those don't exist yet, just a reference to the types we want to create.
+	            It might need a bit more detail with Coherent Stokes and Incoherent Stokes, which currently is coded into the topology (!!)
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="DataProductType"><!-- FIXME This list should get revistited before it goes into production, current values are mostly compatible with LofarMoM3 -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UVDataProduct"/>
+			<xsd:enumeration value="BFDataProduct_CoherentStokes"/> <!-- Both need to be encoded as BFDataProduct, but with different topology -->
+			<xsd:enumeration value="BFDataProduct_IncoherentStokes"/> <!-- Both need to be encoded as BFDataProduct, but with different topology -->
+			<xsd:enumeration value="TBBDataProduct"/>
+			<xsd:enumeration value="PixelMapDataProduct"/>
+			<xsd:enumeration value="SkyImageDataProduct"/>
+			<xsd:enumeration value="PulsarDataProduct"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Entity">
+		<xsd:sequence>
+			<xsd:element name="temporaryIdentifier" type="base:Identifier"/> <!-- Please note that for now this should always be a topology that encodes the SAP for compatibility with the Alwin Scheduler and LofarMoM3 -->
+			<xsd:element name="dataproductType" type="spec:DataProductType"/>
+			<xsd:element name="storageCluster" type="base:StorageCluster"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification relations============================
+
+		These relations allow more flexibility than a purely nested structure. They can show the different ways that objects are related
+		to allow for different types of visualisation.
+
+		We decided not to make specific [Class]Identifiers because they would still all be a base:Identifier. We need to check if
+		relations are pointing to the correct classes outside of the XSD validation.
+
+		Objects that are defined in the specification XML should contain temporary Identifiers, but Relations can point to an existing Identifier
+		from e.g. MoM or SAS. How to check this isn't clear yet, but will need to be handled at some point.
+
+		We want to be specific about which types of activities can generate wich types of dataproducts/entities but we can't enforce that in the XSD right now
+		because we can't use specific [Class]Identifiers in a meaningful way.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="ChildRelationType"><!-- folders contain other folders or activities. Only observations contain measurements-->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="folder-folder"/>
+			<xsd:enumeration value="folder-activity"/>
+			<xsd:enumeration value="observation-measurement"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ChildRelation">
+		<xsd:complexContent>
+			<xsd:extension base="spec:Relation">
+				<xsd:sequence>
+					<xsd:element name="parent" type="spec:Identifier">
+						<!--xsd:keyref name="parentType" refer="spec:activityIdentifier">
+							<xsd:selector xpath="parent"/>
+							<xsd:field xpath="type"></xsd:field>
+						</xsd:keyref-->
+					</xsd:element>
+					<xsd:element name="child" type="spec:Identifier">
+						<!--xsd:keyref name="childType" refer="spec:activityIdentifier">
+							<xsd:selector xpath="child"/>
+							<xsd:field xpath="type"></xsd:field>
+						</xsd:keyref-->
+					</xsd:element>
+					<xsd:element name="type" type="spec:ChildRelationType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="SiblingRelationType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="group"/><!-- Needs the xsd:attribute name="topology_parent" type="xsd:boolean" to be set to true to translate to LofarMoM3 -->
+			<xsd:enumeration value="slice"/><!-- can currently not be stored in MoM -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="SiblingRelation"><!-- We need to make this smarter for other sibbling relations-->
+		<xsd:complexContent>
+			<xsd:extension base="spec:Relation">
+				<xsd:sequence>
+					<xsd:element name="sibling" minOccurs="1" maxOccurs="unbounded" type="base:Identifier"/>
+					<xsd:element name="type" type="spec:SiblingRelationType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="TwinRelationType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="predecessor-successor"/>
+			<xsd:enumeration value="calibrator-target"/><!-- can currently not be stored properly in MoM -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TwinRelation"><!-- We need to make this smarter for other sibbling relations-->
+		<xsd:complexContent>
+			<xsd:extension base="spec:Relation">
+				<xsd:sequence>
+					<xsd:element name="first" type="base:Identifier"/>
+					<xsd:element name="second" type="base:Identifier"/>
+					<xsd:element name="type" type="spec:TwinRelationType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="ActivityEntityRelationType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="user"/><!-- Entity used by activity, needs better name?-->
+			<xsd:enumeration value="producer"/><!-- Entity produced by activity, needs better name?-->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ActivityEntityRelation">
+		<xsd:complexContent>
+			<xsd:extension base="spec:Relation">
+				<xsd:sequence>
+					<xsd:element name="entity" type="base:Identifier"/>
+					<xsd:element name="activity" type="base:Identifier"/>
+					<xsd:element name="type" type="spec:ActivityEntityRelationType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Relation">
+		<xsd:sequence>
+
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification Identifier ============================
+
+		This is to be able to enforce the relations between the activities and entities in the specification.
+		It might be useful to move some of this to LofarBase at some point.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="IdentifierType"> <!-- some of this might need to be in base: -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="folder"/>
+			<xsd:enumeration value="observation"/>
+			<xsd:enumeration value="measurement"/>
+			<xsd:enumeration value="pipeline"/>
+			<xsd:enumeration value="measurement"/>
+			<xsd:enumeration value="dataproduct"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Identifier">
+		<xsd:complexContent>
+			<xsd:extension base="base:Identifier">
+				<xsd:attribute name="type" type="spec:IdentifierType"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR Specification root element============================
+
+		This contains the other objects in the specification and their relations. It also contains properties that pertain to the whole
+		specification and not a specific object. It needs to have at least one container/folder to put into the project in MoM that will then
+		contain other objects. Activities and entities should and can't be related to the project directly.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Specification">
+		<xsd:sequence>
+			<xsd:element name="version" type="xsd:string"/>
+			<xsd:element name="projectReference" type="base:ProjectReference"/>
+			<xsd:element name="userName" type="xsd:string"/>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0"/><!-- Freeform field for the user, will not be machine interpreted -->
+			<xsd:element name="generatorName" type="xsd:string"/>
+			<xsd:element name="generatorVersion" type="xsd:string"/>
+			<xsd:element name="container" type="spec:Container" maxOccurs="unbounded"/>
+			<xsd:element name="activity" type="spec:Activity" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="entity" type="spec:Entity" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="relation" type="spec:Relation" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="specification" type="spec:Specification">
+		<xsd:key name="activityIdentifier">
+			<xsd:selector xpath="spec:activity/spec:temporaryIdentifier"/>
+			<xsd:field xpath="@type"/>
+		</xsd:key>
+		<xsd:key name="entityIdentifier">
+			<xsd:selector xpath="spec:entity/spec:temporaryIdentifier"/>
+			<xsd:field xpath="@type"/>
+		</xsd:key>
+	</xsd:element>
+</xsd:schema>

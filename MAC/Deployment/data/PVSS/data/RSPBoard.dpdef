@@ -1,0 +1,97 @@
+voltage12			float
+voltage25			float
+voltage33			float
+version				string
+bitmode				int
+bitmodeCapability	int
+alert				int
+splitterOn			int
+Ethernet.status			:ObjectStatus
+Ethernet.packetsReceived	uint
+Ethernet.packetsError		uint
+Ethernet.lastError		uint
+MEP.seqnr			uint
+MEP.error			uint
+BP.status			:ObjectStatus
+BP.temperature			float
+BP.version			string
+AP0.status			:ObjectStatus
+AP0.temperature			float
+AP0.version			string
+AP0.SYNC.sampleCount		uint
+AP0.SYNC.syncCount		uint
+AP0.SYNC.errorCount		uint
+AP1.status			:ObjectStatus
+AP1.temperature			float
+AP1.version			string
+AP1.SYNC.sampleCount		uint
+AP1.SYNC.syncCount		uint
+AP1.SYNC.errorCount		uint
+AP2.status			:ObjectStatus
+AP2.temperature			float
+AP2.version			string
+AP2.SYNC.sampleCount		uint
+AP2.SYNC.syncCount		uint
+AP2.SYNC.errorCount		uint
+AP3.status			:ObjectStatus
+AP3.temperature			float
+AP3.version			string
+AP3.SYNC.sampleCount		uint
+AP3.SYNC.syncCount		uint
+AP3.SYNC.errorCount		uint
+
+#for archiving purpose
+compressed.avg_voltage12	float
+compressed.avg_voltage25	float
+compressed.avg_voltage33	float
+compressed.Ethernet.avg_packetsReceived	uint
+compressed.Ethernet.avg_packetsError	uint
+compressed.BP.avg_temperature	float
+compressed.AP0.avg_temperature	float
+compressed.AP0.SYNC.avg_sampleCount	uint
+compressed.AP0.SYNC.avg_syncCount	uint
+compressed.AP0.SYNC.avg_errorCount	uint
+compressed.AP1.avg_temperature	float
+compressed.AP1.SYNC.avg_sampleCount	uint
+compressed.AP1.SYNC.avg_syncCount	uint
+compressed.AP1.SYNC.avg_errorCount	uint
+compressed.AP2.avg_temperature	float
+compressed.AP2.SYNC.avg_sampleCount	uint
+compressed.AP2.SYNC.avg_syncCount	uint
+compressed.AP2.SYNC.avg_errorCount	uint
+compressed.AP3.avg_temperature	float
+compressed.AP3.SYNC.avg_sampleCount	uint
+compressed.AP3.SYNC.avg_syncCount	uint
+compressed.AP3.SYNC.avg_errorCount	uint
+
+!# DpValue
+!ElementName	TypeName	_original.._value
+!_dt_RSPBoard.Leaf	_DynamicDatapoints	"_mp_RSPBoard.bitmode:_archive", "_mp_RSPBoard.compressed.avg_bitmode:_archive", "_mp_RSPBoard.compressed.avg_bitmode:_dp_fct", "_mp_RSPBoard.voltage12:_archive", "_mp_RSPBoard.voltage25:_archive", "_mp_RSPBoard.voltage33:_archive", "_mp_RSPBoard.splitterOn:_archive", "_mp_RSPBoard.Ethernet.packetsReceived:_archive", "_mp_RSPBoard.Ethernet.packetsError:_archive", "_mp_RSPBoard.BP.temperature:_archive", "_mp_RSPBoard.AP0.temperature:_archive", "_mp_RSPBoard.AP0.SYNC.sampleCount:_archive", "_mp_RSPBoard.AP0.SYNC.syncCount:_archive", "_mp_RSPBoard.AP0.SYNC.errorCount:_archive", "_mp_RSPBoard.AP1.temperature:_archive", "_mp_RSPBoard.AP1.SYNC.sampleCount:_archive", "_mp_RSPBoard.AP1.SYNC.syncCount:_archive", "_mp_RSPBoard.AP1.SYNC.errorCount:_archive", "_mp_RSPBoard.AP2.temperature:_archive", "_mp_RSPBoard.AP2.SYNC.sampleCount:_archive", "_mp_RSPBoard.AP2.SYNC.syncCount:_archive", "_mp_RSPBoard.AP2.SYNC.errorCount:_archive", "_mp_RSPBoard.AP3.temperature:_archive", "_mp_RSPBoard.AP3.SYNC.sampleCount:_archive", "_mp_RSPBoard.AP3.SYNC.syncCount:_archive", "_mp_RSPBoard.AP3.SYNC.errorCount:_archive", "_mp_RSPBoard.compressed.avg_voltage12:_archive", "_mp_RSPBoard.compressed.avg_voltage25:_archive", "_mp_RSPBoard.compressed.avg_voltage33:_archive", "_mp_RSPBoard.compressed.avg_splitterOn:_archive", "_mp_RSPBoard.compressed.Ethernet.avg_packetsReceived:_archive", "_mp_RSPBoard.compressed.Ethernet.avg_packetsError:_archive", "_mp_RSPBoard.compressed.BP.avg_temperature:_archive", "_mp_RSPBoard.compressed.AP0.avg_temperature:_archive", "_mp_RSPBoard.compressed.AP0.SYNC.avg_sampleCount:_archive", "_mp_RSPBoard.compressed.AP0.SYNC.avg_syncCount:_archive", "_mp_RSPBoard.compressed.AP0.SYNC.avg_errorCount:_archive", "_mp_RSPBoard.compressed.AP1.avg_temperature:_archive", "_mp_RSPBoard.compressed.AP1.SYNC.avg_sampleCount:_archive", "_mp_RSPBoard.compressed.AP1.SYNC.avg_syncCount:_archive", "_mp_RSPBoard.compressed.AP1.SYNC.avg_errorCount:_archive", "_mp_RSPBoard.compressed.AP2.SYNC.avg_sampleCount:_archive", "_mp_RSPBoard.compressed.AP2.SYNC.avg_syncCount:_archive", "_mp_RSPBoard.compressed.AP2.SYNC.avg_errorCount:_archive", "_mp_RSPBoard.compressed.AP2.avg_temperature:_archive", "_mp_RSPBoard.compressed.AP3.SYNC.avg_sampleCount:_archive", "_mp_RSPBoard.compressed.AP3.SYNC.avg_syncCount:_archive", "_mp_RSPBoard.compressed.AP3.SYNC.avg_errorCount:_archive", "_mp_RSPBoard.compressed.AP3.avg_temperature:_archive", "_mp_RSPBoard.compressed.avg_voltage12:_dp_fct", "_mp_RSPBoard.compressed.avg_voltage25:_dp_fct", "_mp_RSPBoard.compressed.avg_voltage33:_dp_fct", "_mp_RSPBoard.compressed.avg_splitterOn:_dp_fct", "_mp_RSPBoard.compressed.Ethernet.avg_packetsReceived:_dp_fct", "_mp_RSPBoard.compressed.Ethernet.avg_packetsError:_dp_fct", "_mp_RSPBoard.compressed.BP.avg_temperature:_dp_fct", "_mp_RSPBoard.compressed.AP0.avg_temperature:_dp_fct", "_mp_RSPBoard.compressed.AP0.SYNC.avg_sampleCount:_dp_fct", "_mp_RSPBoard.compressed.AP0.SYNC.avg_syncCount:_dp_fct", "_mp_RSPBoard.compressed.AP0.SYNC.avg_errorCount:_dp_fct", "_mp_RSPBoard.compressed.AP1.SYNC.avg_sampleCount:_dp_fct", "_mp_RSPBoard.compressed.AP1.SYNC.avg_syncCount:_dp_fct", "_mp_RSPBoard.compressed.AP1.SYNC.avg_errorCount:_dp_fct", "_mp_RSPBoard.compressed.AP1.avg_temperature:_dp_fct", "_mp_RSPBoard.compressed.AP2.SYNC.avg_sampleCount:_dp_fct", "_mp_RSPBoard.compressed.AP2.SYNC.avg_syncCount:_dp_fct", "_mp_RSPBoard.compressed.AP2.SYNC.avg_errorCount:_dp_fct", "_mp_RSPBoard.compressed.AP2.avg_temperature:_dp_fct", "_mp_RSPBoard.compressed.AP3.SYNC.avg_sampleCount:_dp_fct", "_mp_RSPBoard.compressed.AP3.SYNC.avg_syncCount:_dp_fct", "_mp_RSPBoard.compressed.AP3.SYNC.avg_errorCount:_dp_fct", "_mp_RSPBoard.compressed.AP3.avg_temperature:_dp_fct"
+!_dt_RSPBoard.DynamicAttribute	_DynamicDatapoints	"_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none"
+
+!# DpFunction
+!ElementName	TypeName	_dp_fct.._type	_dp_fct.._param	_dp_fct.._fct	_dp_fct.._global	_dp_fct.._old_new_compare	_dp_fct.._stat_type	_dp_fct.._interval	_dp_fct.._time	_dp_fct.._day_of_week	_dp_fct.._day	_dp_fct.._month	_dp_fct.._delay	_dp_fct.._read_archive	_dp_fct.._inv_func	_dp_fct.._inv_limit	_dp_fct.._def_func	_dp_fct.._def_limit	_dp_fct.._user1_func	_dp_fct.._user1_limit	_dp_fct.._user2_func	_dp_fct.._user2_limit	_dp_fct.._user3_func	_dp_fct.._user3_limit	_dp_fct.._user4_func	_dp_fct.._user4_limit	_dp_fct.._user5_func	_dp_fct.._user5_limit	_dp_fct.._user6_func	_dp_fct.._user6_limit	_dp_fct.._user7_func	_dp_fct.._user7_limit	_dp_fct.._user8_func	_dp_fct.._user8_limit	_dp_fct.._interm_res	_dp_fct.._interm_res_cyc
+!_mp_RSPBoard.compressed.avg_voltage12	RSPBoard	63	_mp_RSPBoard.voltage12:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.avg_voltage25	RSPBoard	63	_mp_RSPBoard.voltage25:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.avg_voltage33	RSPBoard	63	_mp_RSPBoard.voltage33:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.avg_bitmode	RSPBoard	63	_mp_RSPBoard.bitmode:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.avg_splitterOn	RSPBoard	63	_mp_RSPBoard.splitterOn:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.Ethernet.avg_packetsReceived	RSPBoard	63	_mp_RSPBoard.Ethernet.packetsReceived:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.Ethernet.avg_packetsError	RSPBoard	63	_mp_RSPBoard.Ethernet.packetsError:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.BP.avg_temperature	RSPBoard	63	_mp_RSPBoard.BP.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP0.avg_temperature	RSPBoard	63	_mp_RSPBoard.AP0.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP0.SYNC.avg_sampleCount	RSPBoard	63	_mp_RSPBoard.AP0.SYNC.sampleCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP0.SYNC.avg_syncCount	RSPBoard	63	_mp_RSPBoard.AP0.SYNC.syncCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP0.SYNC.avg_errorCount	RSPBoard	63	_mp_RSPBoard.AP0.SYNC.errorCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP1.SYNC.avg_sampleCount	RSPBoard	63	_mp_RSPBoard.AP1.SYNC.sampleCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP1.SYNC.avg_syncCount	RSPBoard	63	_mp_RSPBoard.AP1.SYNC.syncCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP1.SYNC.avg_errorCount	RSPBoard	63	_mp_RSPBoard.AP1.SYNC.errorCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP2.SYNC.avg_sampleCount	RSPBoard	63	_mp_RSPBoard.AP2.SYNC.sampleCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP2.SYNC.avg_syncCount	RSPBoard	63	_mp_RSPBoard.AP2.SYNC.syncCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP2.SYNC.avg_errorCount	RSPBoard	63	_mp_RSPBoard.AP2.SYNC.errorCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP3.SYNC.avg_sampleCount	RSPBoard	63	_mp_RSPBoard.AP3.SYNC.sampleCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP3.SYNC.avg_syncCount	RSPBoard	63	_mp_RSPBoard.AP3.SYNC.syncCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP3.SYNC.avg_errorCount	RSPBoard	63	_mp_RSPBoard.AP3.SYNC.errorCount:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP1.avg_temperature	RSPBoard	63	_mp_RSPBoard.AP1.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP2.avg_temperature	RSPBoard	63	_mp_RSPBoard.AP2.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_RSPBoard.compressed.AP3.avg_temperature	RSPBoard	63	_mp_RSPBoard.AP3.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10

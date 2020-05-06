@@ -22,7 +22,7 @@
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Delay.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
 namespace LOFAR
 {
@@ -52,7 +52,7 @@ const Scalar::View Delay::evaluateImpl(const Grid &grid,
         }
     }
 
-    Matrix phase = freq * (delay() * casa::C::_2pi);
+    Matrix phase = freq * (delay() * casacore::C::_2pi);
     Matrix shift = tocomplex(cos(phase), sin(phase));
 
     return Scalar::View(shift);

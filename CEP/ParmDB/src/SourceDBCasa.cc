@@ -18,26 +18,26 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceDBCasa.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDBCasa.h>
 #include <ParmDB/ParmMap.h>
 
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/ExprNode.h>
-#include <tables/Tables/ExprNodeSet.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/TableIter.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableLocker.h>
-#include <tables/Tables/TableIter.h>
-#include <casa/Containers/RecordField.h>
-using namespace casa;
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/TaQL/ExprNode.h>
+#include <casacore/tables/TaQL/ExprNodeSet.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/TableIter.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableLocker.h>
+#include <casacore/tables/Tables/TableIter.h>
+#include <casacore/casa/Containers/RecordField.h>
+using namespace casacore;
 
 namespace LOFAR {
 namespace BBS {
@@ -677,7 +677,7 @@ namespace BBS {
   {
     ParmValueSet valueSet = getParmDB().getDefValue(name, ParmValue());
     ASSERT(valueSet.empty() && valueSet.getType() == ParmValue::Scalar);
-    const casa::Array<double> &values = valueSet.getDefParmValue().getValues();
+    const casacore::Array<double> &values = valueSet.getDefParmValue().getValues();
     ASSERT(values.size() == 1);
     return values.data()[0];
   }

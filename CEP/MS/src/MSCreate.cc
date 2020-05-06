@@ -18,51 +18,51 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSCreate.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <MS/MSCreate.h>
 #include <Common/LofarLogger.h>
 
-#include <ms/MeasurementSets.h>
-#include <tables/Tables/IncrementalStMan.h>
-#include <tables/Tables/StandardStMan.h>
-#include <tables/Tables/TiledColumnStMan.h>
-#include <tables/Tables/BitFlagsEngine.h>
-#include <tables/Tables/TiledStManAccessor.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableCopy.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Cube.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Containers/Block.h>
-#include <casa/Containers/Record.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MBaseline.h>
-#include <measures/Measures/Muvw.h>
-#include <measures/Measures/MeasTable.h>
-#include <measures/Measures/Stokes.h>
-#include <measures/Measures/MCBaseline.h>
-#include <measures/Measures/MeasConvert.h>
-#include <casa/Quanta/MVEpoch.h>
-#include <casa/Quanta/MVDirection.h>
-#include <casa/Quanta/MVPosition.h>
-#include <casa/Quanta/MVBaseline.h>
-#include <casa/OS/Time.h>
-#include <casa/OS/SymLink.h>
-#include <casa/BasicSL/Constants.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/Arrays/Slicer.h>
-#include <casa/Arrays/Slice.h>
+#include <casacore/ms/MeasurementSets.h>
+#include <casacore/tables/DataMan/IncrementalStMan.h>
+#include <casacore/tables/DataMan/StandardStMan.h>
+#include <casacore/tables/DataMan/TiledColumnStMan.h>
+#include <casacore/tables/DataMan/BitFlagsEngine.h>
+#include <casacore/tables/DataMan/TiledStManAccessor.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableCopy.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MBaseline.h>
+#include <casacore/measures/Measures/Muvw.h>
+#include <casacore/measures/Measures/MeasTable.h>
+#include <casacore/measures/Measures/Stokes.h>
+#include <casacore/measures/Measures/MCBaseline.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/casa/Quanta/MVEpoch.h>
+#include <casacore/casa/Quanta/MVDirection.h>
+#include <casacore/casa/Quanta/MVPosition.h>
+#include <casacore/casa/Quanta/MVBaseline.h>
+#include <casacore/casa/OS/Time.h>
+#include <casacore/casa/OS/SymLink.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/Arrays/Slicer.h>
+#include <casacore/casa/Arrays/Slice.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 
 MSCreate::MSCreate (const std::string& msName,
 		    double startTime, double timeStep, int nfreq, int ncorr,
@@ -863,7 +863,7 @@ void MSCreate::addImagerColumns (MeasurementSet& ms)
     }
     TiledColumnStMan stMan("TiledModelData", dataTileShape);
     ms.addColumn (td, stMan);
-    // Set MODEL_DATA keyword for casa::VisSet.
+    // Set MODEL_DATA keyword for casacore::VisSet.
     // Sort out the channel selection.
     if (ms.spectralWindow().isNull()) {
       ms.spectralWindow() =

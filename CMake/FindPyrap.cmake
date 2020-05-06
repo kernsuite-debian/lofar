@@ -37,7 +37,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPyrap.cmake 31649 2015-05-27 07:17:22Z loose $
+# $Id$
 
 include(LofarFindPackage)
 

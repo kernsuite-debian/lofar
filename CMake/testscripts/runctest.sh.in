@@ -42,6 +42,9 @@ export LD_LIBRARY_PATH
 # Add the Python build directory to PYTHONPATH.
 PYTHONPATH="@srcdir@:@PYTHON_BUILD_DIR@:${PYTHONPATH}"; export PYTHONPATH
 
+# Set the Python interpreter to the one found by CMake
+PYTHON_EXECUTABLE="@PYTHON_EXECUTABLE@"; export PYTHON_EXECUTABLE
+
 # Start CMake/testscripts/runtest.sh
 "@LOFAR_ROOT@/CMake/testscripts/runtest.sh" "$@"
 

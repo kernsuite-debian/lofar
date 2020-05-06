@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacadeLocal.h 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #ifndef LOFAR_PARMDB_PARMFACADELOCAL_H
 #define LOFAR_PARMDB_PARMFACADELOCAL_H
@@ -34,8 +34,8 @@
 #include <Common/lofar_set.h>
 #include <Common/lofar_string.h>
 
-#include <casa/Containers/Record.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Arrays/Vector.h>
 
 
 namespace LOFAR { namespace BBS {
@@ -87,10 +87,10 @@ namespace LOFAR { namespace BBS {
     virtual vector<string> getDefNames (const string& parmNamePattern) const;
 
     // Get the default values of parameters matching the pattern.
-    virtual casa::Record getDefValues (const string& parmNamePattern) const;
+    virtual casacore::Record getDefValues (const string& parmNamePattern) const;
 
     // Add one or more default values.
-    virtual void addDefValues (const casa::Record&, bool check);
+    virtual void addDefValues (const casacore::Record&, bool check);
 
     // Delete the default value records for the given parameters.
     virtual void deleteDefValues (const string& parmNamePattern);
@@ -98,7 +98,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given regular grid
     // where v1/v2 represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     double freqv1, double freqv2,
                                     double freqStep,
                                     double timev1, double timev2,
@@ -109,7 +109,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given grid where v1/v2
     // represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     const vector<double>& freqv1,
                                     const vector<double>& freqv2,
                                     const vector<double>& timev1,
@@ -123,13 +123,13 @@ namespace LOFAR { namespace BBS {
     // used for each parameters. Their names have the form <parmname>/xx
     // where xx is freqs, freqwidths, times, and timewidths. Their values
     // are the center and width of each cell.
-    virtual casa::Record getValuesGrid (const string& parmNamePattern,
+    virtual casacore::Record getValuesGrid (const string& parmNamePattern,
                                         double freqv1, double freqv2,
                                         double timev1, double timev2,
                                         bool asStartEnd);
 
     // Get coefficients, errors, and domains they belong to.
-    virtual casa::Record getCoeff (const string& parmNamePattern,
+    virtual casacore::Record getCoeff (const string& parmNamePattern,
                                    double freqv1, double freqv2,
                                    double timev1, double timev2,
                                    bool asStartEnd);
@@ -155,7 +155,7 @@ namespace LOFAR { namespace BBS {
     virtual void setDefaultSteps (const vector<double>&);
 
     // Add the values for the given parameter names and domain.
-    virtual void addValues (const casa::Record& rec);
+    virtual void addValues (const casacore::Record& rec);
 
     // Delete the records for the given parameters and domain.
     virtual void deleteValues (const string& parmNamePattern,
@@ -165,7 +165,7 @@ namespace LOFAR { namespace BBS {
 
   private:
     // Get the values for the given predict grid
-    casa::Record doGetValues (const string& parmNamePattern,
+    casacore::Record doGetValues (const string& parmNamePattern,
                               const Grid& predictGrid,
                               bool includeDefaults);
 
@@ -174,21 +174,21 @@ namespace LOFAR { namespace BBS {
     Grid getGrid (const ParmValueSet& valueSet, const Box& domain);
 
     // Collect funklet coeff and errors in the record.
-    casa::Record getFunkletCoeff (const ParmValueSet& pvset);
+    casacore::Record getFunkletCoeff (const ParmValueSet& pvset);
 
     // Add the default value for a single parm.
-    void addDefValue (const string& parmName, const casa::Record& value,
+    void addDefValue (const string& parmName, const casacore::Record& value,
                       bool check);
 
     // Add the value for a single parm.
-    void addValue (const string& parmName, const casa::Record& value);
+    void addValue (const string& parmName, const casacore::Record& value);
 
     // Construct the Grid object from the record.
-    Grid record2Grid (const casa::Record& rec) const;
+    Grid record2Grid (const casacore::Record& rec) const;
 
     // Make a RegularAxis or OrderedAxis.
-    Axis::ShPtr makeAxis (const casa::Vector<double>& centers,
-                          const casa::Vector<double>& widths, uint n) const;
+    Axis::ShPtr makeAxis (const casacore::Vector<double>& centers,
+                          const casacore::Vector<double>& widths, uint n) const;
 
     // Convert the string to a funklet type.
     int getType (const string& str) const;

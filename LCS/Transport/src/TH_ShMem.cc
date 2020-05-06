@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TH_ShMem.cc 16248 2010-08-30 12:02:45Z mol $
+//# $Id$
 
 #include <lofar_config.h>
 

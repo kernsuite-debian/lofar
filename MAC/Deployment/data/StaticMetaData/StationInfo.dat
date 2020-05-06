@@ -118,7 +118,7 @@ SE607	207    E    11.9302386   57.3990617       50.34  24    12    96    96    1
 # Chillbolton
 UK608	208    E    -1.4342539   51.1439472      137.66  24    12    96    96    1       No       No    No
 # Norderstedt (H=67.246568409726024)
-# WARNING: JUMP IN STATIONNUMBERS!!!! FI609 HAS NUMBER 209!!!!
+# WARNING: JUMP IN STATIONNUMBERS!!!! FI901 HAS NUMBER 209!!!!
 DE609   210    E     9.9692322   53.6988092       69.27  24    12    96    96    1       No       No    No       
 # Borowiec
 PL610   211    E     17.0741692  52.2759289      120.82  24    12    96    96    2       No       No    No
@@ -128,11 +128,13 @@ PL611   212    E     20.4896131  49.9649386      305.42  24    12    96    48   
 PL612   213    E     20.5897506  53.5939042      178.38  24    12    96    96    2       No       No    No
 # Birr
 IE613   214    E     -7.9213656  53.0951167      105.99  24    12    96    96    2       No       No    No
+# Irbene
+LV614   215    E     21.8558311  57.5570617       42.58  24    12    96    96    2       No       No    No
 
 ## Non-ILT international
 ## 900
 # Finland (to be renamed when it becomes part of ILT)
-FI609	901    E     20.7609103  69.0714225      533.25  12    6     48    48    1       No       No    No
+FI901	901    E     20.7609103  69.0714225      533.25  12    6     48    48    1       No       No    No
 
 ## central systems (60-69)
 ## 60
@@ -161,3 +163,4 @@ CN001   0      C    6.8666964    52.9102978      58.60  0      0    0     0     
 # name  ID     ring long         lat             height  nrRSP nrTBB nrLBA nrHBA nrPowec HBAsplit LBAcal Aartfaac
 #----------------------------------------------------------------------------------------------------------------
 #RS511	301    R    6.7852089    53.4093164      51.53   12    6     96    48    1       No       Yes    No
+#RS512	302    R    6.7852089    53.4093164      51.53   12    6     96    48    1       No       Yes    No

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: NoQpidFallback.cc 31371 2015-03-27 10:31:19Z mol $
+//# $Id$
 
 #include <lofar_config.h>
 

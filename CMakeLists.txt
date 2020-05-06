@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39773 2018-06-26 07:36:09Z schaap $
+# $Id$
 
 cmake_minimum_required(VERSION 2.8)
 

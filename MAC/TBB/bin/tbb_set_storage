@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+#######################################################################################
+#
+# Set storage nodes where the TBB boards will send their data to on a bunch of stations
+#
+#######################################################################################
+
+import logging
+from lofar.mac.tbb.tbb_set_storage import main
+
+
+if __name__ == '__main__':
+    format = '%(asctime)-15s | %(message)s'
+    logging.basicConfig(format=format, level=logging.INFO)
+    main()

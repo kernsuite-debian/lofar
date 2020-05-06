@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMSSplit.cc 14034 2009-09-17 13:01:30Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Blob/BlobIStream.h>
@@ -26,20 +26,20 @@
 #include <Blob/BlobArray.h>
 #include <Common/LofarLogger.h>
 
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/IO/RegularFileIO.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/IO/RegularFileIO.h>
+#include <casacore/casa/Exceptions/Error.h>
 
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void doIt (const string& in, const string& out, const string& column)

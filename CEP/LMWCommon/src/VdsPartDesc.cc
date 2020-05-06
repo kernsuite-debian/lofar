@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VdsPartDesc.cc 16886 2010-12-08 10:43:17Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen <diepen AT astron nl>
 
@@ -29,14 +29,14 @@
 #include <Blob/BlobArray.h>
 #include <Common/StreamUtil.h>
 #include <Common/LofarLogger.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/MVTime.h>
 #include <ostream>
 
 namespace std {
   using LOFAR::operator<<;
 }
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR { namespace CEP {
 

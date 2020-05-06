@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tQueue.cc 35309 2016-09-08 09:57:51Z schoenmakers $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

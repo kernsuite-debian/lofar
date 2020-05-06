@@ -18,21 +18,21 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParmDBCasa.cc 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmDBCasa.h>
 #include <ParmDB/Box.h>
 #include <Common/LofarLogger.h>
-#include <tables/Tables/TableRecord.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void testCreate()

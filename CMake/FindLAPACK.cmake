@@ -21,7 +21,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindLAPACK.cmake 28061 2014-01-28 17:46:40Z loose $
+# $Id$
 
 # Enable the Fortran compiler, if that has not been done yet.
 get_property(_enabled_languages GLOBAL PROPERTY ENABLED_LANGUAGES)

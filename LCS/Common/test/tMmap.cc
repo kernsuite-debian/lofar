@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMmap.cc 25309 2013-06-12 13:35:47Z amesfoort $
+//# $Id$
 
 #include <lofar_config.h>
 

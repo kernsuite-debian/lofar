@@ -1,0 +1,16 @@
+#!/bin/bash -ve
+
+# Check whether we use our custom OpenMPI configuration file
+MPI_ETC_DIR=$(readlink -n -f $(dirname $(which mpirun))/../etc)
+echo "looking for openmpi-mca-params.conf in $MPI_ETC_DIR"
+
+grep 'Ansible managed:' $MPI_ETC_DIR/openmpi-mca-params.conf || exit 1
+
+ompi_info --all --parseable | grep "mca:btl:base:param:btl:value:tcp" || exit 1
+ompi_info --all --parseable | grep "mca:event:base:param:opal_event_include:value:epoll" || exit 1
+ompi_info --all --parseable | grep "mca:mpi:base:param:mpi_leave_pinned:value:true" || exit 1
+ompi_info --all --parseable | grep "mca:mpi:base:param:mpi_leave_pinned_pipeline:value:false" || exit 1
+ompi_info --all --parseable | grep "mca:mpi:base:param:mpi_preconnect_all:value:true" || exit 1
+ompi_info --all --parseable | grep "mca:mpi:base:param:mpi_warn_on_fork:value:false" || exit 1
+
+exit 0

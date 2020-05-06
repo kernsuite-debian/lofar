@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: pyparameterset.cc 32309 2015-08-27 07:44:31Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/ParameterSet.h>

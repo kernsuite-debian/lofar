@@ -1,0 +1,56 @@
+# $Id$
+# The list of Cobalt nodes to use for the production system
+# 
+# Node XXXX is configured through the keys in
+#   PIC.Core.Cobalt.XXXX.*
+
+Cobalt.Nodes = [
+  cbt201_0,
+  cbt201_1,
+  cbt202_0,
+  cbt202_1,
+  cbt203_0,
+  cbt203_1,
+  cbt204_0,
+  cbt204_1,
+  cbt205_0,
+  cbt205_1,
+  # cbt206 is a spare
+  cbt207_0,
+  cbt207_1,
+  cbt208_0,
+  cbt208_1,
+  cbt209_0,
+  cbt209_1,
+  cbt210_0,
+  cbt210_1,
+  cbt211_0,
+  cbt211_1,
+  cbt212_0,
+  cbt212_1
+  # cbt213 is a spare
+]
+
+DRAGNET.Nodes = [
+  drg01,
+  drg02,
+  drg03,
+  drg04,
+  drg05,
+  drg06,
+  drg07,
+  drg08,
+  drg09,
+  drg10,
+  drg11,
+  drg12,
+  drg13,
+  drg14,
+  drg15,
+  drg16,
+  drg17,
+  drg18,
+  drg19,
+  drg20
+]
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+webserv=`ps ax --no-headers -o pid,cmd | grep QPIDWebserverJSON | grep -v grep | wc -l`
+
+if [ "$webserv" == "0" ]; then
+   echo -n QPID status webserver not running, starting up...
+   sudo -u qpidd LOFARROOT=$LOFARROOT sh -c "ulimit -s 1024; /opt/lofar/bin/QPIDWebserverJSON 1>> /opt/lofar/var/log//QPIDwebserverJSON.log 2>&1 &"
+else
+   echo QPID status webserver already running
+   exit
+fi
+
+sleep 1
+# Check if running
+webserv=`ps ax --no-headers -o pid,cmd | grep QPIDWebserverJSON | grep -v grep | wc -l`
+if [ "$webserv" == "0" ]; then 
+  echo "    FAILED"
+else 
+  echo "    OK"
+fi

@@ -38,10 +38,8 @@ class setupsourcedb(LOFARnodeTCP):
             try:
                 os.makedirs(skydb_dir)
                 self.logger.debug("Created output directory %s" % skydb_dir)
-            except OSError, err:
-                # Ignore error if directory already exists, otherwise re-raise
-                if err[0] != errno.EEXIST:
-                    raise
+            except FileExistsError:
+                pass
 
             # ****************************************************************
             # 2 Remove any old sky database
@@ -67,7 +65,7 @@ class setupsourcedb(LOFARnodeTCP):
 
             # *****************************************************************
             # 3. Validate performance and cleanup temp files
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 # For CalledProcessError isn't properly propagated by IPython
                 # Temporary workaround...
                 self.logger.error(str(err))

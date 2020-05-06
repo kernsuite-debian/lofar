@@ -10,6 +10,8 @@
 #include <cmath>
 #include <vector>
 #include <memory>
+#include <ostream>
+
 namespace LOFAR {
 class ParameterSet;
 class ScreenConstraint : public Constraint
@@ -21,8 +23,13 @@ class ScreenConstraint : public Constraint
 public:
   ScreenConstraint(const ParameterSet& parset,
                    const string& prefix);
-  void initialize(size_t nAntennas, size_t nDirections, size_t nChannelBlocks, const double* frequencies);
-  virtual std::vector<Constraint::Result> Apply(std::vector<std::vector<MultiDirSolver::DComplex> >& solutions,double time);
+
+  /** Initialize metadata with frequencies, resize some members.
+   * Should be called after InitializeDimensions.
+   */
+  void initialize(const double* frequencies);
+  virtual std::vector<Constraint::Result> Apply(std::vector<std::vector<MultiDirSolver::DComplex> >& solutions,
+                   double time, std::ostream* statStream);
   virtual void CalculatePiercepoints();
 
   void setAntennaPositions(const std::vector<std::vector<double> > antenna_pos);
@@ -41,7 +48,6 @@ public:
   }
  void getPPValue(std::vector<std::vector<std::complex<double> > >&, size_t, size_t, double&,double&) const;
 private:
-  size_t _nAntennas, _nDirections, _nChannelBlocks;
   std::vector<std::vector<double> > itsAntennaPos;
   std::vector<std::vector<double> > itsSourcePos;
   std::vector<double>               itsFrequencies;

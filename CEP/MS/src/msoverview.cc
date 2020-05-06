@@ -18,21 +18,21 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: msoverview.cc 34753 2016-06-20 10:43:42Z schaap $
+//# $Id$
 
-#include <ms/MeasurementSets/MeasurementSet.h>
-#if defined(casacore)
-#include <ms/MSOper/MSSummary.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/ms/MSOper/MSSummary.h>
 #else
-#include <ms/MeasurementSets/MSSummary.h>
+#include <casacore/ms/MSOper/MSSummary.h>
 #endif
-#include <tables/Tables/TableParse.h>
-#include <casa/Containers/Record.h>
-#include <casa/Inputs/Input.h>
+#include <casacore/tables/TaQL/TableParse.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Inputs/Input.h>
 #include <iostream>
 #include <sstream>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 int main (int argc, char* argv[])

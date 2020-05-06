@@ -1,0 +1,691 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 1050 974 N "_3DFace" 1
+"$SYSTEM"
+"main()
+{
+  Init();
+}" 0
+ E E E E 1 -1 -1 0  -350 1100
+""0  1
+E "bool g_alertRow;
+dyn_string g_systemSelections, g_closedIdf;
+bool g_checkAll;
+int g_tabType = AESTAB_TOP;
+int g_screenType = AESTYPE_EVENTS;
+string g_propDpName = aes_getPropDpName(AES_DPTYPE_PROPERTIES, true );
+  
+
+void Init()
+{  
+  dyn_string dsSystemNames;
+  dyn_int diSystemIds;
+      
+  FILT_BEGIN.dateTime   = getCurrentTime() - ( 1 * 86400 );
+  FILT_END.dateTime     = getCurrentTime() + 3600;
+
+  // Default filter on 'Broken'  
+  FILT_PRIO.state(5) = true;
+  
+  getSystemNamesConnected( dsSystemNames, diSystemIds );
+  dynAppend( dsSystemNames, getSystemName() );
+  
+  for( int i=1; i<=dynlen(dsSystemNames); i++ )
+  {
+    strreplace( dsSystemNames[i], \":\", \"\" );
+  }
+
+  dynSort( dsSystemNames );
+  dynInsertAt( dsSystemNames, \"All\", 1 );     // No filtering on all systems!
+  
+  FILT_SYSTEM.items = dsSystemNames;
+  
+  if( isDollarDefined( \"$SYSTEM\") )
+  {
+    FILT_SYSTEM.text = $SYSTEM;
+  }
+  
+  FILT_STATECOMMENT.items =  makeDynString( \"\",
+                                         \"REPAIRED (REPAIRED)\",
+                                         \"OSCILLATION (OSC)\",
+                                         \"FLAT (FLAT)\",
+                                         \"HIGH NOISE (HN)\",
+                                         \"SHORT  (SHORT)\",
+                                         \"SPURIOUS (SPUR)\",
+                                         \"LOW NOISE (LN)\",
+                                         \"DOWN (DOWN)\",
+                                         \"SUMMATOR NOISE (SN)\",
+                                         \"C-SUMMATOR (CSUM)\",
+                                         \"JITTER > 3dB (JIT)\",
+                                         \"RF element FAIL (E_FAIL)\",
+                                         \"MODEM element FAIL (MODEM)\",
+                                         \"MISSING (MISSING)\" );
+}
+                
+void FilterSet( bool bStart = false)
+{
+  dyn_string dsFiltSystems, dsPrios;
+  
+//  DebugTN( \"g_propDpName = \" + g_propDpName );
+
+  aes_doStop( g_propDpName );
+  delay(0,100);
+  
+  // FILTER MODE AND TIMERANGE ====================================================
+  if( FILT_MODE.number == 0 )
+  {
+    // Actual alerts
+    dpSetCache( g_propDpName + \".Both.Timerange.Type\",   AES_MODE_CURRENT,
+                g_propDpName + \".Both.Timerange.Type\",      0,
+                g_propDpName + \".Both.Timerange.Begin\",  FILT_BEGIN.dateTime,
+                g_propDpName + \".Both.Timerange.End\",    FILT_END.dateTime );  
+  }
+  else
+  {
+    // Historical alerts
+    dpSetCache( g_propDpName + \".Both.Timerange.Type\",   AES_MODE_CLOSED,
+                g_propDpName + \".Both.Timerange.Type\",      2,
+                g_propDpName + \".Both.Timerange.Selection\", 6,
+                g_propDpName + \".Both.Timerange.Begin\",  FILT_BEGIN.dateTime,
+                g_propDpName + \".Both.Timerange.End\",    FILT_END.dateTime );  
+  }
+
+  
+  // FILTER SYSTEMS ===============================================================
+  g_checkAll = ( FILT_SYSTEM.selectedText == \"All\");
+  
+  // Set selected system
+  if( g_checkAll )
+  {
+//    g_systemSelections = dsFiltSystems;
+    dpSetCache( g_propDpName + \".Both.Systems.CheckAllSystems\", true,
+               g_propDpName + \".Both.Systems.Selections\",      \"MCU001\" );  
+  }
+  else
+  {
+    dsFiltSystems = makeDynString( FILT_SYSTEM.selectedText );
+    g_systemSelections = dsFiltSystems;
+    dpSetCache( g_propDpName + \".Both.Systems.CheckAllSystems\", false,
+               g_propDpName + \".Both.Systems.Selections\",      dsFiltSystems );  
+  }
+  
+  
+  // Now set DPE's to filter selected systems  
+  
+
+
+
+  // FILTER PRIO's/STATES =========================================================
+  if( FILT_PRIO.state(0) ) 
+    dynAppend( dsPrios, \"1\" );
+  
+  if( FILT_PRIO.state(1) ) 
+    dynAppend( dsPrios, \"10\" );
+  
+  if( FILT_PRIO.state(2) ) 
+    dynAppend( dsPrios, \"20\" );
+  
+  if( FILT_PRIO.state(3) ) 
+    dynAppend( dsPrios, \"30\" );
+  
+  if( FILT_PRIO.state(4) ) 
+    dynAppend( dsPrios, \"40\" );
+  
+  if( FILT_PRIO.state(5) ) 
+    dynAppend( dsPrios, \"50\" );
+  
+  if( FILT_PRIO.state(6) ) 
+    dynAppend( dsPrios, \"60\" );
+  
+//  DebugN( \"    g_checkAll:    \" + g_checkAll );
+//  DebugN( \"    dsFiltSystems: \" + dynStringToString(dsFiltSystems ) );
+//  DebugN( \"    dsPrios:       \" + dynStringToString(dsPrios) );
+  
+  dpSetCache( g_propDpName + \".Alerts.Filter.Prio\", dynStringToString( dsPrios, \",\" ) );
+  
+  
+  // FILTER ALERT TEXT =========================================================
+//  dpSetCache( g_propDpName + \".Alerts.Filter.AlertText\", FILT_ALERTTEXT.text );
+  string strStateComment = FILT_STATECOMMENT.selectedText;
+  DebugTN(\"strStateComment: \" + strStateComment );
+  if( strStateComment != \"\" )
+  {
+    
+    if( patternMatch( \"*(*)*\", strStateComment ) )
+    {
+      strStateComment = strip_comment( strStateComment );
+    }
+    
+    dpSetCache( g_propDpName + \".Alerts.Filter.Add_Value_Index\", makeDynInt( 5 ),
+                g_propDpName + \".Alerts.Filter.Add_Value_Combine\", makeDynString( \"\" ),
+                g_propDpName + \".Alerts.Filter.Add_Value_Compare\", makeDynString( \"LIKE\" ),
+                g_propDpName + \".Alerts.Filter.Add_Value\", makeDynString( strStateComment ) );
+  }
+  else
+  {
+    dpSetCache( g_propDpName + \".Alerts.Filter.Add_Value_Index\", makeDynInt(),
+                g_propDpName + \".Alerts.Filter.Add_Value_Combine\", makeDynString(),
+                g_propDpName + \".Alerts.Filter.Add_Value_Compare\", makeDynString(),
+                g_propDpName + \".Alerts.Filter.Add_Value\", makeDynString() );
+  }
+  
+  delay(1,100);
+  
+  // GO !!!!!!! ===================================================================
+  if( bStart )
+  {    
+ //   aes_doStop( g_propDpName );
+    aes_doStart( g_propDpName );
+  }
+}
+
+
+
+
+string strip_comment(string txt) {
+  string code = substr(txt,strpos(txt,\"(\")+1,(strpos(txt,\")\")) - (strpos(txt,\"(\")+1));
+  return code;  
+}
+  
+
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+1 51 0 "" 26
+0
+30 17
+"FRAME1"
+""
+1 5 804 E E E 1 E 1 E N "_WindowText" E N {0,0,0} E E
+ E E
+0 0 0 0 0 0
+E E E
+1
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1.068558423320904 0 1.781249999999999 4.592897323714042 -1432.124999999999 0 E 5 804 971 901
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 9 Filtering
+13 18
+"FILT_GO"
+""
+1 20 146.0000000000002 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  18 140 112 164
+
+T 
+1
+LANG:1 5 Go !
+
+"main()
+{
+  FilterSet( true );
+}
+" 0
+ E E E
+2 37
+"PRIMITIVE_TEXT1"
+""
+1 380 21.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 380 21.00000000000023 431 36
+0 2 2 "0s" 0 0 0 192 0 0  380 21.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 7 System:
+2 38
+"PRIMITIVE_TEXT2"
+""
+1 520 21.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+5 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 520 21.00000000000023 584 36
+0 2 2 "0s" 0 0 0 192 0 0  520 21.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 11 Prio/State:
+20 39
+"FILT_PRIO"
+""
+1 520 36.00000000000046 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+6 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  518 34 652 158
+7
+T 
+1
+LANG:1 7 Off (0)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 16 Operational (10)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 16 Maintenance (20)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 9 Test (30)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 15 Suspicious (40)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 11 Broken (50)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 15 DP Offline (60)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+0
+EE2 41
+"PRIMITIVE_TEXT3"
+""
+1 670 21.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 670 21.00000000000023 765 36
+0 2 2 "0s" 0 0 0 192 0 0  670 21.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 14 State comment:
+2 42
+"PRIMITIVE_TEXT4"
+""
+1 20 21.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 20 21.00000000000023 58 36
+0 2 2 "0s" 0 0 0 192 0 0  20 21.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 5 Mode:
+19 43
+"FILT_MODE"
+""
+1 20 36.00000000000023 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+10 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  18 34 107 73
+2
+T 
+1
+LANG:1 6 Actual
+
+1 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 10 Historical
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+1
+E "main(int button)
+{
+  
+  if( FILT_MODE.number == 0 )
+  {
+    FILT_BEGIN.enabled = false;
+    FILT_END.enabled   = false;
+  }
+  else
+  {
+    FILT_BEGIN.enabled = true;
+    FILT_END.enabled   = true;
+  }
+}" 0
+
+29 44
+"FILT_BEGIN"
+""
+1 165 41.00000000000023 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"displayFormat" "string yyyy-M-d hh:mm:ss"
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  165 41 315 61
+16 DateTimeEdit.ewo
+0
+E29 45
+"FILT_END"
+""
+1 165 66.00000000000023 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+12 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"displayFormat" "string yyyy-M-d hh:mm:ss"
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  165 66 315 86
+16 DateTimeEdit.ewo
+0
+E2 46
+"PRIMITIVE_TEXT5"
+""
+1 130 21.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+13 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 130 21.00000000000023 196 36
+0 2 2 "0s" 0 0 0 192 0 0  130 21.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 10 Timerange:
+2 47
+"PRIMITIVE_TEXT6"
+""
+1 130 43.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+14 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 130 43.00000000000023 169 58
+0 2 2 "0s" 0 0 0 192 0 0  130 43.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 6 Begin:
+2 48
+"PRIMITIVE_TEXT7"
+""
+1 130 68.00000000000023 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+15 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 130 68.00000000000023 159 83
+0 2 2 "0s" 0 0 0 192 0 0  130 68.00000000000023 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 4 End:
+13 49
+"PUSH_BUTTON1"
+""
+1 320 43.58181818181822 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+16 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  318 37 362 64
+
+T 
+1
+LANG:1 3 Now
+"main()
+{
+  FILT_BEGIN.dateTime = getCurrentTime();
+}
+" 0
+ E E E
+13 50
+"PUSH_BUTTON2"
+""
+1 320 69.8090909090912 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+17 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  318 63 362 89
+
+T 
+1
+LANG:1 3 Now
+"main()
+{
+  FILT_END.dateTime = getCurrentTime();
+}
+" 0
+ E E E
+22 67
+"FILT_SYSTEM"
+""
+1 379.9999999999999 44 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+18 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  378 38 502 62
+0
+
+E
+E
+E
+ 0 0
+22 68
+"FILT_STATECOMMENT"
+""
+1 668 44 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  666 38 922 62
+0
+
+E
+E
+E
+ 1 0
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+3 0 "PANEL_REF0" -1
+"" ""
+"vision/aes/AEScreen.pnl" -350 1100 T 0 1 0 1 418 311
+3
+"$ACTION""0"
+"$FILENAME"""
+"$SCREENTYPE""aes_alerts_LOFAR"
+0

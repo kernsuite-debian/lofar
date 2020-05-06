@@ -195,8 +195,9 @@
         exit $STATUS' 0 1 2 3 15
 
 # If there is a .py file then use it.
+# Force unbuffered output to give the same behavior in python3 and python2
   if [ -f "$PROG.py" ]; then
-    COMMAND="python $PROG.py"
+    COMMAND="${PYTHON_EXECUTABLE:-python} -u $PROG.py"
     LOFAR_CHECKTOOL=
   fi
 

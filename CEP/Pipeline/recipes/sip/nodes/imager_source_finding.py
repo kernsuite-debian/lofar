@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 import sys
 import os
 import shutil
@@ -89,7 +89,7 @@ class imager_source_finding(LOFARnodeTCP):
             # 2. parse the parameters and convert to python if possible 
             # this is needed for pybdsm
             bdsm_parameters = {}
-            for key in bdsm_parameter_local.keys():
+            for key in list(bdsm_parameter_local.keys()):
                 parameter_value = bdsm_parameter_local.getStringVector(key)[0]
                 try:
                     parameter_value = eval(parameter_value)
@@ -257,7 +257,7 @@ class imager_source_finding(LOFARnodeTCP):
                 catch_segfaults(cmd, working_directory, self.environment,
                                             logger, cleanup = None)
 
-        except Exception, exception:
+        except Exception as exception:
             self.logger.error("Execution of external failed:")
             self.logger.error(" ".join(cmd))
             self.logger.error("exception details:")

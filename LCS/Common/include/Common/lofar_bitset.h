@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: lofar_bitset.h 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 // \file
 // Below is a slightly adapted version of GNU's std::bitset implementation.

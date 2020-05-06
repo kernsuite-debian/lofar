@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GlobalSolveController.cc 16561 2010-10-19 12:56:51Z duscha $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSControl/GlobalSolveController.h>

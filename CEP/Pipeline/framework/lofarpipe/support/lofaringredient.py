@@ -7,7 +7,7 @@
 
 import os
 from optparse import make_option
-from UserDict import DictMixin
+from collections import MutableMapping
 
 from lofarpipe.cuisine.ingredient import WSRTingredient
 from lofarpipe.support.utilities import string_to_list, is_iterable
@@ -33,8 +33,8 @@ class LOFARinput(WSRTingredient):
     """
     def __init__(self, defaults):
         super(LOFARinput, self).__init__(self)
-        for param in RecipeIngredients.inputs.iterkeys():
-            if param != "args" and defaults.has_key(param):
+        for param in RecipeIngredients.inputs.keys():
+            if param != "args" and param in defaults:
                 self[param] = defaults[param]
 
 class LOFARoutput(WSRTingredient):
@@ -52,13 +52,13 @@ class Field(object):
     """
     def __init__(self, *opts, **attrs):
         self.optionstrings = opts
-        if attrs.has_key("help"):
+        if "help" in attrs:
             self.help = attrs['help']
         else:
             self.help = ""
-        if attrs.has_key("default"):
+        if "default" in attrs:
             self.default = attrs['default']
-        elif attrs.has_key("optional") and attrs["optional"]:
+        elif "optional" in attrs and attrs["optional"]:
             self.optional = True
 
     def is_valid(self, value):
@@ -211,7 +211,7 @@ class FileList(ListField):
 #                                so that will almost always the case by default.
 # ------------------------------------------------------------------------------
 
-class LOFARingredient(DictMixin):
+class LOFARingredient(MutableMapping):
     """
     LOFARingredient provides dict-like access to a group of instances of
     :class:`Field`.  If a field is defined which does not have a value set,
@@ -221,12 +221,23 @@ class LOFARingredient(DictMixin):
         self._fields = fields
         self._values = {}
 
+    def __len__(self):
+        return len(self._fields)
+
+    def __iter__(self):
+        for field in self._fields:
+            yield field
+
+    def __delitem__(self, key):
+        del self._values[key]
+        del self._fields[key]
+
     def __getitem__(self, key):
         # If we don't have the value for this key, but we do have a field with
         # a valid default, return that.
         if (
-            not self._values.has_key(key) and
-            self._fields.has_key(key) and
+            key not in self._values and
+            key in self._fields and
             hasattr(self._fields[key], "default")
         ):
             field = self._fields[key]
@@ -236,7 +247,7 @@ class LOFARingredient(DictMixin):
                     "%s is an invalid value for %s %s" %
                     (str(value), type(field).__name__, key)
                 )
-        elif self._values.has_key(key):
+        elif key in self._values:
             value = self._values[key]
         else:
             raise KeyError(key)
@@ -260,17 +271,17 @@ class LOFARingredient(DictMixin):
         # everything in _values, plus things in _fields which have a default.
         return list(
             set(self._values.keys()).union(
-                set(k for k, v in self._fields.items() if hasattr(v, "default"))
+                set(k for k, v in list(self._fields.items()) if hasattr(v, "default"))
             )
         )
 
     def make_options(self):
-        return [value.generate_option(key) for key, value in self._fields.iteritems()]
+        return [value.generate_option(key) for key, value in self._fields.items()]
 
     def missing(self):
         return [
-            key for key in self._fields.iterkeys()
-            if not self._values.has_key(key)
+            key for key in self._fields.keys()
+            if key not in self._values
             and not hasattr(self._fields[key], "optional")
             and not hasattr(self._fields[key], "default")
         ]
@@ -279,9 +290,9 @@ class LOFARingredient(DictMixin):
         return False if self.missing() else True
 
     def update(self, args, **kwargs):
-        for key, value in args.iteritems():
+        for key, value in args.items():
             self._values[key] = value
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             self._values[key] = value
 
 class RecipeIngredientsMeta(type):
@@ -296,21 +307,20 @@ class RecipeIngredientsMeta(type):
         new_inputs = {}
         if hasattr(cls, "_infields"):
             new_inputs.update(cls._infields)
-        if ns.has_key("inputs"):
+        if "inputs" in ns:
             new_inputs.update(ns["inputs"])
         cls._infields = new_inputs
 
         # Outputs are not inherited.
-        if ns.has_key('outputs'):
+        if 'outputs' in ns:
             cls._outfields = ns['outputs']
 
-class RecipeIngredients(object):
+class RecipeIngredients(object, metaclass=RecipeIngredientsMeta):
     """
     All LOFAR recipes ultimately inherit from this. It provides the basic
     ingredient structure, as well as the default fields which are available in
     every recipe.
     """
-    __metaclass__ = RecipeIngredientsMeta
 
     inputs = {
         'job_name': StringField(

@@ -64,12 +64,12 @@ set(wincc_include_dirs
 
 # Define WINCC libraries.
 set(wincc_libraries
+  ComDrv
   Manager
   Messages
   Datapoint
   Basics
-  bcm
-  ComDrv)
+  bcm)
 
 if(NOT WINCC_FOUND)
 

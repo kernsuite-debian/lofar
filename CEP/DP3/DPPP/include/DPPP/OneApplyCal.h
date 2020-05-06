@@ -94,6 +94,10 @@ namespace LOFAR {
       // Check the number of polarizations in the parmdb or h5parm
       uint nPol(const std::string& parmName);
 
+      // Replace values by NaN on places where weight is zero
+      static void applyFlags(std::vector<double>& values,
+                             const std::vector<double>& weights);
+
       static std::string correctTypeToString(CorrectType);
       static CorrectType stringToCorrectType(const string&);
 
@@ -103,10 +107,12 @@ namespace LOFAR {
       string           itsName;
       string           itsParmDBName;
       bool             itsUseH5Parm;
+      string           itsSolSetName;
       boost::shared_ptr<BBS::ParmFacade> itsParmDB;
       H5Parm           itsH5Parm;
       string           itsSolTabName;
       H5Parm::SolTab   itsSolTab;
+      H5Parm::SolTab   itsSolTab2; // in the case of full Jones, amp and phase table need to be open
       CorrectType      itsCorrectType;
       bool             itsInvert;
       uint             itsTimeSlotsPerParmUpdate;

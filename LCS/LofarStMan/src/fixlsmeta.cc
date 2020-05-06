@@ -17,20 +17,20 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: fixlsmeta.cc 21558 2012-07-12 09:35:39Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 #include <LofarStMan/LofarStMan.h>
 #include <Common/LofarLogger.h>
 #include <Common/Exception.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/Containers/BlockIO.h>
-#include <casa/Quanta/MVTime.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Inputs/Input.h>
-#include <casa/iostream.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/Containers/BlockIO.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Inputs/Input.h>
+#include <casacore/casa/iostream.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 
 // Use a terminate handler that can produce a backtrace.

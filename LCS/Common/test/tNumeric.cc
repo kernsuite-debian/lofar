@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tNumeric.cc 17643 2011-03-25 16:05:40Z loose $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -81,7 +81,7 @@ using namespace std;
 #define printNumber(x)                                               \
 { int p(2*sizeof(x)+1);                                              \
   union_t u = { x };                                                 \
-  LOG_DEBUG_STR(setprecision(p) << left << setw(17) << #x << " = "   \
+  LOG_INFO_STR(setprecision(p) << left << setw(17) << #x << " = "    \
                 << setw(p+6) << x << " (" << hex << showbase         \
                 << setw(p+1) << u.mask << dec << ")");               \
 }

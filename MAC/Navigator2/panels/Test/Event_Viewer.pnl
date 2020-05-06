@@ -1,0 +1,1146 @@
+V 13
+1
+LANG:1 12 Event Viewer
+PANEL,-1 -1 1200 813 N "_3DFace" 0
+"main()
+{
+  int retry=0;
+  while (navigator_initializing() & retry < 60) {
+    delay(2);
+    retry++;
+    if (retry >= 60) {
+      LOG_FATAL(\"Event_Viewer.pnl:main|retry longer then 2 minutes, navigatorInstance still not ready?\");
+      break;
+    }
+  }
+  
+  itsInitiatorDp = DPNAME_NAVIGATOR + g_navigatorID + \".navigator.initiator\";
+  itsEventDp     = DPNAME_NAVIGATOR + g_navigatorID + \".navigator.event\";
+  itsSelectionDp = DPNAME_NAVIGATOR + g_navigatorID + \".navigator.selection\";
+  
+  LOG_DEBUG(\"Event_Viewer.pnl:main|Event_Viewer.pnl Working with itsEventDp : \" + itsEventDp);
+
+  
+  
+  if ( dpExists(itsEventDp) ) {
+    dpConnect(\"doEvent\",false,itsEventDp);
+  } else {
+    setValue(\"text_event\",\"backCol\",\"Lofar_dpdoesnotexist\");
+  }      
+  
+  if ( !dpExists(itsSelectionDp) ) {
+    setValue(\"text_selection\",\"backCol\",\"Lofar_dpdoesnotexist\");
+  }
+
+  if ( !dpExists(itsInitiatorDp) ) {
+    setValue(\"text_initiator\",\"backCol\",\"Lofar_dpdoesnotexist\");
+  }
+
+}
+
+//
+// Callback for dpConnect to selection point.
+// If there is an action required this point will tell so
+//
+void doEvent(string aDP, string anEvent) {
+  if (navigator_initializing()) {
+    return;
+  }
+  string aSelection;
+  string anInitiator;
+  dpGet(itsSelectionDp,aSelection);
+  dpGet(itsInitiatorDp,anInitiator);
+  setValue(\"text_event\",\"text\",anEvent);
+  setValue(\"text_initiator\",\"text\",anInitiator);
+  setValue(\"text_selection\",\"text\",aSelection);
+  setValue(\"txt_datapoint\",\"text\",g_currentDatapoint);
+}
+
+" 0
+ E E E E 1 -1 -1 0  10 10
+""0  1
+E "#uses \"navigator.ctl\"
+
+string 	itsEventDp         = \"\";
+string 	itsSelectionDp     = \"\";
+string  itsInitiatorDp     = \"\";
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+30 2
+"FRAME1"
+""
+1 10 1 E E E 1 E 1 E N "_WindowText" E N {0,0,0} E E
+ E E
+2 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 1 0 1 E 0.986193293885602 0 0.450511945392491 400.138067061144 249.5494880546075 0 E 10 1 518 295
+1
+LANG:1 32 Arial Black,-1,13,5,75,0,0,0,0,0
+0 1
+LANG:1 19 Navigator Framework
+13 320
+"PUSH_BUTTON10"
+""
+1 950 371 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+155 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 369 1098 396
+
+T 
+1
+LANG:1 14 show g_TBBList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_TBBList\");
+  for (int i=1; i<= dynlen(g_TBBList);i++) {
+    DebugN(\"g_TBBList: \"+ g_TBBList[i]);
+  }
+}" 0
+ E E E
+14 3
+"text_event"
+""
+1 560 297.0152671755725 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  558 295 902 318
+3 "0s" 0 0 0 0 0 -1  E E E
+2 6
+"PRIMITIVE_TEXT4"
+""
+1 1375 364.6318240169413 E E E 1 E 1 E N "_WindowText" E N "_3DFace" E E
+ E E
+6 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.00763358778626 139 -47.81679389312999 1 E 283 371 386 385
+0 2 2 "0s" 0 0 0 192 0 0  283 371 1
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 18 Initiating Object:
+2 7
+"PRIMITIVE_TEXT5"
+""
+1 1381 354.8693260291744 E E E 1 E 1 E N "_WindowText" E N "_3DFace" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.00763358778626 140 -44.58015267175594 1 E 282 340 381 354
+0 2 2 "0s" 0 0 0 192 0 0  282 340 1
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 15 Event Received:
+2 8
+"PRIMITIVE_TEXT6"
+""
+1 1381 379.5405805957806 E E E 1 E 1 E N "_WindowText" E N "_3DFace" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1.00763358778626 140 -50.03816793893154 1 E 282 400 344 414
+0 2 2 "0s" 0 0 0 192 0 0  282 400 1
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 10 Selection:
+14 9
+"text_initiator"
+""
+1 560 325.0152671755725 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  558 323 902 346
+3 "0s" 0 0 0 0 0 -1  E E E
+14 11
+"text_selection"
+""
+1 563 349.0152671755725 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  561 347 905 370
+3 "0s" 0 0 0 0 0 -1  E E E
+4 18
+"LINE4"
+""
+1 441 304 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+18 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  441 304 179 90
+4 19
+"LINE5"
+""
+1 171 104 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  171 104 178 90
+4 20
+"LINE6"
+""
+1 182 91 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+20 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  182 91 201 94
+4 23
+"LINE7"
+""
+1 523 90 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+25 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  523 90 523 260
+4 24
+"LINE8"
+""
+1 525 90 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+26 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  525 90 510 100
+4 25
+"LINE9"
+""
+1 526 91 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+27 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  526 91 534 102
+4 28
+"LINE10"
+""
+1 710 280 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+32 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  710 280 751 186
+4 29
+"LINE11"
+""
+1 749 188 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+33 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  749 188 735 192
+4 30
+"LINE12"
+""
+1 752 188 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+34 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  752 188 756 199
+4 33
+"LINE13"
+""
+1 700 380 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+39 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  700 380 767 488
+4 34
+"LINE14"
+""
+1 768 492 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+40 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  768 492 772 480
+4 35
+"LINE15"
+""
+1 764 493 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+41 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  764 493 750 486
+4 40
+"LINE16"
+""
+1 530 389.9999999999998 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+50 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  530 390 530 740
+4 41
+"LINE17"
+""
+1 538 721.7058823529412 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+51 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  538 722 529 737
+4 42
+"LINE18"
+""
+1 520 725.9276018099548 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+52 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  520 726 529 736
+4 43
+"LINE19"
+""
+1 470 390 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+53 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  470 390 260 648
+4 44
+"LINE20"
+""
+1 260.7888888888889 644.1071428571429 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+54 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  261 644 279 642
+1 884 0 "" 0
+0
+1 885 1 "" 0
+0
+1 886 2 "" 0
+0
+1 887 4 "" 0
+0
+1 888 5 "" 0
+0
+1 889 6 "" 0
+0
+1 890 7 "" 0
+0
+1 895 9 "" 0
+0
+1 900 12 "" 0
+0
+1 905 14 "" 0
+0
+1 910 17 "" 0
+0
+1 915 18 "" 0
+0
+1 920 19 "" 0
+0
+4 87
+"LINE21"
+""
+1 260 650 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+117 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  260 650 266 630
+4 89
+"LINE23"
+""
+1 180.6500695840421 293.0769230769232 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+119 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  181 293 400 370
+4 90
+"LINE24"
+""
+1 180 296.2337662337662 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+120 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  180 296 184 318
+4 91
+"LINE25"
+""
+1 183.8620689655173 290 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+121 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  184 290 196 290
+1 925 20 "" 0
+0
+14 134
+"txt_datapoint"
+""
+1 560 270.7099236641215 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+123 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  558 269 902 292
+3 "0s" 0 0 0 0 0 -1  E E E
+2 135
+"PRIMITIVE_TEXT11"
+""
+1 1686.14777928896 166.6326860628405 E E E 1 E 1 E N "_WindowText" E N "_3DFace" E E
+ E E
+125 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1.06930693069307 0 1.00763358778626 118.4554455445543 -72.59541984732846 1 E 282 340 393 354
+0 2 2 "0s" 0 0 0 192 0 0  282 340 1
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0 1
+LANG:1 18 Active Datapoint: 
+13 178
+"PUSH_BUTTON1"
+""
+1 950 168 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+127 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 166 1098 193
+
+T 
+1
+LANG:1 19 show g_observations
+"main()
+{
+   showMapping(g_observations,\"g_observations\");
+}" 0
+ E E E
+13 179
+"PUSH_BUTTON2"
+""
+1 17 517 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+129 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 195 1098 222
+
+T 
+1
+LANG:1 14 show highlight
+"main()
+{
+    LOG_DEBUG(\"Event_Viewer.pnl strHighlight contains: \" + highlight);
+}" 0
+ E E E
+13 227
+"PUSH_BUTTON5"
+""
+1 950 140 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+140 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,75,0,0,0,0,0
+0  948 138 1098 164
+
+T 
+1
+LANG:1 19 show strClaimedDP's
+"main()
+{
+  DebugN(\"strClaimedDPName contains: \"+strClaimDPName);
+}" 0
+ E E E
+4 273
+"LINE26"
+""
+1 940 10 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+145 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 1 3 1 2 1 E  940 10 940 570
+13 316
+"PUSH_BUTTON6"
+""
+1 950 255 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+147 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 253 1098 280
+
+T 
+1
+LANG:1 18 show g_stationList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_stationList\");
+  for (int i=1; i<= dynlen(g_stationList);i++) {
+    DebugN(\"g_stationList: \"+ g_stationList[i]);
+  }
+}" 0
+ E E E
+13 317
+"PUSH_BUTTON7"
+""
+1 950 284 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+149 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 282 1098 309
+
+T 
+1
+LANG:1 18 show g_cabinetList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_cabinetList\");
+  for (int i=1; i<= dynlen(g_cabinetList);i++) {
+    DebugN(\"g_cabinetList: \"+ g_cabinetList[i]);
+  }
+}" 0
+ E E E
+13 318
+"PUSH_BUTTON8"
+""
+1 950 313 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+151 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 311 1098 338
+
+T 
+1
+LANG:1 18 show g_subrackList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_subrackList\");
+  for (int i=1; i<= dynlen(g_subrackList);i++) {
+    DebugN(\"g_subrackList: \"+ g_subrackList[i]);
+  }
+}" 0
+ E E E
+13 319
+"PUSH_BUTTON9"
+""
+1 950 342 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+153 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 340 1098 367
+
+T 
+1
+LANG:1 14 show g_RSPList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_RSPList\");
+  for (int i=1; i<= dynlen(g_RSPList);i++) {
+    DebugN(\"g_RSPList: \"+ g_RSPList[i]);
+  }
+}" 0
+ E E E
+13 321
+"PUSH_BUTTON11"
+""
+1 950 400 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+157 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 398 1098 425
+
+T 
+1
+LANG:1 14 show g_RCUList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_RCUList\");
+  for (int i=1; i<= dynlen(g_RCUList);i++) {
+    DebugN(\"g_RCUList: \"+ g_RCUList[i]);
+  }
+}" 0
+ E E E
+13 364
+"PUSH_BUTTON12"
+""
+1 950 430 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+159 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 32 Arial Black,-1,11,5,50,0,0,0,0,0
+0  948 428 1112 455
+
+T 
+1
+LANG:1 23 show g_observationsList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_observationsList\");
+  for (int i=1; i<= dynlen(g_observationsList);i++) {
+    DebugN(\"g_observationsList: \"+ g_observationsList[i]);
+  }
+}" 0
+ E E E
+13 451
+"PUSH_BUTTON15"
+""
+1 950 520 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+164 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,75,0,0,0,0,0
+0  948 518 1098 544
+
+T 
+1
+LANG:1 18 show g_connections
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl showMapping for g_connections\");
+  showMapping(g_connections,\"g_connections\");
+}" 0
+ E E E
+2 495
+"PRIMITIVE_TEXT2"
+""
+1 720 680 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ E E
+168 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 2 1 1 2 1 E U  1 E 720 680 800 704
+0 2 2 "0s" 0 0 0 64 0 0  720 680 1
+1
+LANG:1 26 Arial,-1,17,5,50,0,0,0,0,0
+0 1
+LANG:1 16 New object name:
+13 592
+"PUSH_BUTTON18"
+""
+1 950 110 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+194 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,75,0,0,0,0,0
+0  948 108 1098 134
+
+T 
+1
+LANG:1 20 show strClaimedObj's
+"main()
+{
+  DebugN(\"strClaimedObjectName contains: \"+strClaimObjectName);
+}" 0
+ E E E
+13 635
+"PUSH_BUTTON19"
+""
+1 950 490 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+196 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,75,0,0,0,0,0
+0  948 488 1098 514
+
+T 
+1
+LANG:1 20 show g_processesList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_processesList\");
+  for (int i=1; i<= dynlen(g_processesList);i++) {
+    DebugN(\"g_processesList: \"+ g_processesList[i]);
+  }
+}" 0
+ E E E
+1 926 21 "" 0
+0
+1 931 22 "" 0
+0
+4 685
+"LINE28"
+""
+1 150.611223387143 462.0652258682719 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+202 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  151 462 400 390
+4 686
+"LINE29"
+""
+1 153.3083950292832 463.4530013836702 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+204 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  153 463 178 469
+4 687
+"LINE30"
+""
+1 149.9999999999999 459.5518089689399 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+206 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 3 1 2 1 E  150 460 160 454
+13 883
+"PUSH_BUTTON22"
+""
+1 950 460 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+210 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 33 MS Shell Dlg,-1,11,5,75,0,0,0,0,0
+0  948 458 1098 484
+
+T 
+1
+LANG:1 20 show g_pipelinesList
+"main()
+{
+  LOG_DEBUG(\"Event_Viewer.pnl show g_pipelinesList\");
+  for (int i=1; i<= dynlen(g_pipelinesList);i++) {
+    DebugN(\"g_pipelinesList: \"+ g_pipelinesList[i]);
+  }
+}" 0
+ E E E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+3 0 "PANEL_REF1" -1
+"" ""
+"objects/Test/Action.pnl" 158 150 T 105 1 0 1 -81 -32
+1
+"$name""fw_viewSelection"
+3 1 "PANEL_REF2" -1
+"" ""
+"objects/Test/Action.pnl" 390 150 T 106 1 0 1 -10 32
+1
+"$name""fw_topDetailSelection"
+3 2 "PANEL_REF3" -1
+"" ""
+"objects/Test/Action.pnl" 668 220 T 107 1 0 1 -78 -10
+1
+"$name""fw_bottomDetailSelection"
+3 4 "PANEL_REF5" -1
+"" ""
+"objects/Test/Action.pnl" 649 450 T 108 1 0 1 -49 -40
+1
+"$name""fw_locator"
+3 5 "PANEL_REF6" -1
+"" ""
+"objects/Test/Action.pnl" 413 460 T 109 1 0 1 -43 220
+1
+"$name""fw_progressBar"
+3 6 "PANEL_REF7" -1
+"" ""
+"objects/Test/Action.pnl" 189 450 T 110 1 0 1 -39 130
+1
+"$name""fw_headLines"
+3 7 "PANEL_REF8" -1
+"" ""
+"objects/Test/Event.pnl" 15 8 T 111 1 0 1 -5 0
+1
+"$name""fw_viewSelection"
+3 9 "PANEL_REF10" -1
+"" ""
+"objects/Test/Event.pnl" 377 7 T 112 1 0 1 0 1
+1
+"$name""fw_topDetailSelection"
+3 12 "PANEL_REF13" -1
+"" ""
+"objects/Test/Event.pnl" 541 104 T 113 1 0 1 31 -1
+1
+"$name""fw_bottomDetailSelection"
+3 14 "PANEL_REF15" -1
+"" ""
+"objects/Test/Event.pnl" 578 531 T 114 1 0 1 12 -43
+1
+"$name""fw_locator"
+3 17 "PANEL_REF18" -1
+"" ""
+"objects/Test/Event.pnl" 334 642 T 115 1 0 1 -4 86
+1
+"$name""fw_progressBar"
+3 18 "PANEL_REF19" -1
+"" ""
+"objects/Test/Event.pnl" -2 533 T 116 1 0 1 2 105
+1
+"$name""fw_headLines"
+3 19 "PANEL_REF20" -1
+"" ""
+"objects/Test/Event.pnl" 0 205 T 116 1 0 1 -10 3
+1
+"$name""fw_viewBox"
+3 20 "PANEL_REF21" -1
+"" ""
+"objects/Test/Action.pnl" 207 346 T 122 1 0 1 -117 -26
+1
+"$name""fw_viewBox"
+3 21 "PANEL_REF22" -1
+"" ""
+"objects/Test/Event.pnl" 0 205 T 197 1 0 1 10 253
+1
+"$name""fw_fastJumper"
+3 22 "PANEL_REF23" -1
+"" ""
+"objects/Test/Action.pnl" 207 346 T 198 1 0 1 -117 64
+1
+"$name""fw_fastJumper"
+0

@@ -4,7 +4,7 @@
 #                                                            Wouter Klijn 2012
 #                                                           klijn@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import subprocess
 import os
@@ -18,8 +18,9 @@ import pyrap.images as pim
 from lofarpipe.support.utilities import catch_segfaults
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.pipelinelogging import CatchLog4CPlus
+from lofar.common.subprocess_utils import communicate_returning_strings
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import lofarpipe.recipes.helpers.MultipartPostHandler as mph
 
 class imager_finalize(LOFARnodeTCP):
@@ -77,7 +78,7 @@ class imager_finalize(LOFARnodeTCP):
                 addimg.addImagingInfo(awimager_output, processed_ms_paths,
                     sourcedb, minbaseline, maxbaseline)
 
-            except Exception, error:
+            except Exception as error:
                 self.logger.warn("addImagingInfo Threw Exception:")
                 self.logger.warn(error)
                 # Catch raising of already done error: allows for rerunning
@@ -101,7 +102,7 @@ class imager_finalize(LOFARnodeTCP):
                 # save the image
                 pim_image.saveas(output_image, hdf5=True)
 
-            except Exception, error:
+            except Exception as error:
                 self.logger.error(
                     "Exception raised inside pyrap.images: {0}".format(
                                                                 str(error)))
@@ -123,7 +124,7 @@ class imager_finalize(LOFARnodeTCP):
                     catch_segfaults(["image2fits", '-in', awimager_output,
                                                  '-out', fits_output],
                                     temp_dir, self.environment, logger)
-            except Exception, excp:
+            except Exception as excp:
                 self.logger.error(str(excp))
                 return 1
             finally:
@@ -140,7 +141,7 @@ class imager_finalize(LOFARnodeTCP):
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE)
 
-            (stdoutdata, stderrdata) = proc.communicate()
+            (stdoutdata, stderrdata) = communicate_returning_strings(proc)
 
             exit_status = proc.returncode
             self.logger.info(stdoutdata)
@@ -158,20 +159,20 @@ class imager_finalize(LOFARnodeTCP):
             url = "http://tanelorn.astron.nl:8000/upload"
             try:
                 self.logger.info("Starting upload of fits image data to server!")
-                opener = urllib2.build_opener(mph.MultipartPostHandler)
+                opener = urllib.request.build_opener(mph.MultipartPostHandler)
                 filedata = {"file": open(fits_output, "rb")}
                 opener.open(url, filedata, timeout=2)
 
                 # HTTPError needs to be caught first.
-            except urllib2.HTTPError as httpe:
+            except urllib.error.HTTPError as httpe:
                 self.logger.warn("HTTP status is: {0}".format(httpe.code))
                 self.logger.warn("failed exporting fits image to server")
 
-            except urllib2.URLError as urle:
+            except urllib.error.URLError as urle:
                 self.logger.warn(str(urle.reason))
                 self.logger.warn("failed exporting fits image to server")
 
-            except Exception, exc:
+            except Exception as exc:
                 self.logger.warn(str(exc))
                 self.logger.warn("failed exporting fits image to server")
 
@@ -188,20 +189,20 @@ class imager_finalize(LOFARnodeTCP):
                 shutil.copy(sourcelist, new_sourcelist_path)
                 self.logger.info(
                             "Starting upload of sourcelist data to server!")
-                opener = urllib2.build_opener(mph.MultipartPostHandler)
+                opener = urllib.request.build_opener(mph.MultipartPostHandler)
                 filedata = {"file": open(new_sourcelist_path, "rb")}
                 opener.open(url, filedata, timeout=2)
 
                 # HTTPError needs to be caught first.
-            except urllib2.HTTPError as httpe:
+            except urllib.error.HTTPError as httpe:
                 self.logger.warn("HTTP status is: {0}".format(httpe.code))
                 self.logger.warn("failed exporting sourcelist to server")
 
-            except urllib2.URLError as urle:
+            except urllib.error.URLError as urle:
                 self.logger.warn(str(urle.reason))
                 self.logger.warn("failed exporting sourcelist image to server")
 
-            except Exception, exc:
+            except Exception as exc:
                 self.logger.warn(str(exc))
                 self.logger.warn("failed exporting sourcelist image to serve")
 

@@ -50,28 +50,28 @@
 #include <boost/lexical_cast.hpp>             // convert string to number
 
 // casacore includes
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/ArrayColumnFunc.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TiledColumnStMan.h>
-#include <tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/ArrayColumnFunc.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/DataMan/TiledColumnStMan.h>
+#include <casacore/tables/Tables/TableRecord.h>
 
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/VectorSTLIterator.h>
-#include <coordinates/Coordinates/Coordinate.h>
-#include <coordinates/Coordinates/DirectionCoordinate.h>    // DirectionCoordinate needed for patch direction
-#include <images/Images/PagedImage.h>                       // we need to open the image to determine patch centre direction
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/VectorSTLIterator.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
+#include <casacore/coordinates/Coordinates/DirectionCoordinate.h>    // DirectionCoordinate needed for patch direction
+#include <casacore/images/Images/PagedImage.h>                       // we need to open the image to determine patch centre direction
 #include <synthesis/MeasurementEquations/Imager.h>          // casarest ft()
-#include <ms/MeasurementSets/MSSpWindowColumns.h>
+#include <casacore/ms/MeasurementSets/MSSpWindowColumns.h>
 
 #include <BBSTools/addUV2MS.h>
 
-//using namespace casa;
+//using namespace casacore;
 using namespace std;
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 
 // Use a terminate handler that can produce a backtrace.
@@ -87,7 +87,7 @@ function declarations now in include/BBSTools/addUV2MS.h
 int main(int argc, char *argv[])
 {
   vector<string> arguments;       // vector to keep arguments for arg parsing
-  casa::String MSfilename;        // Filename of LafarMS
+  casacore::String MSfilename;        // Filename of LafarMS
   Vector<String> patchNames;      // vector with filenames of patches used as models
   unsigned int nwplanes=0;        // got to see  how to export this feature to the outside
 
@@ -114,12 +114,12 @@ int main(int argc, char *argv[])
   
   if(MSfilename=="")
   {
-      casa::AbortError("No MS filename given");         // raise exception
+      casacore::AbortError("No MS filename given");         // raise exception
       exit(0);
   }
   if(patchNames.size()==0)
   {
-      casa::AbortError("No patch image filename given");
+      casacore::AbortError("No patch image filename given");
       exit(0);
   }
     
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
     //showColumnNames(LofarMS);
     // Do a predict with the casarest ft() function, complist="", because we only use the model images
     // Casarest Imager object which has ft method
-    // (last parameter casa::True "use MODEL_DATA column")
+    // (last parameter casacore::True "use MODEL_DATA column")
     // i.e. Imager imager(LofarMS, True, True);
        
     // Get image options
@@ -475,19 +475,19 @@ void getImageOptions( const string &patchName,
 
 // Get the patch direction, i.e. RA/Dec of the central image pixel
 //
-casa::MDirection getPatchDirection(const string &patchName)
+casacore::MDirection getPatchDirection(const string &patchName)
 {
-  casa::IPosition imageShape;                             // shape of image
-  casa::Vector<casa::Double> Pixel(2);                    // pixel coords vector of image centre
-  casa::MDirection MDirWorld(casa::MDirection::J2000);   // astronomical direction in J2000
-  casa::PagedImage<casa::Float> image(patchName);         // open image
+  casacore::IPosition imageShape;                             // shape of image
+  casacore::Vector<casacore::Double> Pixel(2);                    // pixel coords vector of image centre
+  casacore::MDirection MDirWorld(casacore::MDirection::J2000);   // astronomical direction in J2000
+  casacore::PagedImage<casacore::Float> image(patchName);         // open image
     
   imageShape=image.shape();                               // get centre pixel
   Pixel[0]=floor(imageShape[0]/2);
   Pixel[1]=floor(imageShape[1]/2);
 
   // Determine DirectionCoordinate
-  casa::DirectionCoordinate dir(image.coordinates().directionCoordinate (image.coordinates().findCoordinate(casa::Coordinate::DIRECTION)));
+  casacore::DirectionCoordinate dir(image.coordinates().directionCoordinate (image.coordinates().findCoordinate(casacore::Coordinate::DIRECTION)));
   dir.toWorld(MDirWorld, Pixel);
 
   return MDirWorld;
@@ -496,24 +496,24 @@ casa::MDirection getPatchDirection(const string &patchName)
 // Add keyword "LOFAR_DIRECTION" containing a 2-valued vector of type double with J2000 RA and DEC of patch 
 // center in radians.
 //
-void addDirectionKeyword(casa::Table LofarTable, const string &patchName)
+void addDirectionKeyword(casacore::Table LofarTable, const string &patchName)
 {  
-  casa::MDirection direction(casa::MDirection::J2000);
+  casacore::MDirection direction(casacore::MDirection::J2000);
   string columnName=createColumnName(patchName);
   
   // write it to the columnDesc
-  casa::TableColumn LofarModelColumn(LofarTable, columnName);
-  casa::TableRecord &Model_keywords = LofarModelColumn.rwKeywordSet();
-  casa::TableRecord MDirectionRecord;
-  casa::String error="";
+  casacore::TableColumn LofarModelColumn(LofarTable, columnName);
+  casacore::TableRecord &Model_keywords = LofarModelColumn.rwKeywordSet();
+  casacore::TableRecord MDirectionRecord;
+  casacore::String error="";
 
   direction=getPatchDirection(patchName);
   
   // Use MeasureHolder class to convert MDirection to a keyword-compatible format
-  casa::MeasureHolder mHolder(direction);
+  casacore::MeasureHolder mHolder(direction);
   if(!mHolder.toRecord(error, MDirectionRecord))
   {
-    casa::AbortError("addDirectionKeyword()");
+    casacore::AbortError("addDirectionKeyword()");
   }
   else
   {
@@ -524,12 +524,12 @@ void addDirectionKeyword(casa::Table LofarTable, const string &patchName)
 // Create a column name based on the Modelfilename of the form
 // modelfilename (minus any file extension)
 //
-string createColumnName(const casa::String &ModelFilename)
+string createColumnName(const casacore::String &ModelFilename)
 {
   string columnName;
   string patchName;
-  casa::String Filename;
-  casa::Path Path(ModelFilename);             // casa Path object to allow basename stripping
+  casacore::String Filename;
+  casacore::Path Path(ModelFilename);             // casa Path object to allow basename stripping
     
   Filename=Path.baseName();                   // remove path from ModelFilename
 
@@ -560,7 +560,7 @@ string createColumnName(const casa::String &ModelFilename)
 
 // Check that input model image has Jy/pixel flux
 //
-bool validModelImage(const casa::String &imageName, string &error)
+bool validModelImage(const casacore::String &imageName, string &error)
 {
   size_t pos=string::npos;
   bool valid=false;
@@ -621,7 +621,7 @@ bool validModelImage(const casa::String &imageName, string &error)
 void removeExistingColumns(const string &MSfilename, const Vector<String> &patchNames)
 {
   string columnName;
-  casa::Table LofarTable(MSfilename, casa::Table::Update);     
+  casacore::Table LofarTable(MSfilename, casacore::Table::Update);     
 
   // Remove existing Patchnames, but only those that are specified in the list of current run
   // it preserves other patch columns
@@ -729,7 +729,7 @@ void addModelColumn (MeasurementSet& ms, const String& dataManName)
     }
     TiledColumnStMan stMan(dataManName, dataTileShape);
     ms.addColumn (td, stMan);
-    // Set MODEL_DATA keyword for casa::VisSet.
+    // Set MODEL_DATA keyword for casacore::VisSet.
     // Sort out the channel selection.
     MSSpWindowColumns msSpW(ms.spectralWindow());
     Matrix<Int> selection(2, msSpW.nrow());

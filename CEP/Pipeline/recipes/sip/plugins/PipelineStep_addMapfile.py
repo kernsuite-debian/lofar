@@ -16,7 +16,7 @@ def plugin_main(args, **kwargs):
     if args[0] == 'mapfile_all_to_one':
         datamap = _create_mapfile_ato(kwargs['mapfile_in'])
     if args[0] == 'mapfile_list_ms':
-        print 'kwargs:  ', kwargs
+        print('kwargs:  ', kwargs)
         datamap = _create_mapfile_list(kwargs['folder'])
     if args[0] == 'mapfile_pythonlist_ms':
         datamap = _create_mapfile_pythonlist(kwargs['folder'])
@@ -63,26 +63,26 @@ def _combine_local_map(inmap):
             local_files[item.host] += item.file + ','
         else:
             local_files[item.host] = item.file + ','
-    for k, v in local_files.iteritems():
+    for k, v in local_files.items():
         v = v.rstrip(',')
         v = '[' + v + ']'
         map_out.data.append(DataProduct(k, v, False))
     return map_out
 
 def _split_listmap(map_in, number):
-    print 'MAP_IN: ', map_in
+    print('MAP_IN: ', map_in)
     map_out = DataMap([])
     for item in map_in:
         filelist = ((item.file.rstrip(']')).lstrip('[')).split(',')
-        chunks = [filelist[i:i+number] for i in xrange(0, len(filelist), number)]
-        print 'FILELIST: ', filelist
-        print 'CHUNKS: ', chunks
+        chunks = [filelist[i:i+number] for i in range(0, len(filelist), number)]
+        print('FILELIST: ', filelist)
+        print('CHUNKS: ', chunks)
         for slist in chunks:
             for i, name in enumerate(slist):
                 #print 'NAMEB: ', name
                 slist[i] = '"' + name + '"'
                 #print 'NAMEA: ', name
-            print 'SLIST: ', slist
+            print('SLIST: ', slist)
             map_out.data.append(DataProduct(item.host, slist, False))
     return map_out
 
@@ -109,7 +109,7 @@ def _create_mapfile_list(folder):
     #msfull = '[' + msfull + ']'
     maps.data.append(DataProduct('localhost', msfull, False))
     #maps.file = msfulll
-    print 'MAP: ', maps
+    print('MAP: ', maps)
     return maps
 
 def _create_mapfile_pythonlist(folder):

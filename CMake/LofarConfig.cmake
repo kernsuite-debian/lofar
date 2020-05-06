@@ -19,7 +19,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarConfig.cmake 30919 2015-02-05 15:26:22Z amesfoort $
+#  $Id$
 
 # Only process this file when we're ate the top-level source directory.
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")

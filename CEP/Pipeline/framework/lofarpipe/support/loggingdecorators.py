@@ -153,13 +153,13 @@ def mail_log_on_exception(target):
                     "duration", duration_recipe)
                 simplyfied_pipeline_xml = strip_xml_to_master_details(
                                                stack, calling_object.logger)
-                msg_string = simplyfied_pipeline_xml.toprettyxml(encoding='ascii')
+                msg_string = simplyfied_pipeline_xml.toprettyxml(encoding='ascii').decode('ascii')
 
             else:
                 msg_string = "duration: {0} \n "\
                  "No additional pipeline data available".format(duration_recipe)
 
-        except Exception, message:
+        except Exception as message:
             _send_mail_notification(calling_object, message)
             raise message
 
@@ -186,7 +186,7 @@ def _send_mail_notification(calling_object, message):
                 stack, calling_object.logger)
 
             active_stack_data = simplyfied_pipeline_xml.toprettyxml(
-                encoding='ascii')
+                encoding='ascii').decode('ascii')
     except:
         pass
 
@@ -210,7 +210,7 @@ def _send_mail_notification(calling_object, message):
         pconfig = PipelineEmailConfig()
         error_sender = pconfig['error-sender']  # provoke_exception if key missing
     except Exception as e:
-        print e
+        print(e)
         # raise Exception("loggingdecorators.py: Could not find the pipeline email configuration file: %s" % (e) )
         error_sender = "noreply@lofar.eu"
 
@@ -239,5 +239,5 @@ def _mail_msg_to(adr_from, adr_to, subject, msg):
     except:
         # Nothing: This is additional functionality.
         # If the smtp server is down we kan nothing else here
-        print "Could not establish a connection with smtp.lofar.eu"
+        print("Could not establish a connection with smtp.lofar.eu")
 

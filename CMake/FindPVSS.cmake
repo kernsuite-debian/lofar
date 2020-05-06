@@ -27,7 +27,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPVSS.cmake 29938 2014-08-19 14:11:24Z loose $
+# $Id$
 
 # Compiler definitions required for PVSS
 set(pvss_definitions

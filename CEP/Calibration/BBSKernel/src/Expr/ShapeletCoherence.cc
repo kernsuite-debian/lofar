@@ -29,9 +29,9 @@
 #include <Common/lofar_math.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {
@@ -364,7 +364,7 @@ static int calculate_uv_mode_vectors_bi(double *u, double *v, int N,
 
 
 ShapeletCoherence::ShapeletCoherence(const Expr<Vector<4> >::ConstPtr stokes,
-    double scaleI, const casa::Array<double> &coeffI,
+    double scaleI, const casacore::Array<double> &coeffI,
     const Expr<Vector<3> >::ConstPtr &uvwA,
     const Expr<Vector<3> >::ConstPtr &uvwB)
     :   BasicTernaryExpr<Vector<4>, Vector<3>, Vector<3>, JonesMatrix>(stokes,
@@ -384,7 +384,7 @@ const JonesMatrix::View ShapeletCoherence::evaluateImpl(const Grid &grid,
 
 const JonesMatrix::View ShapeletCoherence::evaluateImplI(const Grid &grid,
     const Vector<4>::View &stokes, double itsShapeletScaleI,
-    const casa::Array<double> &itsShapeletCoeffI, const Vector<3>::View &uvwA,
+    const casacore::Array<double> &itsShapeletCoeffI, const Vector<3>::View &uvwA,
     const Vector<3>::View &uvwB) const
 {
     JonesMatrix::View result;
@@ -407,7 +407,7 @@ const JonesMatrix::View ShapeletCoherence::evaluateImplI(const Grid &grid,
     ul=new double[nTime];
     vl=new double[nTime];
 
-    casa::IPosition cshape=itsShapeletCoeffI.shape();
+    casacore::IPosition cshape=itsShapeletCoeffI.shape();
     ASSERT(cshape(0)==cshape(1));
 
     double *Av=0; int *cplx=0;
@@ -416,7 +416,7 @@ const JonesMatrix::View ShapeletCoherence::evaluateImplI(const Grid &grid,
 
     for(unsigned int ch = 0; ch < nFreq; ++ch)
     {
-        const double lambda_inv = grid[FREQ]->center(ch) / casa::C::c;
+        const double lambda_inv = grid[FREQ]->center(ch) / casacore::C::c;
         for(unsigned int ts = 0; ts < nTime; ++ts)
         {
             ul[ts]=u.getDouble(0,ts)*lambda_inv;
@@ -434,11 +434,11 @@ const JonesMatrix::View ShapeletCoherence::evaluateImplI(const Grid &grid,
                 //y=a*x+y
                 if (cplx[ny*cshape(0)+nx]) {
                     for(unsigned int ts=0; ts<nTime; ++ts) {
-                        impsum[ts]+=Av[(ny*cshape(0)+nx)*nTime+ts]*itsShapeletCoeffI(casa::IPosition(2,nx,ny));
+                        impsum[ts]+=Av[(ny*cshape(0)+nx)*nTime+ts]*itsShapeletCoeffI(casacore::IPosition(2,nx,ny));
                     }
                 } else {
                     for(unsigned int ts=0; ts<nTime; ++ts) {
-                        repsum[ts]+=Av[(ny*cshape(0)+nx)*nTime+ts]*itsShapeletCoeffI(casa::IPosition(2,nx,ny));
+                        repsum[ts]+=Av[(ny*cshape(0)+nx)*nTime+ts]*itsShapeletCoeffI(casacore::IPosition(2,nx,ny));
                     }
                 }
             }

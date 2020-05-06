@@ -125,7 +125,7 @@ def getClockTECAll(ph,amp,freqs,stationname,stIdx,polIdx):
         allfreqs.append(tmpfreqs)
         
         
-     print "got bigmatrix",bigshape
+     print("got bigmatrix",bigshape)
      bigmatrix=np.zeros(bigshape)
      idx=0
      
@@ -135,10 +135,10 @@ def getClockTECAll(ph,amp,freqs,stationname,stIdx,polIdx):
         bigmatrix[idx:idx+nextidx,2*itm+1]=-2.e-9*np.pi*allfreqs[itm]
         idx+=nextidx
      bigmatrix[:,-1]+=1
-     print "fitting",bigmatrix.shape,alldata.shape
+     print("fitting",bigmatrix.shape,alldata.shape)
      sol=np.linalg.lstsq(bigmatrix,alldata)
      finalpar=sol[0]
-     print "result",finalpar[0],finalpar[1],finalpar[-1]
+     print("result",finalpar[0],finalpar[1],finalpar[-1])
      offsetarray[istep*maxTimesteps:(istep+1)*maxTimesteps,stIdx,polIdx]=finalpar[-1]
      tecarray[istep*maxTimesteps:(istep+1)*maxTimesteps,stIdx,polIdx]=finalpar[:-1].reshape(-1,2)[:,0]
      clockarray[istep*maxTimesteps:(istep+1)*maxTimesteps,stIdx,polIdx]=finalpar[:-1].reshape(-1,2)[:,1]
@@ -160,7 +160,7 @@ def getClockTEC(ph,amp,freqs,SBselect,stationname,stIdx,polIdx,fixedOffset=False
         result=opt.leastsq(errorf,par,args=(freqs,ph)) #get average delay
         avg_delay=result[0][0]
 
-    print "avg_delay",stationname,polIdx,avg_delay
+    print("avg_delay",stationname,polIdx,avg_delay)
     # define the function we want to fit, for core stations keep delay fixed
     stepDelay=.3
     if 'CS' in stationname:
@@ -205,7 +205,7 @@ def getClockTEC(ph,amp,freqs,SBselect,stationname,stIdx,polIdx,fixedOffset=False
     iD1=initD1
     iD2=initD2
     finalpar=[0]*nTimes
-    print stationname,polIdx,"tm:",
+    print(stationname,polIdx,"tm:", end=' ')
     for tm in range(0,nTimes):
         if tm%100==0:
             sys.stdout.write(str(tm)+'...')
@@ -232,7 +232,7 @@ def getClockTEC(ph,amp,freqs,SBselect,stationname,stIdx,polIdx,fixedOffset=False
         tmpfreqs=freqs[flags]
         
         if nrFlags>0.5*nF:
-            print "TOO many data points flagged:",tm,tmpfreqs.shape[0],"remaining"
+            print("TOO many data points flagged:",tm,tmpfreqs.shape[0],"remaining")
             if tm>0:
                 finalpar[tm]=np.array(finalpar[tm-1])
             else:
@@ -250,12 +250,12 @@ def getClockTEC(ph,amp,freqs,SBselect,stationname,stIdx,polIdx,fixedOffset=False
             finalpar[tm]=[finalpar[tm]]
         chi2 = np.average(np.power(errorf(par,tmpfreqs,data), 2))
         if chi2>10:
-            print "got a Fail",stationname,itm,chi2,finalpar[tm]
+            print("got a Fail",stationname,itm,chi2,finalpar[tm])
             success=False
         else:
             residualarray[itm,SBselect,stIdx,polIdx][flags]=errorf(finalpar[tm],tmpfreqs,data)
          
-    print 'finished'
+    print('finished')
     #acquire lock?, store data
     finalpar=np.array(finalpar)
     tecarray[:,stIdx,polIdx]=np.array(finalpar)[:,0]
@@ -275,11 +275,11 @@ def getResidualPhaseWraps(avgResiduals,freqs):
     nF=freqs.shape[0]
     wraps=np.zeros((nSt,),dtype=np.float)
     for ist in range(nSt):
-        print ist
+        print(ist)
         tmpfreqs=freqs[flags[:,ist]]
         nF=tmpfreqs.shape[0]
         if nF<10:
-            print "too many flagged",ist
+            print("too many flagged",ist)
             continue
         basef,steps=getPhaseWrapBase(tmpfreqs)
 
@@ -338,7 +338,7 @@ def getTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,station
     diff=np.sum(np.absolute(np.remainder(big_array[:,:,np.newaxis]-(ph[0,:,:]-ph[0,:,:][:,[0]])+np.pi,2*np.pi)-np.pi),axis=1)
     init_idx=np.argmin(diff,axis=0)
     sol[:,0]=init_idx*0.005-0.1
-    print "Initializing with",sol[:,0]
+    print("Initializing with",sol[:,0])
     for itm in range(nT):
         
         if itm%100==0 and itm>0:
@@ -372,7 +372,7 @@ def getClockTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,st
     nparms=2+(useOffset>0)
     #sol = np.zeros((nSt,nparms),dtype=np.float)
     sol = np.zeros((nSt,nparms),dtype=np.float)
-    print sol.shape,nparms,nSt
+    print(sol.shape,nparms,nSt)
     A=np.zeros((nF,nparms),dtype=np.float)
     A[:,1] = freqs*2*np.pi*(-1e-9)
     A[:,0] = -8.44797245e9/freqs
@@ -406,7 +406,7 @@ def getClockTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,st
         if itm==0 or not succes:
          for ist in range(1,nSt):
             if (nF-nrFlags[ist])<10:
-                print "Too many data points flagged",itm,ist
+                print("Too many data points flagged",itm,ist)
                 continue;
             if itm==0 or not initprevsol:
                 if hasattr(initSol,'__len__') and len(initSol)>ist:
@@ -425,7 +425,7 @@ def getClockTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,st
                     iTEC2=1.5
                     iD1=-50
                     iD2=300
-                print "First",iTEC1,iTEC2,iD1,iD2
+                print("First",iTEC1,iTEC2,iD1,iD2)
                     
 
             else:
@@ -439,15 +439,15 @@ def getClockTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,st
                     iD1=sol[ist,1]
                     iD2=sol[ist,1]+stepDelay
                     
-                print "Failure",iTEC1,iTEC2,iD1,iD2,nrFail
+                print("Failure",iTEC1,iTEC2,iD1,iD2,nrFail)
 
             dTECArray=np.arange(iTEC1,iTEC2,stepdTEC)
             dClockArray=np.arange(iD1,iD2,stepDelay)
             data=ph[itm,:,ist][np.logical_not(np.logical_or(flags[:,ist],flags[:,0]))]-ph[itm,:,0][np.logical_not(np.logical_or(flags[:,ist],flags[:,0]))]
             tmpfreqs=freqs[np.logical_not(np.logical_or(flags[:,ist],flags[:,0]))]
-            print "getting init",ist,
+            print("getting init",ist, end=' ')
             par = getInitPar(data,dTECArray, dClockArray,tmpfreqs,ClockTECfunc)
-            print par
+            print(par)
             sol[ist,:]=par[:nparms]
         if not succes:
             #reset first station
@@ -466,7 +466,7 @@ def getClockTECBaselineFit(ph,amp,freqs,SBselect,polIdx,stIdx,useOffset=False,st
         residualarray[np.ix_([itm+timeIdx],SBselect,stIdx,[polIdx])]=residual.reshape((1,nF,nSt,1))
         chi2=np.sum(np.square(np.degrees(residual)))/(nSt*nF)
         if chi2>chi2cut:
-            print "failure",chi2,sol
+            print("failure",chi2,sol)
             succes=False
             nrFail=0
         else:
@@ -512,7 +512,7 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
         freqselect=myrms1[SBselect]<flagcut*np.average(myrms1[SBselect])
         cutlevel=flagcut*np.average(rms(ph[:,SBselect][:,freqselect],0))
         SBselect=np.logical_and(SBselect,myrms1<cutlevel)
-        print "flagging",np.sum(np.logical_not(SBselect)),"channels"
+        print("flagging",np.sum(np.logical_not(SBselect)),"channels")
     freqs=freqs[SBselect]
     if isinstance(stationSelect,str): 
         stations=[st for st in list(ionmodel.stations[:]) if stationSelect]   
@@ -520,7 +520,7 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
         stations=list(ionmodel.stations[:][stationSelect])
     for ignore in ignore_stations:
         stations=[st for st in stations if not ignore in st]
-    print "stations",stations
+    print("stations",stations)
     if doClockTEC:
         clockarray=np.zeros(ionmodel.times[:].shape+ionmodel.stations[:].shape+(2,))
         tecarray=np.zeros(ionmodel.times[:].shape+ionmodel.stations[:].shape+(2,))
@@ -535,7 +535,7 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
         #stationIndices=[list(ionmodel.stations[:]).index(st) for st in stations]
         stationIndices=np.array([idxst in stations for idxst in ionmodel.stations[:]])
         CSstations=np.array(['CS' in idxst for idxst in ionmodel.stations[:] if idxst in stations])
-        print 'selected CS',CSstations
+        print('selected CS',CSstations)
         for pol in range(2):
             if combine_pol:
                 #phdata=ph[timerange[0]:timerange[1],:,:,0,(polshape-1)][:,SBselect][:,:,stationIndices]+ph[timerange[0]:timerange[1],:,:,0,0][:,SBselect][:,:,stationIndices]
@@ -599,14 +599,14 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
                     chi2select=chi2<np.average(chi2)
                     chi2select=chi2<np.average(chi2[chi2select])
                     #return chi2,slope,TEC,lats
-                    print "wraps",wraps
-                    print "slope",slope[:,chi2select][:,0]                    
+                    print("wraps",wraps)
+                    print("slope",slope[:,chi2select][:,0])                    
                     #offsets=-1*(np.average(TEC[chi2select]-lats*slope[chi2select][:,np.newaxis],axis=0))*2.*np.pi/steps[0]
                     offsets=-1*(np.average(TEC[chi2select]-np.dot(slope.T,lonlat)[chi2select],axis=0))*2.*np.pi/steps[0]
-                    print "step",steps[0]
-                    print offsets
+                    print("step",steps[0])
+                    print(offsets)
                     remainingwraps=np.round(offsets/(2*np.pi))#-np.round(wraps[stationIndices])
-                    print remainingwraps
+                    print(remainingwraps)
                     wraps[stationIndices]+=remainingwraps
 
                     #one more iteration
@@ -620,9 +620,9 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
                        chi2select=chi2<np.average(chi2[chi2select])
                        offsets=-1*(np.average(TEC[chi2select]-np.dot(slope.T,lonlat)[chi2select],axis=0))*2.*np.pi/steps[0]
                        #offsets=-1*(np.average(TEC[chi2select]-lats*slope[chi2select][:,np.newaxis],axis=0))*2.*np.pi/steps[0]
-                       print "offsets itereation2:",offsets
+                       print("offsets itereation2:",offsets)
                        remainingwraps=np.round(offsets/(2*np.pi))#-np.round(wraps[stationIndices])
-                       print "remaining wraps iteration 2",remainingwraps
+                       print("remaining wraps iteration 2",remainingwraps)
                        wraps[stationIndices]+=remainingwraps
                     #phdata[:,:,:]+=offsets
                     phdata[:,:,CSstations]+=offsets[CSstations]
@@ -638,13 +638,13 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
                 initSol[:,0]=tecarray[timerange[0],stationIndices,pol]+steps[0]*np.round(wraps[stationIndices])
                 initSol[:,1]=clockarray[timerange[0],stationIndices,pol]+steps[1]*np.round(wraps[stationIndices])
                 #initSol[:,1]=np.average(clockarray[:,stationIndices,pol]-clockarray[:,[0],pol],axis=0)+steps[1]*np.round(wraps[stationIndices])
-                print "final wraps",np.round(wraps[stationIndices])
-                print "prev solutions", clockarray[timerange[0],stationIndices,pol]
-                print "init Clock with", initSol[:,1]
-                print "prev solutions TEC", tecarray[timerange[0],stationIndices,pol]
-                print "init TEC with", initSol[:,0]
+                print("final wraps",np.round(wraps[stationIndices]))
+                print("prev solutions", clockarray[timerange[0],stationIndices,pol])
+                print("init Clock with", initSol[:,1])
+                print("prev solutions TEC", tecarray[timerange[0],stationIndices,pol])
+                print("init TEC with", initSol[:,0])
                 if not(CStec0)  and np.all(np.round(wraps[stationIndices])==0):
-                    print "No need for phase unwrapping"
+                    print("No need for phase unwrapping")
                     continue;
                 kwargs={'ph':phdata,
                         'amp':ampdata,
@@ -666,7 +666,7 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
             
     else:            
       for ist,st in enumerate(stations):
-        print "getting values for station",st
+        print("getting values for station",st)
         if doClockTEC:
             if ist==refstIdx:
                 continue
@@ -711,7 +711,7 @@ def getAll(ionmodel,refstIdx=0,doClockTEC=True,doRM=False,add_to_h5=True,station
 
 
 def SwapClockTECAxes(ionmodel):
-    print "swap axes will reshape your Clock and TEC solutions. The order of Clock is now times  x stations x polarizations and of TEC: times x stations x sources x polarizations"
+    print("swap axes will reshape your Clock and TEC solutions. The order of Clock is now times  x stations x polarizations and of TEC: times x stations x sources x polarizations")
     TEC =ionmodel.TEC;
     TECshape=TEC[:].shape
     Clock =ionmodel.Clock;
@@ -721,10 +721,10 @@ def SwapClockTECAxes(ionmodel):
     nsources=ionmodel.N_sources
     newshape=(nT,nsources,nst,2)
     if TECshape==newshape:
-        print "nothing to be done for TEC"
+        print("nothing to be done for TEC")
     else:
         TEC=TEC[:]
-        indices=range(4) #nT,st,nsources,pol
+        indices=list(range(4)) #nT,st,nsources,pol
         tmaxis=TECshape.index(nT)
         indices[tmaxis]=0
         staxis=TECshape.index(nst)
@@ -740,7 +740,7 @@ def SwapClockTECAxes(ionmodel):
 
             indices[nsaxis]=2
         else:
-            print "ambigous shape of TEC, try swapping by hand"
+            print("ambigous shape of TEC, try swapping by hand")
         while tmaxis>0:
             TEC=TEC.swapaxes(tmaxis,tmaxis-1)
             indices[tmaxis]=indices[tmaxis-1]
@@ -763,10 +763,10 @@ def SwapClockTECAxes(ionmodel):
         add_to_h5_func(ionmodel.hdf5,TEC,name='TEC')
     newshape=(nT,nst,2)
     if Clockshape==newshape:
-        print "nothing to be done for Clock"
+        print("nothing to be done for Clock")
     else:
         Clock=Clock[:]
-        indices=range(3) #nT,st,pol
+        indices=list(range(3)) #nT,st,pol
         tmaxis=Clockshape.index(nT)
         indices[tmaxis]=0
         staxis=Clockshape.index(nst)
@@ -792,7 +792,7 @@ def SwapClockTECAxes(ionmodel):
 def writeClocktoParmdb(ionmodel,average=False,create_new = True):
     '''if average the average of both polarizations is used, snice BBS can handle only on value at the moment'''
     if not hasattr(ionmodel,'Clock'):
-        print "No Clock solutions found, maybe you forgot to run the fit?"
+        print("No Clock solutions found, maybe you forgot to run the fit?")
         return
     Clock=ionmodel.Clock[:] # times x stations x pol
     parms = {}
@@ -876,7 +876,7 @@ def writePhaseScreentoParmdb(ionmodel,create_new = True):
            identifier = station
         PiercepointX_parm = parm.copy()
         parmname = ':'.join(['Piercepoint', 'X', identifier])
-        print n_source, n_station
+        print(n_source, n_station)
         x = ionmodel.piercepoints[:]['positions_xyz'][:,n_source, n_station,0]
         PiercepointX_parm['values'] = x
         parms[ parmname ] = PiercepointX_parm
@@ -922,7 +922,7 @@ def writePhaseScreentoParmdb(ionmodel,create_new = True):
 
 def writePhaseScreenInfo(ionmodel,filename="clocktec.xmmlss.send"):
     if not hasattr(ionmodel,'TEC'):
-        print 'no fitted TEC information in you model, maybe you forgot to fit?'
+        print('no fitted TEC information in you model, maybe you forgot to fit?')
         return
     
 

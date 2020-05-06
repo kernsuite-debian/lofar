@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarLog4Cxx.h 21325 2012-06-27 08:12:16Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_LOG4CXX_H
 #define LOFAR_COMMON_LOG4CXX_H
@@ -166,8 +166,8 @@ namespace LOFAR {
   // @{
 
 #ifdef DISABLE_DEBUG_OUTPUT
-#define LOG_DEBUG(message)
-#define LOG_DEBUG_STR(stream)
+#define LOG_DEBUG(message) {}
+#define LOG_DEBUG_STR(stream) {}
 #else
 
 #define LOG_DEBUG(message)     LofarLog(DEBUG,message)

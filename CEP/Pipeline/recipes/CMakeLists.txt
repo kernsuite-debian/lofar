@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35142 2016-08-22 10:10:37Z schaap $
+# $Id$
 
 lofar_package(Pipeline-Recipes 0.1 DEPENDS Docker pyparameterset)
 

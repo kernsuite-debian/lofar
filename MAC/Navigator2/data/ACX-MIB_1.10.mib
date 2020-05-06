@@ -1,0 +1,2170 @@
+-- ACX Mib v. 1.10
+
+--   powecMIB MODULE-IDENTITY
+--       LAST-UPDATED "201509040000Z"
+-- 		 last modification by JM
+--       ORGANIZATION "Unipower"
+--       CONTACT-INFO "www.unipowerco.com"
+--       DESCRIPTION "System Information, ACX Power Systems"
+--       ::= { enterprises 5961 }
+	
+ACX-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+
+--   	enterprises, IpAddress		FROM RFC1155-SMI
+--	DisplayString 			FROM RFC1213-MIB
+--  	OBJECT-TYPE           		FROM RFC-1212
+--	TRAP-TYPE 	    		FROM RFC-1215;
+
+   MODULE-IDENTITY,enterprises, 
+   IpAddress ,Integer32		   				FROM SNMPv2-SMI
+   -- Gauge, TimeTicks     						FROM RFC1155-SMI
+   DisplayString                                FROM SNMPv2-TC
+   OBJECT-TYPE                                  FROM RFC-1212
+   NOTIFICATION-TYPE                        	FROM SNMPv2-SMI
+   -- TRAP-TYPE                                 FROM RFC-1215
+   SnmpSecurityModel,
+   SnmpMessageProcessingModel,
+   SnmpSecurityLevel,
+   SnmpAdminString				      			FROM SNMP-FRAMEWORK-MIB
+   KeyChange									FROM SNMP-USER-BASED-SM-MIB
+   TEXTUAL-CONVENTION							FROM SNMPv2-TC;
+ --  MODULE-COMPLIANCE, OBJECT-GROUP , 
+ --  NOTIFICATION-GROUP      						FROM SNMPv2-CONF;
+
+	powecMIB			OBJECT IDENTIFIER ::= { enterprises 5961 }
+	acxPowerSystem 			OBJECT IDENTIFIER ::= { powecMIB 5 }
+		
+	systemInfo 			OBJECT IDENTIFIER ::= { acxPowerSystem 1 } 
+	powerSystem			OBJECT IDENTIFIER ::= { acxPowerSystem 2 } 
+	systemParameters		OBJECT IDENTIFIER ::= { acxPowerSystem 3 }
+	agentSetup			OBJECT IDENTIFIER ::= { acxPowerSystem 4 }
+	alarmInfo			OBJECT IDENTIFIER ::= { acxPowerSystem 5 }
+	rectifierInfo			OBJECT IDENTIFIER ::= { acxPowerSystem 6 }
+	batteryInfo			OBJECT IDENTIFIER ::= { acxPowerSystem 7 }
+	alarmHistory			OBJECT IDENTIFIER ::= { acxPowerSystem 8 }
+	dcdcInfo			OBJECT IDENTIFIER ::= { acxPowerSystem 9 }
+	sliInfo				OBJECT IDENTIFIER ::= { acxPowerSystem 10 }
+	alarmTable				OBJECT IDENTIFIER ::= { acxPowerSystem 11 }
+	snmpV3USM				OBJECT IDENTIFIER ::= { acxPowerSystem 98 }
+	powecACXTrap			OBJECT IDENTIFIER ::= { acxPowerSystem 99 }
+
+
+UsmAuthProtocol ::=  TEXTUAL-CONVENTION
+       STATUS  current
+       DESCRIPTION
+           "This textual convention enumerates the authentication protocol for USM configuration."
+       SYNTAX    INTEGER
+ 			{
+				hmacMD5Auth(0),
+				hmacSHAAuth(1),
+				noAuthProtocol(2)
+			}
+
+UsmPrivProtocol ::=  TEXTUAL-CONVENTION
+       STATUS  current
+       DESCRIPTION
+           "This textual convention enumerates the privacy protocol for USM configuration."
+       SYNTAX    INTEGER
+ 			{
+				aesPrivProtocol(1),
+				noPrivProtocol(2)
+			}
+			
+-- SYSTEM INFO variables
+
+systemName OBJECT-TYPE
+	SYNTAX  DisplayString (SIZE (0..32))
+	ACCESS  read-write
+	STATUS  mandatory
+	DESCRIPTION
+		"System Type String for the DC System Site"
+	::= { systemInfo 1 }
+
+powerSystemType	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"String containing the type of power supply control module (ACX)"
+	::= { systemInfo 2 }
+
+powerSystemSoftVer	OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"String containing the software version of the control module"
+	::= { systemInfo 3 }
+
+powerSystemSerialNo	OBJECT-TYPE
+	SYNTAX INTEGER(0..4294967295)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Serial Number of the control module"
+	::= { systemInfo 4 }
+
+outputData OBJECT-TYPE
+	SYNTAX DisplayString (SIZE (0..11))
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"String containing a description of the DC Output"
+	::= { systemInfo 5 }
+
+batteryDescript OBJECT-TYPE
+	SYNTAX DisplayString (SIZE (0..19))
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"String containing a description of the Battery"
+	::= { systemInfo 6 }
+	
+batteryCapacity OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"An integer containing battery capacity in Ah"
+		
+	::= { systemInfo 7 }
+	
+installationDate OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Installation date of the system of the form 'DD.MM.YY'"
+		
+	::= { systemInfo 8 }
+	
+updateDate OBJECT-TYPE
+	SYNTAX DisplayString
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Last date of updating system of the form 'DD.MM.YY'"
+		
+	::= { systemInfo 9 }
+	
+powerSystemAddress OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"An integer containing the address of the System"
+		
+	::= { systemInfo 10 }	
+	
+-- POWER SYSTEM variables
+
+systemVoltage		OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the system DC voltage (V*100)"
+	::= { powerSystem 1 }
+
+loadCurrent		OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the system load current (A*10)"
+	::= { powerSystem 2 }
+
+batteryCurrent		OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the battery current (A*10)"
+	::= { powerSystem 3 }
+
+
+rectifierCurrent	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the rectifier current (A*10)"
+	::= { powerSystem 4 }  
+
+battTemperature	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the battery temperature(C)"
+	::= { powerSystem 5 }  
+	
+acPhase1Voltage	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing AC input voltage for phase 1 (V), (-1) means measurement not available"
+	::= { powerSystem 6 }  
+
+acPhase2Voltage	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing AC input voltage for phase 2 (V), (-1) means measurement not available"
+	::= { powerSystem 7 }  
+
+acPhase3Voltage	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing AC input voltage for phase 3 (V), (-1) means measurement not available"
+	::= { powerSystem 8 }  
+
+remainBatteryTime	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the remaining battery time in (minutes)"
+	::= { powerSystem 9 } 	
+
+dcdcCurrent	OBJECT-TYPE
+	SYNTAX INTEGER
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the DC/DC units total current (A*10)"
+	::= { powerSystem 10 }  
+	
+-- SYSTEM PARAMETERS
+
+uFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the operation mode Flag (normal, boost charge, test, spare)"
+	::= { systemParameters 1 }
+
+u1NormalRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U1 (Normal) Reference Voltage (V*10)"
+	::= { systemParameters 2 }
+
+u2BoostRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U2 (Boost) Reference Voltage (V*10)"
+	::= { systemParameters 3 }
+
+u3TestRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U3 (Test) Reference Voltage (V*10)"
+	::= { systemParameters 4 }
+
+u4SpareRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing U4 (Spare) Reference Voltage (V*10)"
+	::= { systemParameters 5 }
+
+
+lowVoltLim OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Limit (V*10)"
+	::= { systemParameters 6 }
+
+
+lowVoltDisconVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Disconnect Limit (V*10)"
+	::= { systemParameters 7 }
+
+lowVoltReconLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Voltage Reconnect Limit (V*10)"
+	::= { systemParameters 8 }
+	
+partLoadDiscon1Limit	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit. The limit will be in (V*10), or
+		in (minutes) depending on the configuration of the ACX"
+	::= { systemParameters 9 }
+
+partLoadDiscon2Limit	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit. The limit will be in (V*10), or
+		in (minutes) depending on the configuration of the ACX"
+	::= { systemParameters 10 }
+
+partLoadDiscon3Limit	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Partial Load Disconnection Limit. The limit will be in (V*10), or
+		in (minutes) depending on the configuration of the ACX"
+	::= { systemParameters 11 }
+
+highVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Voltage Limit (V*10)"
+	::= { systemParameters 12 }
+	
+highVoltDisconLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Voltage Shutdown Limit (V*10)"
+	::= { systemParameters 13 }
+
+autoBoostFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Auto Boost Flag(1 for auto boost enabled, 0 disabled)."
+	::= { systemParameters 14 }
+
+boostTime	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Time value (hour*10)"
+	::= { systemParameters 15 }
+
+boostInterval	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Interval value (weeks*10)"
+	::= { systemParameters 16 }
+
+boostTimeFactor	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Time Factor"
+	::= { systemParameters 17 }
+
+boostLimit1	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Limit1 value (V*10)"
+	::= { systemParameters 18 }
+
+boostLimit2	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Boost Limit2 value (V*10)"
+	::= { systemParameters 19 }
+
+
+noOfBatteries	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Number of Batteries"
+	::= { systemParameters 20 }
+
+batType	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Type Of Battery"
+	::= { systemParameters 21 }
+
+symLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Symmetry Limit (V*10)"
+	::= { systemParameters 22 }
+
+autoTestFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the number of automatic battery tests performed per year."
+	::= { systemParameters 23 }
+
+startHForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Start Hour for Automatic Test"
+	::= { systemParameters 24 }
+
+voltLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Voltage Limit for Battery Test (V*10)"
+	::= { systemParameters 25 }
+
+timeLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Time Limit For Test (minutes)"
+	::= { systemParameters 26 }
+
+ampLimForTest	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Amphour Limit For Test (Ah)"
+	::= { systemParameters 27 }
+
+year	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Year"
+	::= { systemParameters 28 }
+
+month	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Month"
+	::= { systemParameters 29 }
+
+day	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Day"
+	::= { systemParameters 30 }
+
+hour	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Hour"
+	::= { systemParameters 31 }
+
+minute	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Minute"
+	::= { systemParameters 32 }
+
+tempCompFlag	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Temperature Compensation Flag"
+	::= { systemParameters 33 }
+
+tempCompFactor	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Temperature Compensation Factor (V*10/10C)"
+	::= { systemParameters 34 }
+
+highTempLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Temperature Limit (C)"
+	::= { systemParameters 35 }
+
+lowTempLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low Temperature Limit (C)"
+	::= { systemParameters 36 }
+
+highLoadLimit	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High Load Limit (% of full capacity)"
+	::= { systemParameters 37 }
+
+signals	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Signal byte
+			Bit 0 - Reset Alarms
+			Bit 1 - Reconfigure System"
+	::= { systemParameters 38 }
+
+shuntA	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Shunt Current Rating (A)"
+	::= { systemParameters 39 }
+
+shuntmV	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Shunt mV Rating (mV)"
+	::= { systemParameters 40 }
+
+batCurrLimEnabled	OBJECT-TYPE
+	SYNTAX INTEGER(0..255)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"Battery Current Limit Enabled
+		"
+	::= { systemParameters 41 }
+
+currLimRef	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the battery Current Limit reference (A*10)"
+	::= { systemParameters 42 }
+
+highACVoltLim	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the High AC Voltage Limit (V)"
+	::= { systemParameters 43 }
+
+lowACVoltLim OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing the Low AC Voltage Limit (V)"
+	::= { systemParameters 44 }	
+	
+turnOnOffRecifiers OBJECT-TYPE
+	SYNTAX INTEGER { OFF(0), ON(1) }
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A switch for turning On/Off rectifiers, 
+		 NOTE: If system does not have another power source (e.g. battery),
+		 this will cause system shutdown"
+	::= { systemParameters 45 }	
+	
+-- AGENT SETUP
+trapReciepient1 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 1"
+	::= { agentSetup 1 }
+	
+trapReciepient2 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 2"
+	::= { agentSetup 2 }
+	
+trapReciepient3 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 3"
+	::= { agentSetup 3 }
+	
+trapReciepient4 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 4"
+	::= { agentSetup 4 }
+	
+trapReciepient5 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 5"
+	::= { agentSetup 5 }
+	
+trapReciepient6 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 6"
+	::= { agentSetup 6 }
+	
+trapReciepient7 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 7"
+	::= { agentSetup 7 }
+	
+trapReciepient8 OBJECT-TYPE
+	SYNTAX IpAddress
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"IP address of Trap Reciepient 8"
+	::= { agentSetup 8 }
+	
+trapCommunityName OBJECT-TYPE
+	SYNTAX DisplayString (SIZE (0..15))
+	ACCESS read-write
+	STATUS mandatory
+	DESCRIPTION
+		"A variable containing Trap community name"
+	::= { agentSetup 9 }	
+	
+
+-- ALARM INFO variables (Alarm and Status Information)
+-- The alarmData, extraAlarmData and statusData
+-- are integers from 0-255 containing the byte value received 
+-- from the controlmodule. 
+
+numbOfAlarms	OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"Variable containing the number of active alarms at the moment, when sent with a trap 1 indicate active, 0 indicate clear"
+	::= { alarmInfo 1 }
+
+alarmData1	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 1"
+	::= { alarmInfo 2 }
+
+alarmData2	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 2"
+	::= { alarmInfo 3 }
+
+alarmData3	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing alarm data 3"
+	::= { alarmInfo 4 }
+	
+extraAlarmData1	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing extra alarm data 1"
+	::= { alarmInfo 5 }
+	
+extraAlarmData2	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing extra alarm data 2"
+	::= { alarmInfo 6 }
+
+statusData1	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 1"
+	::= { alarmInfo 7 }
+
+statusData2	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 2"
+	::= { alarmInfo 8 }
+
+statusData3	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 3"
+	::= { alarmInfo 9 }
+
+statusData4	OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	ACCESS read-only
+	STATUS mandatory
+	DESCRIPTION
+		"A byte containing status data 4"
+	::= { alarmInfo 10 }
+
+extAlarm0Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 0 name"
+	::= { alarmInfo 11 }
+
+extAlarm1Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 1 name"
+	::= { alarmInfo 12 }
+
+extAlarm2Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 2 name"
+	::= { alarmInfo 13 }
+
+extAlarm3Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 3 name"
+	::= { alarmInfo 14 }
+
+extAlarm4Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 4 name"
+	::= { alarmInfo 15 }
+
+extAlarm5Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 5 name"
+	::= { alarmInfo 16 }
+
+extAlarm6Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 6 name"
+	::= { alarmInfo 17 }
+
+extAlarm7Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 7 name"
+	::= { alarmInfo 18 }
+
+extAlarm8Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 8 name"
+	::= { alarmInfo 19 }
+
+extAlarm9Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 9 name"
+	::= { alarmInfo 20 }
+
+extAlarm10Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 10 name"
+	::= { alarmInfo 21 }
+
+extAlarm11Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 11 name"
+	::= { alarmInfo 22 }
+
+extAlarm12Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 12 name"
+	::= { alarmInfo 23 }
+
+extAlarm13Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 13 name"
+	::= { alarmInfo 24 }
+
+extAlarm14Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 14 name"
+	::= { alarmInfo 25 }
+
+extAlarm15Name OBJECT-TYPE
+	SYNTAX  DisplayString
+	ACCESS  read-only
+	STATUS  mandatory
+	DESCRIPTION
+		"Ext.alarm 15 name"
+	::= { alarmInfo 26 }
+	
+-- rectifierInfo
+numOfRectifiers OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of Rectifiers installed in the system"
+    ::= { rectifierInfo 1 }   
+
+numOfChannels OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of RS485 channels in the system"
+    ::= { rectifierInfo 3 }
+
+selectChannel OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+        "Select actual channel for which module table will be displayed"
+    ::= { rectifierInfo 4 }
+
+moduleTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF ModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Module Information Table"
+    ::= { rectifierInfo 2 }        
+    
+moduleEntry OBJECT-TYPE
+    SYNTAX ModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of Module Table"
+    INDEX { moduleIndex }
+     ::= { moduleTable 1 }
+     
+ModuleEntry ::=
+    SEQUENCE {
+        moduleIndex
+            INTEGER,
+        moduleAddress
+            INTEGER,
+        moduleComStatus
+            INTEGER,
+        moduleOk
+            INTEGER,
+        moduleEnabled
+            INTEGER,
+        inputVoltage
+        	INTEGER,
+		outputVoltage
+			INTEGER,
+		outputCurrent
+			INTEGER,
+		meanCurrent
+			INTEGER,
+		temperature
+			INTEGER,
+		moduleStatus
+			INTEGER,
+		moduleFlag
+			INTEGER,
+		moduleConfig
+			INTEGER,
+		softVersion
+			 DisplayString,
+		serialNumber
+			INTEGER
+	}
+	
+moduleIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Entry number in the Module Table"
+    ::= { moduleEntry 1 }
+
+moduleAddress OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Address of current module viewed in the Module Table, (-1) means this value is invalid"
+    ::= { moduleEntry 2 }
+	
+moduleComStatus	OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), FAIL(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Communication Status, 0-OK, 1-Failed, (-1) means this value is invalid"
+    ::= { moduleEntry 3 }
+    
+moduleOk OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), ALM(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Rectifier Module Ok or Alarm, 0-OK, 1-Alarm, (-1) means this value is invalid"
+    ::= { moduleEntry 4 }
+     
+moduleEnabled OBJECT-TYPE
+	SYNTAX INTEGER { DISABLE(0), ENABLE(1) }
+    ACCESS  read-write
+	STATUS  mandatory
+    DESCRIPTION
+        "Rectifier module is activated or not, 1-Activated, 0-Disable, (-1) means this value is invalid"
+    ::= { moduleEntry 5 }
+    
+inputVoltage OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Input Voltage(V), (-1) means measurement not available"
+    ::= { moduleEntry 6 }
+    
+outputVoltage OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Output Voltage(V*10), (-1) means measurement not available"
+    ::= { moduleEntry 7 }
+
+outputCurrent OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Current (A*10), (-1) means measurement not available"
+    ::= { moduleEntry 8 }
+    
+meanCurrent	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module MeanCurrent for current sharing (A*10), (-1) means measurement not available"
+    ::= { moduleEntry 9 }
+
+temperature	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module internal temperature (C), (-1) means measurement not available"
+    ::= { moduleEntry 10 }
+
+moduleStatus OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module status, (-1) means this value is invalid"
+    ::= { moduleEntry 11 }
+
+moduleFlag OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Flag, (-1) means this value is invalid"
+    ::= { moduleEntry 12 }
+
+moduleConfig OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Config, (-1) means this value is invalid"
+    ::= { moduleEntry 13 }
+
+softVersion	OBJECT-TYPE
+	SYNTAX DisplayString
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Software version of the module, (-1) means this value is invalid"
+    ::= { moduleEntry 14 }
+
+serialNumber OBJECT-TYPE
+	SYNTAX INTEGER(0..4294967295)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Serial Number of the module, (-1) means this value is invalid"
+    ::= { moduleEntry 15 }
+    
+-- BATTERY INFORMATION
+numbOfBatteries OBJECT-TYPE
+    SYNTAX INTEGER(0..100)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of battery strings installed in the system"
+    ::= { batteryInfo 1 }
+    
+typeofBattery OBJECT-TYPE
+    SYNTAX INTEGER(0..100)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Type of battery installed in the system"
+    ::= { batteryInfo 2 }    
+
+symmetryTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF SymmetryEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Symmetry Information Table"
+    ::= { batteryInfo 3 }        
+    
+symmetryEntry OBJECT-TYPE
+    SYNTAX SymmetryEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of Symmetry Table"
+    INDEX { batteryIndex }
+     ::= { symmetryTable 1 }
+     
+SymmetryEntry ::=
+    SEQUENCE {
+        batteryIndex
+            INTEGER,
+        symmetry1
+            INTEGER,
+        symmetry2
+            INTEGER,
+        symmetry3
+            INTEGER,
+        symmetry4
+        	INTEGER
+	}
+	
+batteryIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Index of current battery string viewed in the Symmetry Table"
+    ::= { symmetryEntry 1 }
+    
+symmetry1 OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Symmetry Voltage in Block 1 (V*100), (-1) means this value is invalid"
+    ::= { symmetryEntry 2 }
+ 
+symmetry2 OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Symmetry Voltage in Block 2 (V*100), (-1) means this value is invalid"
+    ::= { symmetryEntry 3 }    
+    
+symmetry3 OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Symmetry Voltage in Block 3 (V*100), (-1) means this value is invalid for this battery type"
+    ::= { symmetryEntry 4 }
+    
+symmetry4 OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Symmetry Voltage in Block 4 (V*100), (-1) means this value is invalid for this battery type"
+    ::= { symmetryEntry 5 }    
+
+-- ALARM HISTORY INFORMATION
+alarmHistoryCount OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of Alarm History entries in the History Table"
+    ::= { alarmHistory 1 }  
+
+alarmHistoryTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF AlarmHistoryEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Alarm History Table"
+    ::= { alarmHistory 2 }        
+    
+alarmHistoryEntry OBJECT-TYPE
+    SYNTAX SymmetryEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of History Table"
+    INDEX { ahTableIndex }
+     ::= { alarmHistoryTable 1 }
+     
+AlarmHistoryEntry ::=
+    SEQUENCE {
+        ahTableIndex
+        	INTEGER,
+        ahTime
+            DisplayString,
+        ahData1
+            INTEGER,
+        ahData2
+            INTEGER,
+        ahData3
+        	INTEGER,
+        ahData4
+            INTEGER,
+        ahData5
+            INTEGER
+	}
+	
+ahTableIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Entery Number in the History Table"
+    ::= { alarmHistoryEntry 1 }
+
+ahTime OBJECT-TYPE
+	SYNTAX DisplayString
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Time and date of the History Table entry"
+    ::= { alarmHistoryEntry 2 }
+    
+ahData1 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "A byte containing alarm history data 1"
+    ::= { alarmHistoryEntry 3 }
+    
+ahData2 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "A byte containing alarm history data 2"
+    ::= { alarmHistoryEntry 4 }
+    
+ahData3 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "A byte containing alarm history data 3"
+    ::= { alarmHistoryEntry 5 }
+
+ahData4 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "A byte containing alarm history data 4"
+    ::= { alarmHistoryEntry 6 }
+    
+ahData5 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "A byte containing alarm history data 5"
+    ::= { alarmHistoryEntry 7 }    
+
+
+-- DCDCModuleInfo
+numOfDCDCUnits OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of DCDC Modules installed in the system"
+    ::= { dcdcInfo 1 }   
+
+dcdcTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF DCDCModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "DCDC Module Information Table"
+    ::= { dcdcInfo 2 }        
+    
+dcdcModuleEntry OBJECT-TYPE
+    SYNTAX DCDCModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of DCDC Module Table"
+    INDEX { dcdcModuleIndex }
+     ::= { dcdcTable 1 }
+
+DCDCModuleEntry ::=
+    SEQUENCE {
+        dcdcModuleIndex
+            INTEGER,
+        dcdcModuleAddress
+            INTEGER,
+        dcdcModuleComStatus
+            INTEGER,
+        dcdcModuleOk
+            INTEGER,
+        dcdcModuleEnabled
+            INTEGER,
+        dcdcInputVoltage
+        	INTEGER,
+		dcdcOutputVoltage
+			INTEGER,
+		dcdcOutputCurrent
+			INTEGER,
+		dcdcMeanCurrent
+			INTEGER,
+		dcdcTemperature
+			INTEGER,
+		dcdcModuleStatus
+			INTEGER,
+		dcdcModuleFlag
+			INTEGER,
+		dcdcModuleConfig
+			INTEGER,
+		dcdcSoftVersion
+			 DisplayString,
+		dcdcSerialNumber
+			INTEGER
+	}
+	
+dcdcModuleIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Entry number in the Module Table"
+    ::= { dcdcModuleEntry 1 }
+
+dcdcModuleAddress OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Address of current module viewed in the DCDC Module Table, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 2 }
+	
+dcdcModuleComStatus	OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), FAIL(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Communication Status, 0-OK, 1-Failed, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 3 }
+    
+dcdcModuleOk OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), ALARM(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "DCDC Module Ok or Alarm, 0-OK, 1-Alarm, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 4 }
+     
+dcdcModuleEnabled OBJECT-TYPE
+	SYNTAX INTEGER { DISABLED(0), ENABLED(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "DCDC module is enabled or not, 1-Enabled, 0-Disabled, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 5 }
+    
+dcdcInputVoltage OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Input Voltage(V), (-1) means measurement not available"
+    ::= { dcdcModuleEntry 6 }
+    
+dcdcOutputVoltage OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Output Voltage(V*10), (-1) means measurement not available"
+    ::= { dcdcModuleEntry 7 }
+
+dcdcOutputCurrent OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Current (A*10), (-1) means measurement not available"
+    ::= { dcdcModuleEntry 8 }
+    
+dcdcMeanCurrent	OBJECT-TYPE
+	SYNTAX INTEGER(0..30000)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module MeanCurrent for current sharing (A*10), (-1) means measurement not available"
+    ::= { dcdcModuleEntry 9 }
+
+dcdcTemperature	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module internal temperature (C), (-1) means measurement not available"
+    ::= { dcdcModuleEntry 10 }
+
+dcdcModuleStatus OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module status, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 11 }
+
+dcdcModuleFlag OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Flag, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 12 }
+
+dcdcModuleConfig OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Module Config, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 13 }
+
+dcdcSoftVersion	OBJECT-TYPE
+	SYNTAX DisplayString
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Software version of the module, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 14 }
+
+dcdcSerialNumber OBJECT-TYPE
+	SYNTAX INTEGER(0..4294967295)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Serial Number of the module, (-1) means this value is invalid"
+    ::= { dcdcModuleEntry 15 }
+    
+
+-- SLIInfo
+numOfSLIUnits OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+        "Number of SLI inverters installed in the system"
+    ::= { sliInfo 1 }   
+
+sliTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF SLIModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "SLI Module internal information table"
+    ::= { sliInfo 2 }        
+    
+sliModuleEntry OBJECT-TYPE
+    SYNTAX SLIModuleEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of Module Table"
+    INDEX { sliModuleIndex }
+     ::= { sliTable 1 }
+
+SLIModuleEntry ::=
+    SEQUENCE {
+        sliModuleIndex
+            INTEGER,
+        sliModuleAddress
+            INTEGER,
+        sliModuleComStatus
+            INTEGER,
+        sliOutputVoltage
+            INTEGER,
+        sliOutputCurrent
+            INTEGER,
+        sliOutputPower
+        	INTEGER,
+		sliGridVoltage
+			INTEGER,
+		sliGridCurrent
+			INTEGER,
+		sliModuleGeneralFailure
+			INTEGER,
+		sliModuleStatus1
+			INTEGER,
+		sliModuleStatus2
+			INTEGER,
+		sliModuleStatus3
+			INTEGER,
+		sliTSStatus
+			INTEGER,
+		sliSerialNumber
+			INTEGER
+	}
+	
+sliModuleIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Seqential number which determines entry position of thr SLI inverter in the SLI Table"
+    ::= { sliModuleEntry 1 }
+
+sliModuleAddress OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Communication address of current SLI inverter viewed in the current SLI Table, (-1) means this value is not available"
+    ::= { sliModuleEntry 2 }
+	
+sliModuleComStatus	OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), FAIL(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Sli inverter communication status, 0-OK, 1-Failed, (-1) means this value is not available"
+    ::= { sliModuleEntry 3 }
+    
+sliOutputVoltage OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI inverter output voltage in tenth of Volts (V*10), (-1) means this value is not available"
+    ::= { sliModuleEntry 4 }
+
+sliOutputCurrent OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI inverter output current in hundredths of A (A*100), (-1) means that this value is not available"
+    ::= { sliModuleEntry 5 }
+    
+sliOutputPower	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI inverter output power in tenths of Watts (W*10), (-1) means this value is not available"
+    ::= { sliModuleEntry 6 }
+
+sliGridVoltage	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI inverter AC Grid Output Voltage in tenths of Volts (V*10), (-1) means this value is not available"
+    ::= { sliModuleEntry 7 }
+
+sliGridCurrent	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI inverter AC Grid Output Current in hundredths of Amperes (A*100), (-1) means this value is not available"
+    ::= { sliModuleEntry 8 }
+	
+sliModuleGeneralFailure OBJECT-TYPE
+	SYNTAX INTEGER { OK(0), FAIL(1) }
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI Failure flag which indicate general functionality of the unit, (-1) means this value is not available"
+    ::= { sliModuleEntry 9 }
+
+sliModuleStatus1 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI Status 1 [uP Status], (-1) means this value is not available
+	Byte code description
+	00 standby
+	01 starting
+	02 run
+	03 bulk OverVoltage
+	04 master indicator error
+	05 input UnderVoltage
+	06 input OverVoltage
+	07 input Low
+	08 input OverCurrent
+	09 reserved
+	10 reserved
+	11 Ambient over temperature
+	12 Ambient under temperature
+	13 Reserved
+	14 Reserved
+	15 Reserved
+	16 Internal over temperature
+	17 Reserved
+	18 Reserved
+	19 Output OverCurrent
+	20 output UV
+	21 Reserved
+	22 breaker off
+	23 output OverVoltage
+	24 transfer sync error
+	"
+    ::= { sliModuleEntry 10 }
+
+sliModuleStatus2 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI Status 2 [DSP Status], (-1) means this value is not available
+	Byte code dDescription
+	00 standby
+	01 starting
+	02 run
+	03 bulk OverVoltage
+	04 Out OverCurrent
+	05 Out UnderVoltage
+	06 Master Indicator ERROR
+	07 Internal DSP Error
+	08 Calibration not valid/received
+	09 V Bulk Low
+	10 bulk OverVoltage
+	"
+    ::= { sliModuleEntry 11 }
+
+sliModuleStatus3 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "SLI Status 3 [Fan Failure], (-1) means this value is not available
+	0 Initialization / fan is OK
+	any value between 1-128 is fan error
+	"
+    ::= { sliModuleEntry 12 }
+
+sliTSStatus OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Transfer switch status, (-1) means this value is not available"
+    ::= { sliModuleEntry 13 }
+	
+sliSerialNumber OBJECT-TYPE
+	SYNTAX INTEGER(0..4294967295)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Serial Number of the module, (-1) means value is not available"
+    ::= { sliModuleEntry 14 }
+
+
+-- Alarm Table
+alarmTTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF AlarmTableEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Alarm state and trap setting table"
+    ::= { alarmTable 1 }
+    
+alarmTableEntry OBJECT-TYPE
+    SYNTAX AlarmTableEntry
+    ACCESS not-accessible
+    STATUS mandatory
+    DESCRIPTION
+        "Queue of Alarm Table"
+    INDEX { alarmTableIndex }
+     ::= { alarmTTable 1 }
+
+AlarmTableEntry ::=
+    SEQUENCE {
+        alarmTableIndex
+            INTEGER,
+        alarmDescription
+            DisplayString,
+        alarmStatus
+            INTEGER,
+        alarmTrapDisable
+            INTEGER
+	}
+	
+alarmTableIndex OBJECT-TYPE
+	SYNTAX INTEGER(0..100)
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Seqential number of alarm"
+    ::= { alarmTableEntry 1 }
+
+alarmDescription OBJECT-TYPE
+	SYNTAX DisplayString
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Alarm decription (Name)"
+    ::= { alarmTableEntry 2 }
+	
+alarmStatus	OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-only
+	STATUS  mandatory
+    DESCRIPTION
+        "Alarm Staus, 0-Off (Alarm is not active), 1-Active"
+    ::= { alarmTableEntry 3 }
+    
+alarmTrapDisable OBJECT-TYPE
+	SYNTAX INTEGER
+    ACCESS  read-write
+	STATUS  mandatory
+    DESCRIPTION
+        "Flag if trap is disabled or enabled for this alarm"
+    ::= { alarmTableEntry 4 }	
+
+-- SNMPv3 USM
+
+usmUserTable     OBJECT-TYPE
+    SYNTAX       SEQUENCE OF UsmUserEntry
+    MAX-ACCESS   not-accessible
+    STATUS       mandatory
+    DESCRIPTION "This table is used to configure ACX USM.
+				 To get the SNMPv3 access, user need to configure security 
+		         name,authentication,auth password,priv protocol and priv password.
+				 Table returns zero strings if SNMPv1/2c is selected in controller"
+    ::= { snmpV3USM 1 }
+
+usmUserEntry     OBJECT-TYPE
+    SYNTAX		UsmUserEntry
+    MAX-ACCESS	not-accessible
+    STATUS       	mandatory
+    DESCRIPTION 	
+				"User security configurations for USM."
+	INDEX   { usmIndex }
+    ::= { usmUserTable 1 }
+
+UsmUserEntry   ::= SEQUENCE {
+	    usmIndex		INTEGER (0),
+	    usmSecurityName	SnmpAdminString,
+        usmAuthProtocol UsmAuthProtocol,
+        usmAuthKey		KeyChange,
+        usmPrivProtocol UsmPrivProtocol,
+        usmPrivKey		KeyChange,
+		usmStorage		StorageType,
+		usmStatus		RowStatus
+		
+    }
+
+usmIndex	  	OBJECT-TYPE
+    SYNTAX 		 INTEGER (0)
+    MAX-ACCESS   read-only
+    STATUS       current
+    DESCRIPTION  "Usm configuration index. "
+    ::= { usmUserEntry 1 }
+
+
+usmSecurityName  OBJECT-TYPE
+    SYNTAX       SnmpAdminString
+    MAX-ACCESS   read-write
+    STATUS       current
+    DESCRIPTION "A human readable string representing the user in
+                 Security Model independent format."
+    ::= { usmUserEntry 2 }
+
+usmAuthProtocol OBJECT-TYPE
+    SYNTAX       UsmAuthProtocol
+    MAX-ACCESS   read-write
+    STATUS       current
+    DESCRIPTION  "Authentication support to the SNMPv3.
+		     If usmAuthProtocol == NoAuthProtocol, then SNMPv3 Stack does 
+		     not support/requires authentication.
+		     If usmAuthProtocol == HMACMD5Auth , supports MD5 auth
+		     If usmAuthProtocol == HMACSHAAuth, supports SHA Auth 	
+                 If a set operation tries to set value as
+                 NoAuthProtocol while the usmPrivProtocol value
+                 for the same userName is not equal to NoPrivProtocol,
+                 then an 'inconsistentValue' error must be returned.
+                 This implies that SNMP command generator (SNMP Manager)
+				 application must first ensure that the usmPrivProtocol is set
+                 to NoPrivProtocol value before it can set
+                 the usmAuthProtocol value to NoAuthProtocol."
+    ::= { usmUserEntry 3 }
+
+usmAuthKey OBJECT-TYPE
+    SYNTAX       KeyChange   -- typically (SIZE (0 | 32)) for HMACMD5
+                             -- typically (SIZE (0 | 40)) for HMACSHA
+    MAX-ACCESS   read-write
+    STATUS       current
+    DESCRIPTION  "This object in the MIB is associated to usmAuthProtocol.
+			A secret authentication key is required to establish a secure connection 
+			between snmp agent and manager."			
+    ::= { usmUserEntry 4 }
+
+usmPrivProtocol OBJECT-TYPE
+    SYNTAX       UsmPrivProtocol
+    MAX-ACCESS   read-write
+    STATUS       current
+    DESCRIPTION " A privacy protocol to provide encryption and decryption
+				  of SNMPv3 pdu."
+    ::= { usmUserEntry 5 }
+
+usmPrivKey OBJECT-TYPE
+    SYNTAX       KeyChange  -- typically (SIZE (0 | 32)) for AES
+    MAX-ACCESS   read-write
+    STATUS       current
+    DESCRIPTION "This object in the MIB is associated to usmPrivProtocol.
+			A secret privacy key is required to establish a secure connection 
+			between snmp agent and manager."
+    ::= { usmUserEntry 6 }
+	
+usmStorage OBJECT-TYPE
+    SYNTAX       StorageType
+    MAX-ACCESS   read-only
+    STATUS       current
+    DESCRIPTION 
+			"This object indicates storage type for user data (always nonVolatile)."
+    ::= { usmUserEntry 7 }
+	
+usmStatus OBJECT-TYPE
+    SYNTAX       RowStatus
+    MAX-ACCESS   read-only
+    STATUS       current
+    DESCRIPTION 
+			"This object indicates user status (always active)."
+    ::= { usmUserEntry 8 }
+	
+-- Traps
+-- As defined in RFC each TRAP V2 contains at least OBJECTS { snmpTrapOID }
+-- which is set to 1 at cleared to 0 during corresponding events
+
+lowVoltTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Low DC Voltage Alarm "
+    ::= { powecACXTrap 1 }
+
+
+highVoltTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "High DC Voltage Alarm"
+    ::= { powecACXTrap 2 }
+    
+loadBattDisconTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Load/Battery Disconnected"
+    ::= { powecACXTrap 3 }
+	
+mainsFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Mains Failure Alarm"
+    ::= { powecACXTrap 4 }
+	
+distrFuseTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Distribution Fuse Failure"
+    ::= { powecACXTrap 5 }
+	
+lowACTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Low AC input voltage"
+    ::= { powecACXTrap 6 }
+	
+battFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Battery Test Failure"
+    ::= { powecACXTrap 7 }
+	
+moduleFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Module Alarm"
+    ::= { powecACXTrap 8 }
+
+battTempTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "High Battery Temperature Alarm"
+    ::= { powecACXTrap 9 }
+	
+symmFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Battery Symmetry Alarm"
+    ::= { powecACXTrap 10 }
+	
+battFuseTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Battery Fuse Failure"
+    ::= { powecACXTrap 11 }
+	
+highLoadTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }	
+	STATUS current
+    DESCRIPTION
+            "High Load"
+    ::= { powecACXTrap 12 }
+	
+highACTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "High AC input voltage"
+    ::= { powecACXTrap 13 }
+	
+urgentModFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Urgent Module Alarm"
+    ::= { powecACXTrap 14 }
+	
+comFailTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Communication Failure"
+    ::= { powecACXTrap 15 }
+	
+partLoadDiscon1Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Partial Load Disconnect 1 Alarm"
+    ::= { powecACXTrap 16 }
+	
+tempProbeTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Temperature probe fault"
+    ::= { powecACXTrap 17 }
+	
+dischargingTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Battery on Discharge"
+    ::= { powecACXTrap 18 }
+	
+ovShutdownTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Overvoltage Shutdown alarm"
+    ::= { powecACXTrap 19 }
+	
+lowBattTempTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Low Battery Temperature"
+    ::= { powecACXTrap 20 }
+	
+partLoadDiscon2Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Partial Load Disconnect 2 Alarm"
+    ::= { powecACXTrap 21 }
+	
+partLoadDiscon3Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Partial Load Disconnect 3 Alarm"
+    ::= { powecACXTrap 22 }
+	
+alarmsBlockedTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Alarms Blocked"
+    ::= { powecACXTrap 23 }
+	
+extAlarm0Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 0"
+    ::= { powecACXTrap 24 }
+	
+extAlarm1Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 1"
+    ::= { powecACXTrap 25 }
+	
+extAlarm2Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 2"
+    ::= { powecACXTrap 26 }
+	
+extAlarm3Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 3"
+    ::= { powecACXTrap 27 }
+	
+extAlarm4Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 4"
+    ::= { powecACXTrap 28 }
+	
+extAlarm5Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 5"
+    ::= { powecACXTrap 29 }
+	
+extAlarm6Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 6"
+    ::= { powecACXTrap 30 }
+	
+extAlarm7Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 7"
+    ::= { powecACXTrap 31 }
+	
+extAlarm8Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 8"
+    ::= { powecACXTrap 32 }
+	
+extAlarm9Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 9"
+    ::= { powecACXTrap 33 }
+	
+extAlarm10Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 10"
+    ::= { powecACXTrap 34 }
+	
+extAlarm11Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 11"
+    ::= { powecACXTrap 35 }
+	
+extAlarm12Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 12"
+    ::= { powecACXTrap 36 }
+	
+extAlarm13Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 13"
+    ::= { powecACXTrap 37 }
+	
+extAlarm14Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 14"
+    ::= { powecACXTrap 38 }
+	
+extAlarm15Trap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "Ext.alarm 15"
+    ::= { powecACXTrap 39 }
+	
+u1NormalTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "System output reference changed to Normal"
+    ::= { powecACXTrap 40 }
+	
+u2BoostTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "System output reference changed to Boost"
+    ::= { powecACXTrap 41 }
+	
+u3TestTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "System output reference changed to Test"
+    ::= { powecACXTrap 42 }
+	
+u4SpareTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "System output reference changed to Spare"
+    ::= { powecACXTrap 43 }
+ 
+snmpV3ReadyTrap NOTIFICATION-TYPE
+	OBJECTS { snmpTrapOID }
+	STATUS current
+    DESCRIPTION
+            "SNMPv3 Engine is ready"
+    ::= { powecACXTrap 44 }
+	
+END

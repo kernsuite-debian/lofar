@@ -291,23 +291,23 @@
 
   - name: configure ldap in restinterface
     shell: |
-           sed -i -e 's/AUTH_LDAP_USER_DN_TEMPLATE="uid=%(user)s,ou=Users,o=lofar,c=eu?cn"/AUTH_LDAP_USER_DN_TEMPLATE="cn=%(user)s,ou=Users,o=lofar,c=eu"/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/credentials.py
-           sed -i -e 's/#AUTH_LDAP_CONNECTION_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER }/AUTH_LDAP_GLOBAL_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER } \nAUTH_LDAP_CONNECTION_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER }/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/settings.py
-           sed -i -e 's/'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),/'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/settings.py
+           sed -i -e 's/AUTH_LDAP_USER_DN_TEMPLATE="uid=%(user)s,ou=Users,o=lofar,c=eu?cn"/AUTH_LDAP_USER_DN_TEMPLATE="cn=%(user)s,ou=Users,o=lofar,c=eu"/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/restinterface/credentials.py
+           sed -i -e 's/#AUTH_LDAP_CONNECTION_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER }/AUTH_LDAP_GLOBAL_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER } \nAUTH_LDAP_CONNECTION_OPTIONS = { ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER }/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/restinterface/settings.py
+           sed -i -e 's/'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),/'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/restinterface/settings.py
 
   - name: configure secret key in rest interface 
     shell: |
-           sed -i -e 's/SECRET_KEY = .*/SECRET_KEY = "{{ lookup('ini', 'secret_key section=restinterface file=/build.ini') }}"/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/restinterface/credentials.py
+           sed -i -e 's/SECRET_KEY = .*/SECRET_KEY = "{{ lookup('ini', 'secret_key section=restinterface file=/build.ini') }}"/g' /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/restinterface/credentials.py
 
   - name: migrate django database 
     shell: |
            . /opt/LOFAR/build/gnucxx11_opt/lofarinit.sh 
-           python /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/manage.py migrate
+           python3 /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/manage.py migrate
 
   - name: Export static content for the rest interface.
     shell: |
            . /opt/LOFAR/build/gnucxx11_opt/lofarinit.sh 
-           python /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/manage.py collectstatic
+           python3 /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/manage.py collectstatic
 
   - name: Copy the Apache configuration file for the rest interface.
     copy:
@@ -316,12 +316,12 @@
 
   - name: Correct the group ownership and group permissions on a Django directory for apache access.
     file:
-        path: /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices
+        path: /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices
         group: apache
         mode: 0775
 
   - name: Correct the group ownership and group permissions on a Django SQLite DB for apache access.
     file:
-        path: /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python2.7/site-packages/lofar/triggerservices/db.sqlite3
+        path: /opt/LOFAR/build/gnucxx11_opt/installed/lib64/python3.4/site-packages/lofar/triggerservices/db.sqlite3
         group: apache
         mode: 0664

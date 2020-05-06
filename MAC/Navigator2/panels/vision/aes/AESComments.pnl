@@ -1,0 +1,594 @@
+V 13
+4
+LANG:1 8 Comments
+LANG:10000 13 Kommentierung
+LANG:10001 8 Comments
+LANG:10027 22 Комментарии
+PANEL,-1 -1 586 492 N "_3DFace" 9
+"$comment"
+"$count"
+"$detailPanel"
+"$direction"
+"$dp"
+"$dpid"
+"$mode"
+"$text"
+"$time"
+"main()
+{
+  dyn_string dsComments, dsParts;
+  dyn_string dsTime, dsDP, dsText, dsDirection;
+  
+  if(isDollarDefined(\"$mode\") && strtoupper($mode) == \"MULTI\")
+  {
+    g_bMulti = TRUE;
+    
+    lblHeader.text = getCatStr(\"aes\", \"commentHeaderMulti\");
+    
+    tblSelectedAlerts.alternatingRowColors(makeDynString(\"white\", \"lightgrey\"));
+    
+    if(isDollarDefined(\"$time\"))
+      dsTime = stringToDynString($time);
+    
+    if(isDollarDefined(\"$dp\"))
+      dsDP = stringToDynString($dp);
+    
+    if(isDollarDefined(\"$text\"))
+      dsText = stringToDynString($text);
+    
+    if(isDollarDefined(\"$direction\"))
+      dsDirection = stringToDynString($direction);
+    
+    tblSelectedAlerts.appendLines(dynlen(dsTime), \"Time\", dsTime, \"DP\", dsDP, \"Alarmtext\", dsText, \"Direction\", dsDirection);
+  }
+  else
+  {
+    g_bMulti = FALSE;
+    
+    setInputFocus(myModuleName(), myPanelName(), \"tblHistory\");
+    
+    lblHeader.text = getCatStr(\"aes\", \"commentHeaderSingle\");
+    
+    tblHistory.tableMode = TABLE_SELECT_BROWSE;
+    tblHistory.selectByClick = TABLE_SELECT_LINE;
+    tblHistory.alternatingRowColors(makeDynString(\"white\", \"lightgrey\"));
+    
+    if(isDollarDefined(\"$comment\") && $comment != \"\")
+      dsComments = aes_splitComment($comment);
+
+    for(int i = 1; i <= dynlen(dsComments); i++)
+    {
+      dsParts = strsplit(dsComments[i], \"|\");
+
+      // MvdJagt 18-jun-2018: to correct wrong comments (contains only 1 field instead of 3): correct them with time as 1970 and unknown user...
+      if( dynlen(dsParts) == 1 )
+      {
+        DebugTN( __FILE__ + \"(): commentaar is fout! wordt nu door ons aangepast...\" );
+        dsParts[3] = dsParts[1];
+        
+        dsParts[1] = \"?\";
+        dsParts[2] = (string)(time)0;
+        DebugTN( dsParts );
+      } // End of change
+
+      
+      if(dynlen(dsParts) == 3)
+      {
+        tblHistory.appendLine(\"Time\",    dsParts[2],
+                              \"User\",    strltrim(dsParts[1], \" \"),
+                              \"Comment\", dsParts[3],
+                              \"...\",     (strpos(dsParts[3], \"\\n\") >= 0 || strlen(dsParts[3]) > 35) ? \"...\" : \"\");
+        
+        gNumberOfStoredEntries += 1;
+      }
+      else //IM 118148 alert comment does not work
+      {
+        ChildPanelOnCentralModal(\"vision/MessageInfo1\",myModuleName()+\" Warning\",makeDynString(getCatStr(\"aesExtension\",\"invalidComment\")));
+        
+        setMultiValue(\"tblHistory\", \"enabled\", FALSE,
+                      \"text\",       \"enabled\", FALSE,
+                      \"buOK\",       \"enabled\", FALSE,
+                      \"insert\",     \"enabled\", FALSE);
+        
+        tblHistory.deleteAllLines(); //If invalid format was detected do not display inconsistent information in table
+        break;
+      }
+    }
+  }
+  
+  setMultiValue(\"tblSelectedAlerts\", \"visible\", g_bMulti,
+                \"tblHistory\",        \"visible\", !g_bMulti,
+                \"delete\",            \"visible\", !g_bMulti,
+                \"insert\",            \"visible\", !g_bMulti,
+                \"buDetails\",         \"visible\", !g_bMulti);
+}
+
+" 0
+ E E E E 1 -1 -1 0  10 10
+""0  1
+E "bool g_bMulti;
+int gNumberOfStoredEntries = 0;  //It should not be possible to delete previously stored entries
+" 0
+ 3
+"CBRef" "0"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 6 Layer1
+13 4
+"buDetails"
+""
+1 309 456 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0  309 456 397 484
+
+T 
+4
+LANG:1 10 Details...
+LANG:10000 10 Details...
+LANG:10001 10 Details...
+LANG:10027 16 Детали ...
+"/*
+$-Parameter:
+  dpid (string) ... DP-Element
+  time (time as string) ... time of alert
+  count (int) ... count of alert
+  detailPanel (string) ... panel for details
+*/
+main()
+{
+  // start child panel for detail information
+  ChildPanelOnParentModal($detailPanel, \"\", rootPanel(),
+       makeDynString(\"$dpid:\" + $dpid,
+                     \"$time:\" + $time,
+                     \"$count:\" + $count), 10, 10);
+}
+" 0
+ E E E
+13 3
+"buOK"
+""
+1 399 456 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0  399 456 487 484
+
+T 
+4
+LANG:1 2 OK
+LANG:10000 2 OK
+LANG:10001 2 OK
+LANG:10027 2 OK
+"main()
+{
+  aes_addCommentOK();
+}" 0
+ E E E
+13 2
+"buCancel"
+""
+1 489 456 E E E 1 E 1 E N {0,0,0} E N "_Button" E E
+ E E
+5 0 0 0 27 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0  489 456 577 484
+
+T 
+4
+LANG:1 6 Cancel
+LANG:10000 9 Abbrechen
+LANG:10001 6 Cancel
+LANG:10027 16 Отменить
+"main()
+{
+  aes_addCommentNOK();
+}" 0
+ E E E
+13 6
+"delete"
+""
+1 -91 446 E E E 0 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+4
+LANG:1 25 Delete not stored entries
+LANG:10000 48 Löschen von noch nicht gespeicherten Einträgen
+LANG:10001 25 Delete not stored entries
+LANG:10027 54 Удалить несохраненные записи
+
+0
+4
+LANG:1 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0  129 456 217 484
+
+T 
+4
+LANG:1 6 Delete
+LANG:10000 8 Löschen
+LANG:10001 6 Delete
+LANG:10027 14 Удалить
+"main()
+{
+  dyn_int diSelectedLines = tblHistory.getSelectedLines;
+  
+  if(dynlen(diSelectedLines) == 1)
+    tblHistory.deleteLineN(diSelectedLines[1]);
+  
+  diSelectedLines = tblHistory.getSelectedLines;
+  
+  if(dynlen(diSelectedLines) == 1)
+    text.text = tblHistory.cellValueRC(diSelectedLines[1], \"Comment\");
+}
+" 0
+ E E E
+1 24 0 "" 0
+0
+25 9
+"tblHistory"
+""
+1 7.999040307101723 28 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+1
+"selectionChangedCB" "synchronized main()
+{
+  dyn_int diSelectedLines = tblHistory.getSelectedLines;
+  int iPos = (dynlen(diSelectedLines)==1 ? diSelectedLines[1]+1 : -1);  //Note that index of table rows starts at zero
+  
+  delete.enabled = (iPos > gNumberOfStoredEntries);  //It should only be possible to delete entries which have not been saved yet
+}"
+4
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 Arial,-1,11,5,50,0,0,0,0,0
+0  6 26 576 327
+E"main(int row, string column, string value)
+{
+  text.text = tblHistory.cellValueRC(row, \"Comment\");
+}" 0
+ 1 0 1 4 0 "Time" 12 1 0 "s" 4
+LANG:1 4 Time
+LANG:10000 4 Zeit
+LANG:10001 4 Time
+LANG:10027 10 Время
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+150 "User" 6 1 0 "s" 4
+LANG:1 4 User
+LANG:10000 8 Benutzer
+LANG:10001 4 User
+LANG:10027 24 Пользователь
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+80 "Comment" 26 1 0 "s" 4
+LANG:1 7 Comment
+LANG:10000 9 Kommentar
+LANG:10001 7 Comment
+LANG:10027 22 комментарий
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+296 "..." 1 1 0 "s" 4
+LANG:1 3 ...
+LANG:10000 3 ...
+LANG:10001 3 ...
+LANG:10027 3 ...
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+21 
+16 16 10 0
+4
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 Arial,-1,11,5,50,0,0,0,0,0
+0 0 2 1 1 7
+1 0
+29 13
+"text"
+""
+1 8.000000000000004 357 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,50,0,0,0,0,0
+0  8 357 574 434
+15 PVSS.TextEdit.1
+0
+E2 16
+"lblHeader"
+""
+1 10 7.999999999999943 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 10 7.999999999999943 206 23
+0 2 2 "0s" 0 0 0 192 0 0  10 7.999999999999943 1
+4
+LANG:1 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,75,0,0,0,0,0
+0 4
+LANG:1 34 History or list of selected alerts
+LANG:10000 40 Historie oder Liste ausgewählter Alarme
+LANG:10001 34 History or list of selected alerts
+LANG:10027 68 История или список выбранных алармов
+2 19
+"lblComment"
+""
+1 10 337 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+12 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E U  0 E 10 337 77 352
+0 2 2 "0s" 0 0 0 192 0 0  10 337 1
+4
+LANG:1 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,75,0,0,0,0,0
+0 4
+LANG:1 8 Comment:
+LANG:10000 10 Kommentar:
+LANG:10001 8 Comment:
+LANG:10027 17 Описание:
+13 23
+"insert"
+""
+1 -1 446 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+14 0 0 0 0 0
+E E E
+0
+4
+LANG:1 16 Insert new entry
+LANG:10000 23 Neuen Eintrag einfügen
+LANG:10001 16 Insert new entry
+LANG:10027 40 Вставить новую запись
+
+0
+4
+LANG:1 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,40,0,0,0,0,0
+LANG:10027 26 Arial,-1,13,5,40,0,0,0,0,0
+0  219 456 307 484
+
+T 
+4
+LANG:1 6 Insert
+LANG:10000 9 Einfügen
+LANG:10001 6 Insert
+LANG:10027 16 Вставить
+"main()
+{
+  aes_addCommentApply();
+  setInputFocus(myModuleName(), myPanelName(), \"text\");
+}" 0
+ E E E
+25 10
+"tblSelectedAlerts"
+""
+1 -13 27.51551724137926 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+10 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 Arial,-1,11,5,50,0,0,0,0,0
+0  6 26 576 327
+EE 1 0 1 4 0 "Time" 12 1 0 "s" 4
+LANG:1 4 Time
+LANG:10000 4 Zeit
+LANG:10001 4 Time
+LANG:10027 10 Время
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+150 "DP" 16 1 0 "s" 4
+LANG:1 9 Datapoint
+LANG:10000 10 Datenpunkt
+LANG:10001 9 Datapoint
+LANG:10027 23 Точка данных
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+191 "Alarmtext" 12 1 0 "s" 4
+LANG:1 10 Alert text
+LANG:10000 9 Alarmtext
+LANG:10001 10 Alert text
+LANG:10027 23 Текст аларма
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+145 "Direction" 4 1 0 "s" 4
+LANG:1 9 Direction
+LANG:10000 8 Richtung
+LANG:10001 9 Direction
+LANG:10027 22 Направление
+E
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+62 
+16 16 10 0
+4
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 Arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 Arial,-1,11,5,50,0,0,0,0,0
+0 0 2 1 1 7
+1 0
+0
+LAYER, 1 
+1
+LANG:1 6 Layer2
+0
+LAYER, 2 
+1
+LANG:1 6 Layer3
+0
+LAYER, 3 
+1
+LANG:1 6 Layer4
+0
+LAYER, 4 
+1
+LANG:1 6 Layer5
+0
+LAYER, 5 
+1
+LANG:1 6 Layer6
+0
+LAYER, 6 
+1
+LANG:1 6 Layer7
+0
+LAYER, 7 
+1
+LANG:1 6 Layer8
+0
+3 0 "PANEL_REF0" -1
+"" ""
+"objects_parts/STD_OBJECTS/ButtonBarBackground.pnl" 35 415 T 8 1.192096940739648 0 1 -51.65157964042989 32
+0
+0

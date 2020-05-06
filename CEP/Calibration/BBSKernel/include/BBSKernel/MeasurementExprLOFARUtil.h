@@ -36,8 +36,8 @@
 #include <BBSKernel/Expr/Source.h>
 #include <Common/lofar_string.h>
 #include <Common/lofar_vector.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -47,24 +47,24 @@ namespace BBS
 // @{
 
 Expr<Vector<2> >::Ptr
-makeDirectionExpr(const casa::MDirection &direction);
+makeDirectionExpr(const casacore::MDirection &direction);
 
 Expr<Vector<2> >::Ptr
-makeAzElExpr(const casa::MPosition &position,
+makeAzElExpr(const casacore::MPosition &position,
     const Expr<Vector<2> >::Ptr &direction);
 
 Expr<Vector<3> >::Ptr
-makeITRFExpr(const casa::MPosition &position,
+makeITRFExpr(const casacore::MPosition &position,
     const Expr<Vector<2> >::Ptr &direction);
 
 Expr<Vector<3> >::Ptr
-makeLMNExpr(const casa::MDirection &reference,
+makeLMNExpr(const casacore::MDirection &reference,
     const Expr<Vector<2> >::Ptr &direction);
 
 Expr<Vector<3> >::Ptr
-makeStationUVWExpr(const casa::MPosition &arrayPosition,
-    const casa::MPosition &stationPosition,
-    const casa::MDirection &direction);
+makeStationUVWExpr(const casacore::MPosition &arrayPosition,
+    const casacore::MPosition &stationPosition,
+    const casacore::MDirection &direction);
 
 Expr<Vector<2> >::Ptr
 makeStationShiftExpr(const Expr<Vector<3> >::Ptr &exprUVW,
@@ -138,7 +138,7 @@ makeScalarPhaseExpr(Scope &scope,
 
 Expr<JonesMatrix>::Ptr
 makeIonosphereExpr(const Station::ConstPtr &station,
-    const casa::MPosition &refPosition,
+    const casacore::MPosition &refPosition,
     const Expr<Vector<3> >::Ptr &exprDirection,
     const IonosphereExpr::Ptr &exprIonosphere);
 

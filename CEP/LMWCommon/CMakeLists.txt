@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 21849 2012-08-30 10:52:23Z loose $
+# $Id$
 
 lofar_package(LMWCommon 0.1 DEPENDS Common Blob)
 

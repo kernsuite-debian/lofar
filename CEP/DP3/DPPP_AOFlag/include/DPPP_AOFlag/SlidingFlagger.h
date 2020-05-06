@@ -132,7 +132,7 @@ namespace LOFAR {
       NSTimer          itsComputeTimer;  //# move/flag timer
       mutable FlagCounter   itsFlagCounter;
       vector<ThreadData>    itsTD;
-      casa::Vector<double>  itsFreqs;
+      casacore::Vector<double>  itsFreqs;
       aoflagger::AOFlagger  itsAOFlagger;
       boost::scoped_ptr<aoflagger::Strategy> itsStrategy;
     };

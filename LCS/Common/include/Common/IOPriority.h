@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: IOPriority.h 36374 2017-01-24 15:22:52Z schoenmakers $
+//# $Id$
 
 #ifndef LOFAR_COMMON_IOPRIORITY_H
 #define LOFAR_COMMON_IOPRIORITY_H

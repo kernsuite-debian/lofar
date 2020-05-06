@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Mmap.cc 31468 2015-04-13 23:26:52Z amesfoort $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

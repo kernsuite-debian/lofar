@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixRealArr.cc 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #undef TIMER
 
@@ -30,7 +30,7 @@
 //#include <BBSKernel/Expr/Pool.h>
 #include <Common/LofarLogger.h>
 #include <Common/lofar_algorithm.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 #include <cmath>
 
 #if defined TIMER
@@ -42,7 +42,7 @@
 #include <xmmintrin.h>
 #endif
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

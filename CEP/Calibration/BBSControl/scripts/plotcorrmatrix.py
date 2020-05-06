@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Solver statistics dialog
 #
@@ -61,7 +61,7 @@ class plotCorrmatrix(QDialog):
      # Get time indices (and frequency range) from solverdialog class according to plotwindow index
      self.index = np.searchsorted(self.parent.x, [self.parent.xdata])[0]
      
-     print "self.index = ", self.index    # DEBUG
+     print("self.index = ", self.index)    # DEBUG
      
      self.start_time=self.parent.parent.solverQuery.timeSlots[self.index]['STARTTIME']
      self.end_time=self.parent.parent.solverQuery.timeSlots[self.index]['ENDTIME']      
@@ -158,18 +158,18 @@ class plotCorrmatrix(QDialog):
        self.end_time=self.parent.solverQuery.frequencies[self.parent.parent.timeEndSlider.value()]['ENDTIME']
      else:     # Iteration
        # Do nothing? Because there is only one Corrmatrix per solution but not per iteration!?
-       print "plotcorrmatrix::retrieveCorrMatrix() can't step forward or backward in per iteration mode"
+       print("plotcorrmatrix::retrieveCorrMatrix() can't step forward or backward in per iteration mode")
        return
        self.start_time=self.parent.parent.solverQuery.timeSlots[self.parent.parent.timeStartSlider.value()]['STARTTIME']
        self.end_time=self.parent.parent.solverQuery.timeSlots[self.parent.parent.timeEndSlider.value()]['ENDTIME']      
        self.start_freq=self.parent.parent.solverQuery.frequencies[self.parent.parent.frequencyStartSlider.value()]['STARTFREQ']
        self.end_freq=self.parent.parent.solverQuery.frequencies[self.parent.parent.frequencyEndSlider.value()]['ENDFREQ']
 
-     print "plotcorrmatrix::retrieveCorrMatrix()"                           # DEBUG
-     print "plotwindow::plotcorrmatri() start_time = ", self.start_time     # DEBUG
-     print "plotwindow::plotcorrmatri() end_time = ", self.end_time         # DEBUG
-     print "plotwindow::plotcorrmatri() start_freq = ", self.start_freq     # DEBUG
-     print "plotwindow::plotcorrmatri() end_freq = ", self.end_freq         # DEBUG
+     print("plotcorrmatrix::retrieveCorrMatrix()")                           # DEBUG
+     print("plotwindow::plotcorrmatri() start_time = ", self.start_time)     # DEBUG
+     print("plotwindow::plotcorrmatri() end_time = ", self.end_time)         # DEBUG
+     print("plotwindow::plotcorrmatri() start_freq = ", self.start_freq)     # DEBUG
+     print("plotwindow::plotcorrmatri() end_freq = ", self.end_freq)         # DEBUG
 
      self.corrmatrix=self.parent.parent.solverQuery.getCorrMatrix(self.start_time, self.end_time, self.start_freq, self.end_freq)
      self.updateLabels()
@@ -191,7 +191,7 @@ class plotCorrmatrix(QDialog):
    # corrmatrix      - numpy.ndarray holding (linearized) correlation Matrix
    #
    def plot(self, corrmatrix):
-     print "plotCorrmatrix::plotCorrMatrix()"   # DEBUG
+     print("plotCorrmatrix::plotCorrMatrix()")   # DEBUG
   
      # We plot into the existing canvas object of the PlotWindow class
      rank=self.parent.parent.solverQuery.getRank()
@@ -207,7 +207,7 @@ class plotCorrmatrix(QDialog):
        else:
          corrmatrix=np.reshape(corrmatrix, (rank, rank))
      elif len(shape)==2:              # we already have a two-dimensional array
-       print "shape[0] = ", shape[0], "   shape[1] = ", shape[1]       # DEBUG
+       print("shape[0] = ", shape[0], "   shape[1] = ", shape[1])       # DEBUG
        if shape[0] != rank or shape[1] != rank:
          raise ValueError
 

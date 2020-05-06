@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobStreamableVector.h 14091 2009-09-24 06:11:35Z diepen $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_BLOBSTREAMABLEVECTOR_H
 #define LOFAR_BBSCONTROL_BLOBSTREAMABLEVECTOR_H

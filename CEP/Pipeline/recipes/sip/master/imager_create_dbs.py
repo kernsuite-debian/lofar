@@ -14,102 +14,101 @@ from lofarpipe.support.remotecommand import ComputeJob
 from lofarpipe.support.data_map import DataMap, MultiDataMap, \
                                        validate_data_maps, align_data_maps
 
-
 class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
     """
-    responsible for creating a number 
+    responsible for creating a number
     of databases needed by imaging pipeline:
-    
-    1. Using pointing extracted from the input measurement set a database is 
+
+    1. Using pointing extracted from the input measurement set a database is
        created of sources based on information in the global sky model (gsm)
        One source db is created for each image/node:
-       
+
        a. The pointing is supplied to to GSM database resulting in a sourcelist
        b. This sourcelist is converted into a source db
-       c. Possible additional sourcelist from external sources are added to this 
+       c. Possible additional sourcelist from external sources are added to this
           source list
-    2. For each of the timeslice in image a parmdb is created. Each timeslice is 
+    2. For each of the timeslice in image a parmdb is created. Each timeslice is
        recorded on a different time and needs its own calibration and therefore
-       instrument parameters. 
+       instrument parameters.
     """
 
     inputs = {
         'working_directory': ingredient.StringField(
             '-w', '--working-directory',
-            help="Working directory used on nodes. Results location"
+            help = "Working directory used on nodes. Results location"
         ),
         'sourcedb_suffix': ingredient.StringField(
             '--sourcedb-suffix',
-            default=".sky",
-            help="suffix for created sourcedbs"
+            default = ".sky",
+            help = "suffix for created sourcedbs"
         ),
         'monetdb_hostname': ingredient.StringField(
             '--monetdb-hostname',
-            help="Hostname of monet database"
+            help = "Hostname of monet database"
         ),
         'monetdb_port': ingredient.IntField(
             '--monetdb-port',
-            help="port for monet database"
+            help = "port for monet database"
         ),
         'monetdb_name': ingredient.StringField(
             '--monetdb-name',
-            help="db name of monet database"
+            help = "db name of monet database"
         ),
         'monetdb_user': ingredient.StringField(
             '--monetdb-user',
-            help="user on the monet database"
+            help = "user on the monet database"
         ),
         'monetdb_password': ingredient.StringField(
             '--monetdb-password',
-            help="password on monet database"
+            help = "password on monet database"
         ),
         'assoc_theta': ingredient.StringField(
             '--assoc-theta',
-            default="",
-            help="assoc_theta is used in creating the skymodel, default == None"
+            default = "",
+            help = "assoc_theta is used in creating the skymodel, default == None"
         ),
         'parmdb_executable': ingredient.ExecField(
             '--parmdbm-executable',
-            help="Location of the parmdb executable"
+            help = "Location of the parmdb executable"
         ),
         'slice_paths_mapfile': ingredient.FileField(
             '--slice-paths-mapfile',
-            help="Location of the mapfile containing the slice paths"
+            help = "Location of the mapfile containing the slice paths"
         ),
         'parmdb_suffix': ingredient.StringField(
             '--parmdb-suffix',
-            help="suffix of the to be created paramdbs"
+            help = "suffix of the to be created paramdbs"
         ),
         'makesourcedb_path': ingredient.ExecField(
              '--makesourcedb-path',
-             help="Path to makesourcedb executable."
+             help = "Path to makesourcedb executable."
         ),
         'source_list_map_path': ingredient.StringField(
              '--source-list-map-path',
-             help="Path to sourcelist map from external source (eg. bdsm) "\
+             help = "Path to sourcelist map from external source (eg. bdsm) "\
              "use an empty string for gsm generated data"
         ),
         'parmdbs_map_path': ingredient.StringField(
             '--parmdbs-map-path',
-            help="path to mapfile containing produced parmdb files"
+            help = "path to mapfile containing produced parmdb files"
         ),
         'sourcedb_map_path': ingredient.StringField(
             '--sourcedb-map-path',
-            help="path to mapfile containing produced sourcedb files"
+            help = "path to mapfile containing produced sourcedb files"
         ),
         'major_cycle': ingredient.IntField(
             '--major_cycle',
-            default=0,
+            default = 0,
             help = "The number of the current cycle"
         ),
     }
 
     outputs = {
         'sourcedb_map_path': ingredient.FileField(
-            help="On succes contains path to mapfile containing produced "
+            help = "On succes contains path to mapfile containing produced "
             "sourcedb files"),
         'parmdbs_map_path': ingredient.FileField(
-            help="On succes contains path to mapfile containing produced"
+            help = "On succes contains path to mapfile containing produced"
             "parmdb files")
     }
 
@@ -119,7 +118,7 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
     def go(self):
         super(imager_create_dbs, self).go()
 
-        # get assoc_theta, convert from empty string if needed 
+        # get assoc_theta, convert from empty string if needed
         assoc_theta = self.inputs["assoc_theta"]
         if assoc_theta == "":
             assoc_theta = None
@@ -142,7 +141,6 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
         return self._collect_and_assign_outputs(jobs, output_map,
                                     slice_paths_map)
 
-
     def _validate_input_data(self, slice_paths_map, input_map):
         """
         Performs a validation of the supplied slice_paths_map and inputmap.
@@ -153,7 +151,7 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
         try:
             validation_failed = not validate_data_maps(slice_paths_map,
                                                      input_map)
-        except  AssertionError, exception :
+        except  AssertionError as exception :
             validation_failed = True
             error_received = str(exception)
 
@@ -167,31 +165,31 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
             # return with failure
             return 1
 
-        # return with zero (all is ok state) 
+        # return with zero (all is ok state)
         return 0
 
     def _run_create_dbs_node(self, input_map, slice_paths_map,
              assoc_theta, source_list_map):
         """
-        Decompose the input mapfiles into task for specific nodes and 
+        Decompose the input mapfiles into task for specific nodes and
         distribute these to the node recipes. Wait for the jobs to finish and
         return the list of created jobs.
         """
         # Compile the command to be executed on the remote machine
-        node_command = " python %s" % (self.__file__.replace("master", "nodes"))
+        node_command = " python3 %s" % (self.__file__.replace("master", "nodes"))
         # create jobs
         jobs = []
         output_map = copy.deepcopy(input_map)
 
         # Update the skip fields of the four maps. If 'skip' is True in any of
         # these maps, then 'skip' must be set to True in all maps.
-        align_data_maps(input_map, output_map, slice_paths_map, 
+        align_data_maps(input_map, output_map, slice_paths_map,
                         source_list_map)
 
         source_list_map.iterator = slice_paths_map.iterator = \
                input_map.iterator = DataMap.SkipIterator
         for idx, (input_item, slice_item, source_list_item) in enumerate(zip(
-                                  input_map, slice_paths_map,source_list_map)):
+                                  input_map, slice_paths_map, source_list_map)):
             host_ms, concat_ms = input_item.host, input_item.file
             host_slice, slice_paths = slice_item.host, slice_item.file
 
@@ -231,9 +229,9 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
         """
         Collect and combine the outputs of the individual create_dbs node
         recipes. Combine into output mapfiles and save these at the supplied
-        path locations       
+        path locations
         """
-        # Create a container for the output parmdbs: same host and 
+        # Create a container for the output parmdbs: same host and
         output_map.iterator = DataMap.TupleIterator
         parmdbs_list = []
         # loop over the raw data including the skip file (use the data member)
@@ -244,12 +242,12 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
 
         parmdbs_map = MultiDataMap(parmdbs_list)
 
-        output_map.iterator = parmdbs_map.iterator = DataMap.SkipIterator # The maps are synced
+        output_map.iterator = parmdbs_map.iterator = DataMap.SkipIterator    # The maps are synced
         succesfull_run = False
         for (output_item, parmdbs_item, job) in zip(
                                                 output_map, parmdbs_map, jobs):
-            node_succeeded = job.results.has_key("parmdbs") and \
-                    job.results.has_key("sourcedb")
+            node_succeeded = "parmdbs" in job.results and \
+                    "sourcedb" in job.results
 
             host = output_item.host
 
@@ -270,7 +268,7 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
                 output_item.file = job.results["sourcedb"]
                 parmdbs_item.file = job.results["parmdbs"]
 
-                # we also need to manually set the skip for this new 
+                # we also need to manually set the skip for this new
                 # file list
                 parmdbs_item.file_skip = [False] * len(job.results["parmdbs"])
 
@@ -283,7 +281,7 @@ class imager_create_dbs(BaseRecipe, RemoteCommandRecipeMixIn):
             self.logger.error("parameter dbs: {0}".format(parmdbs_map))
             return 1
 
-        # write the mapfiles     
+        # write the mapfiles
         output_map.save(self.inputs["sourcedb_map_path"])
         parmdbs_map.save(self.inputs["parmdbs_map_path"])
         self.logger.debug("Wrote sourcedb dataproducts: {0} \n {1}".format(

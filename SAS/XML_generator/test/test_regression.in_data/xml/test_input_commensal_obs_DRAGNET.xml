@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <lofar:project xmlns:lofar="http://www.astron.nl/MoM2-Lofar" xmlns:mom2="http://www.astron.nl/MoM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.astron.nl/MoM2-Lofar http://lofar.astron.nl:8080/mom3/schemas/LofarMoM2.xsd http://www.astron.nl/MoM2 http://lofar.astron.nl:8080/mom3/schemas/MoM2.xsd ">
+  <version>2.23.0</version>
+  <template version="2.23.0" author="Alwin de Jong,Adriaan Renting" changedBy="Adriaan Renting">
+  <description>XML Template generator version 2.23.0</description>
+  </template>
+  <name>test-lofar</name>
+  <children>
+   <item index="0">
+    <lofar:folder topology_parent="false">
+    <name>xmlgen_commensal_test</name>
+    <description>Commensal Observation DRAGNET (XMLgenerator test)</description>
+    <children>
+   <item index="0">
+        <lofar:folder topology_parent="true">
+          <topology>0</topology>
+          <name>commensalobs-DRAGNET</name>
+          <description>Commensal Obs package description (none)</description>
+          <children>
+          <item index="0">
+                <lofar:observation>
+                  <name>Crab pointing 1/1/TO</name>
+                  <description>Crab pointing 1/1/TO (Target Observation)</description>
+                  <topology>B0.1.T</topology>
+                  <predecessor_topology></predecessor_topology>
+                  <currentStatus>
+                    <mom2:openedStatus/>
+                  </currentStatus>
+                  <lofar:observationAttributes>
+                    <observationId>
+                    </observationId>
+                    <name>Crab pointing 1/1/TO</name>
+                    <projectName>test-lofar</projectName>
+                    <instrument>Beam Observation</instrument>
+                    <defaultTemplate>BeamObservation</defaultTemplate>
+                    <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                    <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                    <userSpecification>
+                      <correlatedData>true</correlatedData>
+                      <coherentStokesData>true</coherentStokesData>
+                      <incoherentStokesData>true</incoherentStokesData>
+                      <antenna>HBA Dual</antenna>
+                      <clock mode="200 MHz"/>
+                      <instrumentFilter>110-190 MHz</instrumentFilter>
+                      <integrationInterval>4.0</integrationInterval>
+                      <channelsPerSubband>16</channelsPerSubband>
+                      <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                      <tiedArrayBeams>
+                        <flyseye>false</flyseye>
+                      </tiedArrayBeams>
+                      <stokes>
+                        <integrateChannels>false</integrateChannels>
+                        <subbandsPerFileCS>20</subbandsPerFileCS>
+                        <numberCollapsedChannelsCS>16</numberCollapsedChannelsCS>
+                        <stokesDownsamplingStepsCS>6</stokesDownsamplingStepsCS>
+                        <whichCS>XXYY</whichCS>
+                        <subbandsPerFileIS>40</subbandsPerFileIS>
+                        <numberCollapsedChannelsIS>1</numberCollapsedChannelsIS>
+                        <stokesDownsamplingStepsIS>12</stokesDownsamplingStepsIS>
+                        <whichIS>I</whichIS>
+                      </stokes>
+                      <stationSet>Custom</stationSet>
+                      <stations>CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501</stations>
+                      <timeFrame>UT</timeFrame>
+                      <startTime>2017-05-09T03:00:00</startTime>
+                      <endTime>2017-05-09T03:10:00</endTime>
+                      <duration>600</duration>
+                      <bypassPff>false</bypassPff>
+                      <enableSuperterp>false</enableSuperterp>
+                      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                    </userSpecification>
+                  </lofar:observationAttributes>
+                  <children>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>Crab pointing 1</name>
+                        <description>Crab pointing 1</description>
+                        <topology>B0.1.T.SAP000</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>Crab pointing 1</targetName>
+                            <ra>83.7164166667</ra>
+                            <dec>22.0145</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>98..297</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>2</nrTabRings>
+                          <tabRingSize>0.1</tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.T.SAP000.uv.dps</name>
+                    <topology>B0.1.T.SAP000.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>DRAGNET</name>
+                      <partition></partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                                  <item>
+                    <lofar:bfDataProduct>
+                    <name>B0.1.T.SAP000.csis</name>
+                    <topology>B0.1.T.SAP000.csis</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>DRAGNET</name>
+                      <partition></partition>
+                    </storageCluster>
+                    </lofar:bfDataProduct>
+                  </item>
+                        </resultDataProducts>   
+                      </lofar:measurement>
+                    </item>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>Crab pointing 2</name>
+                        <description>Crab pointing 2</description>
+                        <topology>B0.1.T.SAP001</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>Crab pointing 2</targetName>
+                            <ra>83.71675</ra>
+                            <dec>22.0145833333</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>297..396</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>2</nrTabRings>
+                          <tabRingSize>0.1</tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.T.SAP001.uv.dps</name>
+                    <topology>B0.1.T.SAP001.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>DRAGNET</name>
+                      <partition></partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                                  <item>
+                    <lofar:bfDataProduct>
+                    <name>B0.1.T.SAP001.csis</name>
+                    <topology>B0.1.T.SAP001.csis</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>DRAGNET</name>
+                      <partition></partition>
+                    </storageCluster>
+                    </lofar:bfDataProduct>
+                  </item>
+                        </resultDataProducts>   
+                      </lofar:measurement>
+                    </item>
+</children>
+                </lofar:observation>
+                </item>
+</children>
+  </lofar:folder>
+  </item>
+</children>
+  </lofar:folder>
+  </item>
+          </children>
+  </lofar:project>

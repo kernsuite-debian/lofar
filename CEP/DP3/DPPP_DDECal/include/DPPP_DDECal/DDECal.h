@@ -114,6 +114,9 @@ namespace LOFAR {
       std::string      itsName;
       vector<DPBuffer> itsBufs;
 
+      bool             itsUseModelColumn;
+      std::vector<casacore::Cube<casacore::Complex>> itsModelData;
+
       // The time of the current buffer (in case of solint, average time)
       double           itsAvgTime;
       std::vector<casacore::Complex*> itsDataPtrs;
@@ -130,7 +133,6 @@ namespace LOFAR {
       // For each time, for each constraint, a vector of results (e.g. tec and phase)
       std::vector<std::vector<std::vector<Constraint::Result> > > itsConstraintSols;
 
-      casacore::Cube<casacore::Complex> itsModelData;
       std::string      itsH5ParmName;
       H5Parm           itsH5Parm;
       std::string      itsParsetString; // Parset, for logging in H5Parm
@@ -141,9 +143,12 @@ namespace LOFAR {
       uint             itsSolInt;
       uint             itsStepInSolInt;
       uint             itsNChan;
+      vector<size_t>   itsChanBlockStart;    // For each channel block, the index in the channels at which this channel block starts
       vector<double>   itsChanBlockFreqs;
       vector<vector<string> > itsDirections; // For each direction, a vector of patches
       vector<casacore::CountedPtr<Constraint> > itsConstraints;
+
+      vector<double>   itsWeights;
 
       UVWFlagger       itsUVWFlagStep;
       ResultStep::ShPtr itsDataResultStep; // Result step for data after UV-flagging
@@ -155,6 +160,7 @@ namespace LOFAR {
       NSTimer          itsTimerSolve;
       NSTimer          itsTimerWrite;
       double           itsCoreConstraint;
+      double           itsSmoothnessConstraint;
       double           itsScreenCoreConstraint;
 
       MultiDirSolver   itsMultiDirSolver;

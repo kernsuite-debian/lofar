@@ -21,7 +21,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: lofarinit.csh.in 38611 2017-10-10 09:53:34Z beukema $
+# $Id$
 
 # Define root here.
 # This is a placeholder, so do NOT change the line.

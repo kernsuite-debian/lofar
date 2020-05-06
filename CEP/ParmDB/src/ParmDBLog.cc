@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmDBLog.cc 17917 2011-05-01 00:20:25Z duscha $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmDBLog.h>
@@ -27,14 +27,14 @@
 #include <Common/LofarLogger.h>        // needed to write log messages
 #include <Common/lofar_vector.h>
 
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/TableLocker.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/TableLocker.h>
+#include <casacore/casa/Arrays/Vector.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR
@@ -114,7 +114,7 @@ namespace BBS
     // Get rw-keywordset from table
     TableRecord &keywords = itsTable.rwKeywordSet();
 
-    casa::Vector<uInt> range(2);
+    casacore::Vector<uInt> range(2);
     range[0] = start;
     range[1] = end;
 
@@ -168,7 +168,7 @@ namespace BBS
                        uint rank, uint rankDeficiency,
                        double chiSquare, double lmFactor,
                        const vector<double>& solution, const string& message,
-                       const casa::Array<double>& correlationMatrix)
+                       const casacore::Array<double>& correlationMatrix)
   {
     TableLocker locker(itsTable, FileLocker::Write);
     doAdd (startFreq, endFreq, startTime, endTime,

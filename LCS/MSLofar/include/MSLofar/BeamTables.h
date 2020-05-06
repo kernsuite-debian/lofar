@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BeamTables.h 22387 2012-10-17 12:53:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -31,7 +31,7 @@
 #include <Common/lofar_map.h>
 
 //# Forward Declarations.
-namespace casa {
+namespace casacore {
   class Table;
   template<typename T> class Array;
   template<typename T> class Vector;
@@ -55,13 +55,13 @@ namespace LOFAR {
   public:
 
     // Create the subtables and attach them to the MS.
-    static void create (casa::Table& ms,
+    static void create (casacore::Table& ms,
                         bool overwrite = false);
 
     // Fill the subtables. They should be empty.
     // <src>mustExist</src> tells if the AntennaField and iHBADelta file of
     // an antenna must exist.
-    static void fill (casa::Table& ms,
+    static void fill (casacore::Table& ms,
                       const string& antennaSet,
                       const string& antennaSetFileName,
                       const string& antennaFieldDir,
@@ -72,7 +72,7 @@ namespace LOFAR {
     // The 'before' file contains the elements already broken at the beginning
     // of the observation. The 'during' file contains elements broken during
     // the observation.
-    ///    static void updateBroken (casa::Table& ms,
+    ///    static void updateBroken (casacore::Table& ms,
     ///                              const string& beforeFileName,
     ///                              const string& duringFilename);
 
@@ -100,7 +100,7 @@ namespace LOFAR {
     // Write the antenna set name into all rows of the LOFAR_ANTENNA_SET
     // column of the OBSERVATION table.
     // The column is added if not defined yet.
-    static void writeObservation (casa::Table& obsTable,
+    static void writeObservation (casacore::Table& obsTable,
                                   const string& antennaSet);
 
     // Write the LOFAR_STATION table.
@@ -111,13 +111,13 @@ namespace LOFAR {
 
     // Write the LOFAR_STATION_ID column in the ANTENNA table.
     // The column is added if not existing.
-    static void writeAntenna (casa::Table& antTable,
-                              const casa::Vector<casa::String>& antNames,
+    static void writeAntenna (casacore::Table& antTable,
+                              const casacore::Vector<casacore::String>& antNames,
                               const map<string,int>& stationIdMap,
                               const vector<double>& diameters);
 
     // Convert an AFArray to a casacore Array object.
-    static casa::Array<double> array2Casa (const AntField::AFArray& barray);
+    static casacore::Array<double> array2Casa (const AntField::AFArray& barray);
 
     // Read the HBA dipole offsets.
     static void getHBADeltas (const string& filename, AntField::AFArray&,

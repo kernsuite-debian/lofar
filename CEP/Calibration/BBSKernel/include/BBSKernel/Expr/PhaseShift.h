@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PhaseShift.h 14632 2009-12-08 21:26:54Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_PHASESHIFT_H
 #define LOFAR_BBSKERNEL_EXPR_PHASESHIFT_H

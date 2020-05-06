@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tBarrier.cc 36879 2017-03-17 16:19:45Z amesfoort $
+//# $Id$
 
 #include <lofar_config.h>
 

@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PycBasicData.h 32798 2015-11-05 12:13:27Z dijkema $
+//# $Id$
 
 #ifndef PYTOOLS_PYCBASICDATA_H
 #define PYTOOLS_PYCBASICDATA_H
@@ -108,6 +108,7 @@ namespace LOFAR { namespace pytools {
     template <typename ContainerType, typename ValueType>
     static void set_value(ContainerType& a, std::size_t i, ValueType const& v)
     {
+      (void)i; //prevent unused var warning in release mode
       assert(a.size() == i);
       a.push_back(v);
     }
@@ -231,11 +232,16 @@ namespace LOFAR { namespace pytools {
       incref(obj_ptr);        // incr refcount, because ~object decrements it
       // Accept single values.
       if (PyBool_Check(obj_ptr)
+#if PYTHON_VERSION_MAJOR < 3
 	  || PyInt_Check(obj_ptr)
+	  || PyString_Check(obj_ptr)
+#else
+	  || PyUnicode_Check(obj_ptr)
+#endif
 	  || PyLong_Check(obj_ptr)
 	  || PyFloat_Check(obj_ptr)
 	  || PyComplex_Check(obj_ptr)
-	  || PyString_Check(obj_ptr)) {
+      ) {
 	extract<container_element_type> elem_proxy(py_obj);
 	if (!elem_proxy.check()) return 0;
 	return obj_ptr;
@@ -277,12 +283,16 @@ namespace LOFAR { namespace pytools {
       data->convertible = storage;
       ContainerType& result = *((ContainerType*)storage);
       if (PyBool_Check(obj_ptr)
+#if PYTHON_VERSION_MAJOR < 3
 	  || PyInt_Check(obj_ptr)
+	  || PyString_Check(obj_ptr)
+#else
+	  || PyUnicode_Check(obj_ptr)
+#endif
 	  || PyLong_Check(obj_ptr)
 	  || PyFloat_Check(obj_ptr)
 	  || PyComplex_Check(obj_ptr)
-	  || PyString_Check(obj_ptr)) {
-          ///	  || PyString_Check(obj_ptr)
+      ) {
           ///	  || PycArrayScalarCheck(obj_ptr)) {
 	extract<container_element_type> elem_proxy(obj_ptr);
 	ConversionPolicy::reserve(result, 1);

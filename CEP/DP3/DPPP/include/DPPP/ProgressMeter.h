@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProgressMeter.h 26661 2013-09-24 13:09:47Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_COMMON_PROGRESSMETER_H
 #define LOFAR_COMMON_PROGRESSMETER_H

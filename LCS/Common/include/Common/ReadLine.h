@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ReadLine.h 17056 2011-01-12 13:37:31Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_READLINE_H
 #define LOFAR_COMMON_READLINE_H

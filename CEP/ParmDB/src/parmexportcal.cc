@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: parmexportcal.cc 24649 2013-04-19 09:02:00Z diepen $
+//# $Id$
 
 
 #include <lofar_config.h>
@@ -36,16 +36,16 @@
 #include <Common/SystemUtil.h>
 #include <Common/Exception.h>
 
-#include <casa/Quanta/MVTime.h>
-#include <casa/Utilities/MUString.h>
-#include <casa/Containers/Block.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/Utilities/MUString.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Exceptions/Error.h>
 #include <Common/lofar_string.h>
 #include <Common/lofar_iostream.h>
 #include <Common/lofar_fstream.h>
 #include <pwd.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 using namespace BBS;
 
@@ -295,7 +295,7 @@ int main (int argc, char *argv[])
   } catch (LOFAR::Exception& ex) {
     cerr << "Caught LOFAR exception: " << ex << endl;
     return 1;
-  } catch (casa::AipsError& ex) {
+  } catch (casacore::AipsError& ex) {
     cerr << "Caught AIPS error: " << ex.what() << endl;
     return 1;
   }

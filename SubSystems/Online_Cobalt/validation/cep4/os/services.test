@@ -1,0 +1,9 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+# No services should have failed, except for network.service
+systemctl | fgrep -v "network.service" | grep failed
+
+exit 0

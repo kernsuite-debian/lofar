@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MWBlobIO.cc 16886 2010-12-08 10:43:17Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -57,7 +57,7 @@ namespace LOFAR { namespace CEP {
     memcpy (ptr, &oper, sizeof(LOFAR::int32));
   }
 
-  void MWBlobOut::setTimes (const casa::Timer& low, const LOFAR::NSTimer& high)
+  void MWBlobOut::setTimes (const casacore::Timer& low, const LOFAR::NSTimer& high)
   {
     using LOFAR::uchar;
     float t[3];

@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Evaluator.cc 18524 2011-07-19 16:40:34Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 

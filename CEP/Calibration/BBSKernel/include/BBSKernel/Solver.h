@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Solver.h 17462 2011-02-23 16:54:09Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_SOLVER_H
 #define LOFAR_BBSKERNEL_SOLVER_H
@@ -29,7 +29,7 @@
 #include <Common/lofar_map.h>
 #include <Common/LofarLogger.h>
 
-#include <scimath/Fitting/LSQFit.h>
+#include <casacore/scimath/Fitting/LSQFit.h>
 
 namespace LOFAR
 {
@@ -99,19 +99,19 @@ private:
     //# which is worked around by #define-ing the values explicitly. There must
     //# be a better way to do this, e.g. check for the casacore version in the
     //# build system and dealing with the problem there.
-    static const unsigned int NONREADY = 0;  //# casa::LSQFit::NONREADY
-    static const unsigned int NC = 0;        //# casa::LSQFit::NC
-    static const unsigned int SUMLL = 2;     //# casa::LSQFit::SUMLL
+    static const unsigned int NONREADY = 0;  //# casacore::LSQFit::NONREADY
+    static const unsigned int NC = 0;        //# casacore::LSQFit::NC
+    static const unsigned int SUMLL = 2;     //# casacore::LSQFit::SUMLL
 
     struct Cell
     {
-        casa::LSQFit    solver;
+        casacore::LSQFit    solver;
         vector<double>  coeff;
     };
 
     map<size_t, Cell>                   itsCells;
     CoeffIndex                          itsCoeffIndex;
-    map<size_t, vector<casa::uInt> >    itsCoeffMapping;
+    map<size_t, vector<casacore::uInt> >    itsCoeffMapping;
 
     double                              itsEpsValue;
     double                              itsEpsDerivative;
@@ -130,10 +130,10 @@ void Solver::setCoeff(size_t kernelId, T_ITER first, T_ITER last)
 {
     const size_t nCoeff = itsCoeffIndex.getCoeffCount();
 
-    map<size_t, vector<casa::uInt> >::const_iterator it =
+    map<size_t, vector<casacore::uInt> >::const_iterator it =
         itsCoeffMapping.find(kernelId);
     ASSERT(it != itsCoeffMapping.end());
-    const vector<casa::uInt> &mapping = it->second;
+    const vector<casacore::uInt> &mapping = it->second;
 
     for(; first != last; ++first)
     {
@@ -146,7 +146,7 @@ void Solver::setCoeff(size_t kernelId, T_ITER first, T_ITER last)
             // Initialize cell if this is the first time it is referenced.
             ASSERT(cell.solver.nUnknowns() == 0);
             cell.coeff.resize(nCoeff);
-            cell.solver.set(static_cast<casa::uInt>(nCoeff));
+            cell.solver.set(static_cast<casacore::uInt>(nCoeff));
             cell.solver.setEpsValue(itsEpsValue);
             cell.solver.setEpsDerivative(itsEpsDerivative);
             cell.solver.setMaxIter(itsMaxIter);
@@ -168,10 +168,10 @@ void Solver::setCoeff(size_t kernelId, T_ITER first, T_ITER last)
 template <typename T_ITER>
 void Solver::setEquations(size_t kernelId, T_ITER first, T_ITER last)
 {
-    map<size_t, vector<casa::uInt> >::const_iterator it =
+    map<size_t, vector<casacore::uInt> >::const_iterator it =
         itsCoeffMapping.find(kernelId);
     ASSERT(it != itsCoeffMapping.end());
-    const vector<casa::uInt> &mapping = it->second;
+    const vector<casacore::uInt> &mapping = it->second;
 
     for(; first != last; ++first)
     {
@@ -184,7 +184,7 @@ void Solver::setEquations(size_t kernelId, T_ITER first, T_ITER last)
         Cell &cell = it->second;
         ASSERT(first->equation.nUnknowns() == mapping.size());
         const bool ok = cell.solver.merge(first->equation,
-            mapping.size(), const_cast<casa::uInt*>(&mapping[0]));
+            mapping.size(), const_cast<casacore::uInt*>(&mapping[0]));
         ASSERT(ok);
     }
 }
@@ -203,8 +203,8 @@ bool Solver::iterate(T_OUTPUT_ITER out)
         // valid for the _previous_ iteration. The solver cannot compute the
         // chi squared directly after an iteration, because it needs the new
         // condition equations for that and these are computed by the kernel.
-        casa::uInt rank, nun, np, ncon, ner, *piv;
-        casa::Double *nEq, *known, *constr, *er, *sEq, *sol, prec, nonlin;
+        casacore::uInt rank, nun, np, ncon, ner, *piv;
+        casacore::Double *nEq, *known, *constr, *er, *sEq, *sol, prec, nonlin;
         cell.solver.debugIt(nun, np, ncon, ner, rank, nEq, known, constr, er,
             piv, sEq, sol, prec, nonlin);
         ASSERT(er && ner > Solver::SUMLL);

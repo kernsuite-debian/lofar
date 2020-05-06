@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Numeric.h 16299 2010-09-09 10:20:09Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_NUMERIC_H
 #define LOFAR_COMMON_NUMERIC_H

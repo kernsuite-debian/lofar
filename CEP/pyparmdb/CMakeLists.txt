@@ -1,11 +1,11 @@
-# $Id: CMakeLists.txt 22948 2012-11-23 08:54:47Z loose $
+# $Id$
 
 lofar_package(pyparmdb 1.0 DEPENDS Common ParmDB)
 
 include(LofarFindPackage)
-lofar_find_package(Boost REQUIRED COMPONENTS python)
-lofar_find_package(Python 2.6 REQUIRED)
-lofar_find_package(Pyrap REQUIRED)
+lofar_find_package(Boost REQUIRED COMPONENTS python3)
+lofar_find_package(Python 3.4 REQUIRED)
+lofar_find_package(Casacore REQUIRED COMPONENTS python)
 
 add_subdirectory(src)
 add_subdirectory(test)

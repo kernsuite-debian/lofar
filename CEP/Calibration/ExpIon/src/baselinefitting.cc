@@ -24,16 +24,16 @@
 #include <lofar_config.h>
 #include <Common/OpenMP.h>
 
-#include <casa/Containers/ValueHolder.h>
-#include <casa/Containers/Record.h>
-#include <casa/Utilities/CountedPtr.h>
-#include <scimath/Fitting/LSQFit.h>
+#include <casacore/casa/Containers/ValueHolder.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Utilities/CountedPtr.h>
+#include <casacore/scimath/Fitting/LSQFit.h>
 
-#if defined(casacore)
-#include <python/Converters/PycExcp.h>
-#include <python/Converters/PycBasicData.h>
-#include <python/Converters/PycValueHolder.h>
-#include <python/Converters/PycRecord.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/python/Converters/PycExcp.h>
+#include <casacore/python/Converters/PycBasicData.h>
+#include <casacore/python/Converters/PycValueHolder.h>
+#include <casacore/python/Converters/PycRecord.h>
 #define pyrap python
 #else
 #include <pyrap/Converters/PycExcp.h>
@@ -45,7 +45,7 @@
 #include <boost/python.hpp>
 #include <boost/python/args.hpp>
 
-using namespace casa;
+using namespace casacore;
 using namespace boost::python;
 
 namespace LOFAR
@@ -219,10 +219,10 @@ ValueHolder fit(const ValueHolder &phases_vh, const ValueHolder &A_vh, const Val
 
 BOOST_PYTHON_MODULE(_baselinefitting)
 {
-    casa::pyrap::register_convert_excp();
-    casa::pyrap::register_convert_basicdata();
-    casa::pyrap::register_convert_casa_valueholder();
-    casa::pyrap::register_convert_casa_record();
+    casacore::pyrap::register_convert_excp();
+    casacore::pyrap::register_convert_basicdata();
+    casacore::pyrap::register_convert_casa_valueholder();
+    casacore::pyrap::register_convert_casa_record();
     
     def("fit", LOFAR::ExpIon::fit);
 }

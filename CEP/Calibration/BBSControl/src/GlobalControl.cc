@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GlobalControl.cc 17462 2011-02-23 16:54:09Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <libgen.h>

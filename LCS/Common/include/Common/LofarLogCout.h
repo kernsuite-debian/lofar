@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarLogCout.h 21325 2012-06-27 08:12:16Z mol $
+//# $Id$
 
 //# No include guard is used, because it should only be included indirectly
 //# by LofarLogger.h (and by LofarLogCout.cc).
@@ -105,8 +105,8 @@
 //# LOG_DEBUG_(STR) (message|stream)
 //#
 #ifdef DISABLE_DEBUG_OUTPUT
-#define LOG_DEBUG(message)
-#define LOG_DEBUG_STR(stream)
+#define LOG_DEBUG(message) {}
+#define LOG_DEBUG_STR(stream) {}
 #else
 #define LOG_DEBUG(message) 			cDebug(5, "DEBUG ", message)
 #define LOG_DEBUG_STR(stream) 		cDebugstr(5, "DEBUG ", stream)

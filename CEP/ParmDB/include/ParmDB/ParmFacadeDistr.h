@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacadeDistr.h 27747 2013-12-12 11:09:58Z diepen $
+//# $Id$
 
 #ifndef LOFAR_PARMDB_PARMFACADEDISTR_H
 #define LOFAR_PARMDB_PARMFACADEDISTR_H
@@ -34,7 +34,7 @@
 #include <Common/lofar_set.h>
 
 //# Forward Declaration.
-namespace casa {
+namespace casacore {
   class Record;
   class String;
 }
@@ -126,10 +126,10 @@ namespace LOFAR { namespace BBS {
     virtual vector<string> getDefNames (const string& parmNamePattern) const;
 
     // Get the default values of parameters matching the pattern.
-    virtual casa::Record getDefValues (const string& parmNamePattern) const;
+    virtual casacore::Record getDefValues (const string& parmNamePattern) const;
 
     // Add one or more default values to all underlying ParmTables.
-    virtual void addDefValues (const casa::Record&, bool check);
+    virtual void addDefValues (const casacore::Record&, bool check);
 
     // Delete the default value records for the given parameters.
     virtual void deleteDefValues (const string& parmNamePattern);
@@ -137,7 +137,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given regular grid
     // where v1/v2 represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     double freqv1, double freqv2,
                                     double freqStep,
                                     double timev1, double timev2,
@@ -148,7 +148,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given grid where v1/v2
     // represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     const vector<double>& freqv1,
                                     const vector<double>& freqv2,
                                     const vector<double>& timev1,
@@ -162,13 +162,13 @@ namespace LOFAR { namespace BBS {
     // used for each parameters. Their names have the form <parmname>/xx
     // where xx is freqs, freqwidths, times, and timewidths. Their values
     // are the center and width of each cell.
-    virtual casa::Record getValuesGrid (const string& parmNamePattern,
+    virtual casacore::Record getValuesGrid (const string& parmNamePattern,
                                         double freqv1, double freqv2,
                                         double timev1, double timev2,
                                         bool asStartEnd);
 
     // Get coefficients, errors, and domains they belong to.
-    virtual casa::Record getCoeff (const string& parmNamePattern,
+    virtual casacore::Record getCoeff (const string& parmNamePattern,
                                    double freqv1, double freqv2,
                                    double timev1, double timev2,
                                    bool asStartEnd);
@@ -204,7 +204,7 @@ namespace LOFAR { namespace BBS {
     virtual vector<double> getDefaultSteps() const;
 
     // Add the values for the given parameter names and domain.
-    virtual void addValues (const casa::Record& rec);
+    virtual void addValues (const casacore::Record& rec);
 
   private:
     // Send all workers a quit message.
@@ -223,35 +223,35 @@ namespace LOFAR { namespace BBS {
     void checkStatusAll() const;
 
     // Read a Record from the BlobStream.
-    void getRecord (BlobIStream& bis, casa::Record& rec);
+    void getRecord (BlobIStream& bis, casacore::Record& rec);
 
     // Write a Record into the BlobStream.
-    void putRecord (BlobOStream& bis, const casa::Record& rec);
+    void putRecord (BlobOStream& bis, const casacore::Record& rec);
 
     // Check if the names of remote client inx are equal to the first one.
     void checkNames (const vector<string>& firstNames,
                      const vector<string>& names, uint inx) const;
 
     // Combine the result records from the remote sites.
-    casa::Record combineRemote (const vector<casa::Record>& recs) const;
+    casacore::Record combineRemote (const vector<casacore::Record>& recs) const;
 
     // Find all parm names in the records and add them to the set.
-    void findParmNames (const vector<casa::Record>& recs,
-                        set<casa::String>& names) const;
+    void findParmNames (const vector<casacore::Record>& recs,
+                        set<casacore::String>& names) const;
 
     // Combine the info for the given parm from all records.
     // The info can be the same in some records meaning that a fully or partial
     // global solve is done and distributed to all parmdbs.
-    void combineInfo (const casa::String& name,
-                      const vector<casa::Record>& recs,
-                      casa::Record& result) const;
+    void combineInfo (const casacore::String& name,
+                      const vector<casacore::Record>& recs,
+                      casacore::Record& result) const;
 
     //# Data members
     string                itsPort;      //# declare this before itsConn!!
     mutable LOFAR::CEP::SocketConnectionSet itsConn;
     vector<string>        itsPartNames;
     vector<string>        itsParmNames;
-    casa::Record          itsDefValues;
+    casacore::Record          itsDefValues;
     static int            theirNextPort;
     static vector<string> theirFreePorts;
   };

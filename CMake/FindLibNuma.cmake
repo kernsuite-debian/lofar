@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindLibNuma.cmake 26336 2013-09-03 10:01:41Z mol $
+# $Id$
 
 if(NOT LIBNUMA_FOUND)
 

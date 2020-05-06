@@ -1,0 +1,3 @@
+#!/bin/bash
+export PATH=/opt/slurm/bin:/opt/slurm/sbin:${PATH}
+

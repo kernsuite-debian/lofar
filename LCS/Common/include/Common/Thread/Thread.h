@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: Thread.h 32798 2015-11-05 12:13:27Z dijkema $
+//#  $Id$
 
 #ifndef LOFAR_LCS_COMMON_THREAD_H
 #define LOFAR_LCS_COMMON_THREAD_H
@@ -59,7 +59,7 @@ class Thread
     // };
     //
     // The thread is joined in the destructor of the Thread object
-      
+
     template <typename T> Thread(T *object, void (T::*method)(), const std::string &name = "<anon>", const std::string &logPrefix = "", size_t stackSize = 0);
 
     // ~Thread() is NOT virtual, because Thread should NOT be inherited. An
@@ -79,6 +79,12 @@ class Thread
     // Returns whether the thread threw an exception. This function will wait for the thread
     // to finish.
     bool      caughtException();
+
+    // Return the name of the given thread as registered at the OS
+    static std::string getName(const pthread_t &thread = pthread_self());
+
+    // Register this thread at the OS (NOTE: only first 15 characters of "name" are used)
+    static void setMyName(const std::string &name);
 
     class ScopedPriority
     {
@@ -204,7 +210,7 @@ private:
 
 template <typename T> inline Thread::Thread(T *object, void (T::*method)(), const std::string &name, const std::string &logPrefix, size_t stackSize)
 :
-  logPrefix(logPrefix),
+  logPrefix(logPrefix + "[Thread " + name + "] "),
   name(name),
   caught_exception(false)
 {
@@ -241,7 +247,7 @@ inline Thread::~Thread()
     try {
       throw SystemCallException("pthread_join", retval, THROW_ARGS);
     } catch (Exception &ex) {
-      LOG_ERROR_STR("Exception in destructor: " << ex);
+      LOG_ERROR_STR(logPrefix << "Exception in destructor: " << ex);
     }
 }
 
@@ -302,6 +308,45 @@ inline bool Thread::caughtException()
   return caught_exception;
 }
 
+inline void Thread::setMyName(const std::string &name)
+{
+  // Inform the kernel of the thread name (only first 16 characters are used!)
+
+#if defined(_LIBCPP_VERSION)
+  int retval;
+
+  // Set name WITHIN the thread, to avoid race conditions
+  if ((retval = pthread_setname_np(name.substr(0,15).c_str())) != 0)
+    throw SystemCallException("pthread_setname_np", retval, THROW_ARGS);
+#else
+# if defined(_GNU_SOURCE) && __GLIBC_PREREQ(2, 12)
+  int retval;
+
+  // Set name WITHIN the thread, to avoid race conditions
+  if ((retval = pthread_setname_np(pthread_self(), name.substr(0,15).c_str())) != 0)
+    throw SystemCallException("pthread_setname_np", retval, THROW_ARGS);
+# else
+  (void)name;
+# endif
+#endif
+}
+
+inline std::string Thread::getName(const pthread_t &thread)
+{
+#if defined(_GNU_SOURCE) && __GLIBC_PREREQ(2, 12)
+  char cname[1024];
+
+  int retval;
+
+  if ((retval = pthread_getname_np(thread, &cname[0], sizeof cname)) != 0)
+    throw SystemCallException("pthread_getname_np", retval, THROW_ARGS);
+
+  return std::string(cname);
+#else
+  (void)thread;
+  return "<unknown>";
+#endif
+}
 
 template <typename T> inline void Thread::stub(Args<T> *args)
 {
@@ -311,26 +356,13 @@ template <typename T> inline void Thread::stub(Args<T> *args)
 
   ThreadLogger threadLogger;
 
-  LOG_DEBUG_STR(logPrefix << "Thread started");
+  LOG_DEBUG_STR(logPrefix << "Started");
 
   ThreadMap::ScopedRegistration sr(ThreadMap::instance(), args->name);
 
   try {
-#if defined(_LIBCPP_VERSION)
-    int retval;
-
     // Set name WITHIN the thread, to avoid race conditions
-    if ((retval = pthread_setname_np(args->name.substr(0,15).c_str())) != 0)
-      throw SystemCallException("pthread_setname_np", retval, THROW_ARGS);
-#else
-# if defined(_GNU_SOURCE) && __GLIBC_PREREQ(2, 12)
-    int retval;
-
-    // Set name WITHIN the thread, to avoid race conditions
-    if ((retval = pthread_setname_np(pthread_self(), args->name.substr(0,15).c_str())) != 0)
-      throw SystemCallException("pthread_setname_np", retval, THROW_ARGS);
-# endif
-#endif
+    setMyName(args->name);
 
     // allow cancellation from here, to guarantee finished.up()
     started.up();
@@ -355,21 +387,22 @@ template <typename T> inline void Thread::stub(Args<T> *args)
 
     caught_exception = true;
   } catch (...) {
-    LOG_DEBUG_STR(logPrefix << "Thread cancelled");
+    LOG_DEBUG_STR(logPrefix << "Cancelled");
 
     finished.up();
 
+    // MUST rethrow exception caused by thread cancellation, or terminate() will be called
     throw;
   }
 
   finished.up();
 
-  LOG_DEBUG_STR(logPrefix << "Thread stopped");
+  LOG_DEBUG_STR(logPrefix << "Finished");
 }
 
 template <typename T> inline void *Thread::stub(void *arg)
 {
-  std::auto_ptr<Args<T> > args(static_cast<Args<T> *>(arg));
+  std::unique_ptr<Args<T> > args(static_cast<Args<T> *>(arg));
   args->thread->stub(args.get());
   return 0;
 }

@@ -32,7 +32,7 @@
 #include <BBSKernel/Expr/Expr.h>
 #include <BBSKernel/Expr/Source.h>
 #include <ParmDB/SourceDB.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -71,7 +71,7 @@ public:
     typedef shared_ptr<const PatchExpr> ConstPtr;
 
     PatchExpr(Scope &scope, SourceDB &sourceDB, const string &name,
-        const casa::MDirection &refPhase);
+        const casacore::MDirection &refPhase);
 
     // \name PatchExprBase interface implementation.
     // These methods form an implementation of the PatchExprBase interface. See
@@ -90,7 +90,7 @@ private:
     void initSourceList(Scope &scope, SourceDB &sourceDB, const string &name);
     void initPositionExpr(const vector<Source::Ptr> &sources);
     void initLMNExpr(const vector<Source::Ptr> &sources,
-        const casa::MDirection &refPhase);
+        const casacore::MDirection &refPhase);
 
     Expr<Vector<2> >::Ptr makeStationShiftExpr(unsigned int station,
         unsigned int source, const Expr<Vector<3> >::Ptr &uvw) const;

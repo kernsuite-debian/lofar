@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: i4complex.h 24434 2013-03-27 14:52:25Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_I4COMPLEX_H
 #define LOFAR_COMMON_I4COMPLEX_H

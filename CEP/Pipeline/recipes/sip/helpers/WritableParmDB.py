@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 from lofar.parmdb import parmdb
 from argparse import ArgumentTypeError
 
@@ -10,7 +10,7 @@ def list_stations(parmdb, pattern=''):
     Can be called with a path or an instantiated parmdb     
     """
     # validate input
-    if isinstance(parmdb, basestring):
+    if isinstance(parmdb, str):
         # create a WritableParmDB
         parmdb = WritableParmDB(parmdb)
     elif not isinstance(parmdb, WritableParmDB):

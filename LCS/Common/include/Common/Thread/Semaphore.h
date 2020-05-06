@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Semaphore.h 38286 2017-09-03 23:42:04Z amesfoort $ 
+//# $Id$ 
 
 #ifndef  LOFAR_LCS_COMMON_SEMAPHORE_H
 #define  LOFAR_LCS_COMMON_SEMAPHORE_H

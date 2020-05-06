@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT
 from tempfile import mkdtemp
 import os
@@ -119,7 +119,7 @@ class cimager(LOFARnodeTCP):
                             os.path.join(working_dir, image_name + ".restored"),
                             os.path.join(resultsdir, image_name + ".restored")
                         )
-            except CalledProcessError, e:
+            except CalledProcessError as e:
                 self.logger.error(str(e))
                 return 1
             finally:

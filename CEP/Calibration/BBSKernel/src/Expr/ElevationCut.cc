@@ -23,7 +23,7 @@
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/ElevationCut.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
 namespace LOFAR
 {
@@ -33,7 +33,7 @@ namespace BBS
 ElevationCut::ElevationCut(const Expr<Vector<2> >::ConstPtr &azel,
     double threshold)
     :   BasicUnaryExpr<Vector<2>, JonesMatrix>(azel),
-        itsThreshold(casa::C::pi * threshold / 180.0)
+        itsThreshold(casacore::C::pi * threshold / 180.0)
 {
 }
 

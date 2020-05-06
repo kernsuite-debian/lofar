@@ -1,28 +1,22 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
-print >>sys.stderr, "QPID support NOT enabled! Will NOT connect to any broker, and messages will be lost!"
-
-def uuid4():
-  return "<uuid>"
+print("QPID support NOT enabled! Will NOT connect to any broker, and messages will be lost!")
 
 
 """
   Exceptions.
 """
 
-class MessagingError(Exception):
+class ProtonException(Exception):
   pass
 
 class SessionError(Exception):
   pass
 
-class exceptions:
-  class Timeout(Exception):
-    pass
+class Timeout(Exception):
+  pass
 
-  class Empty(Exception):
-    pass
 
 """
   Messages.

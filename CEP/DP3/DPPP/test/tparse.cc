@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tparse.cc 15248 2010-03-17 10:15:03Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

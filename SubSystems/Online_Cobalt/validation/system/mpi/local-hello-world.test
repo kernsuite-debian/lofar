@@ -1,0 +1,7 @@
+#!/bin/bash -ve
+
+mpicc $(dirname $0)/mpi-hello-world.c -o /tmp/mpi-hello-world || exit 1
+
+mpirun --tag-output -H localhost,localhost /tmp/mpi-hello-world | sort | fgrep 'Hello world' | wc -l | grep '^2$'
+
+exit 0

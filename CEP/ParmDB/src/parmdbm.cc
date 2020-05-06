@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: parmdbm.cc 22805 2012-11-15 12:47:15Z diepen $
+//# $Id$
 
 
 #include <lofar_config.h>
@@ -39,16 +39,16 @@
 #include <Common/LofarLogger.h>
 #include <Common/Exception.h>
 
-#include <casa/Quanta/MVTime.h>
-#include <casa/Utilities/MUString.h>
-#include <casa/Containers/Block.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/Utilities/MUString.h>
+#include <casacore/casa/Containers/Block.h>
+#include <casacore/casa/Exceptions/Error.h>
 #include <Common/lofar_string.h>
 #include <Common/lofar_iostream.h>
 #include <Common/lofar_fstream.h>
 #include <pwd.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 using namespace BBS;
 

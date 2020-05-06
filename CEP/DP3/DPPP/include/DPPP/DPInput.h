@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPInput.h 37169 2017-04-19 12:41:21Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -63,6 +63,9 @@ namespace LOFAR {
     class DPInput: public DPStep
     {
     public:
+      // Define the shared pointer for this type.
+      typedef shared_ptr<DPInput> ShPtr;
+
       virtual ~DPInput();
 
       // Read the UVW at the given row numbers into the buffer.

@@ -4,7 +4,7 @@
 # 2014
 # klijn@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import shutil
 import os
@@ -19,6 +19,7 @@ from lofarpipe.support.lofarnode import  LOFARnodeTCP
 from lofarpipe.support.utilities import create_directory
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.subprocessgroup import SubProcessGroup
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 
 # Some constant settings for the recipe
@@ -216,7 +217,7 @@ class long_baseline(LOFARnodeTCP):
 
               # Wait for finish of copy inside the loop: enforce single tread
               # copy
-              (stdoutdata, stderrdata) = copy_process.communicate()
+              (stdoutdata, stderrdata) = communicate_returning_strings(copy_process)
 
               exit_status = copy_process.returncode
 
@@ -305,7 +306,7 @@ class long_baseline(LOFARnodeTCP):
                             "Wrote a ndppp parset with runtime variables:"
                                   " {0}".format(nddd_parset_path))
 
-            except Exception, exception:
+            except Exception as exception:
                 self.logger.error("failed loading and updating the " +
                                   "parset: {0}".format(parset))
                 raise exception
@@ -323,7 +324,7 @@ class long_baseline(LOFARnodeTCP):
                 time_slice_path_list.append(time_slice_path)
 
             # On error the current timeslice should be skipped
-            except Exception, exception:
+            except Exception as exception:
                 for item in processed_ms_map[start_slice_range:end_slice_range]:
                     item.skip = True
                 self.logger.warning(str(exception))
@@ -491,7 +492,7 @@ class long_baseline(LOFARnodeTCP):
                     "update {0}/POLARIZATION set CORR_TYPE=[5,6,7,8]".format(time_slice))
                 opened_ms.close()
                 self.logger.info("Converted to circular polarization using taql")
-            except Exception, exception:
+            except Exception as exception:
                 self.logger.error("Problem applying polarization to ms: {0}".format(
                     time_slice))
                 raise exception

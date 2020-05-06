@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DH_Ethernet.h 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 #ifndef LIBTRANSPORT_TEST_DH_ETHERNET_H
 #define LIBTRANSPORT_TEST_DH_ETHERNET_H

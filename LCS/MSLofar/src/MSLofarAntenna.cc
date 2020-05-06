@@ -17,15 +17,15 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarAntenna.cc 17582 2011-03-18 15:29:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
 #include <MSLofar/MSLofarAntenna.h>
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

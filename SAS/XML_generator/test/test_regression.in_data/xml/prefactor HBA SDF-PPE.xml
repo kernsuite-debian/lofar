@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <lofar:project xmlns:lofar="http://www.astron.nl/MoM2-Lofar" xmlns:mom2="http://www.astron.nl/MoM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.astron.nl/MoM2-Lofar http://lofar.astron.nl:8080/mom3/schemas/LofarMoM2.xsd http://www.astron.nl/MoM2 http://lofar.astron.nl:8080/mom3/schemas/MoM2.xsd ">
+  <version>4.0.2</version>
+  <template version="4.0.2" author="Alwin de Jong,Adriaan Renting" changedBy="Adriaan Renting">
+  <description>XML Template generator version 4.0.2</description>
+  </template>
+  <name>SDF-PPE</name>
+  <children>
+   <item index="0">
+    <lofar:folder topology_parent="false">
+    <name>P181+42P189+45HBA</name>
+    <description>Preprocessing:HBA Dual Inner, 110-190MHz, 8bits, 48MHz@144MHz, 1s, 64ch/sb</description>
+    <children>
+   <item index="0">
+        <lofar:folder topology_parent="true">
+          <topology>0</topology>
+          <name>20190311_P181+42P189+45</name>
+          <description>HBA Dual Inner, 110-190MHz, 8bits, 96MHz@144MHz, 1s, 64ch/sb (Prefactor)</description>
+          <children>
+          <item index="0">
+                <lofar:observation>
+                  <name>3C196/1/CO</name>
+                  <description>3C196/1/CO (Calibration Observation)</description>
+                  <topology>B0.1.C</topology>
+                  <predecessor_topology></predecessor_topology>
+                  <currentStatus>
+                    <mom2:openedStatus/>
+                  </currentStatus>
+                  <lofar:observationAttributes>
+                    <observationId>
+                    </observationId>
+                    <name>3C196/1/CO</name>
+                    <projectName>SDF-PPE</projectName>
+                    <instrument>Beam Observation</instrument>
+                    <defaultTemplate>BeamObservation</defaultTemplate>
+                    <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                    <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                    <userSpecification>
+                      <correlatedData>true</correlatedData>
+                      <coherentStokesData>false</coherentStokesData>
+                      <incoherentStokesData>false</incoherentStokesData>
+                      <antenna>HBA Dual Inner</antenna>
+                      <clock mode="200 MHz"/>
+                      <instrumentFilter>110-190 MHz</instrumentFilter>
+                      <integrationInterval>1.0</integrationInterval>
+                      <channelsPerSubband>64</channelsPerSubband>
+                      <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                      <tiedArrayBeams>
+                        <flyseye>false</flyseye>
+                      </tiedArrayBeams>
+                      <stokes>
+                        <integrateChannels>false</integrateChannels>
+                        <subbandsPerFileCS>512</subbandsPerFileCS>
+                        <numberCollapsedChannelsCS>16</numberCollapsedChannelsCS>
+                        <stokesDownsamplingStepsCS>128</stokesDownsamplingStepsCS>
+                        <whichCS>IQUV</whichCS>
+                        <subbandsPerFileIS></subbandsPerFileIS>
+                        <numberCollapsedChannelsIS></numberCollapsedChannelsIS>
+                        <stokesDownsamplingStepsIS></stokesDownsamplingStepsIS>
+                        <whichIS></whichIS>
+                      </stokes>
+                      <stationSet>Custom</stationSet>
+                      <stations>CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501,DE601,DE602,DE603,DE604,DE605,DE609,FR606,IE613,PL610,PL611,PL612,RS106,RS205,RS208,RS210,RS305,RS306,RS307,RS310,RS406,RS407,RS409,RS503,RS508,RS509,SE607,UK608</stations>
+                      <timeFrame>UT</timeFrame>
+                      <startTime>2019-03-11T22:01:00</startTime>
+                      <endTime>2019-03-11T22:11:00</endTime>
+                      <duration>600</duration>
+                      <bypassPff>false</bypassPff>
+                      <enableSuperterp>false</enableSuperterp>
+                      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                    </userSpecification>
+                  </lofar:observationAttributes>
+                  <children>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>3C196</name>
+                        <description>3C196</description>
+                        <topology>B0.1.C.SAP000</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Calibration</measurementType>
+                          <specification>
+                            <targetName>3C196</targetName>
+                            <ra>123.400291667</ra>
+                            <dec>48.2173611111</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>104..136,138..163,165..180,182..184,187..209,212..213,215..240,242..255,257..273,275..300,302..328,330..347,349,364,372,380,388,396,404,413,421,430,438,447</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings></nrTabRings>
+                          <tabRingSize></tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.C.SAP000.uv.dps</name>
+                    <topology>B0.1.C.SAP000.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                        </resultDataProducts>
+                      </lofar:measurement>
+                    </item>
+</children>
+                </lofar:observation>
+                </item>
+        <item index="0">
+              <lofar:pipeline xsi:type="lofar:AveragingPipelineType">
+                <topology>B0.1.CPP</topology>
+                <predecessor_topology>B0.1.C</predecessor_topology>
+                <name>3C196/1/CPP</name>
+                <description>3C196/1/CPP (Preprocessing)</description>
+                <currentStatus>
+                  <mom2:openedStatus/>
+                </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <pipelineAttributes>
+                  <defaultTemplate>Preprocessing Pipeline</defaultTemplate>
+                  <flaggingStrategy>HBAdefault</flaggingStrategy>
+                  <duration>600</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>2</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget></ignoreTarget>
+                  </demixingParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                <usedDataProducts>
+                  <item>
+                    <lofar:uvDataProduct topology="B0.1.C.SAP000.uv.dps">
+                    </lofar:uvDataProduct>
+                  </item>
+                </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:uvDataProduct>
+                      <name>B0.1.CPP.uv.dps</name>
+                      <topology>B0.1.CPP.uv.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+        <item index="0">
+              <lofar:pipeline xsi:type="lofar:CalibrationPipelineType">
+                <topology>B0.1.CPC</topology>
+                <predecessor_topology>B0.1.CPP</predecessor_topology>
+                <name>3C196/1/CPC</name>
+                <description>3C196/1/CPC (Prefactor Calibrator C)</description>
+                <currentStatus>
+                  <mom2:openedStatus/>
+                </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <pipelineAttributes>
+                  <defaultTemplate>Calibration Pipeline Target</defaultTemplate>
+                  <flaggingStrategy>HBAdefault</flaggingStrategy>
+                  <duration>600</duration>
+                  <skyModelDatabase>3C196</skyModelDatabase>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>2</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget></ignoreTarget>
+                  </demixingParameters>
+            <bbsParameters>
+              <baselines></baselines>
+              <correlations></correlations>
+              <beamModelEnable></beamModelEnable>
+              <solveParms></solveParms>
+              <solveUVRange></solveUVRange>
+              <strategyBaselines></strategyBaselines>
+              <strategyTimeRange></strategyTimeRange>
+            </bbsParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                <usedDataProducts>
+                  <item>
+                    <lofar:uvDataProduct topology="B0.1.CPP.uv.dps">
+                    </lofar:uvDataProduct>
+                  </item>
+                </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:instrumentModelDataProduct>
+                      <name>B0.1.CPC.inst.dps</name>
+                      <topology>B0.1.CPC.inst.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:instrumentModelDataProduct>
+                  </item>
+                  <item>
+                    <lofar:uvDataProduct>
+                      <name>B0.1.CPC.uv.dps</name>
+                      <topology>B0.1.CPC.uv.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+          <item index="0">
+                <lofar:observation>
+                  <name>P181P189REF/1/TO</name>
+                  <description>P181P189REF/1/TO (Target Observation)</description>
+                  <topology>B0.1.T</topology>
+                  <predecessor_topology>B0.1.C</predecessor_topology>
+                  <currentStatus>
+                    <mom2:openedStatus/>
+                  </currentStatus>
+                  <lofar:observationAttributes>
+                    <observationId>
+                    </observationId>
+                    <name>P181P189REF/1/TO</name>
+                    <projectName>SDF-PPE</projectName>
+                    <instrument>Beam Observation</instrument>
+                    <defaultTemplate>BeamObservation</defaultTemplate>
+                    <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                    <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                    <userSpecification>
+                      <correlatedData>true</correlatedData>
+                      <coherentStokesData>false</coherentStokesData>
+                      <incoherentStokesData>false</incoherentStokesData>
+                      <antenna>HBA Dual Inner</antenna>
+                      <clock mode="200 MHz"/>
+                      <instrumentFilter>110-190 MHz</instrumentFilter>
+                      <integrationInterval>1.0</integrationInterval>
+                      <channelsPerSubband>64</channelsPerSubband>
+                      <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                      <tiedArrayBeams>
+                        <flyseye>false</flyseye>
+                      </tiedArrayBeams>
+                      <stokes>
+                        <integrateChannels>false</integrateChannels>
+                        <subbandsPerFileCS>512</subbandsPerFileCS>
+                        <numberCollapsedChannelsCS>16</numberCollapsedChannelsCS>
+                        <stokesDownsamplingStepsCS>128</stokesDownsamplingStepsCS>
+                        <whichCS>IQUV</whichCS>
+                        <subbandsPerFileIS></subbandsPerFileIS>
+                        <numberCollapsedChannelsIS></numberCollapsedChannelsIS>
+                        <stokesDownsamplingStepsIS></stokesDownsamplingStepsIS>
+                        <whichIS></whichIS>
+                      </stokes>
+                      <stationSet>Custom</stationSet>
+                      <stations>CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501,DE601,DE602,DE603,DE604,DE605,DE609,FR606,IE613,PL610,PL611,PL612,RS106,RS205,RS208,RS210,RS305,RS306,RS307,RS310,RS406,RS407,RS409,RS503,RS508,RS509,SE607,UK608</stations>
+                      <timeFrame>UT</timeFrame>
+                      <startTime>2019-03-11T22:12:00</startTime>
+                      <endTime>2019-03-12T02:12:00</endTime>
+                      <duration>14400</duration>
+                      <bypassPff>false</bypassPff>
+                      <enableSuperterp>false</enableSuperterp>
+                      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                    </userSpecification>
+                  </lofar:observationAttributes>
+                  <children>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>P181P189REF</name>
+                        <description>P181P189REF</description>
+                        <topology>B0.1.T.SAP000</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>P181P189REF</targetName>
+                            <ra>185.157383333</ra>
+                            <dec>43.5002019444</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>256</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>0</nrTabRings>
+                          <tabRingSize></tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.T.SAP000.uv.dps</name>
+                    <topology>B0.1.T.SAP000.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                        </resultDataProducts>
+                      </lofar:measurement>
+                    </item>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>P181+42</name>
+                        <description>P181+42</description>
+                        <topology>B0.1.T.SAP001</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>P181+42</targetName>
+                            <ra>181.299133333</ra>
+                            <dec>42.2251769444</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>104..136,138..163,165..180,182..184,187..209,212..213,215..240,242..255,257..273,275..300,302..328,330..347,349,364,372,380,388,396,404,413,421,430,438,447</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>0</nrTabRings>
+                          <tabRingSize></tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.T.SAP001.uv.dps</name>
+                    <topology>B0.1.T.SAP001.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                        </resultDataProducts>
+                      </lofar:measurement>
+                    </item>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>P189+45</name>
+                        <description>P189+45</description>
+                        <topology>B0.1.T.SAP002</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>P189+45</targetName>
+                            <ra>189.015633333</ra>
+                            <dec>44.7752266667</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>104..136,138..163,165..180,182..184,187..209,212..213,215..240,242..255,257..273,275..300,302..328,330..347,349,364,372,380,388,396,404,413,421,430,438,447</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>0</nrTabRings>
+                          <tabRingSize></tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B0.1.T.SAP002.uv.dps</name>
+                    <topology>B0.1.T.SAP002.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                        </resultDataProducts>
+                      </lofar:measurement>
+                    </item>
+</children>
+                </lofar:observation>
+                </item>
+        <item index="0">
+              <lofar:pipeline xsi:type="lofar:AveragingPipelineType">
+                <topology>B0.1.PPT1</topology>
+                <predecessor_topology>B0.1.T</predecessor_topology>
+                <name>P181+42/1.1/TXP</name>
+                <description>P181+42/1.1/TXP (Preprocessing)</description>
+                <currentStatus>
+                  <mom2:openedStatus/>
+                </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <pipelineAttributes>
+                  <defaultTemplate>Preprocessing Pipeline</defaultTemplate>
+                  <flaggingStrategy>HBAdefault</flaggingStrategy>
+                  <duration>31200</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>1</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget>false</ignoreTarget>
+                  </demixingParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                <usedDataProducts>
+                  <item>
+                    <lofar:uvDataProduct topology="B0.1.T.SAP001.uv.dps">
+                    </lofar:uvDataProduct>
+                  </item>
+                </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:uvDataProduct>
+                      <name>B0.1.PPT1.uv.dps</name>
+                      <topology>B0.1.PPT1.uv.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+<item index="0">
+                  <lofar:pipeline xsi:type="lofar:CalibrationPipelineType">
+                    <topology>B0.1.PT1</topology>
+                    <predecessor_topology>B0.1.PPT1,B0.1.CPC</predecessor_topology>
+                    <name>P181+42/1.1/TP</name>
+                    <description>P181+42/1.1/TP (Prefactor Target)</description>
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                    <pipelineAttributes>
+                      <defaultTemplate>Calibration Pipeline Target</defaultTemplate>
+                      <flaggingStrategy>HBAdefault</flaggingStrategy>
+                      <duration>31200</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>1</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget>false</ignoreTarget>
+                  </demixingParameters>
+            <bbsParameters>
+              <baselines></baselines>
+              <correlations></correlations>
+              <beamModelEnable>true</beamModelEnable>
+              <solveParms></solveParms>
+              <solveUVRange></solveUVRange>
+              <strategyBaselines></strategyBaselines>
+              <strategyTimeRange></strategyTimeRange>
+            </bbsParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                    <usedDataProducts>
+                      <item>
+                        <lofar:uvDataProduct topology="B0.1.PPT1.uv.dps">
+                          <name>B0.1.PPT1.uv.dps</name>
+                        </lofar:uvDataProduct>
+                      </item>
+                      <item>
+                        <lofar:instrumentModelDataProduct topology="B0.1.CPC.inst.dps">
+                          <name>B0.1.CPC.inst.dps</name>
+                        </lofar:instrumentModelDataProduct>
+                      </item>
+                    </usedDataProducts>
+                    <resultDataProducts>
+                        <item>
+                          <lofar:uvDataProduct>
+                            <name>B0.1.PT1.uv.dps</name>
+                            <topology>B0.1.PT1.uv.dps</topology>
+                            <status>no_data</status>
+                            <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                          </lofar:uvDataProduct>
+                        </item>
+                                                <item>
+                          <lofar:instrumentModelDataProduct>
+                            <name>B0.1.PT1.inst.dps</name>
+                            <topology>B0.1.PT1.inst.dps</topology>
+                            <status>no_data</status>
+                            <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                          </lofar:instrumentModelDataProduct>
+                        </item>
+                    </resultDataProducts>
+                    </lofar:pipeline>
+                  </item>
+        <item index="0">
+              <lofar:pipeline xsi:type="lofar:AveragingPipelineType">
+                <topology>B0.1.PPT2</topology>
+                <predecessor_topology>B0.1.T</predecessor_topology>
+                <name>P189+45/1.2/TXP</name>
+                <description>P189+45/1.2/TXP (Preprocessing)</description>
+                <currentStatus>
+                  <mom2:openedStatus/>
+                </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <pipelineAttributes>
+                  <defaultTemplate>Preprocessing Pipeline</defaultTemplate>
+                  <flaggingStrategy>HBAdefault</flaggingStrategy>
+                  <duration>31200</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>1</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget>false</ignoreTarget>
+                  </demixingParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                <usedDataProducts>
+                  <item>
+                    <lofar:uvDataProduct topology="B0.1.T.SAP002.uv.dps">
+                    </lofar:uvDataProduct>
+                  </item>
+                </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:uvDataProduct>
+                      <name>B0.1.PPT2.uv.dps</name>
+                      <topology>B0.1.PPT2.uv.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+<item index="0">
+                  <lofar:pipeline xsi:type="lofar:CalibrationPipelineType">
+                    <topology>B0.1.PT2</topology>
+                    <predecessor_topology>B0.1.PPT2,B0.1.CPC</predecessor_topology>
+                    <name>P189+45/1.2/TP</name>
+                    <description>P189+45/1.2/TP (Prefactor Target)</description>
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                    <pipelineAttributes>
+                      <defaultTemplate>Calibration Pipeline Target</defaultTemplate>
+                      <flaggingStrategy>HBAdefault</flaggingStrategy>
+                      <duration>31200</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>1</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget>false</ignoreTarget>
+                  </demixingParameters>
+            <bbsParameters>
+              <baselines></baselines>
+              <correlations></correlations>
+              <beamModelEnable>true</beamModelEnable>
+              <solveParms></solveParms>
+              <solveUVRange></solveUVRange>
+              <strategyBaselines></strategyBaselines>
+              <strategyTimeRange></strategyTimeRange>
+            </bbsParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                    <usedDataProducts>
+                      <item>
+                        <lofar:uvDataProduct topology="B0.1.PPT2.uv.dps">
+                          <name>B0.1.PPT2.uv.dps</name>
+                        </lofar:uvDataProduct>
+                      </item>
+                      <item>
+                        <lofar:instrumentModelDataProduct topology="B0.1.CPC.inst.dps">
+                          <name>B0.1.CPC.inst.dps</name>
+                        </lofar:instrumentModelDataProduct>
+                      </item>
+                    </usedDataProducts>
+                    <resultDataProducts>
+                        <item>
+                          <lofar:uvDataProduct>
+                            <name>B0.1.PT2.uv.dps</name>
+                            <topology>B0.1.PT2.uv.dps</topology>
+                            <status>no_data</status>
+                            <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                          </lofar:uvDataProduct>
+                        </item>
+                                                <item>
+                          <lofar:instrumentModelDataProduct>
+                            <name>B0.1.PT2.inst.dps</name>
+                            <topology>B0.1.PT2.inst.dps</topology>
+                            <status>no_data</status>
+                            <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                          </lofar:instrumentModelDataProduct>
+                        </item>
+                    </resultDataProducts>
+                    </lofar:pipeline>
+                  </item>
+<item index="0">
+        <lofar:pipeline xsi:type="lofar:ImagingPipelineType">
+          <topology>B0.PI1</topology>
+          <predecessor_topology>B0.1.PT1</predecessor_topology>
+          <name>P181+42/IM</name>
+          <description>P181+42/IM (Imaging pipeline beam 1)</description>
+          <currentStatus>
+            <mom2:openedStatus/>
+          </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <imagingPipelineAttributes>
+            <defaultTemplate>Imaging Pipeline HBA</defaultTemplate>
+            <duration>0</duration>
+            <nrOfOutputSkyImage>243</nrOfOutputSkyImage>
+            <imagingParameters>
+              <nrSlicesPerImage>1</nrSlicesPerImage>
+              <nrSubbandsPerImage>1</nrSubbandsPerImage>
+              <maxBaseline></maxBaseline>
+              <fieldOfView></fieldOfView>
+              <weight></weight>
+              <robust></robust>
+              <iterations></iterations>
+              <threshold></threshold>
+              <uvMin></uvMin>
+              <uvMax></uvMax>
+              <stokes></stokes>
+            </imagingParameters>
+
+          </imagingPipelineAttributes>
+                <usedDataProducts>
+                <item>
+              <lofar:uvDataProduct topology="B0.1.PT1.uv.dps">
+                <name>B0.1.PT1.uv.dps</name>
+              </lofar:uvDataProduct>
+            </item>
+               </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:skyImageDataProduct>
+                      <name>B0.PI1.sky.dps</name>
+                      <topology>B0.PI1.sky.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:skyImageDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+<item index="0">
+        <lofar:pipeline xsi:type="lofar:ImagingPipelineType">
+          <topology>B0.PI2</topology>
+          <predecessor_topology>B0.1.PT2</predecessor_topology>
+          <name>P189+45/IM</name>
+          <description>P189+45/IM (Imaging pipeline beam 2)</description>
+          <currentStatus>
+            <mom2:openedStatus/>
+          </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <imagingPipelineAttributes>
+            <defaultTemplate>Imaging Pipeline HBA</defaultTemplate>
+            <duration>0</duration>
+            <nrOfOutputSkyImage>243</nrOfOutputSkyImage>
+            <imagingParameters>
+              <nrSlicesPerImage>1</nrSlicesPerImage>
+              <nrSubbandsPerImage>1</nrSubbandsPerImage>
+              <maxBaseline></maxBaseline>
+              <fieldOfView></fieldOfView>
+              <weight></weight>
+              <robust></robust>
+              <iterations></iterations>
+              <threshold></threshold>
+              <uvMin></uvMin>
+              <uvMax></uvMax>
+              <stokes></stokes>
+            </imagingParameters>
+
+          </imagingPipelineAttributes>
+                <usedDataProducts>
+                <item>
+              <lofar:uvDataProduct topology="B0.1.PT2.uv.dps">
+                <name>B0.1.PT2.uv.dps</name>
+              </lofar:uvDataProduct>
+            </item>
+               </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:skyImageDataProduct>
+                      <name>B0.PI2.sky.dps</name>
+                      <topology>B0.PI2.sky.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:skyImageDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+</children>
+  </lofar:folder>
+  </item>
+   <item index="0">
+        <lofar:folder topology_parent="true">
+          <topology>1</topology>
+          <name>20190312_3C295</name>
+          <description>HBA Dual Inner, 110-190MHz, 8bits, 96MHz@144MHz, 1s, 64ch/sb (Preprocessing)</description>
+          <children>
+          <item index="0">
+                <lofar:observation>
+                  <name>3C295/1/TO</name>
+                  <description>3C295/1/TO (Target Observation)</description>
+                  <topology>B1.1.T</topology>
+                  <predecessor_topology></predecessor_topology>
+                  <currentStatus>
+                    <mom2:openedStatus/>
+                  </currentStatus>
+                  <lofar:observationAttributes>
+                    <observationId>
+                    </observationId>
+                    <name>3C295/1/TO</name>
+                    <projectName>SDF-PPE</projectName>
+                    <instrument>Beam Observation</instrument>
+                    <defaultTemplate>BeamObservation</defaultTemplate>
+                    <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                    <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                    <userSpecification>
+                      <correlatedData>true</correlatedData>
+                      <coherentStokesData>false</coherentStokesData>
+                      <incoherentStokesData>false</incoherentStokesData>
+                      <antenna>HBA Dual Inner</antenna>
+                      <clock mode="200 MHz"/>
+                      <instrumentFilter>110-190 MHz</instrumentFilter>
+                      <integrationInterval>1.0</integrationInterval>
+                      <channelsPerSubband>64</channelsPerSubband>
+                      <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                      <tiedArrayBeams>
+                        <flyseye>false</flyseye>
+                      </tiedArrayBeams>
+                      <stokes>
+                        <integrateChannels>false</integrateChannels>
+                        <subbandsPerFileCS>512</subbandsPerFileCS>
+                        <numberCollapsedChannelsCS>16</numberCollapsedChannelsCS>
+                        <stokesDownsamplingStepsCS>128</stokesDownsamplingStepsCS>
+                        <whichCS>IQUV</whichCS>
+                        <subbandsPerFileIS></subbandsPerFileIS>
+                        <numberCollapsedChannelsIS></numberCollapsedChannelsIS>
+                        <stokesDownsamplingStepsIS></stokesDownsamplingStepsIS>
+                        <whichIS></whichIS>
+                      </stokes>
+                      <stationSet>Custom</stationSet>
+                      <stations>CS001,CS002,CS003,CS004,CS005,CS006,CS007,CS011,CS013,CS017,CS021,CS024,CS026,CS028,CS030,CS031,CS032,CS101,CS103,CS201,CS301,CS302,CS401,CS501,DE601,DE602,DE603,DE604,DE605,DE609,FR606,IE613,PL610,PL611,PL612,RS106,RS205,RS208,RS210,RS305,RS306,RS307,RS310,RS406,RS407,RS409,RS503,RS508,RS509,SE607,UK608</stations>
+                      <timeFrame>UT</timeFrame>
+                      <startTime>2019-03-12T02:01:00</startTime>
+                      <endTime>2019-03-12T02:11:00</endTime>
+                      <duration>600</duration>
+                      <bypassPff>false</bypassPff>
+                      <enableSuperterp>false</enableSuperterp>
+                      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                    </userSpecification>
+                  </lofar:observationAttributes>
+                  <children>
+<item index="0">
+                      <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                        <name>3C295</name>
+                        <description>3C295</description>
+                        <topology>B1.1.T.SAP000</topology>
+                        <currentStatus>
+                          <mom2:openedStatus/>
+                        </currentStatus>
+                        <lofar:bfMeasurementAttributes>
+                          <measurementType>Target</measurementType>
+                          <specification>
+                            <targetName>3C295</targetName>
+                            <ra>212.835495833</ra>
+                            <dec>52.2027694444</dec>
+                            <equinox>J2000</equinox>
+                            <duration>0</duration>
+                            <subbandsSpecification>
+                              <subbands>104..136,138..163,165..180,182..184,187..209,212..213,215..240,242..255,257..273,275..300,302..328,330..347,349,364,372,380,388,396,404,413,421,430,438,447</subbands>
+                            </subbandsSpecification>
+                          <tiedArrayBeams>
+                            <flyseye>false</flyseye>
+                          <nrTabRings>0</nrTabRings>
+                          <tabRingSize></tabRingSize>
+                            <tiedArrayBeamList>
+                              
+                            </tiedArrayBeamList>
+                          </tiedArrayBeams>
+                          </specification>
+                        </lofar:bfMeasurementAttributes>
+                        <resultDataProducts>
+                                          <item>
+                    <lofar:uvDataProduct>
+                    <name>B1.1.T.SAP000.uv.dps</name>
+                    <topology>B1.1.T.SAP000.uv.dps</topology>
+                    <status>no_data</status>
+                    <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                        </resultDataProducts>
+                      </lofar:measurement>
+                    </item>
+</children>
+                </lofar:observation>
+                </item>
+        <item index="0">
+              <lofar:pipeline xsi:type="lofar:AveragingPipelineType">
+                <topology>B1.1.PT0</topology>
+                <predecessor_topology>B1.1.T</predecessor_topology>
+                <name>3C295/1.0/TP</name>
+                <description>3C295/1.0/TP (Preprocessing)</description>
+                <currentStatus>
+                  <mom2:openedStatus/>
+                </currentStatus>
+  <processingCluster>
+                    <name>CEP4</name>
+                    <partition>cpu</partition>
+                    <numberOfTasks>122</numberOfTasks>
+                    <minRAMPerTask unit="byte">1000000000</minRAMPerTask>
+                    <minScratchPerTask unit="byte">100000000</minScratchPerTask>
+                    <maxDurationPerTask>P7DT0S</maxDurationPerTask>
+                    <numberOfCoresPerTask>2</numberOfCoresPerTask>
+                    <runSimultaneous>true</runSimultaneous>
+                  </processingCluster>
+                <pipelineAttributes>
+                  <defaultTemplate>Preprocessing Pipeline</defaultTemplate>
+                  <flaggingStrategy>HBAdefault</flaggingStrategy>
+                  <duration>600</duration>
+                  <demixingParameters>
+                    <averagingFreqStep>4</averagingFreqStep>
+                    <averagingTimeStep>1</averagingTimeStep>
+                    <demixFreqStep>64</demixFreqStep>
+                    <demixTimeStep>10</demixTimeStep>
+                    <demixAlways></demixAlways>
+                    <demixIfNeeded></demixIfNeeded>
+                    <ignoreTarget>false</ignoreTarget>
+                  </demixingParameters>
+<misc>{"storagemanager": "dysco"}</misc>
+</pipelineAttributes>
+                <usedDataProducts>
+                  <item>
+                    <lofar:uvDataProduct topology="B1.1.T.SAP000.uv.dps">
+                    </lofar:uvDataProduct>
+                  </item>
+                </usedDataProducts>
+                <resultDataProducts>
+                  <item>
+                    <lofar:uvDataProduct>
+                      <name>B1.1.PT0.uv.dps</name>
+                      <topology>B1.1.PT0.uv.dps</topology>
+                      <status>no_data</status>
+                      <storageCluster>
+                      <name>CEP4</name>
+                      <partition>/data/projects/</partition>
+                    </storageCluster>
+                    </lofar:uvDataProduct>
+                  </item>
+                </resultDataProducts>
+              </lofar:pipeline>
+            </item>
+</children>
+  </lofar:folder>
+  </item>
+</children>
+  </lofar:folder>
+  </item>
+          </children>
+  </lofar:project>

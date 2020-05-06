@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 
 from contextlib import contextmanager
 from string import Template
@@ -60,7 +60,7 @@ class SearchPatterns(dict):
         Check the supplied LogRecord against all
         registered SearchPatetrn objects.
         """
-        for pattern in self.itervalues():
+        for pattern in self.values():
             pattern.check(record)
 
     def zero(self, name):
@@ -73,7 +73,7 @@ class SearchPatterns(dict):
         """
         Zero the counter on all SearchPatterns registered.
         """
-        for name in self.iterkeys():
+        for name in self.keys():
             self.zero(name)
 
 class SearchingLogger(logging.Logger):

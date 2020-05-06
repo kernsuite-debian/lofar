@@ -21,9 +21,9 @@ MultiDirSolver::MultiDirSolver() :
   _accuracy(1e-5),
   _constraintAccuracy(1e-4),
   _stepSize(0.2),
+  _detectStalling(true),
   _phaseOnly(false)
-{
-}
+{ }
 
 void MultiDirSolver::init(size_t nAntennas,
                           size_t nDirections,
@@ -75,45 +75,106 @@ void MultiDirSolver::makeSolutionsFinite(std::vector<std::vector<DComplex> >& so
     std::vector<DComplex>::iterator iter = solVector.begin();
     for(size_t i=0; i!=n; ++i)
     {
+      bool hasNonFinite = false;
       for(size_t p=0; p!=perPol; ++p)
       {
-        if(!std::isfinite(iter->real()) || !std::isfinite(iter->imag()))
-          *iter = DComplex(1.0, 0.0);
-        ++iter;
+        hasNonFinite = hasNonFinite || !std::isfinite(iter->real()) || !std::isfinite(iter->imag());
       }
+      if(hasNonFinite)
+      {
+        if(perPol == 4)
+        {
+          iter[0] = DComplex(1.0, 0.0);
+          iter[1] = DComplex(0.0, 0.0);
+          iter[2] = DComplex(0.0, 0.0);
+          iter[3] = DComplex(1.0, 0.0);
+        }
+        else {
+          for(size_t p=0; p!=perPol; ++p)
+          {
+            iter[p] = DComplex(1.0, 0.0);
+          }
+        }
+      }
+      iter += perPol;
     }
   }
 }
 
+template<size_t NPol>
 bool MultiDirSolver::assignSolutions(std::vector<std::vector<DComplex> >& solutions,
   std::vector<std::vector<DComplex> >& nextSolutions, bool useConstraintAccuracy,
-  double& sum, double& normSum, std::vector<double>& step_magnitudes) const
+  double& avgAbsDiff, std::vector<double>& stepMagnitudes) const
 {
-  sum = 0.0;
-  normSum = 0.0;
+  avgAbsDiff = 0.0;
   //  Calculate the norm of the difference between the old and new solutions
   size_t n = 0;
   for(size_t chBlock=0; chBlock<_nChannelBlocks; ++chBlock)
   {
-    n += solutions[chBlock].size();
-    for(size_t i=0; i!=solutions[chBlock].size(); ++i)
+    for(size_t i=0; i!=solutions[chBlock].size(); i += NPol)
     {
-      double e = std::norm(nextSolutions[chBlock][i] - solutions[chBlock][i]);
-      normSum += e;
-      sum += std::norm(solutions[chBlock][i]);
-      
-      solutions[chBlock][i] = nextSolutions[chBlock][i];
+      // A normalized squared difference is calculated between the solutions of this
+      // and the previous step:
+      //   sqrt { 1/n sum over | (t1 - t0) t0^(-1) |_2 }
+      // This criterion is scale independent: all solutions can be scaled without
+      // affecting the number of iterations. Also, when the polarized version is given
+      // scalar matrices, it will use the same number of iterations as the scalar
+      // version.
+      if(NPol == 1)
+      {
+        if(solutions[chBlock][i] != 0.0)
+        {
+          double a = std::abs((nextSolutions[chBlock][i] - solutions[chBlock][i]) / solutions[chBlock][i]);
+          if(std::isfinite(a))
+          {
+            avgAbsDiff += a;
+            ++n;
+          }
+        }
+        solutions[chBlock][i] = nextSolutions[chBlock][i];
+      }
+      else {
+        MC2x2 s(&solutions[chBlock][i]), sInv(s);
+        if(sInv.Invert())
+        {
+          MC2x2 ns(&nextSolutions[chBlock][i]);
+          ns -= s;
+          ns *= sInv;
+          double sumabs = 0.0;
+          for(size_t p=0; p!=NPol; ++p)
+          {
+            sumabs += std::abs(ns[p]);
+          }
+          if(std::isfinite(sumabs))
+          {
+            avgAbsDiff += sumabs;
+            n += 4;
+          }
+        }
+        for(size_t p=0; p!=NPol; ++p)
+        {
+          solutions[chBlock][i+p] = nextSolutions[chBlock][i+p];
+        }
+      }
     }
   }
-  sum /= n;
-  normSum /= n;
+  // The polarized version needs a factor of two normalization to make it work
+  // like the scalar version would and when given only scalar matrices.
+  //if(NPol == 4)
+  //  avgSquaredDiff = sqrt(avgSquaredDiff*0.5/n) ;
+  //else
+  //  avgSquaredDiff = sqrt(avgSquaredDiff/n);
 
-  step_magnitudes.push_back(sqrt(normSum/sum)*_stepSize);
+  // The stepsize is taken out, so that a small stepsize won't cause
+  // a premature stopping criterion.
+  double stepMagnitude = (n==0 ? 0 : avgAbsDiff/_stepSize/n);
+  stepMagnitudes.emplace_back(stepMagnitude);
 
   if(useConstraintAccuracy)
-    return sqrt(normSum/sum)*_stepSize <= _constraintAccuracy;
-  else
-    return sqrt(normSum/sum)*_stepSize <= _accuracy;
+    return stepMagnitude <= _constraintAccuracy;
+  else {
+    return stepMagnitude <= _accuracy;
+  }
 }
 
 MultiDirSolver::SolveResult MultiDirSolver::processScalar(std::vector<Complex *>& data,
@@ -166,9 +227,6 @@ MultiDirSolver::SolveResult MultiDirSolver::processScalar(std::vector<Complex *>
     }
   }
   
-  // TODO the data and model data needs to be preweighted.
-  // Maybe we can get a non-const pointer from DPPP, that saves copying/allocating
-  
   ///
   /// Start iterating
   ///
@@ -179,8 +237,8 @@ MultiDirSolver::SolveResult MultiDirSolver::processScalar(std::vector<Complex *>
     constraintsSatisfied = false,
     hasStalled = false;
 
-  std::vector<double> step_magnitudes;
-  step_magnitudes.reserve(_maxIterations);
+  std::vector<double> stepMagnitudes;
+  stepMagnitudes.reserve(_maxIterations);
 
   do {
     makeSolutionsFinite(solutions, 1);
@@ -197,6 +255,12 @@ MultiDirSolver::SolveResult MultiDirSolver::processScalar(std::vector<Complex *>
     
     constraintsSatisfied = true;
     _timerConstrain.Start();
+
+    if(statStream)
+    {
+      (*statStream) << iteration << '\t';
+    }
+
     for(size_t i=0; i!=_constraints.size(); ++i)
     {
       // PrepareIteration() might change Satisfied(), and since we always want to
@@ -204,32 +268,34 @@ MultiDirSolver::SolveResult MultiDirSolver::processScalar(std::vector<Complex *>
       // evaluate Satisfied() before preparing.
       constraintsSatisfied = _constraints[i]->Satisfied() && constraintsSatisfied;
       _constraints[i]->PrepareIteration(hasPreviouslyConverged, iteration, iteration+1 >= _maxIterations);
-      result._results[i] = _constraints[i]->Apply(nextSolutions, time);
+      result._results[i] = _constraints[i]->Apply(nextSolutions, time, statStream);
     }
     _timerConstrain.Pause();
     
     if(!constraintsSatisfied)
       constrainedIterations = iteration+1;
     
-    double sum, normSum;
-    hasConverged = assignSolutions(solutions, nextSolutions, !constraintsSatisfied, sum, normSum, step_magnitudes);
-    if(statStream != nullptr)
+    double avgSquaredDiff;
+    hasConverged = assignSolutions<1>(solutions, nextSolutions, !constraintsSatisfied, avgSquaredDiff, stepMagnitudes);
+    if(statStream)
     {
-      (*statStream) << iteration << '\t' << normSum*_stepSize/sum << '\t' << normSum << '\n';
+      (*statStream) << stepMagnitudes.back() << '\t' << avgSquaredDiff << '\n';
     }
     iteration++;
     
     hasPreviouslyConverged = hasConverged || hasPreviouslyConverged;
 
-    if (_detectStalling)
-      hasStalled = detectStall(iteration, step_magnitudes);
+    if (_detectStalling && constraintsSatisfied)
+      hasStalled = detectStall(iteration, stepMagnitudes);
 
   } while(iteration < _maxIterations && (!hasConverged || !constraintsSatisfied) && !hasStalled);
   
-  if(hasConverged)
-    result.iterations = iteration;
+  // When we have not converged yet, we set the nr of iterations to the max+1, so that
+  // non-converged iterations can be distinguished from converged ones.
+  if((!hasConverged || !constraintsSatisfied) && !hasStalled)
+    result.iterations = iteration+1;
   else
-    result.iterations = _maxIterations+1;
+    result.iterations = iteration;
   result.constraintIterations = constrainedIterations;
   return result;
 }
@@ -309,7 +375,7 @@ void MultiDirSolver::performScalarIteration(size_t channelBlockIndex,
     // solve x^H in [g C] x^H  = v
     bool success = solver.Solve(gTimesCs[ant].data(), vs[ant].data());
     Matrix& x = vs[ant];
-    if(success)
+    if(success && x(0, 0) != 0.)
     {
       for(size_t d=0; d!=_nDirections; ++d)
         nextSolutions[ant*_nDirections + d] = x(d, 0);
@@ -424,37 +490,44 @@ MultiDirSolver::SolveResult MultiDirSolver::processFullMatrix(std::vector<Comple
     }
       
     makeStep(solutions, nextSolutions);
+
+    if(statStream)
+    {
+      (*statStream) << iteration << '\t';
+    }
     
     constraintsSatisfied = true;
     for(size_t i=0; i!=_constraints.size(); ++i)
     {
       constraintsSatisfied = _constraints[i]->Satisfied() && constraintsSatisfied;
       _constraints[i]->PrepareIteration(hasPreviouslyConverged, iteration, iteration+1 >= _maxIterations);
-      result._results[i] = _constraints[i]->Apply(nextSolutions, time);
+      result._results[i] = _constraints[i]->Apply(nextSolutions, time, statStream);
     }
     
     if(!constraintsSatisfied)
       constrainedIterations = iteration+1;
     
-    double sum, normSum;
-    hasConverged = assignSolutions(solutions, nextSolutions, !constraintsSatisfied, sum, normSum, step_magnitudes);
-    if(statStream != nullptr)
+    double avgSquaredDiff;
+    hasConverged = assignSolutions<4>(solutions, nextSolutions, !constraintsSatisfied, avgSquaredDiff, step_magnitudes);
+    if(statStream)
     {
-      (*statStream) << iteration << '\t' << normSum*_stepSize/sum << '\t' << normSum << '\n';
+      (*statStream) << step_magnitudes.back() << '\t' << avgSquaredDiff << '\n';
     }
     iteration++;
     
     hasPreviouslyConverged = hasConverged || hasPreviouslyConverged;
 
-    if (_detectStalling)
+    if (_detectStalling && constraintsSatisfied)
       hasStalled = detectStall(iteration, step_magnitudes);
 
   } while(iteration < _maxIterations && (!hasConverged || !constraintsSatisfied) && !hasStalled);
  
-  if(hasConverged)
-    result.iterations = iteration;
+  // When we have not converged yet, we set the nr of iterations to the max+1, so that
+  // non-converged iterations can be distinguished from converged ones.
+  if((!hasConverged || !constraintsSatisfied) && !hasStalled)
+    result.iterations = iteration+1;
   else
-    result.iterations = _maxIterations+1;
+    result.iterations = iteration;
   result.constraintIterations = constrainedIterations;
   return result;
 }
@@ -566,7 +639,7 @@ void MultiDirSolver::performFullMatrixIteration(size_t channelBlockIndex,
     // solve x^H in [g C] x^H  = v
     bool success = solver.Solve(gTimesCs[ant].data(), vs[ant].data());
     Matrix& x = vs[ant];
-    if(success)
+    if(success && x(0, 0) != 0.)
     {
       for(size_t d=0; d!=_nDirections; ++d)
       {
@@ -577,8 +650,9 @@ void MultiDirSolver::performFullMatrixIteration(size_t channelBlockIndex,
       }
     }
     else {
-      for(size_t i=0; i!=_nDirections*4; ++i)
-        nextSolutions[ant*_nDirections + i] = std::numeric_limits<double>::quiet_NaN();
+      for(size_t i=0; i!=_nDirections*4; ++i) {
+        nextSolutions[ant*_nDirections*4 + i] = std::numeric_limits<double>::quiet_NaN();
+      }
     }
   }
   _timerSolve.Pause();

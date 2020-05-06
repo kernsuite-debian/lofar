@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 22539 2012-10-29 11:06:05Z diepen $
+# $Id$
 
 include(LofarPackageVersion)
 

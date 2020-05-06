@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 import os
 
 import lofarpipe.support.utilities as utilities
@@ -50,8 +50,8 @@ class count_timesteps(BaseRecipe, RemoteCommandRecipeMixIn):
             )
         jobs = self._schedule_jobs(jobs, max_per_node=self.inputs['nproc'])
 
-        self.outputs['start_time'] = min(job.results['start_time'] for job in jobs.itervalues())
-        self.outputs['end_time'] = max(job.results['end_time'] for job in jobs.itervalues())
+        self.outputs['start_time'] = min(job.results['start_time'] for job in jobs.values())
+        self.outputs['end_time'] = max(job.results['end_time'] for job in jobs.values())
 
         if self.error.isSet():
             return 1

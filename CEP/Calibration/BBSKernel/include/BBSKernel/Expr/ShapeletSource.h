@@ -29,7 +29,7 @@
 #include <BBSKernel/Expr/Source.h>
 #include <Common/lofar_complex.h>
 
-#include <casa/Arrays.h>
+#include <casacore/casa/Arrays.h>
 
 namespace LOFAR
 {
@@ -56,10 +56,10 @@ private:
     double                  itsShapeletScaleU;
     double                  itsShapeletScaleV;
 
-    casa::Array<double>     itsShapeletCoeffI;  // shapelet coefficients I-flux
-    casa::Array<double>     itsShapeletCoeffQ;
-    casa::Array<double>     itsShapeletCoeffU;
-    casa::Array<double>     itsShapeletCoeffV;
+    casacore::Array<double>     itsShapeletCoeffI;  // shapelet coefficients I-flux
+    casacore::Array<double>     itsShapeletCoeffQ;
+    casacore::Array<double>     itsShapeletCoeffU;
+    casacore::Array<double>     itsShapeletCoeffV;
 };
 
 // @}

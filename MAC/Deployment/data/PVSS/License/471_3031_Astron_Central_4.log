@@ -1,0 +1,66 @@
+
+---------------------------------------------------
+[license]
+code        = "wop57 30058163466"
+version     = 31500002
+sn          = "471_3031_Astron_Central_4/1"
+date        = 2017.10.17;11:40:54,000 
+comment     = "MCU.Apertif Central system"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 1
+ui          = 15
+para        = 4
+dde         = 5
+event       = 1
+ios         = 100000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 15
+infoserver  = 5000
+comcenter   = 5
+maintenance = 0
+scheduler   = 0
+s7          = 1
+distributed = 255
+mobile_app  = 1
+s7plus      = 8
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "wop64 40504776762"
+version     = 31500002
+sn          = "471_3031_Astron_Central_4/2"
+date        = 2017.10.17;11:57:15,000 
+comment     = "Test MCU.Apertif Central system"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 1
+ui          = 15
+para        = 4
+dde         = 5
+event       = 1
+ios         = 100000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 15
+infoserver  = 5000
+comcenter   = 5
+maintenance = 0
+scheduler   = 0
+s7          = 1
+distributed = 255
+mobile_app  = 1
+s7plus      = 8
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+

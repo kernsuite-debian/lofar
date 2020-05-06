@@ -1,0 +1,8 @@
+/**
+
+\ingroup SAS
+\defgroup OTDBServices OTDBServices
+\ref otdb_services
+
+OTDB_Services contains a collection of services to interact with the observation tree database (OTDB).
+*/

@@ -1,0 +1,14 @@
+#! /usr/bin/env ruby
+
+message_file = ARGV[0]
+message = File.read(message_file)
+$regex = /^((fixes|task|story|issue)\s)?(#(\d+)|[a-zA-Z]+-(\d)+):/i
+if !$regex.match(message)
+    STDERR.puts("[commit-msg hook] Your commit was rejected!\n"\
+        "[commit-msg hook] A commit message must start with a JIRA task ID,\n"\
+        " or \"task\", \"story\", \"issue\" or \"fixes\", followed by an issue ID.\n"\
+        "[commit-msg hook] For example: \"Task #42: Fixed bug\" or \"SW-22334: Fixed bug\"\n"\
+        "[commit-msg hook] Your commit message was: " + message)
+    exit 1
+end
+

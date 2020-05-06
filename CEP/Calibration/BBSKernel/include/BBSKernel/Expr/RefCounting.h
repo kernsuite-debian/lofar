@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: RefCounting.h 38197 2017-08-22 18:33:52Z offringa $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_REFCOUNTING_H
 #define LOFAR_BBSKERNEL_EXPR_REFCOUNTING_H

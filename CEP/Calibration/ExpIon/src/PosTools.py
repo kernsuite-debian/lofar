@@ -14,16 +14,16 @@ earth_ellipsoid_e2 = (earth_ellipsoid_a2 - earth_ellipsoid_b2) / earth_ellipsoid
 posCS002=[3826577.1095  ,461022.900196, 5064892.758]
 
 def getMSinfo(MS=None):
-    print "getting info for",MS
+    print("getting info for",MS)
     if MS is None:
-        print "No measurement set given"
+        print("No measurement set given")
         return
     if os.path.isdir(MS):
         myMS=tab.table(MS)
     else:
-        print "Do not understand the format of MS",MS,"bailing out"
+        print("Do not understand the format of MS",MS,"bailing out")
         return;
-    print "opened table",MS
+    print("opened table",MS)
     timerange=[np.amin(myMS.getcol('TIME_CENTROID')),np.amax(myMS.getcol('TIME_CENTROID'))]
     timestep=myMS.getcell('INTERVAL',0)
     
@@ -266,7 +266,7 @@ def getStatPos(stations,AFPath='/opt/lofar/etc/StaticMetaData/',Field='LBA'):
         if line[:len(Field)]==Field:
             StatPos.append([float(stp) for stp in antFile.readline().split()[2:5]])
         else:
-            print "Field",Field,"for",st,"not found,putting zeros"
+            print("Field",Field,"for",st,"not found,putting zeros")
             StatPos.append([0,0,0])
         antFile.close()
     return StatPos

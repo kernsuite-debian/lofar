@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 """
 Stop IPython cluster.
@@ -6,7 +6,7 @@ Stop IPython cluster.
 
 import sys, logging, os
 from optparse import OptionParser
-from ConfigParser import SafeConfigParser as ConfigParser
+from configparser import SafeConfigParser as ConfigParser
 from lofarpipe.support.clusterhandler import ClusterHandler
 
 parser = OptionParser()

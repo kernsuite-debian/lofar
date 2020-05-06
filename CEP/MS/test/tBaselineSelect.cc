@@ -18,20 +18,20 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: tBaselineSelect.cc 34753 2016-06-20 10:43:42Z schaap $
+//#  $Id$
 
 //# Includes
 #include <MS/BaselineSelect.h>
 #include <Common/LofarLogger.h>
 
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MeasTable.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/BasicSL/STLIO.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MeasTable.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/BasicSL/STLIO.h>
 #include <iostream>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void testTemp()

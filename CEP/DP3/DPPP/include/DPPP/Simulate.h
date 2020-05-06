@@ -33,7 +33,7 @@
 #include <Common/lofar_complex.h>
 
 //# Forward Declaration.
-namespace casa
+namespace casacore
 {
   template<typename T> class Vector;
   template<typename T> class Matrix;

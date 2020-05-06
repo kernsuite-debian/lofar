@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39220 2018-03-16 12:00:48Z jurges $
+# $Id$
 
 include(LofarCTest)
 

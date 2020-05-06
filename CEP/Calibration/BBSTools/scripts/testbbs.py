@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Python class for End-to-end tests of BBS
 #
@@ -30,15 +30,15 @@ class testbbs(testsip):
 
     def show(self):
         self.sip.showCommon()                                 # call baseclass show() method first
-        print "skymodel     = ", self.skymodel                # Then print BBS specific information
-        print "dbserver     = ", self.dbserver
-        print "parms        = ", self.parms
+        print("skymodel     = ", self.skymodel)                # Then print BBS specific information
+        print("dbserver     = ", self.dbserver)
+        print("parms        = ", self.parms)
 
     # Read the output data columns, e.g CORRECTED_DATA etc. from the parset
     #
     def getColumnsFromParset(self):
         if self.verbose:
-            print bcolors.OKBLUE + "Reading columns from parset" + bcolors.ENDC
+            print(bcolors.OKBLUE + "Reading columns from parset" + bcolors.ENDC)
         
         parset_fh=open(self.parset, "r")
         lines=parset_fh.readlines()
@@ -57,7 +57,7 @@ class testbbs(testsip):
     #
     def compareParms(self, parameter=""):
         if self.verbose:
-            print "Comparing " + bcolors.OKBLUE + "parmDB parameters " + bcolors.ENDC + "in test MS " + bcolors.WARNING + self.test_MS + bcolors.ENDC + " and reference MS " + bcolors.WARNING + self.MS + bcolors.ENDC         # DEBUG       
+            print("Comparing " + bcolors.OKBLUE + "parmDB parameters " + bcolors.ENDC + "in test MS " + bcolors.WARNING + self.test_MS + bcolors.ENDC + " and reference MS " + bcolors.WARNING + self.MS + bcolors.ENDC)         # DEBUG       
 
         if isinstance(self.test_MS, str):
             parmDB_test=parmdb.parmdb(self.test_MS + '/instrument')       # test_MS parmdb
@@ -81,7 +81,7 @@ class testbbs(testsip):
         # Test if all parameters have been solved for            
         for parm in parameters:
             if parm not in parameters:
-                print "compareParms() test MS is missing solved parameters"
+                print("compareParms() test MS is missing solved parameters")
                 self.end()
 
         for parm in progressbar(parameters, "Comparing parameters ", 40):
@@ -103,7 +103,7 @@ class testbbs(testsip):
                             difference.append(abs(testparms['values'][i] - refparms['values'][i]))
                             max=numpy.max(difference)
                             if max > self.acceptancelimit:
-                                print bcolors.FAIL + "Parameter " + parm + " differs more than " + str(max) + bcolors.ENDC
+                                print(bcolors.FAIL + "Parameter " + parm + " differs more than " + str(max) + bcolors.ENDC)
                                 self.passed = False
                                 self.end()
                             else:
@@ -112,7 +112,7 @@ class testbbs(testsip):
                         difference = abs(testparms - refparms)
                         
                         if difference > self.acceptancelimit:
-                            print bcolors.FAIL + "Parameter " + parm + " differes more than " + difference 
+                            print(bcolors.FAIL + "Parameter " + parm + " differes more than " + difference) 
                             self.passed = False
                             self.end()                    
                         else:
@@ -124,7 +124,7 @@ class testbbs(testsip):
     # Get the parameters that were solved for from the parset
     #
     def getParmsFromParset(self):
-        print bcolors.OKBLUE + "Reading parms from parset" + bcolors.ENDC
+        print(bcolors.OKBLUE + "Reading parms from parset" + bcolors.ENDC)
 
         parset_fh=open(self.parset, "r")
         lines=parset_fh.readlines()
@@ -144,21 +144,21 @@ class testbbs(testsip):
     # Execute BBS calibration through the calibrate script
     #
     def runBBS(self):    
-        print bcolors.OKBLUE + "Running BBS through calibrate script." + bcolors.ENDC
+        print(bcolors.OKBLUE + "Running BBS through calibrate script." + bcolors.ENDC)
         arguments = '-v -f -n --clean --key ' + self.key  + ' --cluster-desc ' + self.clusterdesc + ' --db ' + self.dbserver + ' --db-user ' + self.dbuser + ' ' + self.gds + ' ' + self.parset + ' ' + self.skymodel + ' ' + self.wd
         command = ['calibrate', arguments] # '-v', '-f', '--clean', '--key bbstest', '--cluster-desc ' + self.clusterdesc, 
 #        '--db ' + self.dbserver, '--db-user ' + self.dbuser, self.gds, self.parset, self.skymodel,  self.wd]
     
         proc = subprocess.Popen('calibrate ' + arguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in proc.stdout.readlines():
-            print line
+            print(line)
         ret = proc.wait()
  
         #ret=subprocess.call(command)       
         if ret==0:
-            print bcolors.OKBLUE + "BBS calibration exited successfully." + bcolors.ENDC
+            print(bcolors.OKBLUE + "BBS calibration exited successfully." + bcolors.ENDC)
         else:
-            print bcolors.FAIL + "Fatal: BBS terminated with an error." + bcolors.ENDC
+            print(bcolors.FAIL + "Fatal: BBS terminated with an error." + bcolors.ENDC)
             self.passed=False
             self.end()
             
@@ -167,7 +167,7 @@ class testbbs(testsip):
     #
     def executeTest(self, test="all", verbose=False, taql=False):    
         if self.verbose:
-            print bcolors.WARNING + "Execute test " + bcolors.ENDC + sys.argv[0] 
+            print(bcolors.WARNING + "Execute test " + bcolors.ENDC + sys.argv[0]) 
 
         self.sip.copyOriginalFiles()
         self.sip.makeGDS()
@@ -182,7 +182,7 @@ class testbbs(testsip):
         if test=="parms" or test=="all":
             self.sip.compareParms()
         if test=="columns" or test=="all":
-            print "executeTest() self.sip.taql = ", self.sip.taql     # DEBUG
+            print("executeTest() self.sip.taql = ", self.sip.taql)     # DEBUG
             self.sip.compareColumns(self.columns, self.sip.taql)
 
         if self.verbose:

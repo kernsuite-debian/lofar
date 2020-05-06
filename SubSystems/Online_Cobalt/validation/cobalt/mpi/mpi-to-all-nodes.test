@@ -1,0 +1,8 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cobalt2
+
+mpirun -H cbm201,cbm202,cbm203,cbm204,cbm205,cbm206,cbm207,cbm208,cbm209,cbm210,cbm211,cbm212,cbm213 hostname -f | sort -u | wc -l | grep '^13$'
+
+exit 0

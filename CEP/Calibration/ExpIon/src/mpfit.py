@@ -7,7 +7,7 @@ from numpy import *
 #from pylab import *
 
 # import user modules
-from acalc import *
+from .acalc import *
 
 ###############################################################################
 
@@ -1215,7 +1215,7 @@ Keywords:
 
          ## Test for convergence of the gradient norm
          if ( gnorm <= gtol ):
-            print 'gnorm = ', gnorm
+            print('gnorm = ', gnorm)
             self.status = 4
             return
 
@@ -1514,7 +1514,7 @@ Keywords:
                       format = None, pformat = '%.10g', dof = 1 ):
 
       if self.debug:
-         print 'Entering defiter...'
+         print('Entering defiter...')
 
       if not quiet:
 
@@ -1525,14 +1525,14 @@ Keywords:
          ## Determine which parameters to print
          nprint = len( x )
    
-         print "Iter %6i   CHI-SQUARE = %.10g         DOF = %i" % ( iter, fnorm, dof )
+         print("Iter %6i   CHI-SQUARE = %.10g         DOF = %i" % ( iter, fnorm, dof ))
          for i in range( nprint ):
             if ( parinfo != None ):
-               if ( parinfo[ i ].has_key( 'parname' ) ):
+               if ( 'parname' in parinfo[ i ] ):
                   p = '   ' + parinfo[i]['parname'] + ' = '
                else:
                   p = '   P' + str( i ) + ' = '
-               if ( parinfo[ i ].has_key( 'mpprint' ) ):
+               if ( 'mpprint' in parinfo[ i ] ):
                   iprint = parinfo[ i ][ 'mpprint' ]
                else:
                   iprint = 1
@@ -1540,7 +1540,7 @@ Keywords:
                p = '   P' + str( i ) + ' = '
                iprint = 1
             if ( iprint > 0 ):
-               print p + ( pformat % x[ i ] ) + '  '
+               print(p + ( pformat % x[ i ] ) + '  ')
 
          return 0
 
@@ -1568,7 +1568,7 @@ Keywords:
    def parinfo( self, parinfo = None, key = 'a', default = None, n = 0 ):
 
       if self.debug:
-         print 'Entering parinfo...'
+         print('Entering parinfo...')
 
       if ( ( n == 0 ) and ( parinfo != None ) ):
          n = len( parinfo )
@@ -1580,7 +1580,7 @@ Keywords:
       values = []
       for i in range( n ):
          if ( parinfo != None ):
-            if ( parinfo[ i ].has_key( key ) ):
+            if ( key in parinfo[ i ] ):
                values.append( parinfo[ i ][ key ] )
             else:
                values.append( default )
@@ -1607,7 +1607,7 @@ Keywords:
    def call( self, fcn, x, functkw, dojac = None ):
 
       if self.debug:
-         print 'Entering call...'
+         print('Entering call...')
 
       if self.qanytied:
          x = self.tie( x, ptied = self.ptied )
@@ -1638,7 +1638,7 @@ Keywords:
    def enorm( self, vec ):
 
       if self.debug:
-         print 'Entering enorm...'
+         print('Entering enorm...')
 
       if self.__mpfit:
         import _mpfit
@@ -1683,7 +1683,7 @@ Keywords:
               functkw = None, xall = None, ifree = None, dstep = None ):
 
       if self.debug:
-         print 'Entering fdjac2...'
+         print('Entering fdjac2...')
 
       machep = self.machar.machep
 
@@ -1708,7 +1708,7 @@ Keywords:
          status, fp, fjac = self.call( fcn, xall, functkw, dojac = dojac )
 
          if ( ( status < 0 ) or ( len( fjac.getflat() ) != m * nall ) ):
-             print 'ERROR: Derivative matrix was not computed properly.'
+             print('ERROR: Derivative matrix was not computed properly.')
              return None
 
          ## This definition is consistent with CURVEFIT
@@ -1920,7 +1920,7 @@ Keywords:
    def qrfac( self, a, pivot = False ):
 
       if self.debug:
-         print 'Entering qrfac...'
+         print('Entering qrfac...')
 
       if self.__mpfit:
         import _mpfit
@@ -2097,7 +2097,7 @@ Keywords:
    def qrsolv( self, r, ipvt, diag, qtb, sdiag ):
 
       if self.debug:
-         print 'Entering qrsolv...'
+         print('Entering qrsolv...')
 
       if self.__mpfit:
         import _mpfit
@@ -2284,7 +2284,7 @@ Keywords:
    def lmpar( self, r, ipvt, diag, qtb, x, sdiag, delta, par ):
 
       if self.debug:
-         print 'Entering lmpar...'
+         print('Entering lmpar...')
 
       if self.__mpfit:
         import _mpfit
@@ -2416,7 +2416,7 @@ Keywords:
    def tie( self, p, ptied = None ):
 
       if self.debug:
-         print 'Entering tie...'
+         print('Entering tie...')
 
       pp = p.copy()
       if ( ptied != None ):
@@ -2501,7 +2501,7 @@ Keywords:
    def calc_covar( self, rr, ipvt = None, tol = 1.e-14 ):
 
       if self.debug:
-         print 'Entering calc_covar...'
+         print('Entering calc_covar...')
 
       if self.__mpfit:
         import _mpfit
@@ -2510,12 +2510,12 @@ Keywords:
 
       s = rr.shape
       if ( rank( rr ) != 2 ):
-         print 'ERROR: r must be a two-dimensional matrix'
+         print('ERROR: r must be a two-dimensional matrix')
          return - 1
       m = s[ 0 ]
       n = s[ 1 ]
       if ( m != n ):
-         print 'ERROR: r must be a square matrix'
+         print('ERROR: r must be a square matrix')
          return - 1
 
       if ( ipvt == None ):

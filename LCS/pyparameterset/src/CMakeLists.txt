@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 17066 2011-01-13 08:47:21Z loose $
+# $Id$
 
 include(LofarPackageVersion)
 include(PythonInstall)

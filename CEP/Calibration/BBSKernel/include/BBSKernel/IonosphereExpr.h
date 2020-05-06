@@ -34,7 +34,7 @@
 #include <Common/lofar_smartptr.h>
 #include <Common/lofar_vector.h>
 
-namespace casa
+namespace casacore
 {
     class MPosition;
 }
@@ -61,8 +61,8 @@ public:
 
     virtual ~IonosphereExpr();
 
-    virtual Expr<JonesMatrix>::Ptr construct(const casa::MPosition &refPosition,
-        const casa::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
+    virtual Expr<JonesMatrix>::Ptr construct(const casacore::MPosition &refPosition,
+        const casacore::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
         const = 0;
 };
 
@@ -74,8 +74,8 @@ public:
 
     MIMExpr(const IonosphereConfig &config, Scope &scope);
 
-    virtual Expr<JonesMatrix>::Ptr construct(const casa::MPosition &refPosition,
-        const casa::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
+    virtual Expr<JonesMatrix>::Ptr construct(const casacore::MPosition &refPosition,
+        const casacore::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
         const;
 
 private:
@@ -91,8 +91,8 @@ public:
 
     ExpIonExpr(const IonosphereConfig&, Scope &scope);
 
-    virtual Expr<JonesMatrix>::Ptr construct(const casa::MPosition &refPosition,
-        const casa::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
+    virtual Expr<JonesMatrix>::Ptr construct(const casacore::MPosition &refPosition,
+        const casacore::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
         const;
 
 private:

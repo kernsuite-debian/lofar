@@ -98,7 +98,7 @@ class cep2_datamapper(BaseRecipe):
         )
         self.logger.debug("Searching for data files: %s" % ms_pattern)
         data = findFiles(ms_pattern, '-1d')
-        return zip(data[0], data[1])
+        return list(zip(data[0], data[1]))
 
 
     def go(self):

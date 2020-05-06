@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Run the unit test
+source python-coverage.sh
+python_coverage_test "specification_service.py" t_specification_service.py

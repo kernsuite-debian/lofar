@@ -1,5 +1,15 @@
-# $Id: CMakeLists.txt 28415 2014-02-25 11:11:37Z dijkema $
+# $Id$
 
 include(LofarCTest)
 
-#lofar_add_test(tStationBeamNCP) # test not enabled because pyrap is not found
+include(LofarFindPackage)
+
+lofar_find_package(Casacore REQUIRED COMPONENTS python)
+if(CASA_PYTHON3_LIBRARY)
+  #This test is disabled due to boost-python linking problems on CEP3
+  #lofar_add_test(tStationBeamNCP)
+else(CASA_PYTHON3_LIBRARY)
+  message(WARNING "Python-casacore was not found, disabling tStationBeamNCP")
+endif(CASA_PYTHON3_LIBRARY)
+
+lofar_add_test(tpystationresponse)

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TH_MPI.h 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 #ifndef TRANSPORT_TH_MPI_H
 #define TRANSPORT_TH_MPI_H

@@ -17,12 +17,13 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: UVWCalculator.cc 37169 2017-04-19 12:41:21Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 // Note: this code is used by LOFAR and APERTIF software.
 
+#include <lofar_config.h>
 #include <DPPP/UVWCalculator.h>
 #include <casacore/measures/Measures/MEpoch.h>
 #include <casacore/measures/Measures/Muvw.h>

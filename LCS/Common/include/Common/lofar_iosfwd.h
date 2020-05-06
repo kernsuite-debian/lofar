@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: lofar_iosfwd.h 32863 2015-11-10 16:06:44Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_COMMON_IOSFWD_H
 #define LOFAR_COMMON_IOSFWD_H

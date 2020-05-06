@@ -1,0 +1,27 @@
+#
+# This builds an image with all dependencies for the LCU package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for MAC..." && \
+    yum -y install readline-devel boost-python36-devel hdf5-devel blas-devel lapack-devel cfitsio-devel wcslib-devel autogen postgresql-devel cmake3 libpqxx-devel qpid-cpp-server qpid-cpp-client-devel qpid-tools unittest-cpp-devel && \
+    pip3 install psycopg2 testing.postgresql lxml mock numpy kombu requests python-dateutil fabric
+
+RUN echo "Installing Casacore..." && \
+    git clone https://github.com/casacore/casacore && \
+    mkdir /casacore/build/ && \
+    cd /casacore/build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/casacore -DBUILD_PYTHON3=ON -DBUILD_PYTHON=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j 8 && \
+    make install
+
+RUN echo "Installing Blitz++" && \
+    cd / && \
+    git clone --depth 1 https://github.com/blitzpp/blitz.git && \
+    mkdir -p /blitz/build && \
+    cd /blitz/build && \
+    cmake --prefix=/opt/blitz/ .. && \
+    make -j 8 lib && \
+    make install

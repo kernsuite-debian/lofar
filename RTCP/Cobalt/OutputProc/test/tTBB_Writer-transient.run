@@ -1,0 +1,38 @@
+#!/bin/bash
+# tTBB_Writer-transient.run
+
+rm -f L121212_CS011_D20110719T110541.036Z_tbb.h5 L121212_CS011_RSP001_RCU010_D20110719T110541.036Z_tbb.raw
+
+status=0
+
+TBB_Writer --parset=tTBB_Writer-transient.parset --staticmetadatadir=tTBB_Writer-transient.in_1 --outputdir=. --input=file:tTBB_Writer-transient.in_1/rw_20110719_110541_1110.dat --timeout=1 --keeprunning=0 || status=1
+
+# Check some .h5 attributes vs a reference output
+# Older HDF5 1.8 versions (e.g. 1.8.4) print e.g.: 'ATTRIBUTE "STATION_CS011/STATION_NAME" {' instead of: 'ATTRIBUTE "STATION_NAME" {' and different spacing.
+# Use sed magic to strip the HDF5 dirname and use diff with -b. (Better: use h5diff.)
+h5dump -a TELESCOPE \
+       -a OPERATING_MODE \
+       -a STATION_CS011/STATION_NAME \
+       -a STATION_CS011/STATION_POSITION \
+       -a STATION_CS011/DIPOLE_011001010/DATA_LENGTH \
+       -a STATION_CS011/DIPOLE_011001010/SAMPLE_NUMBER \
+       -a STATION_CS011/DIPOLE_011001010/TIME \
+       L121212_CS011_D20110719T110541.036Z_tbb.h5 | \
+  sed -r -e 's/^ATTRIBUTE "([[:alnum:]_]+\/)*([[:alnum:]_]+)"/ATTRIBUTE "\2"/' > \
+    L121212_CS011_D20110719T110541.036Z_tbb.h5.selected-attribs.txt || status=1
+
+diff -b L121212_CS011_D20110719T110541.036Z_tbb.h5.selected-attribs.txt tTBB_Writer-transient.in_1/L121212_CS011_D20110719T110541.036Z_tbb.h5.selected-attribs.txt || status=1
+
+# Check .raw file vs a reference output
+diff L121212_CS011_RSP001_RCU010_D20110719T110541.036Z_tbb.raw tTBB_Writer-transient.in_1/tTBB_Writer-transient-refout.raw || status=1
+
+
+if [ $status -eq 1 ]; then
+  echo
+  echo "Printing all (1000) TBB input frames to ease debugging / test fixing"
+  tbb-printframes tTBB_Writer-transient.in_1/rw_20110719_110541_1110.dat 1000
+else
+  rm -f L121212_CS011_D20110719T110541.036Z_tbb.h5 L121212_CS011_RSP001_RCU010_D20110719T110541.036Z_tbb.raw L121212_CS011_D20110719T110541.036Z_tbb.h5.selected-attribs.txt
+fi
+
+[ $status -eq 0 ]

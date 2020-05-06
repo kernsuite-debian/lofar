@@ -5,7 +5,7 @@
 # klijn@astron.nl
 # -----------------------------------------------------------------------------
 """
-from __future__ import with_statement
+
 import sys
 import subprocess
 import math
@@ -17,6 +17,7 @@ from lofarpipe.support.pipelinelogging import log_process_output
 from lofarpipe.support.pipelinelogging import CatchLog4CPlus
 from lofarpipe.support.utilities import catch_segfaults
 from lofarpipe.support.utilities import create_directory
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 import monetdb.sql as db
 import lofar.gsm.gsmutils as gsm
@@ -168,7 +169,7 @@ class imager_create_dbs(LOFARnodeTCP):
                 catch_segfaults(cmd, working_directory, self.environment,
                                             logger, cleanup=None)
 
-        except subprocess.CalledProcessError, called_proc_error:
+        except subprocess.CalledProcessError as called_proc_error:
             self.logger.error("Execution of external failed:")
             self.logger.error(" ".join(cmd))
             self.logger.error("exception details:")
@@ -271,11 +272,11 @@ class imager_create_dbs(LOFARnodeTCP):
                 stderr=subprocess.PIPE
             )
             # Send formatted template on stdin
-            sout, serr = parmdbm_process.communicate(formatted_template)
+            sout, serr = communicate_returning_strings(parmdbm_process,input=formatted_template)
 
             # Log the output
             log_process_output("parmdbm", sout, serr, self.logger)
-        except OSError, oserror:
+        except OSError as oserror:
             self.logger.error("Failed to spawn parmdbm: {0}".format(
                                                             str(oserror)))
             return 1
@@ -313,7 +314,7 @@ class imager_create_dbs(LOFARnodeTCP):
             conn = db.connect(hostname=hostname, database=database,
                                        username=username, password=password,
                                        port=port)
-        except db.Error, dberror:
+        except db.Error as dberror:
             self.logger.error("Failed to create a monetDB connection: "
                               "{0}".format(str(dberror)))
             raise dberror
@@ -340,7 +341,7 @@ class imager_create_dbs(LOFARnodeTCP):
             field = pt.table(table.getkeyword("FIELD"))
             ra_and_decl = field.getcell("PHASE_DIR", 0)[0]
 
-        except Exception, exception:
+        except Exception as exception:
             #catch all exceptions and log
             self.logger.error("Error loading FIELD/PHASE_DIR from "
                               "measurementset {0} : {1}".format(measurement_set,
@@ -408,7 +409,7 @@ class imager_create_dbs(LOFARnodeTCP):
                         storespectraplots=False)
             self.logger.debug(gsm.__file__)
 
-        except Exception, exception:
+        except Exception as exception:
             self.logger.error("expected_fluxes_in_fov raise exception: " +
                               str(exception))
             return 1

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceData.h 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 // @file
 // @brief Base class for a table holding sources and their parameters

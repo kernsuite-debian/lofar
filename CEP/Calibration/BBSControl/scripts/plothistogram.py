@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Solver statistics histogram dialog
 #
@@ -24,7 +24,7 @@ from matplotlib.figure import Figure
 
 class plothistogram(QFrame):
    def __init__(self, parent):
-      print "__init__()"       # DEBUG
+      print("__init__()")       # DEBUG
       QFrame.__init__(self)
       
       self.parent=parent
@@ -145,7 +145,7 @@ class plothistogram(QFrame):
       self.plot()
 
    def on_data(self):
-      print "on_data()"       # DEBUG
+      print("on_data()")       # DEBUG
       if self.dataComboBox.currentText()==self.parent.parent.parametersComboBox.currentText():
           self.data=self.data2
       else:
@@ -166,7 +166,7 @@ class plothistogram(QFrame):
       
       
 def main():
-  print "main()"
+  print("main()")
   
   app = QApplication(sys.argv)
   form=plothistogram(app)

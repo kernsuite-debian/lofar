@@ -1,0 +1,39 @@
+#!/bin/bash
+# tTBB_Writer-spectral.run
+
+echo "WARNING 2018-12-20: Temporarily disabled this test. It will be reenabled when the tbb-alert dev branch is merged into trunk in Jan-2019"
+exit 3
+
+
+rm -f L121213_CS013_D20170711T094130.000Z_tbb.h5 L121213_CS013_RSP001_RCU010_SB099_D20170711T094130.000Z_tbb.raw L121213_CS013_RSP001_RCU010_SB100_D20170711T094130.000Z_tbb.raw
+
+status=0
+
+TBB_Writer --parset=tTBB_Writer-spectral.parset --staticmetadatadir=tTBB_Writer-spectral.in_1 --outputdir=. --input=file:tTBB_Writer-spectral.in_1/sb_20170711_094130_1310_sb99-100dupl.dat --timeout=1 --keeprunning=0 || status=1
+
+
+
+# Check all .h5 attributes vs a reference output
+# Use sed magic to strip the HDF5 dirname and use diff with -b. (Better: use h5diff.)
+h5dump -a TELESCOPE \
+       -a OPERATING_MODE \
+       -g STATION_CS013 \
+       L121213_CS013_D20170711T094130.000Z_tbb.h5 | \
+  sed -r -e 's/^ATTRIBUTE "([[:alnum:]_]+\/)*([[:alnum:]_]+)"/ATTRIBUTE "\2"/' > \
+    L121213_CS013_D20170711T094130.000Z_tbb.h5.dump.txt || status=1
+
+diff -b L121213_CS013_D20170711T094130.000Z_tbb.h5.dump.txt tTBB_Writer-spectral.in_1/L121213_CS013_D20170711T094130.000Z_tbb.h5.dump.reference.txt || status=1
+
+# Check .raw file vs a reference output
+diff L121213_CS013_RSP001_RCU010_D20170711T094130.000Z_tbb.raw tTBB_Writer-spectral.in_1/tTBB_Writer-spectral-refout.raw || status=1
+
+
+if [ $status -eq 1 ]; then
+  echo
+  echo "Printing all (20) TBB input frames to ease debugging / test fixing"
+  tbb-printframes tTBB_Writer-spectral.in_1/sb_20170711_094130_1310_sb99-100dupl.dat 20
+else
+  rm -f L121213_CS013_D20170711T094130.000Z_tbb.h5 L121213_CS013_RSP001_RCU010_SB099_D20170711T094130.000Z_tbb.raw L121213_CS013_RSP001_RCU010_SB100_D20170711T094130.000Z_tbb.raw L121213_CS013_D20110719T110541.036Z_tbb.h5.dump.txt
+fi
+
+[ $status -eq 0 ]

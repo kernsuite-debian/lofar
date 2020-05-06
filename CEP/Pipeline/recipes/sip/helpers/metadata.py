@@ -44,11 +44,11 @@ def to_parset(data, prefix=''):
     """
     result = parameterset()
     if isinstance(data, dict):
-        for key, value in data.iteritems():
+        for key, value in data.items():
             fullkey = prefix + '.' + key if prefix else key
             if isinstance(value, dict):
                 if any(isinstance(v, dict) or isinstance(v, list) 
-                    for v in value.values()):
+                    for v in list(value.values())):
                     result.adoptCollection(to_parset(value, fullkey))
                 else:
                     result.replace(fullkey, str(value))
@@ -65,7 +65,7 @@ def to_parset(data, prefix=''):
             fullkey = prefix + '[%d]' % index
             if isinstance(value, dict):
                 if any(isinstance(v, dict) or isinstance(v, list) 
-                    for v in value.values()):
+                    for v in list(value.values())):
                     result.adoptCollection(to_parset(value, fullkey))
                 else:
                     result.replace(fullkey, str(value))
@@ -242,11 +242,11 @@ class Correlated(DataProduct):
                 'subband' : int(spw.getcell('NAME', 0)[3:]),
                 'stationSubband' : 0         ### NOT CORRECT! ###
             })
-        except Exception, error:
-            print >> sys.stderr, (
+        except Exception as error:
+            print((
                 "%s: %s\n\twhile processing file %s" % 
                 (type(error).__name__, error, filename)
-            )
+            ), file=sys.stderr)
 
 
 
@@ -371,11 +371,11 @@ class SkyImage(DataProduct):
                 'imagerIntegrationTime':imagerIntegrationTime
             })
             self.logger.info("Succes fully collecting meta data for skyimage")
-        except Exception, error:
-            print >> sys.stderr, (
+        except Exception as error:
+            print((
                 "%s: %s\n\twhile processing file %s" % 
                 (type(error).__name__, error, filename)
-            )
+            ), file=sys.stderr)
 
 
     @staticmethod

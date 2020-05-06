@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from collections import defaultdict
 from threading import BoundedSemaphore
 
@@ -23,6 +23,7 @@ from lofarpipe.support.jobserver import job_server
 import lofarpipe.support.lofaringredient as ingredient
 from lofarpipe.support.xmllogging import add_child
 from subprocess import Popen, PIPE
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 # By default, Linux allocates lots more memory than we need(?) for a new stack
 # frame. When multiplexing lots of threads, that will cause memory issues.
@@ -101,7 +102,7 @@ def run_via_mpirun(logger, host, command, environment, arguments):
     """
     logger.debug("Dispatching command to %s with mpirun" % host)
     mpi_cmd = ["/usr/bin/mpirun", "-host", host]
-    for key,value in environment.iteritems():
+    for key,value in environment.items():
         mpi_cmd.extend(["-x", "%s=%s" % (key,value)])
     mpi_cmd.append("--")
     mpi_cmd.extend(command.split())  # command is split into (python, script)
@@ -134,7 +135,7 @@ def run_via_ssh(logger, host, command, environment, arguments):
     logger.debug("Dispatching command to %s with ssh" % host)
     ssh_cmd = ["ssh", "-n", "-tt", "-x", host, "--", "/bin/sh", "-c"]
 
-    commandstring = ["%s=%s" % (key, value) for key, value in environment.items()]
+    commandstring = ["%s=%s" % (key, value) for key, value in list(environment.items())]
     commandstring.append(command)
     commandstring.extend(re.escape(str(arg)) for arg in arguments)
     ssh_cmd.append('"' + " ".join(commandstring) + '"')
@@ -164,11 +165,11 @@ def run_via_custom_cmdline(logger, host, command, environment, arguments, config
     """
 
     # construct {env}
-    envPairs = ["%s=%s" % (key, value) for key, value in environment.items()]
+    envPairs = ["%s=%s" % (key, value) for key, value in list(environment.items())]
     envStr        = " ".join(envPairs)
 
     # construct {docker-env}
-    dockerEnvPairs = ["-e %s=%s" % (key, value) for key, value in environment.items()]
+    dockerEnvPairs = ["-e %s=%s" % (key, value) for key, value in list(environment.items())]
     dockerEnvStr   = " ".join(dockerEnvPairs)
 
     # construct {command}
@@ -182,7 +183,7 @@ def run_via_custom_cmdline(logger, host, command, environment, arguments, config
       if len(args) == 1:
         return args[0]
 
-      return args[1] if args[0] == "python" else args[0]
+      return args[1] if args[0].startswith("python") else args[0]
 
     # Construct the full command line
     full_command_line = config.get('remote', 'cmdline').format(
@@ -294,7 +295,7 @@ class ComputeJob(object):
             pg.run(cmdarray)
             job_successful = (pg.wait_for_finish() is None)
 
-        except Exception, e:
+        except Exception as e:
             logger.exception("Failed to run remote process %s (%s)" % (self.command, str(e)))
             self.results['returncode'] = 1
             error.set()
@@ -424,7 +425,7 @@ def expand_slurm_hostlist(hostlist):
         width = len(s_low)
 
         results = []
-        for i in xrange(low, high+1):
+        for i in range(low, high+1):
             results.append("%s%0*d" % (prefix, width, i))
         return results
 
@@ -501,7 +502,7 @@ class RemoteCommandRecipeMixIn(object):
             nodeliststr = []
             hargs = ['srun','hostname']
             proc = Popen(hargs, False, stdout=PIPE, stderr=None)
-            tup = proc.communicate()
+            tup = communicate_returning_strings(proc)
             nodeliststr = tup[0].rstrip('\n').split('\n')
             # remove duplicates. order not important
             nodeliststr = list(set(nodeliststr))
@@ -622,6 +623,6 @@ class RemoteCommandRecipeMixIn(object):
         # output does not matter
         self.outputs._fields["return_xml"] = ingredient.StringField(
                                                 help = "XML return data.")
-        self.outputs["return_xml"] = node_durations.toxml(encoding = "ascii")
+        self.outputs["return_xml"] = node_durations.toxml(encoding = "ascii").decode('ascii')
 
         return jobpool

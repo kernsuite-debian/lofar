@@ -32,6 +32,11 @@ RUN apt-get update && apt-get install -y ruby ruby-dev libsasl2-dev uuid-dev lib
     apt-get purge -y ruby ruby-dev libsasl2-dev uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man libsslcommon2-dev libxqilla-dev libboost-program-options${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev && \
     apt-get autoremove -y
 
+# *******************
+#   Kombu client for Python
+# *******************
+RUN aptitude install -y python3-kombu
+
 #
 # *******************
 #   LOFAR

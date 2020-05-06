@@ -18,22 +18,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: msselect.cc 31487 2015-04-16 11:28:17Z dijkema $
+//# $Id$
 
-#include <tables/Tables/TableRecord.h>
-#include <casa/Inputs/Input.h>
-#include <casa/OS/DirectoryIterator.h>
-#include <casa/OS/File.h>
-#include <casa/OS/SymLink.h>
-#include <casa/Arrays/ArrayMath.h>
-#if defined(casacore)
-#include <ms/MSSel/MSSelection.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/casa/Inputs/Input.h>
+#include <casacore/casa/OS/DirectoryIterator.h>
+#include <casacore/casa/OS/File.h>
+#include <casacore/casa/OS/SymLink.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/ms/MSSel/MSSelection.h>
 #else
-#include <ms/MeasurementSets/MSSelection.h>
+#include <casacore/ms/MSSel/MSSelection.h>
 #endif
 #include <iostream>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void select (const String& msin, const String& out, const String& baseline,

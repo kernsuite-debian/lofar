@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Grid.cc 14038 2009-09-17 13:59:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Grid.h>
@@ -97,8 +97,8 @@ namespace BBS {
       if (sy != domains[nx].lowerY()) {
         break;
       }
-      if (! (casa::near(ex, domains[nx].lowerX())
-         &&  casa::near(dx, domains[nx].upperX() - domains[nx].lowerX()))) {
+      if (! (casacore::near(ex, domains[nx].lowerX())
+         &&  casacore::near(dx, domains[nx].upperX() - domains[nx].lowerX()))) {
         xregular = false;
       }
       ex = domains[nx].upperX();
@@ -119,8 +119,8 @@ namespace BBS {
     for (uint j=1; j<ny; ++j) {
       for (uint i=0; i<nx; ++i) {
         uint inx = j*nx + i;
-        ASSERT (casa::near(xaxisStart[i], domains[inx].lowerX()));
-        ASSERT (casa::near(xaxisEnd[i], domains[inx].upperX()));
+        ASSERT (casacore::near(xaxisStart[i], domains[inx].lowerX()));
+        ASSERT (casacore::near(xaxisEnd[i], domains[inx].upperX()));
       }
     }
     // Determine the start/end for Y and if it is regular.
@@ -135,8 +135,8 @@ namespace BBS {
       uint inx = i*nx;
       yaxisStart.push_back (domains[inx].lowerY());
       yaxisEnd.push_back (domains[inx].upperY());
-      if (! (casa::near(ey, domains[inx].lowerY())
-         &&  casa::near(dy, domains[inx].upperY() - domains[inx].lowerY()))) {
+      if (! (casacore::near(ey, domains[inx].lowerY())
+         &&  casacore::near(dy, domains[inx].upperY() - domains[inx].lowerY()))) {
         yregular = false;
       }
       ey = domains[inx].upperY();
@@ -144,8 +144,8 @@ namespace BBS {
     for (uint j=0; j<ny; ++j) {
       for (uint i=1; i<nx; ++i) {
         uint inx = j*nx + i;
-        ASSERT (casa::near(yaxisStart[j], domains[inx].lowerY()));
-        ASSERT (casa::near(yaxisEnd[j], domains[inx].upperY()));
+        ASSERT (casacore::near(yaxisStart[j], domains[inx].lowerY()));
+        ASSERT (casacore::near(yaxisEnd[j], domains[inx].upperY()));
       }
     }
     // Create the (ir)regular axis.
@@ -213,8 +213,8 @@ namespace BBS {
       const Axis::ShPtr& axis = grids[i*step].getAxis(axnr);
       ncells += axis->size();
       if (isRegular) {
-        isRegular = axis->isRegular() && (casa::near(width, axis->width(0)) &&
-                                          casa::near(last,  axis->lower(0)));
+        isRegular = axis->isRegular() && (casacore::near(width, axis->width(0)) &&
+                                          casacore::near(last,  axis->lower(0)));
         last = axis->upper(axis->size() - 1);
       }
     }

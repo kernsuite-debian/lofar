@@ -35,7 +35,7 @@ Interval<size_t> findIntersection(const Axis::ShPtr &axis,
     Interval<double> overlap(max(axis->start(), range.start), min(axis->end(),
         range.end));
 
-    if(overlap.start >= overlap.end || casa::near(overlap.start, overlap.end))
+    if(overlap.start >= overlap.end || casacore::near(overlap.start, overlap.end))
     {
         return Interval<size_t>(1, 0);
     }
@@ -58,7 +58,7 @@ string toString(const NSTimer &timer)
     return oss.str();
 }
 
-void configLSQSolver(casa::LSQFit &solver, const SolverOptions &options)
+void configLSQSolver(casacore::LSQFit &solver, const SolverOptions &options)
 {
     solver.setEpsValue(options.epsValue);
     solver.setEpsDerivative(options.epsDerivative);

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35890 2016-11-03 13:16:09Z schoenmakers $
+# $Id$
 
 include(LofarPackageVersion)
 include(PythonInstall)
@@ -26,6 +26,7 @@ endforeach(prog ${messagebus_PROGRAMS})
 
 python_install(
   __init__.py
+  environment.py
   messagebus.py
   message.py
   noqpidfallback.py

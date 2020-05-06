@@ -107,7 +107,7 @@ class bbs_reducer(BaseRecipe, RemoteCommandRecipeMixIn):
         """
         Create and schedule the compute jobs
         """
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         self.data_map.iterator = DataMap.SkipIterator
         self.inst_map.iterator = DataMap.SkipIterator
         self.sky_map.iterator = DataMap.SkipIterator

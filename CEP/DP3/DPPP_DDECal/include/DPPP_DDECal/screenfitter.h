@@ -30,7 +30,6 @@
 #define SCREEN_FITTER_H
 #include <armadillo>
 #include <vector>
-using namespace arma;
 
 class ScreenFitter{
  public:

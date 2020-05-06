@@ -17,14 +17,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarAntennaColumns.h 17605 2011-03-22 12:21:08Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFARANTENNACOLUMNS_H
 #define MSLOFAR_MSLOFARANTENNACOLUMNS_H
 
-#include <ms/MeasurementSets/MSAntennaColumns.h>
+#include <casacore/ms/MeasurementSets/MSAntennaColumns.h>
 
 namespace LOFAR {
 
@@ -38,7 +38,7 @@ namespace LOFAR {
   // column. Access to non-predefined columns will still have to be done with
   // explicit declarations.
 
-  class ROMSLofarAntennaColumns: public casa::ROMSAntennaColumns
+  class ROMSLofarAntennaColumns: public casacore::ROMSAntennaColumns
   {
   public:
 
@@ -50,13 +50,13 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    const casa::ROScalarColumn<casa::Int>& stationId() const
+    const casacore::ROScalarColumn<casacore::Int>& stationId() const
       { return stationId_p; }
-    const casa::ROArrayColumn<casa::Double>& phaseReference() const
+    const casacore::ROArrayColumn<casacore::Double>& phaseReference() const
       { return phaseReference_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& phaseReferenceQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& phaseReferenceQuant() const 
       { return phaseReferenceQuant_p; }
-    const casa::ROScalarMeasColumn<casa::MPosition>& phaseReferenceMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MPosition>& phaseReferenceMeas() const 
       { return phaseReferenceMeas_p; }
     // </group>
 
@@ -75,12 +75,12 @@ namespace LOFAR {
     ROMSLofarAntennaColumns& operator=(const ROMSLofarAntennaColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::Int> stationId_p;
-    casa::ROArrayColumn<casa::Double> phaseReference_p;
+    casacore::ROScalarColumn<casacore::Int> stationId_p;
+    casacore::ROArrayColumn<casacore::Double> phaseReference_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MPosition> phaseReferenceMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MPosition> phaseReferenceMeas_p;
     //# Access to Quantum columns
-    casa::ROArrayQuantColumn<casa::Double> phaseReferenceQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> phaseReferenceQuant_p;
   };
 
 
@@ -91,7 +91,7 @@ namespace LOFAR {
   // for every predefined column. Access to non-predefined columns will still
   // have to be done with explicit declarations.
 
-  class MSLofarAntennaColumns: public casa::MSAntennaColumns
+  class MSLofarAntennaColumns: public casacore::MSAntennaColumns
   {
   public:
 
@@ -103,21 +103,21 @@ namespace LOFAR {
 
     // Read-write access to required columns.
     // <group>
-    const casa::ROScalarColumn<casa::Int>& stationId() const
+    const casacore::ROScalarColumn<casacore::Int>& stationId() const
       { return roStationId_p; }
-    casa::ScalarColumn<casa::Int>& stationId()
+    casacore::ScalarColumn<casacore::Int>& stationId()
       { return rwStationId_p; }
-    const casa::ROArrayColumn<casa::Double>& phaseReference() const
+    const casacore::ROArrayColumn<casacore::Double>& phaseReference() const
       { return roPhaseReference_p; }
-    casa::ArrayColumn<casa::Double>& phaseReference()
+    casacore::ArrayColumn<casacore::Double>& phaseReference()
       { return rwPhaseReference_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& phaseReferenceQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& phaseReferenceQuant() const 
       { return roPhaseReferenceQuant_p; }
-    casa::ArrayQuantColumn<casa::Double>& phaseReferenceQuant()
+    casacore::ArrayQuantColumn<casacore::Double>& phaseReferenceQuant()
       { return rwPhaseReferenceQuant_p; }
-    const casa::ROScalarMeasColumn<casa::MPosition>& phaseReferenceMeas() const
+    const casacore::ROScalarMeasColumn<casacore::MPosition>& phaseReferenceMeas() const
       { return roPhaseReferenceMeas_p; }
-    casa::ScalarMeasColumn<casa::MPosition>& phaseReferenceMeas()
+    casacore::ScalarMeasColumn<casacore::MPosition>& phaseReferenceMeas()
       { return rwPhaseReferenceMeas_p; }
     // </group>
 
@@ -136,16 +136,16 @@ namespace LOFAR {
     MSLofarAntennaColumns& operator=(const MSLofarAntennaColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::Int> roStationId_p;
-    casa::ScalarColumn<casa::Int>   rwStationId_p;
-    casa::ROArrayColumn<casa::Double> roPhaseReference_p;
-    casa::ArrayColumn<casa::Double>   rwPhaseReference_p;
+    casacore::ROScalarColumn<casacore::Int> roStationId_p;
+    casacore::ScalarColumn<casacore::Int>   rwStationId_p;
+    casacore::ROArrayColumn<casacore::Double> roPhaseReference_p;
+    casacore::ArrayColumn<casacore::Double>   rwPhaseReference_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MPosition> roPhaseReferenceMeas_p;
-    casa::ScalarMeasColumn<casa::MPosition>   rwPhaseReferenceMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MPosition> roPhaseReferenceMeas_p;
+    casacore::ScalarMeasColumn<casacore::MPosition>   rwPhaseReferenceMeas_p;
     //# Access to Quantum columns
-    casa::ROArrayQuantColumn<casa::Double> roPhaseReferenceQuant_p;
-    casa::ArrayQuantColumn<casa::Double>   rwPhaseReferenceQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> roPhaseReferenceQuant_p;
+    casacore::ArrayQuantColumn<casacore::Double>   rwPhaseReferenceQuant_p;
   };
 
 } //# end namespace

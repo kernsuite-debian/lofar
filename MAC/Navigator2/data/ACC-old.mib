@@ -1,0 +1,221 @@
+
+-- ACC Mib v. 1.00
+
+--   powecMIB MODULE-IDENTITY
+--       LAST-UPDATED "0705111430Z"
+--       ORGANIZATION "Power-One, Powec"
+--       CONTACT-INFO "Arild Sageboe, arild.sageboe@power-one.com"
+--       DESCRIPTION "System Information, ACC Power Systems"
+--       ::= { enterprises 5961 }
+
+ACC-MIB DEFINITIONS ::= BEGIN
+
+    IMPORTS
+
+	enterprises, IpAddress			FROM RFC1155-SMI
+	DisplayString 					FROM RFC1213-MIB
+	OBJECT-TYPE           			FROM RFC-1212
+	TRAP-TYPE 	    				FROM RFC-1215;
+
+
+
+    powecMIB			OBJECT IDENTIFIER ::= { enterprises 5961 }
+    accPowerSystem 		OBJECT IDENTIFIER ::= { powecMIB 4 }
+    
+    systemInfo 			OBJECT IDENTIFIER ::= { accPowerSystem 1 } 
+    powerSystem			OBJECT IDENTIFIER ::= { accPowerSystem 2 }    
+    alarmInfo			OBJECT IDENTIFIER ::= { accPowerSystem 3 }
+    systemParameters		OBJECT IDENTIFIER ::= { accPowerSystem 4 }
+    powecTrap			OBJECT IDENTIFIER ::= { accPowerSystem 99 }
+    
+-- SYSTEM INFO variables
+
+systemName OBJECT-TYPE
+    SYNTAX  DisplayString
+    ACCESS  read-write
+    STATUS  mandatory
+    DESCRIPTION
+	"System Type String for the DC System Site"
+    ::= { systemInfo 1 }
+
+powerSystemType	OBJECT-TYPE
+    SYNTAX DisplayString
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"String containing the type of power supply control module (ACC)"
+    ::= { systemInfo 2 }
+
+powerSystemSoftVer	OBJECT-TYPE
+    SYNTAX DisplayString
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"String containing the software version of the control module"
+    ::= { systemInfo 3 }
+
+powerSystemSerialNo	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"Serial Number of the control module"
+    ::= { systemInfo 4 }
+
+outputData OBJECT-TYPE
+    SYNTAX DisplayString
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"String containing a description of the DC Output"
+    ::= { systemInfo 5 }
+
+batteryDescript OBJECT-TYPE
+    SYNTAX DisplayString
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"String containing a description of the Battery"
+    ::= { systemInfo 6 }
+
+batteryCapacity OBJECT-TYPE
+    SYNTAX INTEGER(0..30000)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"An integer containing battery capacity in Ah"
+    
+    ::= { systemInfo 7 }
+
+-- POWER SYSTEM variables
+
+systemVoltage		OBJECT-TYPE
+    SYNTAX INTEGER(0..30000)
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the system DC voltage (voltage * 100)"
+    ::= { powerSystem 1 }
+
+loadCurrent		OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the system load current (current * 10)"
+    ::= { powerSystem 2 }
+
+batteryCurrent		OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the battery current (current * 10)"
+    ::= { powerSystem 3 }
+
+
+rectifierCurrent	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the rectifier current (current * 10)"
+    ::= { powerSystem 4 }  
+
+battTemperature	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the battery temperature(Degree C)"
+    ::= { powerSystem 5 }  
+
+acPhase1Voltage	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing AC input voltage for phase 1 (Volt), (-1) means measurement not available"
+    ::= { powerSystem 6 }  
+
+acPhase2Voltage	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing AC input voltage for phase 2 (Volt), (-1) means measurement not available"
+    ::= { powerSystem 7 }  
+
+acPhase3Voltage	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing AC input voltage for phase 3 (Volt), (-1) means measurement not available"
+    ::= { powerSystem 8 }  
+
+remainBatteryTime	OBJECT-TYPE
+    SYNTAX INTEGER
+    ACCESS read-only
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the remaining battery time in (minutes)"
+    ::= { powerSystem 9 }  
+
+-- ALARM INFO variables (Alarm and Status Information)
+-- The alarmData, extraAlarmData and statusData
+-- are integers from 0-255 containing th
+::= { systemParameters 20 }
+
+batType	OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the Type Of Battery"
+    ::= { systemParameters 21 }
+
+symLimit	OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the Symmetry Limit (Volt*10)"
+    ::= { systemParameters 22 }
+
+autoTestFlag	OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the number of automatic battery tests performed per year."
+    ::= { systemParameters 23 }
+
+startHForTest	OBJECT-TYPE
+    SYNTAX INTEGER(0..255)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the Start Hour for Automatic Test"
+    ::= { systemParameters 24 }
+
+voltLimForTest	OBJECT-TYPE
+    SYNTAX INTEGER(0..30000)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the Voltage Limit for Battery Test (Volt*10)"
+    ::= { systemParameters 25 }
+
+timeLimForTest	OBJECT-TYPE
+    SYNTAX INTEGER(0..30000)
+    ACCESS read-write
+    STATUS mandatory
+    DESCRIPTION
+	"A variable containing the Time Limit For Test (minutes)"
+    ::= { systemParameters 26 }
+
+ampLimForTest	OBJECT-TYPE
+    S
+    SYNTAX INTEGER(0..30
+

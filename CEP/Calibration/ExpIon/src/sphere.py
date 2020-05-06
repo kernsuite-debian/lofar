@@ -10,7 +10,7 @@ import pyrap.measures
 import pyrap.quanta
 
 # import user modules
-from acalc import *
+from .acalc import *
 
 ###############################################################################
 # be aware of the special cases -0 and .. 60 ..

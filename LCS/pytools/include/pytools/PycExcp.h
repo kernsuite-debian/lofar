@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PycExcp.h 17197 2011-01-26 07:00:53Z diepen $
+//# $Id$
 
 #ifndef PYTOOLS_PYCEXCP_H
 #define PYTOOLS_PYCEXCP_H

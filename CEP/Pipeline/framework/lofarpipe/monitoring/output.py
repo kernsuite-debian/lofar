@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 
 class Output(dict):
     """This class is the output class. 
@@ -9,10 +9,10 @@ class Output(dict):
     def tofile(self, log_fname, err_fname):
         """Write output to file fname."""
         with open(log_fname,"a") as f:
-            for val in self.keys():
+            for val in list(self.keys()):
                 if self[val][0] != "":
                     f.write("{1}\n".format(val, self[val][0]))
         with open(err_fname, "a") as f:
-            for val in self.keys():
+            for val in list(self.keys()):
                 if self[val][1] != "":
                     f.write("{0} {1}\n".format(val, self[val][1]))

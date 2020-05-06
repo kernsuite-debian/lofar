@@ -1,0 +1,504 @@
+V 11
+1
+LANG:1 8 (NoName)
+PANEL,-1 -1 1063 427 N "_3DFace" 1
+"$unitNumber"
+"main()
+{
+  powerunitNr  = $unitNumber;
+  baseDP = sysName+\"LOFAR_PIC_POWEC\" + powerunitNr;
+
+  if (dpGet(sysName+\"LOFAR_PIC_StationInfo.nrOfPowerUnits\",nrOfPowerUnits) == -1)
+  {
+    LOG_TRACE(\"Station_PowerUnits.pnl:prepareHardwareList|failed to get \"+sysName+\"LOFAR_PIC_StationInfo.nrOfPowerUnits\");
+    return;
+  }
+
+  // check if this powerunit is available in the system and needs to be filled needs to be filled
+  if (powerunitNr >= nrOfPowerUnits )
+  {
+    this.enabled(false);
+    border.visible(false);
+    setValue(\"selfState\", \"visible\", false);
+    setValue(\"powerunit_highlight\", \"visible\", false);
+    unitname.visible(false);
+    valueText.visible(false);
+    alarmText.visible(false);
+    powerValueTable.visible(false);
+    powerAlarmTable.visible(false);
+    return;
+  }
+
+  if(dpExists(baseDP +\".nrOfModules:_online.._value\"))
+  {
+    dpConnect(\"setPUvalues\", baseDP +\".nrOfModules:_online.._value\",
+                             baseDP +\".voltage:_online.._value\",
+                             baseDP +\".current:_online.._value\",
+                             baseDP +\".temperature:_online.._value\",
+                             baseDP +\".OK:_online.._value\",
+                             baseDP +\".nrOfModules:_online.._invalid\");
+    dpConnect(\"setPUalarms\", baseDP +\".nrOfAlarms:_online.._value\",
+                             baseDP +\".alarmTime:_online.._value\",
+                             baseDP +\".alarmText:_online.._value\",
+                             baseDP +\".alarmType:_online.._value\",
+                             baseDP +\".alarmReason:_online.._value\",
+                             baseDP +\".nrOfAlarms:_online.._invalid\");
+    if (!navFunct_dpReachable(baseDP))
+    {
+      setPUvalues(\"\",0,
+                  \"\",makeDynInt(),
+                  \"\",makeDynInt(),
+                  \"\",makeDynInt(),
+                  \"\",makeDynInt(),
+                  \"\",true);
+      setPUalarms(\"\",0,
+                  \"\",makeDynString(),
+                  \"\",makeDynString(),
+                  \"\",makeDynInt(),
+                  \"\",makeDynInt(),
+                  \"\",true);
+    }
+  }
+
+ 
+  setValue(\"unitname\",\"text\",\"POWEC: \" + powerunitNr);
+
+  // pass baseDP to selfstate Object to work with
+  setValue(\"selfState.light\",\"toolTipText\",baseDP);
+
+  if (dpExists(baseDP) ){
+    // connect for selfUpdates
+    showSelfState(baseDP);
+  }  
+}
+
+void setPUvalues(string dp1, int nrOfModules,
+                 string dp2, dyn_int voltage,
+                 string dp3, dyn_int current,
+                 string dp4, dyn_int temperature,
+                 string dp5, dyn_int OK,
+                 string dp6, bool invalid)
+{
+  // clear the table
+  powerValueTable.deleteAllLines();
+  if (!invalid)
+  {
+    powerValueTable.backCol(\"_Transparent\");
+    // fill the table
+    for (int i = 1; i <= nrOfModules; i++)
+    {
+      // sometimes the number of values for one or more single entries isn't the same as the number of available modules.
+      // we want to be able to see the remaining correct values, so we have to skip those
+      float v = 0.0;
+      float c = 0.0;
+      int t = 0;
+      int s = 0;
+      if (i <= dynlen(voltage)) v = voltage[i]/10.;
+      if (i <= dynlen(current)) c = current[i]/10.;
+      if (i <= dynlen(temperature)) t = temperature[i];
+      if (i <= dynlen(OK)) s = OK[i];
+      
+      
+      powerValueTable.appendLine(\"Voltage\",v,\"Current\",c,\"Temperature\",t,\"Status\",s);
+    }
+  } 
+  else
+  {
+    setValue(\"unitname\",\"text\",\"POWEC: \" + powerunitNr + \" INVALID\");
+    powerValueTable.foreCol(\"Lofar_invalid\");
+  }
+}
+
+void setPUalarms(string dp1, int nrOfAlarms,
+                 string dp2, dyn_string alarmtime,
+                 string dp3, dyn_string alarmtext,
+                 string dp4, dyn_int alarmtype,
+                 string dp5, dyn_int alarmreason,
+                 string dp6, bool invalid)
+{
+  // clear the table
+  powerAlarmTable.deleteAllLines();
+  if (!invalid)
+  {
+    powerAlarmTable.backCol(\"_Transparent\");
+    // fill the table
+    for (int i = 1; i <= nrOfAlarms; i++)
+    {
+      // sometimes the number of values for one or more single entries isn't the same as the number of available modules.
+      // we want to be able to see the remaining correct values, so we have to skip those
+      string ti = \"\";
+      string tx = \"\";
+      int tp = 0;
+      int r = 0;
+      if (i <= dynlen(alarmtime)) ti = alarmtime[i];
+      if (i <= dynlen(alarmtext)) tx = alarmtext[i];
+      if (i <= dynlen(alarmtype)) tp = alarmtype[i];
+      if (i <= dynlen(alarmreason)) r = alarmreason[i];
+
+      powerAlarmTable.appendLine(\"Time\",ti,\"Text\",tx,\"Type\",tp,\"Reason\",r);
+    }
+  } 
+  else
+  {
+    powerAlarmTable.foreCol(\"Lofar_invalid\");
+  }
+}" 0
+ E "main()
+{
+  click();
+}" 0
+ "main()
+{
+  rClick();
+}" 0
+ "main()
+{
+  dblClick();
+}" 0
+ 1 0 0 0  17 191
+""0  1
+E "#uses \"navPanel.ctl\"
+
+string     baseDP          = \"\";
+int        powerunitNr     = -1;
+bool       bDoubleClicked  = false;
+int        nrOfPowerUnits  = 1;
+
+// routine for single mouse click
+void click() {
+  // set delay in case double click was meant
+  delay(0, 100); 
+  if (!bDoubleClicked) {
+    navPanel_setEvent(\"POWEC\"+powerunitNr,\"EventClick\");
+  }
+}
+
+// routine for double mouse click
+void dblClick() {
+  // indicate this is a doubleClick
+  bDoubleClicked = true;   
+  
+  if (dpExists(baseDP) ) {
+    LOG_DEBUG(\"Station_PowerUnit:DoubleClick|Setting currentDatapoint from : \"+g_currentDatapoint+\" to \"+baseDP);
+    g_currentDatapoint=baseDP;
+    navPanel_setEvent(\"POWEC\"+powerunitNr,\"ChangePanel\"); 
+  }
+  
+  // set delay to avoid click event will be triggered
+  delay(0, 500);
+  bDoubleClicked = false;  
+}
+
+// routine for right mouse click
+void rClick() {
+  navPanel_setEvent(\"POWEC\"+powerunitNr,\"EventRightClick\");
+}" 0
+ 2
+"CBRef" "1"
+"EClose" E
+""
+1
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 6 Layer1
+6 924
+"powerunit_highlight"
+""
+1 110 90 E E E 1 E 0 E N "_Transparent" E N "Lofar_highLight" E E
+ "main()
+{
+  rClick();
+}" 0
+ "main()
+{
+  dblClick();
+}" 0
+
+97 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"dashclr"N "_Transparent"
+"main()
+{
+  dpConnect( \"PowerunitCallback\",true,DPNAME_NAVIGATOR + g_navigatorID +\".objectTrigger\" );
+}
+
+void PowerunitCallback(string dp1, bool aTrig) {
+  
+  LOG_DEBUG(\"Station_Powerunit.pnl:PowerunitCallback| ObjectTrigger Callback on: \"+dp1+\" trigger: \"+aTrig);
+  LOG_DEBUG(\"Station_Powerunit.pnl:PowerunitCallback|Found highlight : \" + highlight + \" Looking for: POWEC\" + powerunitNr);
+  bool bHighlight=false;
+  if (dynContains(highlight,\"POWEC\"+powerunitNr)) {
+    bHighlight=true;
+  }
+  LOG_DEBUG(\"Station_Powerunit.pnl:PowerunitCallback|Highlight request: \"+bHighlight);
+  powerunit_highlight.visible = bHighlight;  
+}" 0
+ "main()
+{
+  click();
+}" 0
+ 0 1 1 2 1 E U  1 E 127 97 957 307
+6 916
+"border"
+""
+1 110 100 E E E 1 E 1 E N {0,0,0} E N "_3DFace" E E
+ "main()
+{
+  rClick();
+}" 0
+ "main()
+{
+  dblClick();
+}" 0
+
+91 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"dashclr"N "_Transparent"
+E "main()
+{
+  click();
+}" 0
+ 0 1 1 2 1 E 1.138888888888889 0 1 6.7222222222223 2 1 E 110 100 830 300
+1 925 1 "" 1
+0
+2 917
+"unitname"
+""
+1 132 82 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+92 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"dashclr"N "_Transparent"
+E E 0 1 1 2 1 E U  0 E 132 82 214 98
+0 2 2 "0s" 0 0 0 192 0 0  132 82 1
+1
+LANG:1 35 MS Shell Dlg 2,10,-1,5,75,0,0,0,0,0
+0 1
+LANG:1 12 Power Unit 0
+25 918
+"powerValueTable"
+""
+1 142 142 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ "main(int row, string column)
+{
+  rClick();
+}" 0
+ "main(int row, string column)
+{
+  dblClick();
+}" 0
+
+93 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 34 MS Shell Dlg 2,8,-1,5,50,0,0,0,0,0
+0  140 140 424 284
+E"main(int row, string column, string value)
+{
+  click();
+ 
+}" 0
+ 1 0 1 4 0 "Voltage" 6 1 0 "[3.2f,False,False,ALIGNMENT_END,False]" 1
+LANG:1 7 Voltage
+E
+1
+LANG:1 0 
+
+60 "Current" 6 1 0 "[3.2f,False,False,ALIGNMENT_END,False]" 1
+LANG:1 7 Current
+E
+1
+LANG:1 0 
+
+60 "Temperature" 8 1 0 "[3.2f,False,False,ALIGNMENT_END,False]" 1
+LANG:1 11 Temperature
+E
+1
+LANG:1 0 
+
+74 "Status" 6 1 0 "[5s,,,ALIGNMENT_CENTER]" 1
+LANG:1 6 Status
+E
+1
+LANG:1 0 
+
+60 
+15 15 10 10
+1
+LANG:1 34 MS Shell Dlg 2,8,-1,5,50,0,0,0,0,0
+0 0 1 1 1 7
+1 0
+25 920
+"powerAlarmTable"
+""
+1 472 142 E E E 1 E 1 E N "_WindowText" E N "_Transparent" E E
+ "main(int row, string column)
+{
+  rClick();
+}" 0
+ "main(int row, string column)
+{
+  dblClick();
+}" 0
+
+94 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  470 140 934 284
+E"main(int row, string column, string value)
+{
+  click();
+ 
+}" 0
+ 1 0 1 4 0 "Time" 11 1 0 "[0s,,,ALIGNMENT_CENTER]" 1
+LANG:1 4 Time
+E
+1
+LANG:1 0 
+
+100 "Text" 30 1 0 "[0s,,,ALIGNMENT_BEGINNING]" 1
+LANG:1 4 Text
+E
+1
+LANG:1 0 
+
+250 "Type" 2 1 0 "[0d,False,False,ALIGNMENT_BEGINNING,False]" 1
+LANG:1 4 Type
+E
+1
+LANG:1 0 
+
+25 "Reason" 5 1 0 "[0d,False,False,ALIGNMENT_BEGINNING,False]" 1
+LANG:1 6 Reason
+E
+1
+LANG:1 0 
+
+50 
+15 15 10 10
+1
+LANG:1 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 0 1 1 1 7
+1 0
+2 921
+"valueText"
+""
+1 220 120 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ "main()
+{
+  rClick();
+}" 0
+ "main()
+{
+  dblClick();
+}" 0
+
+95 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"dashclr"N "_Transparent"
+E "main()
+{
+  click();
+}" 0
+ 0 1 1 2 1 E U  0 E 220 120 257 133
+0 2 2 "0s" 0 0 0 192 0 0  220 120 1
+1
+LANG:1 34 MS Shell Dlg 2,8,-1,5,75,0,0,0,0,0
+0 1
+LANG:1 6 Values
+2 922
+"alarmText"
+""
+1 662 122 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ "main()
+{
+  rClick();
+}" 0
+ "main()
+{
+  dblClick();
+}" 0
+
+96 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+1
+"dashclr"N "_Transparent"
+E "main()
+{
+  click();
+}" 0
+ 0 1 1 2 1 E U  0 E 662 122 702 135
+0 2 2 "0s" 0 0 0 192 0 0  662 122 1
+1
+LANG:1 34 MS Shell Dlg 2,8,-1,5,75,0,0,0,0,0
+0 1
+LANG:1 6 Alarms
+0
+LAYER, 1 
+1
+LANG:1 6 Layer2
+0
+LAYER, 2 
+1
+LANG:1 6 Layer3
+0
+LAYER, 3 
+1
+LANG:1 6 Layer4
+0
+LAYER, 4 
+1
+LANG:1 6 Layer5
+0
+LAYER, 5 
+1
+LANG:1 6 Layer6
+0
+LAYER, 6 
+1
+LANG:1 6 Layer7
+0
+LAYER, 7 
+1
+LANG:1 6 Layer8
+0
+3 1 "selfState" -1
+"objects\\lofar_self_state.pnl" 363 291 T 87 1 0 1 -223 -182
+0
+0

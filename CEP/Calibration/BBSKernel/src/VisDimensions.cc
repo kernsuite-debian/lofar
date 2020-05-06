@@ -19,15 +19,15 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisDimensions.cc 16068 2010-07-23 19:53:58Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/VisDimensions.h>
 #include <Common/lofar_iomanip.h>
 
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVTime.h>
 
 namespace LOFAR
 {
@@ -64,11 +64,11 @@ ostream &operator<<(ostream &out, const VisDimensions &obj)
         << " MHz (" << obj.nFreq() << " channel(s) of " << setprecision(3)
         << (freqRange.second - freqRange.first) / obj.nFreq() << " Hz)" << endl;
     out << "Time          : "
-        << casa::MVTime::Format(casa::MVTime::YMD, 6)
-        << casa::MVTime(casa::Quantum<casa::Double>(timeRange.first, "s"))
+        << casacore::MVTime::Format(casacore::MVTime::YMD, 6)
+        << casacore::MVTime(casacore::Quantum<casacore::Double>(timeRange.first, "s"))
         << " - "
-        << casa::MVTime::Format(casa::MVTime::YMD, 6)
-        << casa::MVTime(casa::Quantum<casa::Double>(timeRange.second, "s"))
+        << casacore::MVTime::Format(casacore::MVTime::YMD, 6)
+        << casacore::MVTime(casacore::Quantum<casacore::Double>(timeRange.second, "s"))
         << endl;
     out << "Duration      : "
         << setprecision(3) << (timeRange.second - timeRange.first) / 3600.0

@@ -4,7 +4,7 @@
 # 2012
 # klijn@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import shutil
 import os
@@ -21,6 +21,7 @@ from lofarpipe.support.utilities import create_directory
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.subprocessgroup import SubProcessGroup
 from lofarpipe.recipes.helpers.data_quality import run_rficonsole, filter_bad_stations
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 # Some constant settings for the recipe
 _time_slice_dir_name = "time_slices"
@@ -198,7 +199,7 @@ class imager_prepare(LOFARnodeTCP):
 
                 # Wait for finish of copy inside the loop: enforce single tread
                 # copy
-                (stdoutdata, stderrdata) = copy_process.communicate()
+                (stdoutdata, stderrdata) = communicate_returning_strings(copy_process)
 
                 exit_status = copy_process.returncode
 
@@ -281,7 +282,7 @@ class imager_prepare(LOFARnodeTCP):
                             nchan_known = True
 
                         # corrupt input measurement set
-                        except Exception, e:
+                        except Exception as e:
                             self.logger.warn(str(e))
                             item.skip = True
                             ndppp_input_ms.append("SKIPPEDSUBBAND")
@@ -324,7 +325,7 @@ class imager_prepare(LOFARnodeTCP):
                             "Wrote a ndppp parset with runtime variables:"
                                   " {0}".format(nddd_parset_path))
 
-            except Exception, exception:
+            except Exception as exception:
                 self.logger.error("failed loading and updating the " +
                                   "parset: {0}".format(parset))
                 raise exception
@@ -343,7 +344,7 @@ class imager_prepare(LOFARnodeTCP):
 
             # On error the current timeslice should be skipped
             # and the input ms should have the skip  set
-            except Exception, exception:
+            except Exception as exception:
                 for item in processed_ms_map[start_slice_range:end_slice_range]:
                     item.skip = True
                 self.logger.warning(str(exception))

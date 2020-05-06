@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationInfo.h 27675 2013-12-05 15:23:31Z mol $
+//# $Id$
 
 #ifndef LOFAR_DEPLOYMENT_STATIONINFO_H
 #define LOFAR_DEPLOYMENT_STATIONINFO_H

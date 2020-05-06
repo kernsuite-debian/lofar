@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ExprParm.cc 17229 2011-01-28 13:44:36Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/ExprParm.h>
@@ -61,7 +61,7 @@ const Scalar ExprParm::evaluateExpr(const Request &request, Cache&,
     EXPR_TIMER_START();
 
     // Get the result from the Parm.
-    vector<casa::Array<double> > buffers;
+    vector<casacore::Array<double> > buffers;
     itsParm->getResult(buffers, request[grid], getPValueFlag()); //false);
     ASSERT(buffers.size() > 0);
 
@@ -80,7 +80,7 @@ const Scalar ExprParm::evaluateExpr(const Request &request, Cache&,
     }
     else
     {
-        const casa::IPosition &shape = buffers[0].shape();
+        const casacore::IPosition &shape = buffers[0].shape();
         DBGASSERT(static_cast<unsigned int>(shape(0)) == request[grid][FREQ]->size()
             && static_cast<unsigned int>(shape(1)) == request[grid][TIME]->size());
         result.assign(Matrix(storage, shape(0), shape(1)));
@@ -106,7 +106,7 @@ const Scalar ExprParm::evaluateExpr(const Request &request, Cache&,
             }
             else
             {
-                const casa::IPosition &shape = buffers[i + 1].shape();
+                const casacore::IPosition &shape = buffers[i + 1].shape();
                 result.assign(PValueKey(itsParm->getId(), i), Matrix(storage,
                     shape(0), shape(1)));
             }

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LogSink.h 31160 2015-03-10 12:57:01Z mol $
+//# $Id$
 
 #ifndef LOFAR_MESSAGEBUS_LOGSINK_H
 #define LOFAR_MESSAGEBUS_LOGSINK_H

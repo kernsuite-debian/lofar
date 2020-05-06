@@ -272,7 +272,7 @@ Interval<size_t> VisEquator::makeAxisMap(const Axis::ShPtr &from,
     Interval<double> overlap(std::max(from->start(), to->start()),
         std::min(from->end(), to->end()));
 
-    if(overlap.start >= overlap.end || casa::near(overlap.start, overlap.end))
+    if(overlap.start >= overlap.end || casacore::near(overlap.start, overlap.end))
     {
         return Interval<size_t>(1, 0);
     }
@@ -447,7 +447,7 @@ void VisEquator::procExpr(ProcContext &context,
                     continue;
                 }
 
-                casa::LSQFit &equation = (out + eqIdx +
+                casacore::LSQFit &equation = (out + eqIdx +
                     (itsFreqMap[itsEvalReqStart.first + f]
                     - itsEvalSelStart.first))->equation;
 

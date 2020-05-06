@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Strategy.cc 30635 2014-12-17 11:13:01Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 

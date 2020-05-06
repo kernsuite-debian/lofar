@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tTH_Socket.cc 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 #ifdef USE_NOSOCKETS
 int main()

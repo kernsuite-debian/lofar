@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CasaLogSink.cc 31468 2015-04-13 23:26:52Z amesfoort $
+//# $Id$
 
 // @author Ger van Diepen (gvd AT astron DOT nl)
 
@@ -33,15 +33,15 @@ namespace LOFAR {
 #ifdef HAVE_AIPSPP
 
   CasaLogSink::CasaLogSink()
-    : casa::LogSinkInterface (casa::LogFilter())
+    : casacore::LogSinkInterface (casacore::LogFilter())
   {}
 
-  CasaLogSink::CasaLogSink (casa::LogMessage::Priority filter)
-    : casa::LogSinkInterface (casa::LogFilter(filter))
+  CasaLogSink::CasaLogSink (casacore::LogMessage::Priority filter)
+    : casacore::LogSinkInterface (casacore::LogFilter(filter))
   {}
 
-  CasaLogSink::CasaLogSink (const casa::LogFilterInterface& filter)
-    : casa::LogSinkInterface (filter)
+  CasaLogSink::CasaLogSink (const casacore::LogFilterInterface& filter)
+    : casacore::LogSinkInterface (filter)
   {}
 
   CasaLogSink::~CasaLogSink()
@@ -49,41 +49,41 @@ namespace LOFAR {
 
   void CasaLogSink::attach()
   {
-    casa::LogSinkInterface* globalSink = new LOFAR::CasaLogSink;
+    casacore::LogSinkInterface* globalSink = new LOFAR::CasaLogSink;
     // Note that the pointer is taken over by LogSink.
-    casa::LogSink::globalSink (globalSink);
+    casacore::LogSink::globalSink (globalSink);
   }
 
-  casa::Bool CasaLogSink::postLocally (const casa::LogMessage& message)
+  casacore::Bool CasaLogSink::postLocally (const casacore::LogMessage& message)
   {
-    casa::Bool posted = casa::False;
+    casacore::Bool posted = casacore::False;
     if (filter().pass(message)) {
       std::string msg (message.origin().location() + ": " + message.message());
-      posted = casa::True;
+      posted = casacore::True;
       switch (message.priority()) {
-      case casa::LogMessage::DEBUGGING:
-      case casa::LogMessage::DEBUG2:
-      case casa::LogMessage::DEBUG1:
+      case casacore::LogMessage::DEBUGGING:
+      case casacore::LogMessage::DEBUG2:
+      case casacore::LogMessage::DEBUG1:
 	{
 	  LOG_DEBUG (msg);
 	  break;
 	}
-      case casa::LogMessage::NORMAL5:
-      case casa::LogMessage::NORMAL4:
-      case casa::LogMessage::NORMAL3:
-      case casa::LogMessage::NORMAL2:
-      case casa::LogMessage::NORMAL1:
-      case casa::LogMessage::NORMAL:
+      case casacore::LogMessage::NORMAL5:
+      case casacore::LogMessage::NORMAL4:
+      case casacore::LogMessage::NORMAL3:
+      case casacore::LogMessage::NORMAL2:
+      case casacore::LogMessage::NORMAL1:
+      case casacore::LogMessage::NORMAL:
 	{
 	  LOG_INFO (msg);
 	  break;
 	}
-      case casa::LogMessage::WARN:
+      case casacore::LogMessage::WARN:
 	{
 	  LOG_WARN (msg);
 	  break;
 	}
-      case casa::LogMessage::SEVERE:
+      case casacore::LogMessage::SEVERE:
 	{
 	  LOG_ERROR (msg);
 	  break;
@@ -96,19 +96,21 @@ namespace LOFAR {
   void CasaLogSink::clearLocally()
   {}
 
-  casa::String CasaLogSink::localId()
+  casacore::String CasaLogSink::localId()
   {
-    return casa::String("CasaLogSink");
+    return casacore::String("CasaLogSink");
   }
 
-  casa::String CasaLogSink::id() const
+  casacore::String CasaLogSink::id() const
   {
-    return casa::String("CasaLogSink");
+    return casacore::String("CasaLogSink");
   }
 
 #else
   void CasaLogSink::attach()
-  {}
+  {
+    cerr << "WARNING: no casa logging available." << endl;
+  }
 #endif
 
 } // end namespaces

@@ -1,0 +1,136 @@
+# description of the POWEC power unit in the LOFAR stations
+powerSystemType	string
+nrOfModules	int
+voltage         intArr
+current	        intArr 
+temperature     intArr
+OK              intArr
+nrOfAlarms      int
+alarmType       intArr
+alarmReason     intArr
+alarmTime       stringArr
+alarmText	stringArr
+clearAlarmHistory	int
+	
+#
+# Next points are needed for dataparameterization Do not alter them unless you know what you are doing. tabs are essential in these
+#
+
+
+# Datapoint/DpId
+?DpName	TypeName
+?LOFAR_PIC_POWEC0	PowerUnit
+?LOFAR_PIC_POWEC1	PowerUnit
+?_2_SNMPAgent_1	_SNMPAgent
+?_2_SNMPAgent_2	_SNMPAgent
+
+# Aliases/Comments
+?AliasId	AliasName	CommentName
+?_2_SNMPAgent_1.	""	lt:1 LANG:1 "POWEC0@@"
+?_2_SNMPAgent_2.	""	lt:1 LANG:1 "POWEC1@@"
+
+# DpValue
+?ElementName	TypeName	_original.._value
+?LOFAR_PIC_POWEC0.status.leaf	PowerUnit	1
+?LOFAR_PIC_POWEC1.status.leaf	PowerUnit	1
+?_2_SNMPAgent_1.Access.ReadCommunity	_SNMPAgent	"public"
+?_2_SNMPAgent_1.Access.WriteCommunity	_SNMPAgent	"public"
+?_2_SNMPAgent_1.Access.Timeout	_SNMPAgent	100
+?_2_SNMPAgent_1.Access.Retries	_SNMPAgent	5
+?_2_SNMPAgent_1.Access.Protocol	_SNMPAgent	1
+?_2_SNMPAgent_1.Access.Port	_SNMPAgent	161
+?_2_SNMPAgent_1.Status.Timeout	_SNMPAgent	1
+?_2_SNMPAgent_1.Redundancy.ReduAgent	_SNMPAgent	0
+?_2_SNMPAgent_1.Redundancy.FallBack	_SNMPAgent	0
+?_2_SNMPAgent_2.Access.ReadCommunity	_SNMPAgent	"public"
+?_2_SNMPAgent_2.Access.WriteCommunity	_SNMPAgent	"public"
+?_2_SNMPAgent_2.Access.Timeout	_SNMPAgent	100
+?_2_SNMPAgent_2.Access.Retries	_SNMPAgent	5
+?_2_SNMPAgent_2.Access.Protocol	_SNMPAgent	1
+?_2_SNMPAgent_2.Access.Port	_SNMPAgent	161
+?_2_SNMPAgent_2.Status.Timeout	_SNMPAgent	1
+?_2_SNMPAgent_2.Redundancy.ReduAgent	_SNMPAgent	0
+?_2_SNMPAgent_2.Redundancy.FallBack	_SNMPAgent	0
+
+
+?# DistributionInfo
+?ElementName	TypeName	_distrib.._type	_distrib.._driver
+?LOFAR_PIC_POWEC0.powerSystemType	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.nrOfModules	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.voltage	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.current	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.temperature	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.OK	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.nrOfAlarms	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.clearAlarmHistory	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.alarmType	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.alarmReason	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.alarmTime	PowerUnit	56	\2
+?LOFAR_PIC_POWEC0.alarmText	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.powerSystemType	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.nrOfModules	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.voltage	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.current	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.temperature	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.OK	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.nrOfAlarms	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.clearAlarmHistory	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.alarmType	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.alarmReason	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.alarmTime	PowerUnit	56	\2
+?LOFAR_PIC_POWEC1.alarmText	PowerUnit	56	\2
+
+?# DpSmoothMain
+?ElementName	TypeName	_smooth.._type	_smooth.._std_type
+?LOFAR_PIC_POWEC0.powerSystemType	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.nrOfModules	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.voltage	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.current	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.temperature	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.OK	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.nrOfAlarms	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.clearAlarmHistory	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.alarmType	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.alarmReason	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.alarmTime	PowerUnit	48	4
+?LOFAR_PIC_POWEC0.alarmText	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.powerSystemType	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.nrOfModules	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.voltage	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.current	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.temperature	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.OK	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.nrOfAlarms	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.clearAlarmHistory	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.alarmType	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.alarmReason	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.alarmTime	PowerUnit	48	4
+?LOFAR_PIC_POWEC1.alarmText	PowerUnit	48	4
+
+?# PeriphAddrMain
+?ElementName	TypeName	_address.._type	_address.._reference	_address.._poll_group	_address.._offset	_address.._subindex	_address.._direction	_address.._internal	_address.._lowlevel	_address.._active	_address.._start	_address.._interval	_address.._reply	_address.._datatype	_address.._drv_ident
+?LOFAR_PIC_POWEC0.powerSystemType	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.1.3.0"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+?LOFAR_PIC_POWEC0.nrOfModules	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.3.1.0"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.voltage	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.3.2.1.3B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.current	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.3.2.1.4B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.temperature	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.3.2.1.6B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.nrOfAlarms	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.1.0"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.clearAlarmHistory	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.3.0"	"_SNMP"	0	0	\5	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.alarmReason	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.3B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.alarmText	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.5B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+?LOFAR_PIC_POWEC0.alarmType	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.2B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC0.alarmTime	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.4B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+?LOFAR_PIC_POWEC0.OK	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.3.2.1.2B"	"_SNMP"	0	0	\4	0	0	1	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.powerSystemType	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.1.3.0"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+?LOFAR_PIC_POWEC1.nrOfModules	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.3.1.0"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.voltage	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.3.2.1.3B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.current	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.3.2.1.4B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.temperature	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.3.2.1.6B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.OK	PowerUnit	16	"2_1.3.6.1.4.1.5961.1.3.2.1.2B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.nrOfAlarms	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.1.0"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.clearAlarmHistory	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.3.0"	"_SNMP"	0	0	\5	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.alarmReason	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.3B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.alarmText	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.5B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+?LOFAR_PIC_POWEC1.alarmType	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.2B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	661	"SNMP"
+?LOFAR_PIC_POWEC1.alarmTime	PowerUnit	16	"1_1.3.6.1.4.1.5961.1.12.2.1.4B"	"_SNMP"	0	0	\4	0	0	0	02.01.1970 00:00:00.000	01.01.1970 00:00:00.000	01.01.1970 00:00:00.000	666	"SNMP"
+

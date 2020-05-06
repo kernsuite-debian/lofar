@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: flask_utils.py 36225 2017-01-06 11:18:33Z schaap $
+# $Id$
 
 from flask import after_this_request, request
-from cStringIO import StringIO as IO
+from io import BytesIO as IO
 import gzip
 import functools
 from datetime import datetime

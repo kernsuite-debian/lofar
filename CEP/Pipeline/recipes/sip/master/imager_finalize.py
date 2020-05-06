@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 import sys
 
 import lofarpipe.support.lofaringredient as ingredient
@@ -15,59 +15,59 @@ class imager_finalize(BaseRecipe, RemoteCommandRecipeMixIn):
     output location in the correcy image type (hdf5).
     It also adds some meta data collected from the individual measurement sets
     and the found data.
-   
-    This recipe does not have positional commandline arguments 
+
+    This recipe does not have positional commandline arguments
     """
     inputs = {
         'awimager_output_map': ingredient.FileField(
             '--awimager-output-mapfile',
-            help="""Mapfile containing (host, path) pairs of created sky
+            help = """Mapfile containing (host, path) pairs of created sky
                    images """
         ),
         'ms_per_image_map': ingredient.FileField(
             '--ms-per-image-map',
-            help='''Mapfile containing (host, path) pairs of mapfiles used
+            help = '''Mapfile containing (host, path) pairs of mapfiles used
             to create image on that node'''
         ),
         'sourcelist_map': ingredient.FileField(
             '--sourcelist-map',
-            help='''mapfile containing (host, path) pairs to a list of sources
+            help = '''mapfile containing (host, path) pairs to a list of sources
             found in the image'''
         ),
         'sourcedb_map': ingredient.FileField(
             '--sourcedb_map',
-            help='''mapfile containing (host, path) pairs to a db of sources
+            help = '''mapfile containing (host, path) pairs to a db of sources
             found in the image'''
         ),
         'target_mapfile': ingredient.FileField(
             '--target-mapfile',
-            help="Mapfile containing (host, path) pairs to the concatenated and"
+            help = "Mapfile containing (host, path) pairs to the concatenated and"
             "combined measurement set, the source for the actual sky image"
         ),
         'minbaseline': ingredient.FloatField(
             '--minbaseline',
-            help='''Minimum length of the baseline used for the images'''
+            help = '''Minimum length of the baseline used for the images'''
         ),
         'maxbaseline': ingredient.FloatField(
             '--maxbaseline',
-            help='''Maximum length of the baseline used for the images'''
+            help = '''Maximum length of the baseline used for the images'''
         ),
         'output_image_mapfile': ingredient.FileField(
             '--output-image-mapfile',
-            help='''mapfile containing (host, path) pairs with the final
+            help = '''mapfile containing (host, path) pairs with the final
             output image (hdf5) location'''
         ),
         'processed_ms_dir': ingredient.StringField(
             '--processed-ms-dir',
-            help='''Path to directory for processed measurment sets'''
+            help = '''Path to directory for processed measurment sets'''
         ),
         'fillrootimagegroup_exec': ingredient.ExecField(
             '--fillrootimagegroup_exec',
-            help='''Full path to the fillRootImageGroup executable'''
+            help = '''Full path to the fillRootImageGroup executable'''
         ),
         'placed_image_mapfile': ingredient.FileField(
             '--placed-image-mapfile',
-            help="location of mapfile with proced and correctly placed,"
+            help = "location of mapfile with proced and correctly placed,"
                 " hdf5 images"
         )
     }
@@ -79,10 +79,10 @@ class imager_finalize(BaseRecipe, RemoteCommandRecipeMixIn):
     def go(self):
         """
         Steps:
-        
+
         1. Load and validate the input datamaps
-        2. Run the node parts of the recipe  
-        3. Validate node output and format the recipe output   
+        2. Run the node parts of the recipe
+        3. Validate node output and format the recipe output
         """
         super(imager_finalize, self).go()
         # *********************************************************************
@@ -112,7 +112,7 @@ class imager_finalize(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # *********************************************************************
         # 2. Run the node side of the recupe
-        command = " python %s" % (self.__file__.replace("master", "nodes"))
+        command = " python3 %s" % (self.__file__.replace("master", "nodes"))
         jobs = []
         for  (awimager_output_item, ms_per_image_item, sourcelist_item,
               target_item, output_image_item, sourcedb_item) in zip(
@@ -162,7 +162,6 @@ class imager_finalize(BaseRecipe, RemoteCommandRecipeMixIn):
                                                     'placed_image_mapfile']
 
         return 0
-
 
 if __name__ == '__main__':
     sys.exit(imager_finalize().main())

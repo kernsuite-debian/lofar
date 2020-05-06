@@ -18,12 +18,12 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tFillRow.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Matrix.h>
 #include <Common/LofarLogger.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 
 
 using namespace LOFAR;
@@ -48,7 +48,7 @@ void doTest (int nx, int ny)
     dcomplex v = v0+double(i);
     dcomplex f = fact*(0.1+i/10.);
     for (int j=0; j<nx; ++j) {
-      ASSERTSTR (casa::near(real(v),*realp) && casa::near(imag(v),*imagp),
+      ASSERTSTR (casacore::near(real(v),*realp) && casacore::near(imag(v),*imagp),
 		 "result=" << *realp << ',' << *imagp << ", expected=" << v);
       realp++;
       imagp++;

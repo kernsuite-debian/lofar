@@ -25,6 +25,7 @@ This package contains different utilities that are common for LOFAR software
 """
 
 import sys
+import os, os.path
 import time
 
 
@@ -77,7 +78,7 @@ def chunker(seq, size):
     :param size: size of the chunks
     :return:
     """
-    return (seq[pos:pos + size] for pos in xrange(0, len(seq), size))
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
 
 def raise_exception(cls, msg):
@@ -139,28 +140,56 @@ def humanreadablesize(num, suffix='B', base=1000):
 
 def convertIntKeysToString(dct):
     '''recursively convert all int keys in a dict to string'''
-
-    #python2.7 using dict comprehension
-    #return {str(k): convertIntKeysToString(v) if isinstance(v, dict) else v for k,v in dct.items()}
-
-    #python2.6 using dict constructor and list comprehension
-    return dict((str(k), convertIntKeysToString(v) if isinstance(v, dict) else v) for k,v in dct.items())
+    return {str(k): convertIntKeysToString(v) if isinstance(v, dict) else v for k,v in dct.items()}
 
 def convertStringDigitKeysToInt(dct):
     '''recursively convert all string keys which are a digit in a dict to int'''
-    #python2.7 using dict comprehension
-    #return {int(k) if isinstance(k, basestring) and k.isdigit() else k : convertStringDigitKeysToInt(v) if isinstance(v, dict) else v for k,v in dct.items()}
-
-    #python2.6 using dict constructor and list comprehension
-    return dict((int(k) if isinstance(k, basestring) and k.isdigit() else k, convertStringDigitKeysToInt(v) if isinstance(v, dict) else v) for k,v in dct.items())
-
-def convertBufferValuesToString(dct):
-    '''recursively convert all string values in the dict to buffer'''
-    return dict( (k, convertBufferValuesToString(v) if isinstance(v, dict) else str(v) if isinstance(v, buffer) else v) for k,v in dct.items())
-
-def convertStringValuesToBuffer(dct, max_string_length=65535):
-    '''recursively convert all string values in the dict to buffer'''
-    return dict( (k, convertStringValuesToBuffer(v, max_string_length) if isinstance(v, dict) else (buffer(v, 0, len(v)) if (isinstance(v, basestring) and len(v) > max_string_length) else v)) for k,v in dct.items())
+    return {int(k) if isinstance(k, str) and k.isdigit() else k : convertStringDigitKeysToInt(v) if isinstance(v, dict) else v for k,v in dct.items()}
 
 def to_csv_string(values):
     return ','.join(str(x) for x in values)
+
+def is_iterable(thing):
+    try:
+        iter(thing)
+        return True
+    except TypeError:
+        return False
+
+def program_name(include_extension=True):
+    """gets the name of the current running program
+    :param include_extension bool: include the program name's extension (if present), otherwise cut it (if present)
+    :return:  the name of the current running program
+    """
+    name = os.path.basename(os.path.realpath(sys.argv[0]))
+    if not include_extension:
+        name, extension = os.path.splitext(name)
+    return name
+
+
+def is_empty_function(func):
+    """returns True when the given function/method 'func' has an empty 'pass' body (ignoring optional docstrings)"""
+    def __empty_func():
+        pass
+
+    def __empty_func_with_doc():
+        """Empty function with docstring."""
+        pass
+
+    return (func.__code__.co_code == __empty_func.__code__.co_code or \
+            func.__code__.co_code == __empty_func_with_doc.__code__.co_code) and \
+            func.__code__.co_consts[-1] == None
+
+def single_line_with_single_spaces(lines: str) -> str:
+    '''return the given lines as a single line with no extra leftover indentation spaces/tabs'''
+    if not isinstance(lines, str):
+        lines = str(lines)
+
+    line = lines.replace('\n', ' ').replace('\t', ' ')
+    length = len(line)
+    while True:
+        line = line.replace('  ', ' ')
+        new_length = len(line)
+        if new_length == length:
+            return line
+        length = new_length

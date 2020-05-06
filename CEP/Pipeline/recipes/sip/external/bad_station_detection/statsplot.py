@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Plot statistics obtained with ASCIIStats and select bad stations. It makes 3 analysis.
 
@@ -27,8 +27,8 @@ import optparse, os
 import numpy
 
 version_string = 'v0.2, 2 March 2012\nWritten by Oscar Martinez'
-print 'statsplot.py',version_string
-print ''
+print('statsplot.py',version_string)
+print('')
 
 POL_NAMES_INDEXES = {'XX':0,'XY':1,'YX':2,'YY':3}
 POL_INDEXES_NAMES = {0:'XX',1:'XY',2:'YX',3:'YY'}
@@ -45,7 +45,7 @@ def main(opts):
     absPath = opts.input
     if absPath != '':
         if not os.path.isfile(absPath):
-            print 'Error: ' + absPath + ' does not exist'
+            print('Error: ' + absPath + ' does not exist')
             exit()
     import matplotlib
     if opts.out != '':
@@ -53,7 +53,7 @@ def main(opts):
         matplotlib.use('Agg')
         ofile = opts.out + '.tab'
         if os.path.isfile(ofile):
-            print 'Removing: ' + ofile
+            print('Removing: ' + ofile)
             os.system('rm ' + ofile)
     import matplotlib.pyplot as plt
     
@@ -92,7 +92,7 @@ def main(opts):
     dictName = {}
     lines = open(absPath, 'r').read().split('\n')
     if not len(lines):
-        print 'Error: ' + absPath + ' is empty'
+        print('Error: ' + absPath + ' is empty')
     headerfields = lines[0].split()
     
     analysisstatsindex = (headerfields.index(mcoord+'_'+analysisname[0]), headerfields.index(scoord+'_'+analysisname[1]))
@@ -296,7 +296,7 @@ def main(opts):
     for stationIndex in stationsIndexes:
         station = dictName[stationIndex]
         (xs, ys,num_mean) = plotInfo[analysisIndex][stationIndex]
-        sumnummeanavg = numpy.array(num_mean.values()).mean()
+        sumnummeanavg = numpy.array(list(num_mean.values())).mean()
         kostation = False
         for polarization in analysispolars[analysisIndex]:
             ymean = int(num_mean[polarization])
@@ -329,11 +329,11 @@ def main(opts):
         
     if opts.out == '':
         for line in lines:
-            print line
+            print(line)
         plt.show()
     else:
         for i in (0,1):
-            print '-> '+opts.out+'-%s.%s'%(analysisname[i],opts.ext)
+            print('-> '+opts.out+'-%s.%s'%(analysisname[i],opts.ext))
             plts[i].savefig(opts.out+'-%s.%s'%(analysisname[i],opts.ext))
         outputfile = open(ofile,'w')
         for line in lines:

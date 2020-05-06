@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Script to convert an ASCII beam model coefficient file to a .cc file for
 # inclusion in the library. Whenever the beam model coefficients file are
@@ -10,6 +10,7 @@
 import sys
 import time
 import re
+from functools import reduce
 
 def flat_index(shape, index):
     """
@@ -55,9 +56,9 @@ def regex(name, type, signed = True):
     return "(?P<%s>%s)" % (name, expr)
 
 def main(args):
-    print "converting %s -> %s (variable name: %s)" % (args[0], args[1], args[2])
+    print("converting %s -> %s (variable name: %s)" % (args[0], args[1], args[2]))
 
-    HEADER, COEFF = range(2)
+    HEADER, COEFF = list(range(2))
     state = HEADER
 
     shape = None
@@ -68,7 +69,7 @@ def main(args):
     line_no = 0
     count = 0
 
-    fin = file(args[0], "r")
+    fin = open(args[0], "r")
     for line in fin:
         # Remove leading and trailing whitespace.
         line = line.strip()
@@ -92,7 +93,7 @@ def main(args):
             assert shape[3] == 2, "unsupported array shape, expected d == 2"
 
             size = reduce(lambda x, y: x * y, shape)
-            print "coefficient array shape:", shape, "(%d total)" % size
+            print("coefficient array shape:", shape, "(%d total)" % size)
 
             freqAvg = match.group("freqAvg")
             freqRange = match.group("freqRange")
@@ -124,52 +125,52 @@ def main(args):
     assert not (coeff is None) and all(coeff)
 
     # Write the output.
-    fout = file(args[1], "w")
+    fout = open(args[1], "w")
 
-    print >> fout, "// Beam model coefficients converted by convert_coeff.py."
-    print >> fout, "// Conversion performed on %s UTC using: " % time.strftime("%Y/%m/%d/%H:%M:%S", time.gmtime())
-    print >> fout, "//     convert_coeff.py %s %s %s" % (args[0], args[1], args[2])
-    print >> fout
-    print >> fout, "#include <complex>"
-    print >> fout
-    print >> fout, "// Center frequency, and frequency range for which the beam model coefficients"
-    print >> fout, "// are valid. The beam model is parameterized in terms of a normalized"
-    print >> fout, "// frequency f' in the range [-1.0, 1.0]. The appropriate conversion is:"
-    print >> fout, "//"
-    print >> fout, "//     f' = (f - center) / range"
-    print >> fout, "//"
-    print >> fout, "const double %s_freq_center = %s;" % (args[2], freqAvg)
-    print >> fout, "const double %s_freq_range = %s;" % (args[2], freqRange)
-    print >> fout
-    print >> fout, "// Shape of the coefficient array: %dx%dx%dx2 (the size of the last dimension is" % (shape[0], shape[1], shape[2])
-    print >> fout, "// implied, and always equal to 2)."
-    print >> fout, "//"
-    print >> fout, "const unsigned int %s_coeff_shape[3] = {%d, %d, %d};" % (args[2], shape[0], shape[1], shape[2])
-    print >> fout
-    print >> fout, "// The array of coefficients in row-major order (\"C\"-order)."
-    print >> fout, "//"
-    print >> fout, "const std::complex<double> %s_coeff[%d] = {" % (args[2], len(coeff))
+    print("// Beam model coefficients converted by convert_coeff.py.", file=fout)
+    print("// Conversion performed on %s UTC using: " % time.strftime("%Y/%m/%d/%H:%M:%S", time.gmtime()), file=fout)
+    print("//     convert_coeff.py %s %s %s" % (args[0], args[1], args[2]), file=fout)
+    print(file=fout)
+    print("#include <complex>", file=fout)
+    print(file=fout)
+    print("// Center frequency, and frequency range for which the beam model coefficients", file=fout)
+    print("// are valid. The beam model is parameterized in terms of a normalized", file=fout)
+    print("// frequency f' in the range [-1.0, 1.0]. The appropriate conversion is:", file=fout)
+    print("//", file=fout)
+    print("//     f' = (f - center) / range", file=fout)
+    print("//", file=fout)
+    print("const double %s_freq_center = %s;" % (args[2], freqAvg), file=fout)
+    print("const double %s_freq_range = %s;" % (args[2], freqRange), file=fout)
+    print(file=fout)
+    print("// Shape of the coefficient array: %dx%dx%dx2 (the size of the last dimension is" % (shape[0], shape[1], shape[2]), file=fout)
+    print("// implied, and always equal to 2).", file=fout)
+    print("//", file=fout)
+    print("const unsigned int %s_coeff_shape[3] = {%d, %d, %d};" % (args[2], shape[0], shape[1], shape[2]), file=fout)
+    print(file=fout)
+    print("// The array of coefficients in row-major order (\"C\"-order).", file=fout)
+    print("//", file=fout)
+    print("const std::complex<double> %s_coeff[%d] = {" % (args[2], len(coeff)), file=fout)
 
     i = 0
     while i < len(coeff):
         if i + 2 < len(coeff):
-            print >> fout, "    %s, %s," % (coeff[i], coeff[i + 1])
+            print("    %s, %s," % (coeff[i], coeff[i + 1]), file=fout)
             i += 2
         elif i + 2 == len(coeff):
-            print >> fout, "    %s, %s" % (coeff[i], coeff[i + 1])
+            print("    %s, %s" % (coeff[i], coeff[i + 1]), file=fout)
             i += 2
         else:
-            print >> fout, "    %s" % coeff[i]
+            print("    %s" % coeff[i], file=fout)
             i += 1
 
-    print >> fout, "};"
+    print("};", file=fout)
 
     fout.close()
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print "convert a beam model coefficient (.coeff) file to a C++ (.cc) file."
-        print "usage: convert_coeff.py <input-file> <output-file> <variable-name>"
+        print("convert a beam model coefficient (.coeff) file to a C++ (.cc) file.")
+        print("usage: convert_coeff.py <input-file> <output-file> <variable-name>")
         sys.exit(1)
 
     main(sys.argv[1:])

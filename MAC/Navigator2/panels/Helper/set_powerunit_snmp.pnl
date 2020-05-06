@@ -1,0 +1,328 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 872 391 N "_3DFace" 0
+"main()
+{
+  navFunct_fillStationLists();
+  TEXT_FIELD2.text = \"CS001\";
+        
+}
+  
+" 0
+ E E E E 1 -1 -1 0  50 50
+""0  1
+E "#uses \"navigator.ctl\"
+string db=\"\";
+
+
+
+void pushCB() 
+{
+  db = TEXT_FIELD2.text + \":\";
+
+  // deactivate polling
+  dpSet(db+\"_SNMP.Active\",0);
+
+  if (SNMPchoice.number() == 0)
+  {
+    setTimings();
+  }
+  else if (SNMPchoice.number() == 1)
+  {
+    setPCSAddresses();
+  }
+  else if (SNMPchoice.number() == 2)
+  {
+    setACXAddresses();
+  }
+
+  // activate polling
+  dpSet(db+\"_SNMP.Active\",1);
+}
+
+void setTimings()
+{
+  
+  dpSet(db+\"_SNMP.PollInterval\",300000);
+  dpSet(db+\"_2_SNMPAgent_1.Access.WriteCommunity\",\"private\");
+  dpSet(db+\"_2_SNMPAgent_1.Access.Timeout\",500);
+  dpSet(db+\"_2_SNMPAgent_1.Access.Retries\",10);
+  dpSet(db+\"_2_SNMPAgent_2.Access.WriteCommunity\",\"private\");
+  dpSet(db+\"_2_SNMPAgent_2.Access.Timeout\",500);
+  dpSet(db+\"_2_SNMPAgent_2.Access.Retries\",10);
+ 
+  DebugN(db + \"SNMP timings done\");
+}
+
+void setPCSAddresses()
+{
+  dpSet(db+\"LOFAR_PIC_POWEC0.powerSystemType:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.1.3.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.nrOfModules:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.3.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.voltage:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.3.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.current:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.3.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.temperature:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.3.2.1.6B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.nrOfAlarms:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.clearAlarmHistory:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.3.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmReason:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmText:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.5B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmType:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.2B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmTime:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.OK:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.3.2.1.2B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.powerSystemType:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.1.3.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.nrOfModules:_address.._reference\", \"2_1.3.6.1.4.1.5961.1.3.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.voltage:_address.._reference\", \"2_1.3.6.1.4.1.5961.1.3.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.current:_address.._reference\", \"2_1.3.6.1.4.1.5961.1.3.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.temperature:_address.._reference\", \"2_1.3.6.1.4.1.5961.1.3.2.1.6B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.OK:_address.._reference\", \"2_1.3.6.1.4.1.5961.1.3.2.1.2B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.nrOfAlarms:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.clearAlarmHistory:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.3.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmReason:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmText:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.5B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmType:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.2B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmTime:_address.._reference\", \"1_1.3.6.1.4.1.5961.1.12.2.1.4B\");
+
+  DebugN(db + \" PCS addresses set\");
+}
+
+void setACXAddresses()
+{
+  dpSet(db+\"LOFAR_PIC_POWEC0.powerSystemType:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.1.2.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.nrOfModules:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.6.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.voltage:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.6.2.1.7B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.current:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.6.2.1.8B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.temperature:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.6.2.1.10B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.OK:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.6.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.nrOfAlarms:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.clearAlarmHistory:_address.._reference\", \"\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmReason:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmText:_address.._reference\", \"\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmType:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC0.alarmTime:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.2B\");  
+  dpSet(db+\"LOFAR_PIC_POWEC1.powerSystemType:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.1.2.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.nrOfModules:_address.._reference\", \"2_1.3.6.1.4.1.5961.5.6.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.voltage:_address.._reference\", \"2_1.3.6.1.4.1.5961.5.6.2.1.7B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.current:_address.._reference\", \"2_1.3.6.1.4.1.5961.5.6.2.1.8B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.temperature:_address.._reference\", \"2_1.3.6.1.4.1.5961.5.6.2.1.10B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.OK:_address.._reference\", \"2_1.3.6.1.4.1.5961.5.6.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.nrOfAlarms:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.1.0\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.clearAlarmHistory:_address.._reference\", \"\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmReason:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.4B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmText:_address.._reference\", \"\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmType:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.3B\");
+  dpSet(db+\"LOFAR_PIC_POWEC1.alarmTime:_address.._reference\", \"1_1.3.6.1.4.1.5961.5.8.2.1.2B\");
+
+  DebugN(db + \" ACX addresses set\");
+}
+
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+14 1
+"TEXT_FIELD2"
+""
+1 197 18.25 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  195 9 329 35
+3 "0s" 0 0 0 0 0 -1  E E E
+13 2
+"PUSH_BUTTON1"
+""
+1 357 15.59210526315789 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+2 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  355 9 479 35
+
+T 
+1
+LANG:1 11 Set Station
+"main()
+{
+  pushCB();
+}" 0
+ E E E
+13 3
+"PUSH_BUTTON2"
+""
+1 357 128.25 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  355 121 479 147
+
+T 
+1
+LANG:1 17 Set International
+"main()
+{
+  for (int i=1; i<=dynlen(europeStations); i++)
+  {
+    TEXT_FIELD2.text=europeStations[i];
+    pushCB();
+  }  
+}" 0
+ E E E
+13 4
+"PUSH_BUTTON3"
+""
+1 357 53.25 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  355 46 479 72
+
+T 
+1
+LANG:1 8 Set Core
+"main()
+{
+  for (int i=1; i<=dynlen(coreStations); i++)
+  {
+    TEXT_FIELD2.text=coreStations[i];
+    pushCB();
+  }
+}" 0
+ E E E
+13 5
+"PUSH_BUTTON4"
+""
+1 357 90.25 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+5 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  355 83 479 109
+
+T 
+1
+LANG:1 10 Set Remote
+"main()
+{
+  for (int i=1; i<=dynlen(remoteStations); i++)
+  {
+    TEXT_FIELD2.text=remoteStations[i];
+    pushCB();
+  }
+}
+" 0
+ E E E
+19 7
+"SNMPchoice"
+""
+1 10 14.25 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  8 12 132 136
+3
+T 
+1
+LANG:1 16 Set SNMP timings
+
+1 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 17 Set PCS addresses
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+T 
+1
+LANG:1 17 Set ACX addresses
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+1
+E E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

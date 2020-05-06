@@ -45,7 +45,7 @@ class Listener(Thread):
             self.s.listen(10)  # magic numbers
             con, addr = self.s.accept()
             cmd = con.recv(80)
-            print cmd
+            print(cmd)
             self.__command(cmd)
             con.close()
             
@@ -75,6 +75,6 @@ class Listener(Thread):
             if scmd[0].strip().lower() == "del":
                 self.config['stoppedpids'].add(ccmd)
             else:
-                print ccmd
+                print(ccmd)
                 self.config['startpids'].add(ccmd)               
                 self.config['pidnames'][ccmd] = scmd[0]

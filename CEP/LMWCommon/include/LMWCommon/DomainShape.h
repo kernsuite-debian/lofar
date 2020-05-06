@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DomainShape.h 16886 2010-12-08 10:43:17Z diepen $
+//# $Id$
 
 #ifndef LOFAR_LMWCOMMON_DOMAINSHAPE_H
 #define LOFAR_LMWCOMMON_DOMAINSHAPE_H

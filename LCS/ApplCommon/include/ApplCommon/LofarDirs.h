@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: LofarDirs.h 30919 2015-02-05 15:26:22Z amesfoort $
+//#  $Id$
 
 #ifndef APPLCOMMON_LOFARDIRS_H
 #define APPLCOMMON_LOFARDIRS_H

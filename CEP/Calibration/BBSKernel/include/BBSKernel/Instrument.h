@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Instrument.h 38611 2017-10-10 09:53:34Z beukema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_INSTRUMENT_H
 #define LOFAR_BBSKERNEL_INSTRUMENT_H
@@ -32,7 +32,7 @@
 #include <Common/lofar_smartptr.h>
 #include <Common/lofar_string.h>
 #include <Common/lofar_vector.h>
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -48,15 +48,15 @@ public:
     typedef shared_ptr<Station>       Ptr;
     typedef shared_ptr<const Station> ConstPtr;
 
-    Station(const string &name, const casa::MPosition &position);
+    Station(const string &name, const casacore::MPosition &position);
     virtual ~Station();
 
     const string &name() const;
-    const casa::MPosition &position() const;
+    const casacore::MPosition &position() const;
 
 private:
     string                      itsName;
-    casa::MPosition             itsPosition;
+    casacore::MPosition             itsPosition;
 };
 
 class Instrument
@@ -65,14 +65,14 @@ public:
     typedef shared_ptr<Instrument>        Ptr;
     typedef shared_ptr<const Instrument>  ConstPtr;
 
-    Instrument(const string &name, const casa::MPosition &position);
+    Instrument(const string &name, const casacore::MPosition &position);
 
     template <typename T>
-    Instrument(const string &name, const casa::MPosition &position, T first,
+    Instrument(const string &name, const casacore::MPosition &position, T first,
         T last);
 
     const string &name() const;
-    const casa::MPosition &position() const;
+    const casacore::MPosition &position() const;
 
     unsigned int nStations() const;
     Station::ConstPtr station(unsigned int i) const;
@@ -82,7 +82,7 @@ public:
 
 private:
     string                      itsName;
-    casa::MPosition             itsPosition;
+    casacore::MPosition             itsPosition;
     map<string, unsigned int>   itsIndex;
     vector<Station::Ptr>        itsStations;
 };
@@ -94,7 +94,7 @@ private:
 // -------------------------------------------------------------------------- //
 
 template <typename T>
-Instrument::Instrument(const string &name, const casa::MPosition &position,
+Instrument::Instrument(const string &name, const casacore::MPosition &position,
     T first, T last)
     :   itsName(name),
         itsPosition(position),

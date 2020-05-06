@@ -29,7 +29,7 @@ class WSRTmessages(list):
         t = time.gmtime()
         if self._store and level > DebugLevel:
             list.append(self, (t, level, item)) ## storing the item for parsing by the caller.
-        for output in self.log.keys():
+        for output in list(self.log.keys()):
             if self.log[output] <= level:
                 if level >= ErrorLevel:
                     e = ' Error   : '
@@ -73,6 +73,6 @@ class WSRTmessages(list):
 
     def setloglevel(self, level, logger):
         """Changes the level at which logging info is written to the logger."""
-        for output in self.log.keys():
+        for output in list(self.log.keys()):
             if logger == output:
                 self.log[logger] = level

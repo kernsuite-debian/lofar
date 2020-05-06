@@ -28,7 +28,7 @@
 // Compute ITRF direction vector for a J2000 direction (RA, DEC) on the sky.
 
 #include <BBSKernel/Expr/BasicExpr.h>
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -45,7 +45,7 @@ public:
     typedef shared_ptr<ITRFDirection>       Ptr;
     typedef shared_ptr<const ITRFDirection> ConstPtr;
 
-    ITRFDirection(const casa::MPosition &position,
+    ITRFDirection(const casacore::MPosition &position,
         const Expr<Vector<2> >::ConstPtr &direction);
 
 protected:
@@ -53,7 +53,7 @@ protected:
         const Vector<2>::View &direction) const;
 
 private:
-    casa::MPosition itsPosition;
+    casacore::MPosition itsPosition;
 };
 
 // @}

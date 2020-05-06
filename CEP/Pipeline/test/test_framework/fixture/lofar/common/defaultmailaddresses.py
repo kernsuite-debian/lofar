@@ -18,13 +18,13 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: defaultmailaddresses.py 39345 2018-04-05 15:27:47Z mancini $
+# $Id$
 #
 """
 This package contains the default mail addresses used in the LOFAR software
 """
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 import os
 import pwd
 from glob import glob

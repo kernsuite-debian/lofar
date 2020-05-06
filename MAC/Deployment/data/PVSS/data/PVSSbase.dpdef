@@ -1,0 +1,206 @@
+# Common types in Station, CCU and MainCU PVSS Database
+# Definition of some basic types
+
+# DpType
+TypeName
+Claim.Claim	1#
+	claimDate	26#
+	freeDate	26#
+	name	25#
+
+TypeName
+ClaimManager.ClaimManager	1#
+	request	1#
+		typeName	25#
+		newObjectName	25#
+	reset	1#
+		typeName	25#
+		objectName	25#
+	response	1#
+		typeName	25#
+		newObjectName	25#
+		DPName	25#
+		claimDate	26#
+	cache	1#
+		typeNames	9#
+		newObjectNames	9#
+		DPNames	9#
+		claimDates	10#
+		freeDates	10#
+
+TypeName
+LofarSpeedTest.LofarSpeedTest	1#
+	singleInt	21#
+	singleString	25#
+	result	1#
+		testName	25#
+		nrWrites	21#
+		nrReads	21#
+		passed	23#
+		writeTime	25#
+		readTime	25#
+	IntCollection	1#
+		val1	21#
+		val2	21#
+		val3	21#
+		val4	21#
+		val5	21#
+		val6	21#
+		val7	21#
+		val8	21#
+		val9	21#
+		val10	21#
+	StringCollection	1#
+		val1	25#
+		val2	25#
+		val3	25#
+		val4	25#
+		val5	25#
+		val6	25#
+		val7	25#
+		val8	25#
+		val9	25#
+		val10	25#
+
+TypeName
+NCFObjectState.NCFObjectState	1#
+	DPName	25#
+	stateNr	21#
+	message	25#
+	force	23#
+
+TypeName
+NCFObjectStates.NCFObjectStates	1#
+	DPNames	9#
+	stateNrs	5#
+	messages	9#
+	force	7#
+
+# DpType
+TypeName
+ObjectStatus.ObjectStatus	1#
+	state	21#
+	childState	21#
+	message	25#
+	leaf	23#
+	childSumAlert	25#
+	
+TypeName
+ProcessStatus.ProcessStatus	1#
+	processID	21#
+	startTime	25#
+	stopTime	25#
+	logMsg	25#
+	error	25#
+	currentAction	25#
+
+Typename
+ScriptInfo.ScriptInfo	1#
+	claim	1#
+		debug	23#
+	gcf_cwd	1#
+		debug	23#
+	monitorAlarms	1#
+		debug	23#
+	monitorStateChanges	1#
+		debug	23#
+	monitorStateReset	1#
+		debug	23#
+	monitorStationAlarms	1#
+		debug	23#
+	readStationConnections	1#
+		debug	23#
+		runDone	23#
+	readStationConfigs	1#
+		debug	23#
+		runDone	23#
+	transferMPs	1#
+		debug	23#
+		runDone	23#
+	setSumAlerts	1#
+		debug	23#
+		runDone	23#
+
+TypeName
+ExampleDP_Bit.ExampleDP_Bit	23#
+
+DpName	TypeName
+LOFAR_AlertClass_Off	_AlertClass
+LOFAR_AlertClass_Operational	_AlertClass
+LOFAR_AlertClass_Maintenance	_AlertClass
+LOFAR_AlertClass_Test	_AlertClass
+LOFAR_AlertClass_Suspicious	_AlertClass
+LOFAR_AlertClass_Broken	_AlertClass
+LOFAR_AlertClass_DpOffline	_AlertClass
+LOFAR_AlertClass_Beyond_Repair	_AlertClass
+
+
+# create mp for ProcessStatus and attach an archive
+# create SNMP manager, Agent and Pollgroup
+DpName	TypeName
+_mp_ProcessStatus	ProcessStatus
+_dt_ProcessStatus	_DynamicDatapoints
+_mp_ObjectStatus	ObjectStatus	
+_dt_ObjectStatus	_DynamicDatapoints	
+_2_SNMPManager	_SNMPManager
+_SNMP	_PollGroup
+DummyBit	ExampleDP_Bit
+
+# create datapoints for ClaimManager,NCFObjectState and lofarSpeedTest
+# create missing _CtrlDebug points (needed if more then 4 ctl scripts are running)
+DpName	TypeName
+ClaimManager	ClaimManager
+lofarSpeedTest	LofarSpeedTest
+scriptInfo	ScriptInfo
+_CtrlDebug_CTRL_5	_CtrlDebug
+_CtrlDebug_CTRL_6	_CtrlDebug
+_CtrlDebug_CTRL_7	_CtrlDebug
+_CtrlDebug_CTRL_8	_CtrlDebug
+_CtrlDebug_CTRL_9	_CtrlDebug
+_CtrlDebug_CTRL_10	_CtrlDebug
+_CtrlDebug_CTRL_11	_CtrlDebug
+__navObjectState	NCFObjectState
+__resetObjectState	NCFObjectState
+__navObjectStates	NCFObjectStates
+__resetObjectStates	NCFObjectStates
+
+
+#Fill some defaults
+# DpValue
+ElementName	TypeName	_original.._value
+scriptInfo.transferMPs.runDone	ScriptInfo	0
+scriptInfo.setSumAlerts.runDone	ScriptInfo	1
+_ValueArchive_2.size.maxDpElGet	_ValueArchive	15000
+_ValueArchive_2.size.maxDpElSet	_ValueArchive	15000
+_ValueArchive_2.size.maxValuesSet	_ValueArchive	1250
+_ValueArchive_2.size.maxValuesGet	_ValueArchive	1250
+_SNMP.Active	_PollGroup	1
+_SNMP.PollInterval	_PollGroup	20000
+_dt_ObjectStatus.Leaf	_DynamicDatapoints	"_mp_ObjectStatus.state:_alert_hdl", "_mp_ObjectStatus.childSumAlert:_alert_hdl"	0x101	20.06.2016 08:46:58.057
+_dt_ObjectStatus.DynamicAttribute	_DynamicDatapoints	"_da_none", "_da_alert_hdl_sum"	0x101	20.06.2016 08:46:58.057
+
+# AlertClass
+ElementName	TypeName	_alert_class.._type	_alert_class.._prior	_alert_class.._abbr	_alert_class.._archive	_alert_class.._ack_type	_alert_class.._single_ack	_alert_class.._inact_ack	_alert_class.._color_none	_alert_class.._fore_color_none	_alert_class.._font_style_none	_alert_class.._color_c_nack	_alert_class.._fore_color_c_nack	_alert_class.._font_style_c_nack	_alert_class.._color_c_ack	_alert_class.._fore_color_c_ack	_alert_class.._font_style_c_ack	_alert_class.._color_g_nack	_alert_class.._fore_color_g_nack	_alert_class.._font_style_g_nack	_alert_class.._color_c_g_nack	_alert_class.._fore_color_c_g_nack	_alert_class.._font_style_c_g_nack	_alert_class.._ctrl_none	_alert_class.._ctrl_c_nack	_alert_class.._ctrl_c_ack	_alert_class.._ctrl_g_nack	_alert_class.._ctrl_c_g_nack	_alert_class.._arg_list	_alert_class.._perm
+LOFAR_AlertClass_Off.	_AlertClass	14	\1	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_off"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Operational.	_AlertClass	14	\10	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_operational"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Maintenance.	_AlertClass	14	\20	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_maintenance"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Test.	_AlertClass	14	\30	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_test"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Suspicious.	_AlertClass	14	\40	lt:1 LANG:1 ""	1	3	0	0	""	""	""	"Lofar_suspicious_came"	""	""	"Lofar_suspicious"	""	""	"Lofar_suspicious_went"	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Broken.	_AlertClass	14	\50	lt:1 LANG:1 ""	1	3	0	0	""	""	""	"Lofar_broken_came"	""	""	"Lofar_broken"	""	""	"Lofar_broken_went"	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_DpOffline.	_AlertClass	14	\70	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_dpOffline"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+LOFAR_AlertClass_Beyond_Repair.	_AlertClass	14	\60	lt:1 LANG:1 ""	1	1	0	0	""	""	""	""	""	""	"Lofar_beyond_repair"	""	""	""	""	""	""	""	""	""	""	""	""	""		\0
+
+# AlertValue
+ElementName	TypeName	DetailNr	_alert_hdl.._type	_alert_hdl.._l_limit	_alert_hdl.._u_limit	_alert_hdl.._l_incl	_alert_hdl.._u_incl	_alert_hdl.._panel	_alert_hdl.._panel_param	_alert_hdl.._help	_alert_hdl.._min_prio	_alert_hdl.._class	_alert_hdl.._text	_alert_hdl.._active	_alert_hdl.._orig_hdl	_alert_hdl.._ok_range	_alert_hdl.._hyst_type	_alert_hdl.._hyst_time	_alert_hdl.._multi_instance	_alert_hdl.._l_hyst_limit	_alert_hdl.._u_hyst_limit	_alert_hdl.._text1	_alert_hdl.._text0	_alert_hdl.._ack_has_prio	_alert_hdl.._order	_alert_hdl.._dp_pattern	_alert_hdl.._dp_list	_alert_hdl.._prio_pattern	_alert_hdl.._abbr_pattern	_alert_hdl.._ack_deletes	_alert_hdl.._non_ack	_alert_hdl.._came_ack	_alert_hdl.._pair_ack	_alert_hdl.._both_ack	_alert_hdl.._impulse	_alert_hdl.._filter_threshold	_alert_hdl.._went_text	_alert_hdl.._add_text	_alert_hdl.._status64_pattern	_alert_hdl.._neg	_alert_hdl.._status64_match	_alert_hdl.._match	_alert_hdl.._set
+_mp_ObjectStatus.state	ObjectStatus		13					""	""	lt:1 LANG:1 ""	\0			1	1				0																0								
+_mp_ObjectStatus.state	ObjectStatus	1	5										lt:1 LANG:1 ""				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"*"	
+_mp_ObjectStatus.state	ObjectStatus	2	5									LOFAR_AlertClass_Off.	lt:1 LANG:1 "Off"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"0"	
+_mp_ObjectStatus.state	ObjectStatus	3	5									LOFAR_AlertClass_Operational.	lt:1 LANG:1 "Operational"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"10"	
+_mp_ObjectStatus.state	ObjectStatus	4	5									LOFAR_AlertClass_Maintenance.	lt:1 LANG:1 "Maintenance"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"20"	
+_mp_ObjectStatus.state	ObjectStatus	5	5									LOFAR_AlertClass_Test.	lt:1 LANG:1 "Test"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"30"	
+_mp_ObjectStatus.state	ObjectStatus	6	5									LOFAR_AlertClass_Suspicious.	lt:1 LANG:1 "Suspicious"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"40"	
+_mp_ObjectStatus.state	ObjectStatus	7	5									LOFAR_AlertClass_Broken.	lt:1 LANG:1 "Broken"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"50"	
+_mp_ObjectStatus.state	ObjectStatus	8	5									LOFAR_AlertClass_Beyond_Repair.	lt:1 LANG:1 "Beyond_Repair"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"60"	
+_mp_ObjectStatus.state	ObjectStatus	9	5									LOFAR_AlertClass_DpOffline.	lt:1 LANG:1 "DP Offline"				0	01.01.1970 00:00:00.000																			lt:1 LANG:1 ""		0x0	0	""	"70"	
+_mp_ObjectStatus.childSumAlert	ObjectStatus		59					""		lt:1 LANG:1 ""				1								lt:1 LANG:1 ""	lt:1 LANG:1 ""	1	0	""	DummyBit.	""	""	1	1	1	1	1		0							
+

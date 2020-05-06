@@ -114,7 +114,7 @@ class setupsourcedb(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # ********************************************************************
         # 3. Call node side of script
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         outdata.iterator = DataMap.SkipIterator
         jobs = []
         for outp in outdata:

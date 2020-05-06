@@ -1,0 +1,9 @@
+/**
+
+\ingroup SAS
+\defgroup FeedbackService FeedbackService
+\ref feedback_service
+
+Feedback service that receives feedback.* messages and updates the database accordingly.
+
+*/

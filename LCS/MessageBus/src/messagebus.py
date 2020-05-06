@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (C) 2012-2013  ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
 #
@@ -19,22 +19,49 @@
 # $Id$
 
 try:
-  import qpid.messaging as messaging
+  import proton
+  import proton.utils
   MESSAGING_ENABLED = True
 except ImportError:
-  import noqpidfallback as messaging
+  from . import noqpidfallback as proton
   MESSAGING_ENABLED = False
 
 import os
 import logging
 import lofar.messagebus.message as message
+from lofar.messagebus.environment import isProductionEnvironment, isTestEnvironment
 import atexit
 
 # Candidate for a config file
 broker="127.0.0.1" 
 options="create:never"
 
+# which brokers to use to avoid routing
+if isProductionEnvironment():
+  broker_feedback="mcu001.control.lofar"
+  broker_state="ccu001.control.lofar"
+elif isTestEnvironment():
+  broker_feedback="mcu199.control.lofar"
+  broker_state="ccu199.control.lofar"
+else:
+  broker_feedback="localhost"
+  broker_state="localhost"
+
 logger=logging.getLogger("MessageBus")
+
+# which brokers to use to avoid routing
+if isProductionEnvironment():
+  broker_feedback="mcu001.control.lofar"
+  broker_state="ccu001.control.lofar"
+elif isTestEnvironment():
+  broker_feedback="mcu199.control.lofar"
+  broker_state="ccu199.control.lofar"
+else:
+  broker_feedback="localhost"
+  broker_state="localhost"
+
+#TODO: replace this version of the messagebus by the version in LCS/Messaging/python/messaging
+logger.warning("This version of the messagebus (lofar.messagebus.messagebus) is deprecated and will be replaced by lofar.messaging.messagebus")
 
 # Set to True if the caller parses LOFARENV -- required for surface between MessageBus and Messaging libs
 IGNORE_LOFARENV=False
@@ -45,15 +72,14 @@ class BusException(Exception):
 class Session:
     def __init__(self, broker):
         self.closed = False
-        self.connection = messaging.Connection(broker)
-        self.connection.reconnect = True
 
         logger.info("[Bus] Connecting to broker %s", broker)
         try:
-            self.connection.open()
+            self.connection = proton.utils.BlockingConnection(broker)
+            self.connection.reconnect = True
             logger.info("[Bus] Connected to broker %s", broker)
-            self.session = self.connection.session() 
-        except messaging.MessagingError, m:
+            #self.session = self.connection.session()
+        except proton.ProtonException as m:
             raise BusException(m)
 
         # NOTE: We cannot use:
@@ -85,8 +111,8 @@ class Session:
         # We set a timeout to prevent freezing, which obviously leads
         # to data loss if the stall was legit.
         try:
-            self.connection.close(5.0)
-        except messaging.exceptions.Timeout, t:
+            self.connection.close()
+        except proton.Timeout as t:
             logger.error("[Bus] Could not close connection: %s", t)
 
     def __enter__(self):
@@ -97,7 +123,7 @@ class Session:
         return False
 
     def address(self, queue, options):
-        return "%s%s; {%s}" % (self._queue_prefix(), queue, options)
+        return "%s%s" % (self._queue_prefix(), queue) # + ' ; {%s}' % options
 
     def _queue_prefix(self):
         lofarenv = os.environ.get("LOFARENV", "")
@@ -118,8 +144,8 @@ class ToBus(Session):
         self.queue = queue
 
         try:
-            self.sender = self.session.sender(self.address(queue, options))
-        except messaging.MessagingError, m:
+            self.sender = self.connection.create_sender(self.address(queue, options))
+        except proton.ProtonException as m:
             raise BusException(m)
 
     def send(self, msg):
@@ -134,7 +160,7 @@ class ToBus(Session):
               self.sender.send(msg)
 
             logger.info("[ToBus] Message sent to queue %s", self.queue)
-        except messaging.SessionError, m:
+        except proton.SessionError as m:
             raise BusException(m)
 
 class FromBus(Session):
@@ -145,27 +171,24 @@ class FromBus(Session):
 
     def add_queue(self, queue, options=options):
         try:
-            receiver = self.session.receiver(self.address(queue, options))
-        except messaging.MessagingError, m:
+            self.receiver = self.connection.create_receiver(self.address(queue, options))
+        except proton.ProtonException as m:
             raise BusException(m)
 
         # Need capacity >=1 for 'self.session.next_receiver' to function across multiple queues
-        receiver.capacity = 1
+        self.receiver.capacity = 1
 
     def get(self, timeout=None):
         msg = None
 
-        logger.info("[FromBus] Waiting for message")
+        logger.debug("[FromBus] Waiting for message")
         try:
-            receiver = self.session.next_receiver(timeout)
-            if receiver != None:
-                logger.info("[FromBus] Message available on queue %s", receiver.source)
-                msg = receiver.fetch() # receiver.get() is better, but requires qpid 0.31+
-                if msg is None:
-                    logger.error("[FromBus] Could not retrieve available message on queue %s", receiver.source)
-                else:
-                    logger.info("[FromBus] Message received on queue %s", receiver.source)
-        except messaging.exceptions.Empty, e:
+            msg = self.receiver.receive(timeout)
+            if msg is None:
+                logger.error("[FromBus] Could not retrieve available message on queue %s", self.receiver.source)
+            else:
+                logger.info("[FromBus] Message received on queue %s", self.receiver.source)
+        except proton.Timeout as e:
             return None
 
         if msg is None:
@@ -174,6 +197,6 @@ class FromBus(Session):
           return message.Message(qpidMsg=msg)
 
     def ack(self, msg):
-        self.session.acknowledge(msg.qpidMsg())
-        logging.info("[FromBus] Message ACK'ed");
+        self.receiver.accept()
+        logging.info("[FromBus] Message ACK'ed")
 

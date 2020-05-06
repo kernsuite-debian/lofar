@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tInputParSet.cc 21194 2012-06-11 13:52:07Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/InputParSet.h>

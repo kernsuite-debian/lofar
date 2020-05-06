@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: parmdbremote.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacadeLocal.h>
@@ -31,8 +31,8 @@
 #include <Common/LofarLogger.h>
 #include <Common/StreamUtil.h>
 #include <Common/Exception.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/Containers/Record.h>
 #include <iostream>
 #include <unistd.h>     //# for basename
 #include <libgen.h>
@@ -45,17 +45,17 @@ using namespace std;
 // Use a terminate handler that can produce a backtrace.
 Exception::TerminateHandler t(Exception::terminate);
 
-void putRecord (BlobOStream& bos, const casa::Record& rec)
+void putRecord (BlobOStream& bos, const casacore::Record& rec)
 {
   BlobAipsIO baio(bos);
-  casa::AipsIO aio(&baio);
+  casacore::AipsIO aio(&baio);
   aio << rec;
 }
 
-void getRecord (BlobIStream& bis, casa::Record& rec)
+void getRecord (BlobIStream& bis, casacore::Record& rec)
 {
   BlobAipsIO baio(bis);
-  casa::AipsIO aio(&baio);
+  casacore::AipsIO aio(&baio);
   aio >> rec;
 }
 
@@ -91,7 +91,7 @@ void getValues (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo,
   if (efreq > range[1]) efreq = range[1];
   if (stime < range[2]) stime = range[2];
   if (etime > range[3]) etime = range[3];
-  casa::Record rec;
+  casacore::Record rec;
   if (sfreq <= efreq  &&  stime <= etime) {
     try {
       rec = pdb.getValues (pattern, sfreq, efreq, freqStep,
@@ -111,7 +111,7 @@ void getValuesVec (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo)
   bool asStartEnd, includeDefaults;
   bis >> pattern >> freqv1 >> freqv2 >> timev1 >> timev2
       >> asStartEnd >> includeDefaults;
-  casa::Record rec;
+  casacore::Record rec;
   try {
     rec = pdb.getValues (pattern, freqv1, freqv2,
                          timev1, timev2, asStartEnd, includeDefaults);
@@ -127,7 +127,7 @@ void getValuesGrid (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo)
   string pattern;
   double sfreq, efreq, stime, etime;
   bis >> pattern >> sfreq >> efreq >> stime >> etime;
-  casa::Record rec;
+  casacore::Record rec;
   if (sfreq <= efreq  &&  stime <= etime) {
     try {
       rec = pdb.getValuesGrid (pattern, sfreq, efreq, stime, etime, true);
@@ -144,7 +144,7 @@ void getCoeff (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo)
   string pattern;
   double sfreq, efreq, stime, etime;
   bis >> pattern >> sfreq >> efreq >> stime >> etime;
-  casa::Record rec;
+  casacore::Record rec;
   if (sfreq <= efreq  &&  stime <= etime) {
     try {
       rec = pdb.getCoeff (pattern, sfreq, efreq, stime, etime, true);
@@ -238,7 +238,7 @@ void deleteDefValues (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo)
 
 void addDefValues (ParmFacadeLocal& pdb, BlobIStream& bis, MWBlobOut& bbo)
 {
-  casa::Record values;
+  casacore::Record values;
   bool check;
   getRecord (bis, values);
   bis >> check;

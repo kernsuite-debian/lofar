@@ -37,7 +37,7 @@
 
 #include <cmath>
 
-#include <scimath/Fitting/LSQFit.h>
+#include <casacore/scimath/Fitting/LSQFit.h>
 
 //# For the definition of SolverOptions...
 #include <BBSKernel/Solver.h>
@@ -63,7 +63,7 @@ Interval<size_t> findIntersection(const Axis::ShPtr &axis,
 string toString(const NSTimer &timer);
 
 // Apply the provided options to \p solver.
-void configLSQSolver(casa::LSQFit &solver, const SolverOptions &options);
+void configLSQSolver(casacore::LSQFit &solver, const SolverOptions &options);
 
 // Functors that modify observed and simulated visibilities (and partial
 // derivatives) for amplitude or phase only comparison. SampleModifierComplex
@@ -377,7 +377,7 @@ Interval<size_t> makeAxisMap(const Axis::ShPtr &from, const Axis::ShPtr &to,
     Interval<double> overlap(max(from->start(), to->start()), min(from->end(),
         to->end()));
 
-    if(overlap.start >= overlap.end || casa::near(overlap.start, overlap.end))
+    if(overlap.start >= overlap.end || casacore::near(overlap.start, overlap.end))
     {
         return Interval<size_t>(1, 0);
     }

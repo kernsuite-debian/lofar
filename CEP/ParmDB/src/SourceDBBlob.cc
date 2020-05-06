@@ -18,18 +18,18 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceDBBlob.cc 29041 2014-04-23 08:48:10Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDBBlob.h>
 #include <ParmDB/ParmMap.h>
 #include <Common/Exception.h>
 
-#include <casa/BasicSL/String.h>
-#include <casa/Utilities/Sort.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Utilities/Sort.h>
 #include <iostream>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR {

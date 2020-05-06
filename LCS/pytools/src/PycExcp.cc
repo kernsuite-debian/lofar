@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PycExcp.cc 17197 2011-01-26 07:00:53Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <pytools/PycExcp.h>

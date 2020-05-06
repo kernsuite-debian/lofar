@@ -18,12 +18,12 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobAipsIO.h 31210 2015-03-17 08:51:26Z diepen $
+//# $Id$
 
 #ifndef LOFAR_BLOB_BLOBAIPSIO_H
 #define LOFAR_BLOB_BLOBAIPSIO_H
 
-#include <casa/IO/ByteIO.h>
+#include <casacore/casa/IO/ByteIO.h>
 #include <Blob/BlobOStream.h>
 #include <Blob/BlobIStream.h>
 
@@ -43,7 +43,7 @@ namespace LOFAR {
   // the same is true for gets.
   // Of course, the order of reading must be the same as the order of writing.
 
-  class BlobAipsIO: public casa::ByteIO
+  class BlobAipsIO: public casacore::ByteIO
   {
   public:
     // Construct from a Blob buffer.
@@ -58,18 +58,18 @@ namespace LOFAR {
     // An exception is thrown if the stream is not writable.
     //# The 2nd write and read function are defined for the read/write signatures
     //# in older casacore versions (pre v2.0).
-    virtual void write (casa::Int64 size, const void* buf);
-    virtual void write (casa::uInt size, const void* buf);
+    virtual void write (casacore::Int64 size, const void* buf);
+    virtual void write (casacore::uInt size, const void* buf);
 
     // Read \a size bytes from the Blob stream. Returns the number of
     // bytes actually read. Will throw an Exception (AipsError) if the
     // requested number of bytes could not be read unless throwException is set
     // to False.
-    virtual casa::Int64 read (casa::Int64 size, void* buf, bool throwException);
-    virtual casa::Int read (casa::uInt size, void* buf, bool throwException);
+    virtual casacore::Int64 read (casacore::Int64 size, void* buf, bool throwException);
+    virtual casacore::Int read (casacore::uInt size, void* buf, bool throwException);
 
     // Get the length of the Blob stream. Returns 0 if the stream is not seekable.
-    virtual casa::Int64 length();
+    virtual casacore::Int64 length();
 
     // Is the Blob stream readable?
     virtual bool isReadable() const;
@@ -90,7 +90,7 @@ private:
 
     // Reset the position pointer to the given value. It returns the
     // new position.
-    virtual casa::Int64 doSeek (casa::Int64 offset, casa::ByteIO::SeekOption);
+    virtual casacore::Int64 doSeek (casacore::Int64 offset, casacore::ByteIO::SeekOption);
 
     BlobOStream* itsOBuf;
     BlobIStream* itsIBuf;

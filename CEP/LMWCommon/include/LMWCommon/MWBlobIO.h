@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MWBlobIO.h 27638 2013-12-04 08:00:25Z diepen $
+//# $Id$
 
 #ifndef LOFAR_LMWCOMMON_MWBLOBIO_H
 #define LOFAR_LMWCOMMON_MWBLOBIO_H
@@ -32,7 +32,7 @@
 #include <Blob/BlobIBufString.h>
 #include <Blob/BlobOStream.h>
 #include <Blob/BlobIStream.h>
-#include <casa/OS/Timer.h>
+#include <casacore/casa/OS/Timer.h>
 #include <Common/Timer.h>
 
 namespace LOFAR { namespace CEP {
@@ -128,7 +128,7 @@ namespace LOFAR { namespace CEP {
     void setOperation (int operation);
 
     // Set the times it took to do the operation.
-    void setTimes (const casa::Timer&, const LOFAR::NSTimer&);
+    void setTimes (const casacore::Timer&, const LOFAR::NSTimer&);
 
     // Get the blobstream to write the data in.
     LOFAR::BlobOStream& blobStream()

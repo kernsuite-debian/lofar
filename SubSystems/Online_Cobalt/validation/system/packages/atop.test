@@ -1,0 +1,5 @@
+#!/bin/bash -ve
+
+rpm -q atop || exit 1
+
+exit 0

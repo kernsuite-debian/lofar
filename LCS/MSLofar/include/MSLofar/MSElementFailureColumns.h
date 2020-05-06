@@ -17,20 +17,20 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSElementFailureColumns.h 17574 2011-03-18 09:07:29Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSELEMENTFAILURECOLUMNS_H
 #define MSLOFAR_MSELEMENTFAILURECOLUMNS_H
 
-#include <casa/aips.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MCEpoch.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <measures/TableMeasures/ScalarQuantColumn.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MCEpoch.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/measures/TableMeasures/ScalarQuantColumn.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/BasicSL/String.h>
 
 namespace LOFAR {
 
@@ -56,21 +56,21 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    const casa::ROScalarColumn<casa::Int>& antennaFieldId() const
+    const casacore::ROScalarColumn<casacore::Int>& antennaFieldId() const
       { return antennaFieldId_p; }
-    const casa::ROScalarColumn<casa::Int>& elementIndex() const
+    const casacore::ROScalarColumn<casacore::Int>& elementIndex() const
       { return elementIndex_p; }
-    const casa::ROScalarColumn<casa::Double>& time() const
+    const casacore::ROScalarColumn<casacore::Double>& time() const
       { return time_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& timeQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& timeQuant() const 
       { return timeQuant_p; }
-    const casa::ROScalarMeasColumn<casa::MEpoch>& timeMeas() const
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& timeMeas() const
       { return timeMeas_p; }
     // </group>
 
     // Convenience function that returns the number of rows
     // in any of the columns.
-    casa::uInt nrow() const
+    casacore::uInt nrow() const
       { return antennaFieldId_p.nrow(); }
 
   protected:
@@ -88,15 +88,15 @@ namespace LOFAR {
     ROMSElementFailureColumns& operator=(const ROMSElementFailureColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::Int> antennaFieldId_p;
-    casa::ROScalarColumn<casa::Int> elementIndex_p;
-    casa::ROScalarColumn<casa::Double> time_p;
+    casacore::ROScalarColumn<casacore::Int> antennaFieldId_p;
+    casacore::ROScalarColumn<casacore::Int> elementIndex_p;
+    casacore::ROScalarColumn<casacore::Double> time_p;
 
     //# Access to Quantum columns
-    casa::ROScalarQuantColumn<casa::Double> timeQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> timeQuant_p;
 
     //# Access to Quantum columns
-    casa::ROScalarMeasColumn<casa::MEpoch> timeMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> timeMeas_p;
   };
 
 
@@ -119,15 +119,15 @@ namespace LOFAR {
 
     // Read-write access to required columns.
     // <group>
-    casa::ScalarColumn<casa::Int>& antennaFieldId()
+    casacore::ScalarColumn<casacore::Int>& antennaFieldId()
       { return antennaFieldId_p; }
-    casa::ScalarColumn<casa::Int>& elementIndex()
+    casacore::ScalarColumn<casacore::Int>& elementIndex()
       { return elementIndex_p; }
-    casa::ScalarColumn<casa::Double>& time()
+    casacore::ScalarColumn<casacore::Double>& time()
       { return time_p; }
-    casa::ScalarQuantColumn<casa::Double>& timeQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& timeQuant() 
       { return timeQuant_p; }
-    casa::ScalarMeasColumn<casa::MEpoch>& timeMeas()
+    casacore::ScalarMeasColumn<casacore::MEpoch>& timeMeas()
       { return timeMeas_p; }
     // </group>
 
@@ -146,15 +146,15 @@ namespace LOFAR {
     MSElementFailureColumns& operator= (const MSElementFailureColumns&);
 
     //# required columns
-    casa::ScalarColumn<casa::Int> antennaFieldId_p;
-    casa::ScalarColumn<casa::Int> elementIndex_p;
-    casa::ScalarColumn<casa::Double> time_p;
+    casacore::ScalarColumn<casacore::Int> antennaFieldId_p;
+    casacore::ScalarColumn<casacore::Int> elementIndex_p;
+    casacore::ScalarColumn<casacore::Double> time_p;
 
     //# Access to Quantum columns
-    casa::ScalarQuantColumn<casa::Double> timeQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> timeQuant_p;
 
     //# Access to Quantum columns
-    casa::ScalarMeasColumn<casa::MEpoch> timeMeas_p;
+    casacore::ScalarMeasColumn<casacore::MEpoch> timeMeas_p;
   };
 
 } //# end namespace

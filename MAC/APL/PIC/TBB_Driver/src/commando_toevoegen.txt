@@ -1,0 +1,53 @@
+Adding a new command to the TBB driver:
+---------------------------------------
+1) Add the protocol for the command here:
+    - TP_Protocol.prot
+    - TBB_Protocol.prot
+2) Compile TBB_Protocol (execute cmake chain)
+3) Create the classes that implement the new command.  You can copy the
+   templates XXXCmd.cc and XXXCmd.h. Depending on how you name the files the
+   class names have to follow these rules, e.g. file name XYZ --> becomes
+   class name xYz or XyZ:
+        * X_X --> TRIG_SETUP or ALLOC
+        * XXX --> TRIGSETUP or ALLOC
+        * Xxx --> TrigSetup or Alloc
+        * xxx --> trigsetup or alloc
+4) Add the new file to CMakeLists.txt
+5) Modify TBBDriver.cc:
+    - add the #include of the XXXCmd.h file
+    - add the new TBB_XXX_Event to setup_state() if necessary.
+    - add both, the new TP_XXX_Event and the TBB_XXX_Event to busy_state()
+    - add the new command in SetTbbCommand()
+6) Modify RawEvent.cc:
+    - add the TP_XXX_Event, its opcode and its size to dispatch()
+7) Add the class of the new command to tbbctl.h
+8) Modify tbbctl.cc:
+    - add the class's method implementations
+    - add the TBB_XXX_Event to docommand()
+    - add the command to parse_options()
+    - add the command to commandHelp()
+
+Aanmaken van een nieuw commando in de TBB Driver
+------------------------------------------------
+1) Protocol voor het commando toevoegen aan TP_Protocol.prot en TBB_Protocol.prot
+2) TBB_Protocol bouwen (make install)
+3) Aanmaken van het commando, door gebruik te maken van XXXCmd.cc en XXXCmd.h
+   de volgende replace commando's kunnen worden gebruikt:
+   - X_X --> Naam commando bv TRIG_SETUP of ALLOC
+   - XXX --> Naam commando bv TRIGSETUP of ALLOC
+   - Xxx --> Naam commando bv TrigSetup of Alloc
+   - xxx --> Naam commando bv trigsetup of alloc
+4) Aangemaakte files toevoegen aan CMakeLists.txt
+5) De volgende aanpassingen maken in TBBDriver.cc
+   - include de .h file van het commando
+   - in setup_state() het TBB_ Event toevoegen
+   - in busy_state() het TP_ en TBB_ Event toevoegen
+   - in SetTbbCommand() het commando toevoegen
+6) De volgende aanpassingen make in RawEvent.cc
+   - in dispatch() de TP Opcode en TP_ Event toevoegen, en de grootte van het commando in bytes
+7) toevoegen commando class in tbbctl.h
+8) toevoegen commando class in tbbctl.cc
+	 - toevoegen class onderdelen
+	 - toevoegen TBB_ Event aan docommand()
+   - toevoegen commando aan parse_options()
+   - toevoegen commando aan commandHelp()

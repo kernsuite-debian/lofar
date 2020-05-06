@@ -5,7 +5,7 @@ import lofar.expion.parmdbmain
 import median_filter
 
 def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshold):
-    print 'Smoothing with ', instrument_name, instrument_name_smoothed, half_window, threshold
+    print('Smoothing with ', instrument_name, instrument_name_smoothed, half_window, threshold)
     #print input_parmdb, output_parmdb
     #msname = 'L23145_SB030_TauA_avg_dem.MS'
     
@@ -24,7 +24,7 @@ def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshol
     pdb = lofar.parmdb.parmdb(instrument_name)
     parms = pdb.getValuesGrid("*")
     #print parms.keys()
-    key_names = parms.keys()
+    key_names = list(parms.keys())
     antenna_list = numpy.copy(key_names)
     pol_list = numpy.copy(key_names)
     sol_par  = numpy.copy(key_names)
@@ -48,8 +48,8 @@ def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshol
     antenna_list = numpy.unique(antenna_list)
     pol_list     = numpy.unique(pol_list)
     sol_par      =  numpy.unique(sol_par)
-    print 'Stations available:', antenna_list
-    print 'Polarizations:', pol_list, sol_par, gain
+    print('Stations available:', antenna_list)
+    print('Polarizations:', pol_list, sol_par, gain)
     
     
     
@@ -57,7 +57,7 @@ def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshol
     if len(pol_list) == 4:
     
       for antenna in antenna_list:
-          print 'smoothing (N_pol=4):', antenna
+          print('smoothing (N_pol=4):', antenna)
           real_val00 = parms[gain + ':0:0:Real:' + antenna]['values'][::]
           imag_val00 = parms[gain + ':0:0:Imag:' + antenna]['values'][::]
           ampl00   = numpy.sqrt(real_val00**2 + imag_val00**2)
@@ -169,7 +169,7 @@ def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshol
     
     if len(pol_list) == 2:
       for antenna in antenna_list:
-          print 'smoothing (N_pol=2):', antenna
+          print('smoothing (N_pol=2):', antenna)
           real_val00 = parms[gain + ':0:0:Real:' + antenna]['values'][::]
           imag_val00 = parms[gain + ':0:0:Imag:' + antenna]['values'][::]
           ampl00   = numpy.sqrt(real_val00**2 + imag_val00**2)
@@ -229,9 +229,9 @@ def smoothparmdb(instrument_name,instrument_name_smoothed, half_window, threshol
           parms['Gain:0:0:Imag:' + antenna]['values'][::] = parms['Gain:0:0:Imag:' + antenna]['values'][::]*factor00
           parms['Gain:0:0:Real:' + antenna]['values'][::] = parms['Gain:0:0:Real:' + antenna]['values'][::]*factor00
     
-    print 'writing the new database:', instrument_name_smoothed
-    print 'check your results with: parmdbplot.py' , instrument_name_smoothed
-    print 'compare with: parmdbplot.py', instrument_name
+    print('writing the new database:', instrument_name_smoothed)
+    print('check your results with: parmdbplot.py' , instrument_name_smoothed)
+    print('compare with: parmdbplot.py', instrument_name)
 
     lofar.expion.parmdbmain.store_parms(instrument_name_smoothed, parms, create_new = True)
 

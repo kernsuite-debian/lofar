@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: KernelConnection.h 14633 2009-12-08 21:27:11Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_KERNELCONNECTION_H
 #define LOFAR_BBSCONTROL_KERNELCONNECTION_H

@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+# $Id: radbservice 33373 2016-01-22 11:01:15Z schaap $
+
+'''
+runs the cleanup service
+'''
+
+if __name__ == '__main__':
+    from lofar.sas.datamanagement.cleanup.service import main
+    main()

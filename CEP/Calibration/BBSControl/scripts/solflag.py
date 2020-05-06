@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: solflag.py 14741 2009-12-30 15:07:42Z zwieten $
+# $Id$
 
 import sys
 import math
@@ -26,7 +26,7 @@ import numpy
 import pylab
 import pyrap.tables
 import lofar.parmdb
-import solfetch
+from . import solfetch
 
 def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
     updateMain=True, cutoffLow=None, cutoffHigh=None, debug=False):
@@ -70,10 +70,10 @@ def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
     # Get solutions from solution database.
     elements = ["0:0", "1:1"]
 
-    print "fetching solutions from %s..." % dbName,
+    print("fetching solutions from %s..." % dbName, end=' ')
     sys.stdout.flush()
     ampl = __fetch(db, elements, stations, sources)
-    print "done."
+    print("done.")
     sys.stdout.flush()
 
     # Determine the number of directions.
@@ -86,7 +86,7 @@ def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
     n_samples = ampl.shape[-1]
 
     # Flag based on solutions.
-    print "flagging..."
+    print("flagging...")
     sys.stdout.flush()
 
     for stat in range(0, len(stations)):
@@ -138,7 +138,7 @@ def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
                 if debug:
                     # Get masked x-axis and solutions.
                     mask = ~sol_flag[half_window:half_window + n_samples]
-                    x_axis = numpy.array(range(0, n_samples))
+                    x_axis = numpy.array(list(range(0, n_samples)))
                     x_axis = x_axis[mask]
 
                     sol_masked = sol[half_window:half_window + n_samples]
@@ -157,7 +157,7 @@ def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
                 # into the station flags.
                 flags = flags | sol_flag[half_window:half_window + n_samples]
 
-        print "(%.2f%%) %s" % (100.0 * numpy.sum(flags) / n_samples, stations[stat])
+        print("(%.2f%%) %s" % (100.0 * numpy.sum(flags) / n_samples, stations[stat]))
         sys.stdout.flush()
 
         if storeFlags:
@@ -178,7 +178,7 @@ def flag(msName, dbName, half_window, threshold, sources=None, storeFlags=True,
                         msFlags[i, :, :] |= flags[i]
                     baseline.putcol("FLAG", msFlags)
 
-    print "done."
+    print("done.")
 
 def __fetch(db, elements, stations, directions=None):
     result = None

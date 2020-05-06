@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SystemUtil.cc 31468 2015-04-13 23:26:52Z amesfoort $
+//# $Id$
 //#
 #include <lofar_config.h>
 #include <Common/LofarLogger.h>
@@ -349,6 +349,19 @@ string dirname(string path)
 
   // Return the resulting path.
   return path;
+}
+
+//
+// realpath
+//
+string realpath(const string& path)
+{
+  string resolved_path;
+  char buf[PATH_MAX+1];
+  if (::realpath(path.c_str(), buf)) {
+    resolved_path = buf;
+  }
+  return resolved_path;
 }
 
 

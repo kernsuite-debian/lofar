@@ -18,26 +18,26 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: msplay.cc 21558 2012-07-12 09:35:39Z loose $
+//#  $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
 
-#include <ms/MeasurementSets.h>
-#include <tables/Tables/IncrementalStMan.h>
-#include <tables/Tables/StandardStMan.h>
-#include <tables/Tables/IncrStManAccessor.h>
-#include <tables/Tables/StandardStManAccessor.h>
-#include <tables/Tables/TiledColumnStMan.h>
-#include <tables/Tables/TiledStManAccessor.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableDesc.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Exceptions/Error.h>
-#include <casa/OS/Timer.h>
+#include <casacore/ms/MeasurementSets.h>
+#include <casacore/tables/DataMan/IncrementalStMan.h>
+#include <casacore/tables/DataMan/StandardStMan.h>
+#include <casacore/tables/DataMan/IncrStManAccessor.h>
+#include <casacore/tables/DataMan/StandardStManAccessor.h>
+#include <casacore/tables/DataMan/TiledColumnStMan.h>
+#include <casacore/tables/DataMan/TiledStManAccessor.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Exceptions/Error.h>
+#include <casacore/casa/OS/Timer.h>
 #include <vector>
 
-using namespace casa;
+using namespace casacore;
 
 int nrcorr=4;
 

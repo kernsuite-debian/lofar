@@ -9,24 +9,24 @@ using namespace std;
 
 namespace LOFAR {
 
-RotationConstraint::RotationConstraint():
-    _nAntennas(0), _nDirections(0)
-{
+  void RotationConstraint::InitializeDimensions(size_t nAntennas,
+                                                size_t nDirections,
+                                                size_t nChannelBlocks) {
+  Constraint::InitializeDimensions(nAntennas, nDirections, nChannelBlocks);
+
+  assert(_nDirections == 1);
+
+  _res.resize(1);
+  _res[0].vals.resize(_nAntennas*_nChannelBlocks);
+  _res[0].axes="ant,freq";
+  _res[0].dims.resize(2);
+  _res[0].dims[0]=_nAntennas;
+  _res[0].dims[1]=_nChannelBlocks;
+  _res[0].name="rotation";
 }
 
-void RotationConstraint::initialize(size_t nAntennas, size_t nDirections, size_t nChannelBlocks) {
-  _nAntennas = nAntennas;
-  _nDirections = nDirections;
-  assert(nDirections == 1);
-  _nChannelBlocks = nChannelBlocks;
-
-  _resTemplate.resize(1);
-  _resTemplate[0].vals.resize(_nAntennas*_nChannelBlocks);
-  _resTemplate[0].axes="ant,freq";
-  _resTemplate[0].dims.resize(2);
-  _resTemplate[0].dims[0]=_nAntennas;
-  _resTemplate[0].dims[1]=_nChannelBlocks;
-  _resTemplate[0].name="rotation";
+void RotationConstraint::SetWeights(const vector<double>& weights) {
+  _res[0].weights = weights;
 }
 
 double RotationConstraint::get_rotation(std::complex<double>* data) {
@@ -42,7 +42,8 @@ double RotationConstraint::get_rotation(std::complex<double>* data) {
 }
 
 vector<Constraint::Result> RotationConstraint::Apply(
-    vector<vector<dcomplex> >& solutions, double) {
+    vector<vector<dcomplex> >& solutions, double,
+    std::ostream* statStream) {
   // Convert to circular
   complex<double> ll, rr;
   complex<double> i(0,1.);
@@ -52,7 +53,7 @@ vector<Constraint::Result> RotationConstraint::Apply(
       // Compute rotation
       complex<double> *data= &(solutions[ch][4*ant]);
       double angle = get_rotation(data);
-      _resTemplate[0].vals[ant*_nChannelBlocks+ch] = angle;
+      _res[0].vals[ant*_nChannelBlocks+ch] = angle;
 
       // Constrain the data
       data[0] = cos(angle);
@@ -62,7 +63,7 @@ vector<Constraint::Result> RotationConstraint::Apply(
     }
   }
 
-  return _resTemplate;
+  return _res;
 }
 
 } //namespace LOFAR

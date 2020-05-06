@@ -187,7 +187,7 @@ class LOFARIngredientTest(unittest.TestCase):
         ``self.lofaringredient`` should contain keys for the two fields
         which have default parameters, but not for the one which is unset.
         """
-        self.assertEqual(len(self.lofaringredient.keys()), 2)
+        self.assertEqual(len(list(self.lofaringredient.keys())), 2)
         self.assertRaises(KeyError, lambda: self.lofaringredient['g'])
 
     def test_values(self):

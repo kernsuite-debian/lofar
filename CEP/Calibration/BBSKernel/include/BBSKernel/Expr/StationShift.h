@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationShift.h 14737 2009-12-30 10:52:53Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_STATIONSHIFT_H
 #define LOFAR_BBSKERNEL_EXPR_STATIONSHIFT_H

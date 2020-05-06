@@ -1,4 +1,0 @@
-#!/bin/bash
-source python-coverage.sh
-
-python_coverage_test defaultmailaddresses t_defaultmailaddresses.py

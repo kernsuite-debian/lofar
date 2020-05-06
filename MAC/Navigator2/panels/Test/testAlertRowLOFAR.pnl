@@ -1,0 +1,108 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 1123 644 N "_3DFace" 0
+E E E E E 1 -1 -1 0  -1 19
+""0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+29 17
+"sl_gauge"
+""
+1 930 200.0000000000001 E E E 1 E 0 E N "_3DText" E N "_3DFace" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+2
+LANG:1 0 
+LANG:0 0 
+
+8
+"invertedAppearance" "bool TRUE"
+"minValue" "int 1"
+"lineStep" "int 1"
+"backgroundOrigin" "enum 0"
+"value" "int 50"
+"tickInterval" "int 1"
+"maxValue" "int 99"
+"invertedAppearance" "bool TRUE"
+2
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+LANG:0 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  930 200 953 510
+12 SliderWidget
+0
+E1 18 0 "0" 18
+0
+1 32 0 "0" 1
+31 "transform" 0 0 1 0 19.28571428571429 0 -914.2857142857145
+0
+13 16
+"PUSH_BUTTON1"
+""
+1 40 10 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+0 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+0  38 8 192 42
+
+T 
+1
+LANG:1 12 PUSH_BUTTON1
+"main()
+{
+  DebugN( \"AES_ACTION_AUTORUN = \" + AES_ACTION_AUTORUN );
+  openAES( \"aes_alerts_LOFAR\", \"Alarmen\", AES_ACTION_AUTORUN );
+}" 0
+ E E E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+3 0 "PANEL_REF0" -1
+"" ""
+"objects/STD_PANELS/AESRow.pnl" -1 19 T 0 U 
+1
+"$AESREGDOLLAR_SCREENTYPE""aes_alertRow_LOFAR"
+0

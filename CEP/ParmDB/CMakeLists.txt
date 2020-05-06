@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 16888 2010-12-08 10:50:05Z diepen $
+# $Id$
 
 lofar_package(ParmDB 1.0 DEPENDS Common Blob LMWCommon)
 

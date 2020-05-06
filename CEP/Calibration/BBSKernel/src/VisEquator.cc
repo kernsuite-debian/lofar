@@ -262,7 +262,7 @@ Interval<size_t> VisEquator::findContainedCellRange(const Axis::ShPtr &axis,
     Interval<double> overlap(std::max(axis->start(), interval.start),
         std::min(axis->end(), interval.end));
 
-    if(overlap.start >= overlap.end || casa::near(overlap.start, overlap.end))
+    if(overlap.start >= overlap.end || casacore::near(overlap.start, overlap.end))
     {
         return Interval<size_t>(1, 0);
     }
@@ -273,7 +273,7 @@ Interval<size_t> VisEquator::findContainedCellRange(const Axis::ShPtr &axis,
 
     // Check for special case: start cell is not completely contained in the
     // provided interval.
-    if(!casa::near(axis->lower(start), overlap.start))
+    if(!casacore::near(axis->lower(start), overlap.start))
     {
         if(start == end)
         {
@@ -285,7 +285,7 @@ Interval<size_t> VisEquator::findContainedCellRange(const Axis::ShPtr &axis,
 
     // Check for special case: end cell is not completely contained in the
     // provided interval.
-    if(!casa::near(axis->upper(end), overlap.end))
+    if(!casacore::near(axis->upper(end), overlap.end))
     {
         if(end == start)
         {

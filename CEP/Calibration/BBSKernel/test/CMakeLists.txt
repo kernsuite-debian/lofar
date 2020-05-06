@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 14655 2009-12-10 08:39:53Z loose $
+# $Id$
 
 include(LofarCTest)
 

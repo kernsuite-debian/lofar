@@ -1,3 +1,2 @@
-set(CASACORE_ROOT_DIR /opt/casacore-latest)
-set(DAL_ROOT_DIR      /opt/DAL)
-
+set(CASACORE_ROOT_DIR /opt/casacore-v3.0.0)
+set(DAL_ROOT_DIR      /opt/DAL-v3.3.1)

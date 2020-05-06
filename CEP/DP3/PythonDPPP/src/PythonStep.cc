@@ -29,12 +29,12 @@
 #include <DPPP/DPRun.h>
 #include <Common/ParameterSet.h>
 
-#if defined(casacore)
-#include <python/Converters/PycExcp.h>
-#include <python/Converters/PycBasicData.h>
-#include <python/Converters/PycValueHolder.h>
-#include <python/Converters/PycRecord.h>
-#include <python/Converters/PycArray.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/python/Converters/PycExcp.h>
+#include <casacore/python/Converters/PycBasicData.h>
+#include <casacore/python/Converters/PycValueHolder.h>
+#include <casacore/python/Converters/PycRecord.h>
+#include <casacore/python/Converters/PycArray.h>
 #define pyrap python
 #else
 #include <pyrap/Converters/PycExcp.h>
@@ -44,10 +44,10 @@
 #include <pyrap/Converters/PycArray.h>
 #endif
 
-#include <casa/OS/Path.h>
+#include <casacore/casa/OS/Path.h>
 #include <unistd.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
   namespace DPPP {
@@ -78,10 +78,10 @@ namespace LOFAR {
       PyList_Insert (sysPath, 0, PyUnicode_FromString(workingDir.c_str()));
 #endif
       // Register converters for casa types from/to python types
-      casa::pyrap::register_convert_excp();
-      casa::pyrap::register_convert_basicdata();
-      casa::pyrap::register_convert_casa_valueholder();
-      casa::pyrap::register_convert_casa_record();
+      casacore::pyrap::register_convert_excp();
+      casacore::pyrap::register_convert_basicdata();
+      casacore::pyrap::register_convert_casa_valueholder();
+      casacore::pyrap::register_convert_casa_record();
       try {
         // First import main
         boost::python::object mainModule = boost::python::import

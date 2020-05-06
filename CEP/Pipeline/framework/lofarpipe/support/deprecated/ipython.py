@@ -4,7 +4,7 @@
 #                                                         John Swinbank, 2009-10
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
-from ConfigParser import NoSectionError
+from configparser import NoSectionError
 from IPython.kernel.task import StringTask
 from IPython.kernel import client as IPclient
 from lofarpipe.support.lofarexceptions import ClusterError

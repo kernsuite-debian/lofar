@@ -1,0 +1,6 @@
+// \ingroup ResourceAssignment
+//
+// \defgroup ResourceAssigner ResourceAssigner
+//
+// This package contains classes and programs that handle the assignment requests
+// of new tasks blaat

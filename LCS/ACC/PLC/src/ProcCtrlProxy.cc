@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProcCtrlProxy.cc 14084 2009-09-23 13:30:51Z overeem $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

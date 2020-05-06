@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema targetNamespace="http://www.astron.nl/LofarBase" version="0.3" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.astron.nl/LofarBase">
+	<xsd:annotation>
+		<xsd:documentation>Definitions of base types for LOFAR XML objects
+		
+		Names and types match MoM3 but will need to be redesigned for MoM 4 or maybe even for Responsive Telescope.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>============================LOFAR common simple types============================
+	
+		This section is for types used by multiple sections
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="IdentifierSource">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MoM"/>
+			<xsd:enumeration value="SAS"/>
+			<xsd:enumeration value="Temporary"/><!--Only needs to be unique within a single XML. Recipient will need to assign permanent Ids-->
+		</xsd:restriction>
+	</xsd:simpleType>	
+	<xsd:simpleType name="UUID">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"/>
+		</xsd:restriction>
+ 	</xsd:simpleType>
+	<xsd:complexType name="Identifier">
+		<xsd:sequence>
+			<xsd:element name="source" type="xsd:string"/>
+			<xsd:choice>
+				<xsd:element name="identifier" type="xsd:nonNegativeInteger"/>
+				<xsd:element name="topology" type="xsd:string"/><!--For backward compatibility with MoM 3 and Alwin Scheduler -->
+				<xsd:element name="uuid" type="UUID"/><!--For forward compatibility with MoM 4-->
+			</xsd:choice>
+			<xsd:element name="description" minOccurs="0" type="xsd:string"/><!-- mostly for debugging -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================Project related types============================
+		
+		This section describes types related to projects and users. Currently only implements some things for the specification of triggers.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="ProjectReference">
+		<xsd:choice>
+			<xsd:element name="identifier" type="Identifier"/> <!-- MoM Id -->
+			<xsd:element name="ProjectCode" type="xsd:string"/> <!-- Something like LC5_009 -->
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="ContactInformation">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="email" type="xsd:string"/>
+			<xsd:element name="phoneNumber" type="xsd:string"/>
+			<xsd:element name="affiliation" minOccurs="0" type="xsd:string"/> <!-- Does this need to point to an affiliation record? -->
+			<!-- Do we need anything else like address? -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================Event related types============================
+		
+		This section describes ... information.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="EventType"> <!-- just some guesses right now -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="VOEvent"/>
+			<xsd:enumeration value="LOFAREvent"/>
+			<xsd:enumeration value="Magic"/>
+			<xsd:enumeration value="LIGO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Event">
+		<xsd:sequence>
+			<xsd:element name="identification" type="xsd:string"/><!-- Probably doesn't need to be machine interpretable, so basically free form just to inform the user -->
+			<xsd:element name="description" type="xsd:string"/>
+			<xsd:element name="type" type="EventType"/> <!-- This implicitly determines the source of the identification -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================Container related types============================
+		
+		This section describes the types that can be used to represent groupings of activities for display purposes.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Folder">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="description" type="xsd:string"/>
+			<!--xsd:element name="type" minOccurs="0" type="FolderType"/-->
+			<xsd:element minOccurs="0" name="topology" type="xsd:string"/>
+		</xsd:sequence>
+				<!--xsd:attribute name="topology_parent" type="xsd:boolean"/>
+				<xsd:attribute name="update_folder" type="xsd:boolean"/ -->
+	</xsd:complexType>	
+	<xsd:annotation>
+		<xsd:documentation>============================Observation related types============================
+		
+		This section describes the types related to the Observation.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Observation">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="description" type="xsd:string"/>
+			<xsd:element name="instrument" type="Instrument"/>
+			<xsd:element name="defaultTemplate" type="xsd:string"/> <!-- use Strategy, to not be OTDB specific ? -->
+			<xsd:element name="tbbPiggybackAllowed" type="xsd:boolean"/>
+			<xsd:element name="aartfaacPiggybackAllowed" type="xsd:boolean"/>
+			<xsd:element name="correlatedData" type="xsd:boolean"/> 
+			<xsd:element name="coherentStokesData" type="xsd:boolean"/>
+			<xsd:element name="incoherentStokesData" type="xsd:boolean"/>
+			<xsd:element name="antenna" type="AntennaSet"/>
+			<xsd:element name="clock" type="Clock"/>
+			<xsd:element name="instrumentFilter" type="BandFilter"/>
+			<xsd:element minOccurs="0" name="integrationInterval" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="channelsPerSubband" type="xsd:short"/>
+			<!--xsd:element minOccurs="0" name="coherentDedisperseChannels" type="xsd:boolean"/> Probably these are old BlueGene settings
+			<xsd:element minOccurs="0" name="tiedArrayBeams" type="ArrayBeams"/>
+			<xsd:element minOccurs="0" name="stokes" type="Stokes"/>
+			<xsd:element minOccurs="0" name="bypassPff" type="xsd:boolean"/--> <!-- Might need to be bypassPPF -->
+			<xsd:element name="flysEye" type="xsd:boolean"/>
+			<xsd:element name="enableSuperterp" type="xsd:boolean"/>
+			<xsd:element name="numberOfBitsPerSample" type="xsd:nonNegativeInteger"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="MemoryStorageUnit">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="byte"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="MemoryStorage">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:attribute name="unit" type="MemoryStorageUnit" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProcessingCluster">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="partition" type="xsd:string"/>
+			<xsd:element name="numberOfTasks" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="minRAMPerTask" type="MemoryStorage"/>
+			<xsd:element minOccurs="0" name="minScratchPerTask" type="MemoryStorage"/>
+			<xsd:element minOccurs="0" name="maxDurationPerTask" type="xsd:duration"/>
+			<xsd:element name="numberOfCoresPerTask" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="runSimultaneous" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayBeams">
+		<xsd:sequence>
+			<!--xsd:element minOccurs="0" name="flyseye" type="xsd:boolean"/-->
+			<xsd:element minOccurs="0" name="nrTabRings" type="xsd:nonNegativeInteger"/>
+			<xsd:element minOccurs="0" name="tabRingSize" type="xsd:double" nillable="true"/>
+			<xsd:element minOccurs="0" name="tiedArrayBeamList" type="ArrayBeamList"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayBeamList">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="tiedArrayBeam">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="coherent" type="xsd:boolean"/>
+						<xsd:element name="angle1" type="xsd:double"/>
+						<xsd:element name="angle2" type="xsd:double"/>
+					</xsd:sequence>
+					<xsd:attribute name="index" type="xsd:integer"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="StokesSelection"><!-- I think we support more XXYY ???-->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="I"/>
+			<xsd:enumeration value="IQUV"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Stokes">
+		<xsd:sequence>
+			<xsd:element name="integrateChannels" type="xsd:boolean"/>
+			<xsd:element name="subbandsPerFileCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="numberCollapsedChannelsCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="stokesDownsamplingStepsCS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="whichCS" type="StokesSelection" nillable="true"/>
+			<xsd:element name="subbandsPerFileIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="numberCollapsedChannelsIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="stokesDownsamplingStepsIS" type="xsd:nonNegativeInteger" nillable="true"/>
+			<xsd:element name="whichIS" type="StokesSelection" nillable="true"/>
+			<!-- xsd:element minOccurs="0" name="integrationSteps" type="xsd:nonNegativeInteger" nillable="true"/ -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Stations">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="station" type="Station"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Station">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/><!--xsd:attribute name="name" type="xsd:string" use="required"/-->
+			<!--xsd:element minOccurs="0" name="location" type="Coordinates/-->
+			<xsd:element minOccurs="0" maxOccurs="2" name="antennaField" type="AntennaField"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="AntennaFieldType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HBA0"/>
+			<xsd:enumeration value="HBA1"/>
+			<xsd:enumeration value="HBA"/>
+			<xsd:enumeration value="LBA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="AntennaField">
+		<xsd:sequence>
+			<xsd:element name="name" type="AntennaFieldType"/>
+			<!--xsd:element name="location" type="Coordinates/-->
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- xsd:complexType name="Coordinates>
+		<xsd:sequence>
+			<xsd:element name="coordinateSystem">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="WGS84"/>
+						<xsd:enumeration value="ITRF2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="x" type="xsd:double"/>
+			<xsd:element name="y" type="xsd:double"/>
+			<xsd:element name="z" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType-->
+	<xsd:simpleType name="AntennaSet">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HBA Zero"/>
+			<xsd:enumeration value="HBA One"/>
+			<xsd:enumeration value="HBA Dual"/>
+			<xsd:enumeration value="HBA Joined"/>
+			<xsd:enumeration value="LBA Outer"/>
+			<xsd:enumeration value="LBA Inner"/>
+			<xsd:enumeration value="LBA Sparse Even"/>
+			<xsd:enumeration value="LBA Sparse Odd"/>
+			<xsd:enumeration value="LBA X"/> <!-- Not really supported -->
+			<xsd:enumeration value="LBA Y"/> <!-- Not really supported -->
+			<xsd:enumeration value="HBA Zero Inner"/>
+			<xsd:enumeration value="HBA One Inner"/>
+			<xsd:enumeration value="HBA Dual Inner"/>
+			<xsd:enumeration value="HBA Joined Inner"/>			
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Instrument">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Beam Observation"/>
+			<xsd:enumeration value="Interferometer"/>
+			<xsd:enumeration value="Tied Array"/>
+			<xsd:enumeration value="Transient Buffer Board"/>
+			<xsd:enumeration value="Direct Data Storage"/>
+			<xsd:enumeration value="Non Standard"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BandFilter">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="10-70 MHz"/>
+			<xsd:enumeration value="30-70 MHz"/>
+			<xsd:enumeration value="10-90 MHz"/>
+			<xsd:enumeration value="30-90 MHz"/>
+			<xsd:enumeration value="110-190 MHz"/>
+			<xsd:enumeration value="170-230 MHz"/>
+			<xsd:enumeration value="210-250 MHz"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Clock">
+		<xsd:simpleContent>
+			<xsd:restriction base="Frequency">
+				<xsd:enumeration value="160"/>
+				<xsd:enumeration value="200"/>
+				<xsd:attribute fixed="MHz" name="units" type="FrequencyUnit" use="required"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="FrequencyUnit">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Hz"/>
+			<xsd:enumeration value="kHz"/>
+			<xsd:enumeration value="MHz"/>
+			<xsd:enumeration value="GHz"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Frequency">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="units" type="FrequencyUnit" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================Measurement related types============================
+		
+		This section describes ... information.
+		</xsd:documentation><!-- Measurement related declarations -->
+	</xsd:annotation>
+	<xsd:complexType name="Measurement" abstract="true"/><!-- Beam Measurement related declarations -->
+	<xsd:complexType name="SAPMeasurement"> <!-- We will not make a distrinction between UV and BF-->
+		<xsd:complexContent>
+			<xsd:extension base="Measurement"><!-- SAP -->
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="description" type="xsd:string"/>
+					<xsd:element name="ra" type="xsd:double"/>
+					<xsd:element name="dec" type="xsd:double"/>
+					<xsd:element name="equinox" type="Equinox"/>
+					<!-- xsd:element name="duration" type="xsd:duration"/>
+					<xsd:element name="startTime" type="xsd:dateTime"/>
+					<xsd:element name="endTime" type="xsd:dateTime"/ for LOFAR 2.0 this might be needed again-->
+					<!-- xsd:element name="centralFrequency" type="mom2:Frequency"/>
+					<xsd:element name="bandWidth" type="mom2:Frequency"/ -->
+					<xsd:element name="subbandsSpecification" type="SubbandsSpecification"/>
+					<xsd:element minOccurs="0" name="tiedArrayBeams" type="ArrayBeams"/>
+					<xsd:element name="measurementType">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="Target"/>
+								<xsd:enumeration value="Calibration"/>
+								<xsd:enumeration value="Tune Up"/>
+								<xsd:enumeration value="Miscellaneous"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<!--FIXME distinction between spec and actual lost/omitted, might be needed for LofarHistorical support -->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SubbandsSpecification"><!-- FIXME We only use SubbandArray? -->
+		<xsd:sequence>
+			<!-- xsd:element minOccurs="0" name="bandWidth" type="Frequency"/>
+			<xsd:element minOccurs="0" name="centralFrequency" type="Frequency"/>
+			<xsd:element minOccurs="0" name="contiguous" type="xsd:boolean"/ -->
+			<xsd:element minOccurs="0" name="subbands" type="SubbandArray"/>
+		</xsd:sequence>
+	</xsd:complexType><!-- xsd:complexType name="CustomSubbandsSpecification"/ -->
+	<xsd:simpleType name="SubbandArray"> <!-- Could be nicer with a sequence of choice of subband/subbandrange of integers or always write the full list -->
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{1,3}(,\d{1,3})*|\d{1,3}\.\.\d{1,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Equinox">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="J2000"/>
+			<xsd:enumeration value="B1950"/>
+			<xsd:enumeration value="Other"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+<!-- TBB Measurement, UV Measurement BF Measurement and Generic Measurement distinction is meaningless at the moment -->
+	<xsd:annotation>
+		<xsd:documentation>============================Pipeline related types============================
+		
+		This section describes types related to pipelines.
+		</xsd:documentation>
+	</xsd:annotation>
+<!-- General Pipeline related declarations -->
+	<xsd:complexType name="Pipeline" abstract="true"/>
+<!-- Averaging Pipeline related declarations -->
+	<xsd:complexType name="AveragingPipeline">
+		<xsd:complexContent>
+			<xsd:extension base="Pipeline">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/> <!-- Should go to higher/base class level? -->
+					<xsd:element name="description" type="xsd:string"/>
+					<xsd:element name="processingCluster" type="ProcessingCluster"/>
+					<xsd:element name="defaultTemplate" type="xsd:string"/>
+					<!--xsd:element minOccurs="0" name="duration" type="xsd:duration"/>
+					<xsd:element minOccurs="0" name="startTime" type="xsd:dateTime"/>
+					<xsd:element minOccurs="0" name="endTime" type="xsd:dateTime" nillable="true"/-->
+					<xsd:element minOccurs="0" name="demixingParameters" type="DemixingParameters"/>
+					<xsd:element minOccurs="0" name="bbsParameters" type="BbsParameters"/>
+					<xsd:element minOccurs="0" name="flaggingStrategy" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="frequencyIntegrationStep" type="xsd:nonNegativeInteger"/>
+					<xsd:element minOccurs="0" name="timeIntegrationStep" type="xsd:nonNegativeInteger"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DemixingParameters"><!-- These two types are basically the same !! Probably not correct. I made all of it mandatory-->
+		<xsd:sequence>
+			<xsd:element name="averagingFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="averagingTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixAlways" type="xsd:string"/>
+			<xsd:element name="demixIfNeeded" type="xsd:string"/>
+			<xsd:element name="ignoreTarget" type="xsd:boolean" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BbsParameters"><!-- BBS should be in a CalibrationPipeline !-->
+		<xsd:sequence>
+			<xsd:element name="averagingFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="averagingTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixFreqStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixTimeStep" type="xsd:nonNegativeInteger"/>
+			<xsd:element name="demixAlways" type="xsd:string"/>
+			<xsd:element name="demixIfNeeded" type="xsd:string"/>
+			<xsd:element name="ignoreTarget" type="xsd:boolean"/>
+		</xsd:sequence>
+	</xsd:complexType>
+<!-- Calibration Pipeline related declarations -->
+<!-- FIXME: The Calibration Pipeline should have BbsParameters while the Averaging Pipeline does not, but for backward 
+compatibility with MoM it is currently not defined that way, making them identical. When support for MoM 3 can be dropped
+this should be fixed. -->
+	<xsd:complexType name="CalibrationPipeline">
+		<xsd:complexContent>
+			<xsd:extension base="AveragingPipeline"><!-- Untested if this works properly -->
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+<!-- Imaging Pipeline related declarations -->
+	<xsd:complexType name="ImagingPipeline">
+		<xsd:complexContent>
+			<xsd:extension base="CalibrationPipeline"><!-- Untested if this works properly -->
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="imagerIntegrationTime" type="xsd:double"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+<!-- Pulsar Pipeline related declarations -->
+	<xsd:complexType name="PulsarPipeline">
+		<xsd:complexContent>
+			<xsd:extension base="Pipeline">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="description" type="xsd:string"/>
+					<xsd:element name="processingCluster" type="ProcessingCluster"/>
+					<xsd:element name="defaultTemplate" type="xsd:string"/>
+					<!--xsd:element minOccurs="0" name="duration" type="xsd:string"/ -->
+					<xsd:element minOccurs="0" name="_2bf2fitsExtraOpts" type="xsd:string"/>
+					<xsd:element name="_8bitConversionSigma" type="xsd:string"/>
+					<xsd:element name="decodeNblocks" type="xsd:string"/>
+					<xsd:element name="decodeSigma" type="xsd:string"/>
+					<xsd:element name="digifilExtraOpts" type="xsd:string"/>
+					<xsd:element name="dspsrExtraOpts" type="xsd:string"/>
+					<xsd:element name="dynamicSpectrumTimeAverage" type="xsd:string"/>
+					<xsd:element name="nofold" type="xsd:string"/>
+					<xsd:element name="nopdmp" type="xsd:string"/>
+					<xsd:element name="norfi" type="xsd:string"/>
+					<xsd:element name="prepdataExtraOpts" type="xsd:string"/>
+					<xsd:element name="prepfoldExtraOpts" type="xsd:string"/>
+					<xsd:element name="prepsubbandExtraOpts" type="xsd:string"/>
+					<xsd:element name="pulsar" type="xsd:string"/>
+					<xsd:element name="rawTo8bit" type="xsd:string"/>
+					<xsd:element name="rfifindExtraOpts" type="xsd:string"/>
+					<xsd:element name="rrats" type="xsd:string"/>
+					<xsd:element name="singlePulse" type="xsd:string"/>
+					<xsd:element name="skipDsps" type="xsd:string"/>
+					<xsd:element name="skipDynamicSpectrum" type="xsd:string"/>
+					<xsd:element name="skipPrepfold" type="xsd:string"/>
+					<xsd:element name="tsubint" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================System task related types============================
+		
+		Section for system tasks, but cannot be stored in MoM easily at the moment. (Ingest could).
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="SystemTask" abstract="true"/>
+	<xsd:complexType name="Ingest">
+		<xsd:complexContent>
+			<xsd:extension base="SystemTask">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="description" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Cleanup">
+		<xsd:complexContent>
+			<xsd:extension base="SystemTask">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"/>
+					<xsd:element name="description" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>============================Dataproduct related types============================
+		
+		This section describes ... information.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="DataProduct" abstract="true"/>
+	<xsd:complexType name="StorageCluster">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="partition" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

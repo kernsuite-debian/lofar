@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MeasurementAIPS.cc 33984 2016-03-25 10:24:25Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/MeasurementAIPS.h>
@@ -33,44 +33,44 @@
 #include <Common/StreamUtil.h>
 #include <Common/Version.h>
 #include <StationResponse/LofarMetaDataUtil.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Cube.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/Utilities/GenSort.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasTable.h>
-#include <measures/Measures/MeasConvert.h>
-#include <ms/MeasurementSets/MSAntenna.h>
-#if defined(casacore)
-#include <ms/MSSel/MSAntennaParse.h>
-#include <ms/MSSel/MSSelection.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/Utilities/GenSort.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasTable.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/ms/MSSel/MSAntennaParse.h>
+#include <casacore/ms/MSSel/MSSelection.h>
 #else
-#include <ms/MeasurementSets/MSAntennaParse.h>
-#include <ms/MeasurementSets/MSSelection.h>
+#include <casacore/ms/MSSel/MSAntennaParse.h>
+#include <casacore/ms/MSSel/MSSelection.h>
 #endif
-#include <ms/MeasurementSets/MSAntennaColumns.h>
-#include <ms/MeasurementSets/MSDataDescription.h>
-#include <ms/MeasurementSets/MSDataDescColumns.h>
-#include <ms/MeasurementSets/MSField.h>
-#include <ms/MeasurementSets/MSFieldColumns.h>
-#include <ms/MeasurementSets/MSObservation.h>
-#include <ms/MeasurementSets/MSObsColumns.h>
-#include <ms/MeasurementSets/MSPolarization.h>
-#include <ms/MeasurementSets/MSPolColumns.h>
-#include <ms/MeasurementSets/MSSpectralWindow.h>
-#include <ms/MeasurementSets/MSSpWindowColumns.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/ExprNode.h>
-#include <tables/Tables/ExprNodeSet.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/TableIter.h>
-#include <tables/Tables/TiledColumnStMan.h>
+#include <casacore/ms/MeasurementSets/MSAntennaColumns.h>
+#include <casacore/ms/MeasurementSets/MSDataDescription.h>
+#include <casacore/ms/MeasurementSets/MSDataDescColumns.h>
+#include <casacore/ms/MeasurementSets/MSField.h>
+#include <casacore/ms/MeasurementSets/MSFieldColumns.h>
+#include <casacore/ms/MeasurementSets/MSObservation.h>
+#include <casacore/ms/MeasurementSets/MSObsColumns.h>
+#include <casacore/ms/MeasurementSets/MSPolarization.h>
+#include <casacore/ms/MeasurementSets/MSPolColumns.h>
+#include <casacore/ms/MeasurementSets/MSSpectralWindow.h>
+#include <casacore/ms/MeasurementSets/MSSpWindowColumns.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/TaQL/ExprNode.h>
+#include <casacore/tables/TaQL/ExprNodeSet.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/TableIter.h>
+#include <casacore/tables/DataMan/TiledColumnStMan.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {
@@ -855,7 +855,7 @@ void MeasurementAIPS::createCovarianceColumn(const string &name)
 {
     // Store dimensions in local variables to improve code readability. The
     // dimensions are converted to int because that is what is used by
-    // casa::Array.
+    // casacore::Array.
     const int nFreq = this->nFreq();
     const int nCorrelations = this->nCorrelations();
 

@@ -4,14 +4,15 @@ import sys
 import fcntl
 import time
 from lofarpipe.support.lofarexceptions import PipelineException
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 # subprocess is broken in python <=2.6. It does not work for fds > 1024 for example.
 try:
     import subprocess27 as subprocess
-    print >> sys.stderr, __file__, ": Using Python 2.7 subprocess module!"
+    print(__file__, ": Using Python 2.7 subprocess module!", file=sys.stderr)
 except ImportError:
     import subprocess
-    print >> sys.stderr, __file__, ": Using default subprocess module!"
+    print(__file__, ": Using default subprocess module!", file=sys.stderr)
 
 class SubProcess(object):
     STDOUT = 1
@@ -25,7 +26,7 @@ class SubProcess(object):
         """
 
         def print_logger(line):
-            print line
+            print(line)
 
         self.cmd       = cmd
         self.killed    = False
@@ -48,7 +49,7 @@ class SubProcess(object):
                        close_fds=True,
 
                        # I/O redirection: block stdin, read stdout/stderr separately
-                       stdin=file("/dev/null"),
+                       stdin=open("/dev/null"),
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE)
         self.pid     = self.process.pid
@@ -69,7 +70,7 @@ class SubProcess(object):
 
         # Set fds to non-blocking to allow <4k reads. This is needed if the process
         # alternates between stdout and stderr output.
-        for f in self.output_streams.values():
+        for f in list(self.output_streams.values()):
             flag = fcntl.fcntl(f, fcntl.F_GETFL)
             fcntl.fcntl(f, fcntl.F_SETFL, flag | os.O_NONBLOCK)
 
@@ -81,7 +82,7 @@ class SubProcess(object):
             return False
 
         # Process is finished, read remaining data and exit code
-        (stdout, stderr) = self.process.communicate()
+        (stdout, stderr) = communicate_returning_strings(self.process)
         self.exit_status = self.process.returncode
 
         self._addoutput(self.STDOUT, stdout, flush=True)
@@ -101,7 +102,7 @@ class SubProcess(object):
         self.killed = True
 
     def fds(self):
-        return self.output_streams.values()
+        return list(self.output_streams.values())
 
     def read(self, fileno):
         if fileno == self.process.stdout.fileno():

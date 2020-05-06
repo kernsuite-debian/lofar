@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: shmem_alloc.cc 32798 2015-11-05 12:13:27Z dijkema $
+//# $Id$
  
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This scripts is used to produce basic but important data statistics from visibility data. 
 The visibility data can be a single individual MS or can also use a gds file which has many MSs 
@@ -20,10 +20,10 @@ import sys,numpy,os, optparse
 try:
     import pyrap.tables as pt
 except ImportError:
-        print "Error: The pyrap tables module is not available."
-        print "Perhaps you need to first type \'use LofIm\'?"
-        print "If you use a build from different day, "
-        print "set it as well when running the script with -b option"
+        print("Error: The pyrap tables module is not available.")
+        print("Perhaps you need to first type \'use LofIm\'?")
+        print("If you use a build from different day, ")
+        print("set it as well when running the script with -b option")
         exit()
 
 #
@@ -43,7 +43,7 @@ def getData(table,column):
         elif operation == '+':
             return (columnAData+columnBData)
     # If we reach this point it means that the column is not correct
-    print 'Column to plot: ' + column + ' is not correct!'
+    print('Column to plot: ' + column + ' is not correct!')
     return None
 
 def getCorrData(data,corrindex):
@@ -80,7 +80,7 @@ def get3DCutData(table, column, showFlags, flagCol, channels, stokes):
 # if prefaxis is None, none axis is integrated 
 def getIntegratedData(cutdata, prefaxis=0):
     if cutdata is None:
-        print 'Error: selected data'
+        print('Error: selected data')
         return None
     # We average the axis if needed
     if prefaxis == 0:
@@ -101,7 +101,7 @@ def getIntegratedDataOperation(cutdata, operation, prefaxis=0):
         # Special operation : XY . YX*
         return getCorrData(intdata, 1) * getCorrData(intdata, 2).conjugate()
     else:
-        print 'Error: Requested operation not implemented'
+        print('Error: Requested operation not implemented')
         return None   
     
 def getComplexIntCompData(intdata, complexcomp, unwrap):
@@ -210,7 +210,7 @@ def getIndexesDictionary(elements):
     indexesPerElement = {}
     
     for i in range(len(elements)):
-        if elements[i] in indexesPerElement.keys():
+        if elements[i] in list(indexesPerElement.keys()):
             indexes = indexesPerElement[elements[i]]
         else:
             indexes = []
@@ -265,7 +265,7 @@ def splitDictionary(dictionaryToSplit, numSubDictionaries):
         
         subdictionary = {}
         for j in range(numElements):
-            key = dictionaryToSplit.keys()[indexInDictionaryValuesArray]
+            key = list(dictionaryToSplit.keys())[indexInDictionaryValuesArray]
             subdictionary[key] = dictionaryToSplit[key]
             indexInDictionaryValuesArray = indexInDictionaryValuesArray + 1
             
@@ -375,7 +375,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
     flagCol = colflag
     timeslots = timeslots.split(',')
     if len(timeslots) != 2:
-        print 'Error: Timeslots format is start,end'
+        print('Error: Timeslots format is start,end')
         return
     for i in range(len(timeslots)): timeslots[i] = int(timeslots[i])
     antToPlot = []
@@ -390,7 +390,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
                 for j in range(int(tmpspl[0]),int(tmpspl[1])+1):
                     antToPlot.append(j)
             else:
-                print 'Error: Could not understand antenna list.'
+                print('Error: Could not understand antenna list.')
                 return
     else:
         basesToPlotSpl = baselines.split(',')
@@ -401,7 +401,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
                 antToPlot.append(int(tmpspl[0]))
                 antToPlot.append(int(tmpspl[1]))
             else:
-                print 'Error: Could not understand baseline list.'
+                print('Error: Could not understand baseline list.')
                 return
     corrs = correlations.split(',')
     for i in range(len(corrs)):
@@ -411,12 +411,12 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
     if operation != '':
         operation = int(operation)
         if convertStokes:
-            print 'Error: Stokes conversion is not compatible with special operations'
+            print('Error: Stokes conversion is not compatible with special operations')
             return
     
     channels = channels.split(',')
     if len(channels) != 2:
-        print 'Error: Channels format is start,end'
+        print('Error: Channels format is start,end')
         return
     for i in range(len(channels)): channels[i] = int(channels[i])
     if channels[1] == -1:
@@ -435,13 +435,13 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
     
     for i in range(len(timeslots)):
         if (timeslots[i] < 0) or (timeslots[i] > len(times)):
-            print 'Error: specified timeslots out of valid range, number samples is ' + str(len(times))
+            print('Error: specified timeslots out of valid range, number samples is ' + str(len(times)))
             return
     
     # Station names
     antList = pt.table(t.getkeyword('ANTENNA'), readonly=True, ack=False).getcol('NAME')
     if len(antToPlot)==1 and antToPlot[0]==-1:
-        antToPlot = range(len(antList))
+        antToPlot = list(range(len(antList)))
 
     freq = pt.table(t.getkeyword('SPECTRAL_WINDOW'), readonly=True, ack=False).getcell('REF_FREQUENCY',0)/1.e6
     
@@ -455,15 +455,15 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
                 complexcoordinates.append(sfields[0])
                 statparams.append(sfields[1])
     if len(complexcoordinates) == 0:
-        print 'Error: check specified stats format'
+        print('Error: check specified stats format')
         return
     for complexcoord in complexcoordinates:
         if complexcoord not in ('amp','phase','real','imag','phaserate'):
-            print 'Error: check specified stats format'
+            print('Error: check specified stats format')
             return
     for statparam in statparams:
         if statparam not in ('mean','median','std'):
-            print 'Error: check specified stats format'
+            print('Error: check specified stats format')
             return
     compCoordDict = getIndexesDictionary(complexcoordinates)
     
@@ -478,7 +478,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
         if overWrite:
             os.system('rm ' + ofilename)
         else:
-            print 'Error: ' + ofilename + ' already exists! (maybe you want to use option -d)'
+            print('Error: ' + ofilename + ' already exists! (maybe you want to use option -d)')
             return
     outputfile = open(ofilename, "w")
     
@@ -521,7 +521,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
         cutData = get3DCutData(tpart, column, showFlags, flagCol, channels, convertStokes)
         
         if cutData is None: # This baseline must be empty, go to next one
-            print 'No good data on baseline %s - %s' % (ant1Name,ant2Name)
+            print('No good data on baseline %s - %s' % (ant1Name,ant2Name))
             continue
         
         if operation != 0: # A special operation of the correlations is required
@@ -561,7 +561,7 @@ def processMS(absPath, output,overwrite,stats,column,timeslots,channels,antennas
         tow += line + '\n'
     outputfile.write(tow)
     outputfile.close()
-    print getHostName() + ' ' + absPath + ' collecting complete!'
+    print(getHostName() + ' ' + absPath + ' collecting complete!')
     return
 
 # Add information, i.e. the label inte plot and the statistics if required
@@ -593,16 +593,16 @@ def main(opts):
     input = opts.input
     if input != '':
         if not os.path.isfile(input) and not os.path.isdir(input):
-            print 'Error: ' + input + ' does not exist'
+            print('Error: ' + input + ' does not exist')
             exit()
     else:
-        print 'Error: No input specified!'
+        print('Error: No input specified!')
         exit()
     input = os.path.abspath(input)
     
     output = opts.output
     if output == '':
-        print 'Error: No output specified!'
+        print('Error: No output specified!')
         exit()
     output = os.path.abspath(output)
     if input.endswith('gds') or input.endswith('GDS'):
@@ -612,7 +612,7 @@ def main(opts):
         (absPaths,nodes) = ([input,],[getHostName(),])
     
     if not len(absPaths):
-        print "No MSs to be processed!"
+        print("No MSs to be processed!")
         return
     
     whats = []
@@ -620,31 +620,31 @@ def main(opts):
         whats.append((absPath, output, opts.overwrite, opts.stats,opts.column,opts.timeslots,opts.channels,opts.antennas,opts.baselines,opts.correlations, opts.wrap, opts.flag, opts.colflag, opts.stokes, opts.autocorr,opts.operation,opts.acc,opts.build))
     
     if len(absPaths) > 1:
-        print 'Collecting in the nodes...'
+        print('Collecting in the nodes...')
     result = processdistribute(nodes, whats, function, int(opts.numprocessors), int(opts.numnodes))
     rsplit = result.split('\n')
     for mes in rsplit:
         if mes != '':
-            print mes
+            print(mes)
             
     globaloutput = output + '/GLOBAL_STATS'
     if os.path.isfile(globaloutput):
         os.system('rm ' + globaloutput)
     ndir = len(os.listdir(output))
     if ndir > 1:
-        print 'Collecting finished. Joining results in ' + globaloutput
+        print('Collecting finished. Joining results in ' + globaloutput)
         os.system('cat ' + output + '/* > ' + globaloutput)
     elif ndir == 1:
-        print 'Collecting finished. Check results in ' + output
+        print('Collecting finished. Check results in ' + output)
     else:
-        print 'None statistic files have been generated'
+        print('None statistic files have been generated')
             
 
 if __name__ == "__main__":
     
     version_string = 'v0.3, 02 July 2012\nWritten by Oscar Martinez'
-    print 'asciistats.py',version_string
-    print ''
+    print('asciistats.py',version_string)
+    print('')
     
     opt = optparse.OptionParser()
     opt.add_option('-i','--input',help='MS path/GDS file',default='')

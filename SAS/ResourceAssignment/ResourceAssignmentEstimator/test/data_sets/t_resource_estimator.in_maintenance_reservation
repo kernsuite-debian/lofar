@@ -1,0 +1,10 @@
+{
+  'Observation.startTime': '2016-12-11 17:02:00',
+  'Observation.stopTime': '2016-12-11 18:02:00',
+  'Observation.VirtualInstrument.stationList': [
+    'CS004',
+    'RS005',
+    'DE603',
+  ],
+}
+

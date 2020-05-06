@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                      STANDARD IMAGING PIPELINE
 #
 #                                                           Calibration Pipeline

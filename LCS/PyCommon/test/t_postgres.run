@@ -1,0 +1,4 @@
+#!/bin/bash
+source python-coverage.sh
+
+python_coverage_test postgres t_postgres.py

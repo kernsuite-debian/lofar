@@ -1,0 +1,15 @@
+#
+# This base image is just some beasic dev tools on top of CentOS 7
+#
+# base
+#
+FROM centos:centos7.6.1810 
+
+RUN yum -y groupinstall 'Development Tools' && \
+    yum -y install epel-release && \
+    yum -y install cmake gcc git log4cplus-devel python3 python3-devel python3-pip which wget curl atop
+
+RUN pip3 install kombu requests coverage python-qpid-proton
+
+RUN adduser lofarsys
+

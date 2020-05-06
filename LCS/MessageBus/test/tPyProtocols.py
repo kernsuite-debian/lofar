@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from lofar.parameterset import parameterset
 
 # Test task.feedback.dataproducts

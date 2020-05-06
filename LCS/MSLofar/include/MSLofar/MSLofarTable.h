@@ -17,19 +17,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarTable.h 17574 2011-03-18 09:07:29Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFARTABLE_H
 #define MSLOFAR_MSLOFARTABLE_H
 
-#include <tables/Tables/Table.h>
-#include <casa/Arrays/IPosition.h>
-#include <casa/Utilities/DataType.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Utilities/DataType.h>
 
 //# Forward Declarations.
-namespace casa {
+namespace casacore {
   class TableDesc;
   class SetupNewTable;
   class String;
@@ -40,21 +40,21 @@ namespace LOFAR {
   // This class is the base class for a LOFAR MeasurementSet table.
   // It is modeled after the casacore MS classes.
 
-  class MSLofarTable: public casa::Table
+  class MSLofarTable: public casacore::Table
   {
   public:
     // Default constructor creates an unusable object.
     MSLofarTable();
 
     // Create from an existing table.
-    MSLofarTable (const casa::String& tableName, casa::Table::TableOption);
+    MSLofarTable (const casacore::String& tableName, casacore::Table::TableOption);
 
     // Create a new table.
-    MSLofarTable (casa::SetupNewTable& newTab, casa::uInt nrrow,
-                  casa::Bool initialize);
+    MSLofarTable (casacore::SetupNewTable& newTab, casacore::uInt nrrow,
+                  casacore::Bool initialize);
 
     // Create from an existing Table object.
-    MSLofarTable (const casa::Table& table);
+    MSLofarTable (const casacore::Table& table);
 
     // Copy constructor (reference semnatics).
     MSLofarTable (const MSLofarTable& that);
@@ -66,20 +66,20 @@ namespace LOFAR {
     MSLofarTable& operator= (const MSLofarTable& that);
 
     // Add a column to the table description.
-    static void addColumn (casa::TableDesc& td,
-                           const casa::String& colName,
-                           casa::DataType dtype,
-                           const casa::String& comment,
-                           const casa::String& unit = casa::String(),
-                           const casa::String& measure = casa::String(),
+    static void addColumn (casacore::TableDesc& td,
+                           const casacore::String& colName,
+                           casacore::DataType dtype,
+                           const casacore::String& comment,
+                           const casacore::String& unit = casacore::String(),
+                           const casacore::String& measure = casacore::String(),
                            int measRefType = 0,
                            int ndim = -1,
-                           const casa::IPosition& shape = casa::IPosition(),
+                           const casacore::IPosition& shape = casacore::IPosition(),
                            int option = 0);
 
     // Set the units of the column.
-    static void setUnit (casa::TableDesc& td, const casa::String& colName,
-			 const casa::String& unit, int nunit);
+    static void setUnit (casacore::TableDesc& td, const casacore::String& colName,
+			 const casacore::String& unit, int nunit);
   };
 
 } //# end namespace

@@ -327,17 +327,17 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
         # ********************************************************************
         # Call the node side of the recipe
         # Create and schedule the compute jobs
-        #command = "python %s" % (self.__file__.replace('master', 'nodes')).replace('executable_args', self.inputs['nodescript'])
+        #command = "python3 %s" % (self.__file__.replace('master', 'nodes')).replace('executable_args', self.inputs['nodescript'])
         recipe_dir_str = str(self.config.get('DEFAULT', 'recipe_directories'))
         recipe_directories = recipe_dir_str.rstrip(']').lstrip('[').split(',')
         pylist = os.getenv('PYTHONPATH').split(':')
         command = None
         for pl in pylist:
             if os.path.isfile(os.path.join(pl,'lofarpipe/recipes/nodes/'+self.inputs['nodescript']+'.py')):
-                command = "python %s" % os.path.join(pl,'lofarpipe/recipes/nodes/'+self.inputs['nodescript']+'.py')
+                command = "python3 %s" % os.path.join(pl,'lofarpipe/recipes/nodes/'+self.inputs['nodescript']+'.py')
         for pl in recipe_directories:
             if os.path.isfile(os.path.join(pl,'nodes/'+self.inputs['nodescript']+'.py')):
-                command = "python %s" % os.path.join(pl,'nodes/'+self.inputs['nodescript']+'.py')
+                command = "python3 %s" % os.path.join(pl,'nodes/'+self.inputs['nodescript']+'.py')
 
         inputmapfiles[0].iterator = outputmapfiles[0].iterator = DataMap.SkipIterator
         jobs = []
@@ -348,7 +348,7 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
             parsetdict_copy = copy.deepcopy(parsetdict)
 
             if filedict:
-                for name, value in filedict.iteritems():
+                for name, value in filedict.items():
                     replaced = False
                     if arglist_copy:
                         for arg in arglist:
@@ -357,8 +357,8 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
                                 arglist_copy[ind] = arglist_copy[ind].replace(name, value[i])
                                 replaced = True
                     if parsetdict_copy:
-                        if name in parsetdict_copy.values():
-                            for k, v in parsetdict_copy.iteritems():
+                        if name in list(parsetdict_copy.values()):
+                            for k, v in parsetdict_copy.items():
                                 if v == name:
                                     parsetdict_copy[k] = value[i]
                         else:
@@ -393,7 +393,7 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
                 if not self.inputs['error_tolerance']:
                     self.logger.error("A job has failed with returncode %d and error_tolerance is not set. Bailing out!" % job.results['returncode'])
                     return 1
-            for k, v in job.results.items():
+            for k, v in list(job.results.items()):
                 if not k in jobresultdict:
                     jobresultdict[k] = []
                 jobresultdict[k].append(DataProduct(job.host, job.results[k], outp.skip))
@@ -411,7 +411,7 @@ class executable_args(BaseRecipe, RemoteCommandRecipeMixIn):
                     pass
                 else:
                     raise
-        for k, v in jobresultdict.items():
+        for k, v in list(jobresultdict.items()):
             dmap = DataMap(v)
             dmap.save(os.path.join(mapfile_dir, self.inputs['stepname'] + '.' + k + '.mapfile'))
             resultmap[k + '.mapfile'] = os.path.join(mapfile_dir, self.inputs['stepname'] + '.' + k + '.mapfile')

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Expr.h 26859 2013-10-03 14:25:49Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_EXPR_H
 #define LOFAR_BBSKERNEL_EXPR_EXPR_H

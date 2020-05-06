@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSReader.cc 39363 2018-04-10 09:19:22Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -39,7 +39,7 @@
 #include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
 #include <casacore/measures/TableMeasures/ArrayMeasColumn.h>
 #include <casacore/ms/MeasurementSets/MeasurementSet.h>
-#if defined(casacore)
+#if defined(HAVE_CASACORE)
 #include <casacore/ms/MSSel/MSSelection.h>
 #else
 #include <casacore/ms/MSSel/MSSelection.h>

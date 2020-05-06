@@ -1,0 +1,39 @@
+frontDoorOpen		bool
+frontFanInner		bool
+frontFanOuter		bool
+frontAirflow		bool
+
+backDoorOpen		bool
+backFanInner		bool
+backFanOuter		bool
+backAirflow			bool
+
+tempAlarm			int
+humidityAlarm		int
+
+temperature			float
+tempMin				float
+tempMax				float
+tempMaxMax			float
+humidity			float
+humidityMax			float
+humidityMaxMax		float
+
+controlMode			string
+temperatureSensor	bool
+humidityControl		bool
+doorControl			bool
+
+#for archiving purpose
+compressed.avg_temperature	float
+compressed.avg_humidity	float
+
+!# DpValue
+!ElementName	TypeName	_original.._value
+!_dt_Cabinet.Leaf	_DynamicDatapoints	"_mp_Cabinet.temperature:_archive", "_mp_Cabinet.humidity:_archive", "_mp_Cabinet.compressed.avg_temperature:_archive", "_mp_Cabinet.compressed.avg_humidity:_archive", "_mp_Cabinet.compressed.avg_temperature:_dp_fct", "_mp_Cabinet.compressed.avg_humidity:_dp_fct"
+!_dt_Cabinet.DynamicAttribute	_DynamicDatapoints	"_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none"
+
+!# DpFunction
+!ElementName	TypeName	_dp_fct.._type	_dp_fct.._param	_dp_fct.._fct	_dp_fct.._global	_dp_fct.._old_new_compare	_dp_fct.._stat_type	_dp_fct.._interval	_dp_fct.._time	_dp_fct.._day_of_week	_dp_fct.._day	_dp_fct.._month	_dp_fct.._delay	_dp_fct.._read_archive	_dp_fct.._inv_func	_dp_fct.._inv_limit	_dp_fct.._def_func	_dp_fct.._def_limit	_dp_fct.._user1_func	_dp_fct.._user1_limit	_dp_fct.._user2_func	_dp_fct.._user2_limit	_dp_fct.._user3_func	_dp_fct.._user3_limit	_dp_fct.._user4_func	_dp_fct.._user4_limit	_dp_fct.._user5_func	_dp_fct.._user5_limit	_dp_fct.._user6_func	_dp_fct.._user6_limit	_dp_fct.._user7_func	_dp_fct.._user7_limit	_dp_fct.._user8_func	_dp_fct.._user8_limit	_dp_fct.._interm_res	_dp_fct.._interm_res_cyc
+!_mp_Cabinet.compressed.avg_temperature	Cabinet	63	_mp_Cabinet.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_Cabinet.compressed.avg_humidity	Cabinet	63	_mp_Cabinet.humidity:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10

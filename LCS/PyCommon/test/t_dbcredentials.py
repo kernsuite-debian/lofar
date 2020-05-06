@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import unittest
 import tempfile
@@ -72,7 +72,7 @@ class TestDBCredentials(unittest.TestCase):
 
   def test_config(self):
     f = tempfile.NamedTemporaryFile()
-    f.write("""
+    f.write(b"""
 [database:DATABASE]
 type = postgres
 host = example.com
@@ -101,7 +101,7 @@ database = mydb
 
   def test_freeform_config_option(self):
     f = tempfile.NamedTemporaryFile()
-    f.write("""
+    f.write(b"""
 [database:DATABASE]
 foo = bar
 test = word word

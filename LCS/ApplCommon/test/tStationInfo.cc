@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tStationInfo.cc 22376 2012-10-17 10:00:37Z mol $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

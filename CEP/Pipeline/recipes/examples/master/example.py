@@ -14,6 +14,7 @@ import subprocess
 from lofarpipe.support.baserecipe import BaseRecipe
 from lofarpipe.support.lofaringredient import ExecField, StringField
 from lofarpipe.support.pipelinelogging import log_process_output
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 class example(BaseRecipe):
     inputs = {
@@ -41,7 +42,7 @@ class example(BaseRecipe):
             stdout = subprocess.PIPE,
             stderr = subprocess.PIPE
         )
-        sout, serr = my_process.communicate()
+        sout, serr = communicate_returning_strings(my_process)
         self.outputs['stdout'] = sout
         log_process_output(
             self.inputs['executable'],

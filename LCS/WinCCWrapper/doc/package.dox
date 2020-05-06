@@ -1,0 +1,8 @@
+/**
+
+\ingroup Packages
+\defgroup WinCCWrapper WinCCWrapper
+
+The WinCCWrapper package builds a library which prodives a small and simple interface to a wincc database. \ref winccwrapper_overview "WinCCWrapper Overview"
+*/
+

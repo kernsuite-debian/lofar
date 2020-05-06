@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ClusterDesc.cc 19594 2011-12-18 17:23:10Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen <diepen AT astron nl>
 
@@ -27,10 +27,10 @@
 #include <LMWCommon/ClusterDesc.h>
 #include <LMWCommon/MWError.h>
 #include <Common/LofarLogger.h>
-#include <casa/OS/Path.h>
+#include <casacore/casa/OS/Path.h>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR { namespace CEP {
 

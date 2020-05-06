@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarBitModeInfo.h 27153 2013-10-30 18:07:49Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_COMMON_BITMODEINFO_H_
 #define LOFAR_COMMON_BITMODEINFO_H_
@@ -32,6 +32,7 @@ namespace LOFAR {
     
     inline static int maxDataslotsPerRSP(int bitsPerSample) {
 		assert(bitsPerSample >= MIN_BITS_PER_SAMPLE && bitsPerSample <= MAX_BITS_PER_SAMPLE && bitsPerSample%2==0);
+    (void)bitsPerSample; //prevent unused var warning in release mode
 		return(61);
 	}
 

@@ -1,7 +1,7 @@
 class parameterset():
     def __init__(self, test):
-        print "Muck parameterset, parameter retrieved:"
-        print test
+        print("Muck parameterset, parameter retrieved:")
+        print(test)
         self.function_calls = []
 
     def replace(self, key, value):

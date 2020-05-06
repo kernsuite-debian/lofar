@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PointCoherence.h 14789 2010-01-13 12:39:15Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_POINTCOHERENCE_H
 #define LOFAR_BBSKERNEL_EXPR_POINTCOHERENCE_H

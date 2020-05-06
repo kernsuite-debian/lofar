@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # PlotWindow class (with cursor)
 #
@@ -77,7 +77,7 @@ class SnaptoCursor:
         self.ly.set_xdata(x )
 
         self.txt.set_text( 'x=%1.2f, y=%1.2f'%(x, y) )
-        print 'x=%1.2f, y=%1.2f'%(event.xdata, event.ydata)
+        print('x=%1.2f, y=%1.2f'%(event.xdata, event.ydata))
         self.parent.fig.canvas.draw()
         
 # Example usage      
@@ -280,7 +280,7 @@ class PlotWindow(QFrame):
    """
 
    def plotcorrmatrix(self):
-      print "plotcorrmatrix()"      # DEBUG
+      print("plotcorrmatrix()")      # DEBUG
 
       #print "self.parent.xAxisType = ", self.parent.xAxisType   # DEBUG
       
@@ -315,10 +315,10 @@ class PlotWindow(QFrame):
    # Activate / Deactivate Matplotlib demo cursor 
    #
    def on_cursor(self):
-      print "on_cursor()"   # DEBUG
+      print("on_cursor()")   # DEBUG
       self.showCursor=self.showCursorCheckBox.isChecked()
    
-      print "on_cursor() self.showCursor = ", self.showCursor
+      print("on_cursor() self.showCursor = ", self.showCursor)
    
       if self.showCursor==True:
         self.cursor = Cursor(self.ax1, self)
@@ -344,10 +344,10 @@ class PlotWindow(QFrame):
    # Functio to execute on a click event (experimental)
    #
    def on_click(self, event):
-      print 'button=%d, x=%d, y=%d, xdata=%f, ydata=%f'%(
-         event.button, event.x, event.y, event.xdata, event.ydata)     # DEBUG      
+      print('button=%d, x=%d, y=%d, xdata=%f, ydata=%f'%(
+         event.button, event.x, event.y, event.xdata, event.ydata))     # DEBUG      
 
-      print "event.key = ", event.key   # DEBUG
+      print("event.key = ", event.key)   # DEBUG
 
       self.xdata=event.xdata
       self.ydata=event.ydata
@@ -359,9 +359,9 @@ class PlotWindow(QFrame):
         if self.parent.tableType == "PERSOLUTION_CORRMATRIX" or self.parent.tableType == "PERITERATION_CORRMATRIX":
             self.plotcorrmatrix()
         else:
-            print "on_clickMarker() table is not of correct type"
+            print("on_clickMarker() table is not of correct type")
       elif self.onClickComboBox.currentText()=="Per iteration":
-        print "plotwindow::on_click() trying to launch per iteration plotwindow"
+        print("plotwindow::on_click() trying to launch per iteration plotwindow")
 
 
    # Display a histogram of the converged solutions (i.e. LASTITER=TRUE)
@@ -373,7 +373,7 @@ class PlotWindow(QFrame):
 
 
    def on_onClickComboBox(self):
-      print "on_onClickComboBox()"    # DEBUG
+      print("on_onClickComboBox()")    # DEBUG
       if self.onClickComboBox.currentText()=="Zoom":
         self.fig.canvas.mpl_disconnect(self.cursorId)
       elif self.onClickComboBox.currentText()=="CorrMatrix":
@@ -409,14 +409,14 @@ class PlotWindow(QFrame):
             #self.solverMessageText.setText(self.messages[resultType][index])
             self.solverMessageText.setText(self.messages[index])
         elif resultType==None:
-            print "on_solverMessage() None messages"
+            print("on_solverMessage() None messages")
             return
         self.solverMessageText.setReadOnly(True)      # make it readonly again that user can't mess with it
   
    # Plot data that has been read
    #
    def plot(self):
-      print "PlotWindow::plot()"            # DEBUG
+      print("PlotWindow::plot()")            # DEBUG
 
       parm=self.parent.parmsComboBox.currentText()   # Solution parameter, e.g. Gain:1:1:LBA001
       parameter=str(self.parent.parametersComboBox.currentText())    # Get solver parameter from drop down
@@ -436,7 +436,7 @@ class PlotWindow(QFrame):
       np.set_printoptions(precision=2)    # does this work?
 
       if self.parent.perIteration==True:
-         x=range(1, len(self.y1)+1)       # we want the first iteration to be called "1"
+         x=list(range(1, len(self.y1)+1))       # we want the first iteration to be called "1"
          if self.parent.scatterCheckBox.isChecked()==True:
             self.ax1.scatter(x, self.y1)
          else:
@@ -456,7 +456,7 @@ class PlotWindow(QFrame):
       #self.ax2.set_xticklabels(self.ax1.get_xticklabels(), visible=True)
       self.ax2.set_ylabel(self.parent.parametersComboBox.currentText())
       if self.parent.perIteration==True:
-         x=range(1, len(self.y2)+1)
+         x=list(range(1, len(self.y2)+1))
          if self.parent.scatterCheckBox.isChecked()==True:
             self.ax2.scatter(x, self.y2)
          else:

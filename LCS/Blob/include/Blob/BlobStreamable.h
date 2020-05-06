@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobStreamable.h 26359 2013-09-04 13:58:06Z loose $
+//# $Id$
 
 #ifndef LOFAR_BLOB_BLOBSTREAMABLE_H
 #define LOFAR_BLOB_BLOBSTREAMABLE_H

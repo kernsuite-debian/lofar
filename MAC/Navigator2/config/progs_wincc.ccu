@@ -1,0 +1,24 @@
+version 1
+
+auth "" ""
+#Manager         | Start  | SecKill | Restart# | ResetMin | Options
+WCCILpmon       | manual |      30 |        3 |        1 |
+WCCILdata       | always |      30 |        3 |        1 |
+WCCOAvalarch    | always |      30 |        3 |        1 |-num 0
+WCCOAvalarch    | manual |      30 |        3 |        1 |-num 1
+WCCOAvalarch    | always |      30 |        3 |        1 |-num 2
+WCCOAvalarch    | manual |      30 |        3 |        1 |-num 3
+WCCOAvalarch    | manual |      30 |        3 |        1 |-num 4
+WCCOAvalarch    | manual |      30 |        3 |        1 |-num 5
+WCCILevent      | always |      30 |        3 |        1 |
+WCCOActrl       | always |      30 |        3 |        1 |-f pvss_scripts.lst
+WCCILsim        | always |      30 |        3 |        1 |
+WCCILdist       | always |      30 |        3 |        1 |
+WCCOActrl       | always |      30 |        2 |        2 |claim.ctl
+WCCOActrl       | always |      30 |        2 |        2 |monitorStateChanges.ctl
+WCCOActrl       |   once |      30 |        2 |        2 |readStationConnections.ctl
+WCCOActrl       | always |      30 |        2 |        2 |monitorStateReset.ctl
+WCCOActrl       | always |      30 |        2 |        2 |setSumAlerts.ctl
+WCCOActrl       | always |      30 |        2 |        2 |transferMPs.ctl
+WCCOAsnmp       | always |      30 |        2 |        2 |-num 2
+WCCOAui         | manual |      30 |        2 |        2 |-m para

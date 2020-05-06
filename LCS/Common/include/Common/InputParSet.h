@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: InputParSet.h 18904 2011-09-28 12:15:43Z diepen $
+//# $Id$
 
 #ifndef LOFAR_COMMON_INPUTPARSET_H
 #define LOFAR_COMMON_INPUTPARSET_H
@@ -30,10 +30,14 @@
 //# Includes
 #include <Common/ParameterSet.h>
 
+#ifdef HAVE_AIPSPP
+# include <casacore/casa/Inputs/Input.h>
+#else
 //# Forward declare Input.
-namespace casa {
+namespace casacore {
   class Input;
 }
+#endif
 
 
 namespace LOFAR {
@@ -105,7 +109,7 @@ namespace LOFAR {
     string getDefault (map<string,IPV>::const_iterator iter) const;
 
     ParameterSet itsParSet;
-    casa::Input* itsInput;
+    casacore::Input* itsInput;
     bool         itsUsePS;     //# true = use ParameterSet
     string       itsVersion;
     map<string, IPV> itsParms;

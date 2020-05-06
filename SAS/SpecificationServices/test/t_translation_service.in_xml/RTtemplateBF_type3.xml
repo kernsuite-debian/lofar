@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lofar:project
+  xmlns:lofar="http://www.astron.nl/MoM2-Lofar"
+  xmlns:mom2="http://www.astron.nl/MoM2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="
+                 http://www.astron.nl/LofarSpecification ../../../XSD/SAS/LofarSpecification.xsd
+                 http://www.astron.nl/MoM2-Lofar ../../../XSD/MoM/LofarMoM2.xsd
+                 http://www.astron.nl/MoM2 ../../../XSD/MoM/MoM2.xsd ">
+  <!--xsi:schemaLocation="http://www.astron.nl/MoM2-Lofar http://lofar.astron.nl:8080/mom3/schemas/LofarMoM2.xsd http://www.astron.nl/MoM2 http://lofar.astron.nl:8080/mom3/schemas/MoM2.xsd ">-->
+  <version>2.21.0</version>
+  <template version="2.21.0" author="Alwin de Jong,Adriaan Renting" changedBy="Adriaan Renting">
+    <description>XML Template generator version 2.21.0</description>
+  </template>
+  <name>test-lofar</name>
+  <children>
+    <item index="0">
+      <lofar:folder topology_parent="false">
+        <name>BF-trigger</name>
+        <description>Responsive Telescope Beamformed Trigger</description>
+        <children>
+          <item index="0">
+            <lofar:folder topology_parent="true">
+              <topology>0</topology>
+              <name>XXYY_Target</name>
+              <description>Triggered target, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)</description>
+              <children>
+                <item index="0">
+                  <lofar:observation>
+                    <name>B0809+74/1/TO</name>
+                    <description>B0809+74/1/TO (Target Observation)</description>
+                    <topology>B0.1.T</topology>
+                    <predecessor_topology></predecessor_topology>
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+                    <lofar:observationAttributes>
+                      <!--<observationId>
+                                            </observationId>-->
+                      <name>B0809+74/1/TO</name>
+                      <projectName>test-lofar</projectName>
+                      <instrument>Beam Observation</instrument>
+                      <defaultTemplate>BeamObservation</defaultTemplate>
+                      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                      <userSpecification>
+                        <correlatedData>false</correlatedData>
+                        <coherentStokesData>true</coherentStokesData>
+                        <incoherentStokesData>false</incoherentStokesData>
+                        <antenna>HBA Dual</antenna>
+                        <clock mode="200 MHz"/>
+                        <instrumentFilter>110-190 MHz</instrumentFilter>
+                        <integrationInterval>1.0</integrationInterval>
+                        <channelsPerSubband>16</channelsPerSubband>
+                        <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                        <tiedArrayBeams>
+                          <flyseye>false</flyseye>
+                        </tiedArrayBeams>
+                        <stokes>
+                          <integrateChannels>false</integrateChannels>
+                          <subbandsPerFileCS>20</subbandsPerFileCS>
+                          <numberCollapsedChannelsCS>1</numberCollapsedChannelsCS>
+                          <stokesDownsamplingStepsCS>1</stokesDownsamplingStepsCS>
+                          <!--<whichCS>XXYY</whichCS>-->
+                          <subbandsPerFileIS>512</subbandsPerFileIS>
+                          <numberCollapsedChannelsIS>16</numberCollapsedChannelsIS>
+                          <stokesDownsamplingStepsIS>128</stokesDownsamplingStepsIS>
+                          <whichIS>I</whichIS>
+                        </stokes>
+                        <stationSet>Custom</stationSet>
+                        <stations>
+                          <station name="CS001"/>
+                          <station name="CS002"/>
+                          <station name="CS003"/>
+                          <station name="CS004"/>
+                          <station name="CS005"/>
+                          <station name="CS006"/>
+                          <station name="CS007"/>
+                          <station name="CS011"/>
+                          <station name="CS013"/>
+                          <station name="CS017"/>
+                          <station name="CS021"/>
+                          <station name="CS024"/>
+                          <station name="CS026"/>
+                          <station name="CS028"/>
+                          <station name="CS030"/>
+                          <station name="CS031"/>
+                          <station name="CS032"/>
+                          <station name="CS101"/>
+                          <station name="CS103"/>
+                          <station name="CS201"/>
+                          <station name="CS301"/>
+                          <station name="CS302"/>
+                          <station name="CS401"/>
+                          <station name="CS501"/>
+                        </stations>
+                        <timeFrame>UT</timeFrame>
+                        <startTime>2017-07-17T16:17:29</startTime>
+                        <endTime>2017-07-17T16:22:29</endTime>
+                        <duration>PT300S</duration>
+                        <bypassPff>false</bypassPff>
+                        <enableSuperterp>false</enableSuperterp>
+                        <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                      </userSpecification>
+                    </lofar:observationAttributes>
+                    <children>
+                      <item index="0">
+                        <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                          <name>B0809+74</name>
+                          <description>B0809+74</description>
+                          <topology>B0.1.T.SAP000</topology>
+                          <currentStatus>
+                            <mom2:openedStatus/>
+                          </currentStatus>
+                          <lofar:bfMeasurementAttributes>
+                            <measurementType>Target</measurementType>
+                            <specification>
+                              <targetName>B0809+74</targetName>
+                              <ra>123.747916667</ra>
+                              <dec>74.4849166667</dec>
+                              <equinox>J2000</equinox>
+                              <duration>PT0S</duration>
+                              <subbandsSpecification>
+                                <subbands>54..453</subbands>
+                              </subbandsSpecification>
+                              <tiedArrayBeams>
+                                <flyseye>false</flyseye>
+                                <nrTabRings>0</nrTabRings>
+                                <!--<tabRingSize></tabRingSize>-->
+                                <tiedArrayBeamList>
+                                  <tiedArrayBeam>
+                                    <coherent>true</coherent>
+                                    <angle1>2.15980858832</angle1>
+                                    <angle2>1.30000703891</angle2>
+                                  </tiedArrayBeam>
+                                </tiedArrayBeamList>
+                              </tiedArrayBeams>
+                            </specification>
+                          </lofar:bfMeasurementAttributes>
+                          <resultDataProducts>
+                            <item>
+                              <lofar:bfDataProduct>
+                                <name>B0.1.T.SAP000.cs</name>
+                                <topology>B0.1.T.SAP000.cs</topology>
+                                <status>no_data</status>
+                                <storageCluster>
+                                  <name>CEP4</name>
+                                  <partition>/data/projects/</partition>
+                                </storageCluster>
+                              </lofar:bfDataProduct>
+                            </item>
+                          </resultDataProducts>
+                        </lofar:measurement>
+                      </item>
+                    </children>
+                  </lofar:observation>
+                </item>
+              </children>
+            </lofar:folder>
+          </item>
+          <item index="0">
+            <lofar:folder topology_parent="true">
+              <topology>1</topology>
+              <name>XXYY_calibrator</name>
+              <description>Calibrator, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)</description>
+              <children>
+                <item index="0">
+                  <lofar:observation>
+                    <name>B0809+74/1/TO</name>
+                    <description>B0809+74/1/TO (Target Observation)</description>
+                    <topology>B1.1.T</topology>
+                    <predecessor_topology></predecessor_topology>
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+                    <lofar:observationAttributes>
+                      <!--<observationId>
+                                            </observationId>-->
+                      <name>B0809+74/1/TO</name>
+                      <projectName>test-lofar</projectName>
+                      <instrument>Beam Observation</instrument>
+                      <defaultTemplate>BeamObservation</defaultTemplate>
+                      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                      <userSpecification>
+                        <correlatedData>false</correlatedData>
+                        <coherentStokesData>true</coherentStokesData>
+                        <incoherentStokesData>false</incoherentStokesData>
+                        <antenna>HBA Dual</antenna>
+                        <clock mode="200 MHz"/>
+                        <instrumentFilter>110-190 MHz</instrumentFilter>
+                        <integrationInterval>1.0</integrationInterval>
+                        <channelsPerSubband>16</channelsPerSubband>
+                        <coherentDedisperseChannels>false</coherentDedisperseChannels>
+                        <tiedArrayBeams>
+                          <flyseye>false</flyseye>
+                        </tiedArrayBeams>
+                        <stokes>
+                          <integrateChannels>false</integrateChannels>
+                          <subbandsPerFileCS>20</subbandsPerFileCS>
+                          <numberCollapsedChannelsCS>1</numberCollapsedChannelsCS>
+                          <stokesDownsamplingStepsCS>1</stokesDownsamplingStepsCS>
+                          <!--<whichCS>XXYY</whichCS>-->
+                          <subbandsPerFileIS>512</subbandsPerFileIS>
+                          <numberCollapsedChannelsIS>16</numberCollapsedChannelsIS>
+                          <stokesDownsamplingStepsIS>128</stokesDownsamplingStepsIS>
+                          <whichIS>I</whichIS>
+                        </stokes>
+                        <stationSet>Custom</stationSet>
+                        <stations>
+                          <station name="CS001"/>
+                          <station name="CS002"/>
+                          <station name="CS003"/>
+                          <station name="CS004"/>
+                          <station name="CS005"/>
+                          <station name="CS006"/>
+                          <station name="CS007"/>
+                          <station name="CS011"/>
+                          <station name="CS013"/>
+                          <station name="CS017"/>
+                          <station name="CS021"/>
+                          <station name="CS024"/>
+                          <station name="CS026"/>
+                          <station name="CS028"/>
+                          <station name="CS030"/>
+                          <station name="CS031"/>
+                          <station name="CS032"/>
+                          <station name="CS101"/>
+                          <station name="CS103"/>
+                          <station name="CS201"/>
+                          <station name="CS301"/>
+                          <station name="CS302"/>
+                          <station name="CS401"/>
+                          <station name="CS501"/>
+                        </stations>
+                        <timeFrame>UT</timeFrame>
+                        <startTime>2017-07-17T16:17:29</startTime>
+                        <endTime>2017-07-17T16:22:29</endTime>
+                        <duration>PT300S</duration>
+                        <bypassPff>false</bypassPff>
+                        <enableSuperterp>false</enableSuperterp>
+                        <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                      </userSpecification>
+                    </lofar:observationAttributes>
+                    <children>
+                      <item index="0">
+                        <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                          <name>B0809+74</name>
+                          <description>B0809+74</description>
+                          <topology>B1.1.T.SAP000</topology>
+                          <currentStatus>
+                            <mom2:openedStatus/>
+                          </currentStatus>
+                          <lofar:bfMeasurementAttributes>
+                            <measurementType>Target</measurementType>
+                            <specification>
+                              <targetName>B0809+74</targetName>
+                              <ra>123.747916667</ra>
+                              <dec>74.4849166667</dec>
+                              <equinox>J2000</equinox>
+                              <duration>PT0S</duration>
+                              <subbandsSpecification>
+                                <subbands>54..453</subbands>
+                              </subbandsSpecification>
+                              <tiedArrayBeams>
+                                <flyseye>false</flyseye>
+                                <nrTabRings>0</nrTabRings>
+                                <!--<tabRingSize></tabRingSize>-->
+                                <tiedArrayBeamList>
+                                  <tiedArrayBeam>
+                                    <coherent>true</coherent>
+                                    <angle1>2.15980858832</angle1>
+                                    <angle2>1.30000703891</angle2>
+                                  </tiedArrayBeam>
+                                </tiedArrayBeamList>
+                              </tiedArrayBeams>
+                            </specification>
+                          </lofar:bfMeasurementAttributes>
+                          <resultDataProducts>
+                            <item>
+                              <lofar:bfDataProduct>
+                                <name>B1.1.T.SAP000.cs</name>
+                                <topology>B1.1.T.SAP000.cs</topology>
+                                <status>no_data</status>
+                                <storageCluster>
+                                  <name>CEP4</name>
+                                  <partition>/data/projects/</partition>
+                                </storageCluster>
+                              </lofar:bfDataProduct>
+                            </item>
+                          </resultDataProducts>
+                        </lofar:measurement>
+                      </item>
+                    </children>
+                  </lofar:observation>
+                </item>
+              </children>
+            </lofar:folder>
+          </item>
+        </children>
+      </lofar:folder>
+    </item>
+  </children>
+</lofar:project>

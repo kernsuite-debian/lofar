@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 import os
 
 import lofarpipe.support.lofaringredient as ingredient

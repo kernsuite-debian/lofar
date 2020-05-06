@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ModelConfig.cc 33006 2015-11-27 11:41:18Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/ModelConfig.h>

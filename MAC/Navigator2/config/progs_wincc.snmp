@@ -1,0 +1,15 @@
+version 1
+
+auth "" ""
+#Manager         | Start  | SecKill | Restart# | ResetMin | Options
+WCCILpmon       | manual |      30 |        3 |        1 |
+WCCILdata       | always |      30 |        3 |        1 |
+WCCOAvalarch    | always |      30 |        3 |        1 |-num 0
+WCCOAvalarch    | always |      30 |        3 |        1 |-num 2
+WCCOAvalarch    | always |      30 |        3 |        1 |-num 3
+WCCILevent      | always |      30 |        3 |        1 |
+WCCOActrl       | always |      30 |        3 |        1 |-f pvss_scripts.lst
+WCCILsim        | always |      30 |        3 |        1 |
+WCCILdist       | always |      30 |        3 |        1 |
+WCCOAui         | manual |      30 |        2 |        2 |-m para -display localhost:10.0
+WCCOAsnmp       | always |      30 |        2 |        2 |-num 2

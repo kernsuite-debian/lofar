@@ -17,22 +17,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarStMan.cc 30324 2014-10-30 11:47:43Z mol $
+//# $Id$
 
 #include <LofarStMan/LofarStMan.h>
 #include <LofarStMan/LofarColumn.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/DataManError.h>
-#include <casa/Containers/Record.h>
-#include <casa/Containers/BlockIO.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/OS/CanonicalConversion.h>
-#include <casa/OS/HostInfo.h>
-#include <casa/OS/DOos.h>
-#include <casa/Utilities/Assert.h>
-#include <casa/iostream.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/DataMan/DataManError.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Containers/BlockIO.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/OS/CanonicalConversion.h>
+#include <casacore/casa/OS/HostInfo.h>
+#include <casacore/casa/OS/DOos.h>
+#include <casacore/casa/Utilities/Assert.h>
+#include <casacore/casa/iostream.h>
 
-using namespace casa;
+using namespace casacore;
 
 
 namespace LOFAR {
@@ -226,8 +226,8 @@ void LofarStMan::openFiles (bool writable)
   // First close if needed.
   closeFiles();
   String fname (fileName() + "data");
-  itsFD = LargeFiledesIO::open (fname.c_str(), writable);
-  itsRegFile = new LargeFiledesIO (itsFD);
+  itsFD = FiledesIO::open (fname.c_str(), writable);
+  itsRegFile = new FiledesIO (itsFD);
   // Set correct number of rows.
   itsNrRows = itsRegFile->length() / itsBlockSize * itsAnt1.size();
   // Map the file with seqnrs.
@@ -261,7 +261,7 @@ void LofarStMan::mapSeqFile()
 void LofarStMan::closeFiles()
 {
   if (itsFD >= 0) {
-    LargeFiledesIO::close (itsFD);
+    FiledesIO::close (itsFD);
     itsFD = -1;
   }
   delete itsRegFile;

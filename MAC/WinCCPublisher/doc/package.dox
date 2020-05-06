@@ -1,0 +1,8 @@
+/**
+
+\ingroup Packages
+\defgroup WinCCPublisher WinCCPublisher
+
+The WinCCPublisher package builds an executable which publishes MonitoringMessage on a configurable qpid bus whenever a datapoint in the wincc database changes for a configurable list of datapoints. \ref winccpublisher_overview "WinCCPublisher Overview"
+*/
+

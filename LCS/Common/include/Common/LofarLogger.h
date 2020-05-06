@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarLogger.h 31128 2015-03-02 16:42:53Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_COMMON_LOFARLOGGER_H
 #define LOFAR_COMMON_LOFARLOGGER_H

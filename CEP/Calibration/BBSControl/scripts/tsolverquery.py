@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#! /usr/bin/env python3
 
 # This is a test python script for the SolverQuery class
 #
@@ -7,12 +7,10 @@
 # Date:			2010/07/21
 # Last change		2010/10/06
 
-
 import os
 import sys
 import SolverQuery as sq
-import pylab as P        # needed for histogram test
-
+import pylab as P    # needed for histogram test
 
 #*******************************
 #
@@ -22,11 +20,10 @@ import pylab as P        # needed for histogram test
 
 # Usage function
 def usage():
-    print "Usage: ", sys.argv[0],"<MS>/<solver>"
-    print "<MS>       Measurement Set file containing solutions"
-    print "<solver>   Name of table containing solver parameters (default: 'solver')"
+    print("Usage: ", sys.argv[0], "<MS>/<solver>")
+    print("<MS>       Measurement Set file containing solutions")
+    print("<solver>   Name of table containing solver parameters (default: 'solver')")
     return
-
 
 #*******************************
 #
@@ -50,7 +47,7 @@ def main():
     cell=solver.readCell(solver.solverTable[100]['STARTTIME'],
 solver.solverTable[100]['ENDTIME'],solver.solverTable[100]['STARTFREQ'],
 solver.solverTable[100]['ENDFREQ'], iteration=1)
-    print "Cell: ", cell
+    print("Cell: ", cell)
 
  
     #parameters=solver.readParameterNIdx("LMFACTOR", 1010, 1020)
@@ -58,19 +55,19 @@ solver.solverTable[100]['ENDFREQ'], iteration=1)
 
     # getFreqChannels
     chans=solver.getFreqs()
-    print chans[0]
+    print(chans[0])
 
     # getTimeSlots
     timeslots=solver.getTimeSlots()
   #  for i in range(0,timeslots.nrows()):
   #      print i, timeslots[i]
 
-    print "No. of timeslots: ", timeslots.nrows()
+    print("No. of timeslots: ", timeslots.nrows())
 
     # getStartFreqs
     startFreqs=solver.getStartFreqs()
     for i in range(0, startFreqs.nrows()):
-        print i, startFreqs[i]
+        print(i, startFreqs[i])
 
 
     # Read a parameter for all frequency cells
@@ -95,16 +92,16 @@ solver.solverTable[100]['ENDFREQ'], iteration=1)
     # Read a parameter for all TimeSlots (iteration=last/all/x)
     parms=solver.readFreqColumn("CHISQR", iteration="last")
 
-    print "type(parms).__name__: ", type(parms).__name__
-    print "type(solver.frequencies[i])", type(solver.frequencies)
-    print "len(parms): ", len(parms)
+    print("type(parms).__name__: ", type(parms).__name__)
+    print("type(solver.frequencies[i])", type(solver.frequencies))
+    print("len(parms): ", len(parms))
 
     # Decide on return type how to display it
     if parms["result"] != "False":
         for j in range(0, len(parms["last"])-1):
-            print solver.timeSlots[i], ":", parms["last"][j]
+            print(solver.timeSlots[i], ":", parms["last"][j])
     else:
-        print "readFreqColumn() failed"
+        print("readFreqColumn() failed")
 
 
     # Read Solution for a particular cell
@@ -140,29 +137,29 @@ solver.solverTable[100]['ENDFREQ'], iteration=1)
 
     # Check if a prameter exists
     exists=solver.parameterExists("CHISQR")
-    print "CHISQR exists: ", exists
+    print("CHISQR exists: ", exists)
 
 
     # Get parameter names
     parameters=solver.readParameterNames()
-    print "Parameters: ", parameters
+    print("Parameters: ", parameters)
 
     # Get converged iteration for a cell
     convergedIter=solver.getConvergedIteration(solver.solverTable[0]['STARTTIME'],
 solver.solverTable[0]['ENDTIME'],solver.solverTable[0]['STARTFREQ'],
 solver.solverTable[0]['ENDFREQ'])
-    print "Converged iteration: ", convergedIter
+    print("Converged iteration: ", convergedIter)
 
     # Read a parameter along frequency column
     parms=solver.readFreqColumn("CHISQR", iteration="last")
     if parms["result"] != "False":
-        print "parms: ", parms
+        print("parms: ", parms)
         # loop through keys in dictionary that are not "result"
-        for keys in parms.keys():
+        for keys in list(parms.keys()):
             if keys != "result":    # we do not want to print the result type
-                print parms[keys]
+                print(parms[keys])
     else:
-        print "readFreqColumn failed"
+        print("readFreqColumn failed")
 
 
     # get all converged iterations
@@ -171,7 +168,7 @@ solver.solverTable[0]['ENDTIME'],solver.solverTable[0]['STARTFREQ'],
 solver.solverTable[0]['ENDFREQ'])
 
     # create a histogram of the converged iterations
-    print "convergedIter = ", convergedIter
+    print("convergedIter = ", convergedIter)
 
     #convergedParameter=solver.getConvergedParameter("CHISQR", solver.solverTable[0]['STARTTIME'],solver.solverTable[10000]['ENDTIME'],solver.solverTable[0]['STARTFREQ'], solver.solverTable[0]['ENDFREQ'])
 

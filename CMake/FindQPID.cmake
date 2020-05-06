@@ -31,7 +31,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindQPID.cmake 31155 2015-03-09 12:41:29Z mol $
+# $Id$
 
 if(NOT QPID_FOUND)
 
@@ -59,5 +59,6 @@ if(NOT QPID_FOUND)
 
   set(QPID_INCLUDE_DIRS ${QPID_INCLUDE_DIR})
   set(QPID_LIBRARIES ${QPID_LIBRARY})
+  set(HAVE_QPID TRUE CACHE "We have qpid" BOOL FORCE)
 
 endif(NOT QPID_FOUND)

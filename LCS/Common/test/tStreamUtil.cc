@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tStreamUtil.cc 19750 2012-01-12 12:12:25Z diepen $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

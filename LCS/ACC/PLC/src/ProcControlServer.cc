@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProcControlServer.cc 19251 2011-11-14 08:32:47Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 

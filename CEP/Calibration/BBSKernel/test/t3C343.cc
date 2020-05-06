@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: t3C343.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBS/Prediffer.h>
@@ -71,7 +71,7 @@ void doSolveAll (Prediffer& pre1, const vector<string>& solv,
 
   for (int it=0; it<maxniter; ++it) {
     // Get the fitter from the prediffer and give them to the solver.
-    vector<casa::LSQFit> fitters;
+    vector<casacore::LSQFit> fitters;
     pre1.fillFitters (fitters, "DATA");
     solver.mergeFitters (fitters, 0);
     // Do the solve.
@@ -127,7 +127,7 @@ void doSolveStep (Prediffer& pre1, const vector<string>& solv,
 
     for (int it=0; it<maxniter; ++it) {
       // Get the fitter from the prediffer and give them to the solver.
-      vector<casa::LSQFit> fitters;
+      vector<casacore::LSQFit> fitters;
       pre1.fillFitters (fitters, "DATA");
       solver.mergeFitters (fitters, 0);
       // Do the solve.

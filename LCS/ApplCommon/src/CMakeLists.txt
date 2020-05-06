@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 23213 2012-12-07 13:00:09Z loose $
+# $Id$
 
 include(LofarPackageVersion)
 

@@ -1,0 +1,3 @@
+include(LofarCTest)
+include(FindPythonModule)
+

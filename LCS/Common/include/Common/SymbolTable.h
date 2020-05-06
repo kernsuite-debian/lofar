@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SymbolTable.h 17418 2011-02-15 10:42:30Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_SYMBOLTABLE_H
 #define LOFAR_COMMON_SYMBOLTABLE_H

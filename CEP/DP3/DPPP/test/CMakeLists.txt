@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39914 2018-07-19 12:21:14Z dijkema $
+# $Id$
 
 # Generate the actual test script.
 configure_file(findenv.run_tmpl findenv.run_script)

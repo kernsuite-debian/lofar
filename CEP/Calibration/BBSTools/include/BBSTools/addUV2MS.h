@@ -25,50 +25,52 @@
 #ifndef LOFAR_BBSTOOLS_ADDUV2MS_H
 #define LOFAR_BBSTOOLS_ADDUV2MS_H
 
-//#include <vector>
-#include <casa/Arrays/Vector.h>
+#include <vector>
+#include <string>
+#include <map>
+#include <casacore/casa/Arrays/Vector.h>
 #include <synthesis/MeasurementEquations/Imager.h>          // casarest ft()
 
-void parseOptions(const vector<string> &arguments, 
-                  string &msName, 
-                  casa::Vector<casa::String> &patchNames, 
+void parseOptions(const std::vector<std::string> &arguments,
+                  std::string &msName,
+                  casacore::Vector<casacore::String> &patchNames, 
                   unsigned int &nwplanes);
-casa::MDirection getPatchDirection(const string &patchName);
-void addDirectionKeyword( casa::Table LofarMS, 
+casacore::MDirection getPatchDirection(const std::string &patchName);
+void addDirectionKeyword( casacore::Table LofarMS, 
                           const std::string &patchName);
-void addChannelSelectionKeyword(casa::Table &LofarTable, 
+void addChannelSelectionKeyword(casacore::Table &LofarTable, 
                                 const std::string &columnName);
-string createColumnName(const casa::String &);
+string createColumnName(const casacore::String &);
 void removeExistingColumns( const std::string &MSfilename, 
-                            const casa::Vector<casa::String> &patchNames);
-void addImagerColumns (casa::MeasurementSet& ms);
-void addModelColumn ( casa::MeasurementSet &ms, 
-                      const casa::String &dataManName);
-casa::Double getMSReffreq(const casa::MeasurementSet &ms);
-casa::Double getMSChanwidth(const casa::MeasurementSet &ms);
-map<string, double>  patchFrequency(casa::MeasurementSet &ms, 
-                                    const casa::Vector<casa::String> &patchNames);
-bool validModelImage(const casa::String &imageName, string &error);                                    
-unsigned int makeTempImages(const casa::Vector<casa::String> &patchNames, 
+                            const casacore::Vector<casacore::String> &patchNames);
+void addImagerColumns (casacore::MeasurementSet& ms);
+void addModelColumn ( casacore::MeasurementSet &ms, 
+                      const casacore::String &dataManName);
+casacore::Double getMSReffreq(const casacore::MeasurementSet &ms);
+casacore::Double getMSChanwidth(const casacore::MeasurementSet &ms);
+std::map<string, double>  patchFrequency(casacore::MeasurementSet &ms,
+                                    const casacore::Vector<casacore::String> &patchNames);
+bool validModelImage(const casacore::String &imageName, std::string &error);
+unsigned int makeTempImages(const casacore::Vector<casacore::String> &patchNames, 
                             const std::string &prefix="tmp");
-unsigned int removeTempImages(const casa::Vector<casa::String> &patchNames, 
+unsigned int removeTempImages(const casacore::Vector<casacore::String> &patchNames, 
                               const std::string &prefix="tmp");
 double updateFrequency(const std::string &imageName, 
                       double reffreq);
 void restoreFrequency(const std::map<std::string, 
                       double> &refFrequencies);
-void getImageOptions( const string &patchName, 
+void getImageOptions( const std::string &patchName,
                       unsigned int &imSizeX, unsigned int &imSizeY, 
-                      casa::Quantity &cellSizeX, casa::Quantity &cellSizeY, 
-                      unsigned int &nchan, unsigned int &npol, string &stokes);
+                      casacore::Quantity &cellSizeX, casacore::Quantity &cellSizeY, 
+                      unsigned int &nchan, unsigned int &npol, std::string &stokes);
 
 //--------------------------------------------------------------
 // Function declarations (debug functions)
 //
-casa::Vector<casa::String> getColumnNames(const casa::Table &table);
-void showColumnNames(casa::Table &table);
-void usage(const string &);
+casacore::Vector<casacore::String> getColumnNames(const casacore::Table &table);
+void showColumnNames(casacore::Table &table);
+void usage(const std::string &);
 
-void showVector(const vector<string> &v, const string &key="");
+void showVector(const std::vector<std::string> &v, const std::string &key="");
 
 #endif

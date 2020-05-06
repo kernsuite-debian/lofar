@@ -1,0 +1,205 @@
+stages:
+  - prepare
+  - build
+  - unit_test
+  - integration_test
+
+#
+# PREPARE STAGE
+#
+
+prepare_ci_sas_docker_image:
+  stage: prepare
+  script:
+    - docker build -t ci_base -f  Docker/lofar-ci/Dockerfile_ci_base .
+    - docker build -t ci_sas -f  Docker/lofar-ci/Dockerfile_ci_sas .
+
+prepare_ci_lta_docker_image:
+  stage: prepare
+  script:
+    - docker build -t ci_base -f  Docker/lofar-ci/Dockerfile_ci_base .
+    - docker build -t ci_lta -f  Docker/lofar-ci/Dockerfile_ci_lta .
+
+#TODO: make proper MAC docker image with WinCC (rpm packages from mcu001)
+#prepare_ci_mac_docker_image:
+#  stage: prepare
+#  script:
+#    - docker build -t ci_base -f  Docker/lofar-ci/Dockerfile_ci_base .
+#    - docker build -t ci_mac -f  Docker/lofar-ci/Dockerfile_ci_mac .
+
+#
+# BUILD STAGE
+#
+
+build_RAServices:
+  stage: build
+  image: ci_sas:latest
+  script:
+    - PACKAGE=RAServices
+    - echo "Building $PACKAGE..."
+    - mkdir -p build/gnucxx11_opt
+    - cd build/gnucxx11_opt
+    - cmake -DBUILD_PACKAGES=$PACKAGE -DCASACORE_ROOT_DIR=/opt/casacore/ -DCASAREST_ROOT_DIR=/opt/casarest/ -DUSE_LOG4CPLUS=false ../..
+    - make -j 8
+    - make install
+  dependencies:
+    - prepare_ci_sas_docker_image
+  artifacts:
+    expire_in: 6 hours
+    paths:
+      - build/gnucxx11_opt
+
+build_LTAIngest:
+  stage: build
+  image: ci_lta:latest
+  script:
+    - PACKAGE=LTAIngest
+    - echo "Building $PACKAGE..."
+    - mkdir -p build/gnucxx11_opt
+    - cd build/gnucxx11_opt
+    - cmake -DBUILD_PACKAGES=$PACKAGE -DUSE_LOG4CPLUS=false ../..
+    - make -j 8
+    - make install
+  dependencies:
+    - prepare_ci_lta_docker_image
+  artifacts:
+    expire_in: 6 hours
+    paths:
+      - build/gnucxx11_opt
+
+# TODO: enable when prepare_ci_mac_docker_image is fixed
+#build_MCU_MAC:
+#  stage: build
+#  image: ci_mac:latest
+#  script:
+#    - PACKAGE=MCU_MAC
+#    - echo "Building $PACKAGE..."
+#    - mkdir -p build/gnucxx11_opt
+#    - cd build/gnucxx11_opt
+#    - cmake -DBUILD_PACKAGES=$PACKAGE -DUSE_LOG4CPLUS=false ../..
+#    - make -j 8
+#    - make install
+#  dependencies:
+#    - prepare_ci_mac_docker_image
+#  artifacts:
+#    expire_in: 6 hours
+#    paths:
+#      - build/gnucxx11_opt
+
+#
+# UNIT TEST STAGE
+#
+
+unit_test_RAServices:
+  stage: unit_test
+  image: ci_sas:latest
+  script:
+    - PACKAGE=RAServices
+    - echo "Testing $PACKAGE..."
+    - cd build/gnucxx11_opt
+    - SKIP_INTEGRATION_TESTS=true ctest
+  services:
+    - rabbitmq:latest
+  variables:
+    RABBITMQ_DEFAULT_USER: guest
+    RABBITMQ_DEFAULT_PASS: guest
+    LOFAR_DEFAULT_BROKER: 'rabbitmq' # override default 'localhost' which does not work for CI service rabbitmq.
+  dependencies:
+    - build_RAServices
+  artifacts:
+    name: unit-test-report
+    when: always
+    paths:
+      - build/gnucxx11_opt/Testing/Temporary/LastTest.log
+
+unit_test_LTAIngest:
+  stage: unit_test
+  image: ci_lta:latest
+  script:
+    - PACKAGE=LTAIngest
+    - echo "Testing $PACKAGE..."
+    - cd build/gnucxx11_opt
+    - SKIP_INTEGRATION_TESTS=true ctest
+  services:
+    - rabbitmq:latest
+  variables:
+    RABBITMQ_DEFAULT_USER: guest
+    RABBITMQ_DEFAULT_PASS: guest
+    LOFAR_DEFAULT_BROKER: 'rabbitmq' # override default 'localhost' which does not work for CI service rabbitmq.
+  dependencies:
+    - build_LTAIngest
+  artifacts:
+    name: unit-test-report
+    when: always
+    paths:
+      - build/gnucxx11_opt/Testing/Temporary/LastTest.log
+
+# TODO: enable when build_MCU_MAC is fixed
+#unit_test_MCU_MAC:
+#  stage: unit_test
+#  image: ci_mac:latest
+#  script:
+#    - PACKAGE=MCU_MAC
+#    - echo "Testing $PACKAGE..."
+#    - cd build/gnucxx11_opt
+#    - SKIP_INTEGRATION_TESTS=true ctest
+#  dependencies:
+#    - build_MCU_MAC
+#  artifacts:
+#    name: unit-test-report
+#    when: always
+#    paths:
+#      - build/gnucxx11_opt/Testing/Temporary/LastTest.log
+
+
+
+
+#
+# INTEGRATION TEST STAGE
+#
+
+integration_test_RAServices:
+  stage: integration_test
+  image: ci_sas:latest
+  services:
+    - rabbitmq:latest
+  variables:
+    RABBITMQ_DEFAULT_USER: guest
+    RABBITMQ_DEFAULT_PASS: guest
+    LOFAR_DEFAULT_BROKER: 'rabbitmq' # override default 'localhost' which does not work for CI service rabbitmq.
+  script:
+    - PACKAGE=RAServices
+    - echo "Integration Testing $PACKAGE..."
+    - cd build/gnucxx11_opt
+    - SKIP_INTEGRATION_TESTS=false SKIP_UNIT_TESTS=true ctest
+  dependencies:
+    - build_RAServices
+  artifacts:
+    name: integration-test-report
+    when: always
+    paths:
+      - build/gnucxx11_opt/Testing/Temporary/LastTest.log
+
+integration_test_LTAIngest:
+  stage: integration_test
+  image: ci_lta:latest
+  script:
+    - PACKAGE=LTAIngest
+    - echo "Integration Testing $PACKAGE..."
+    - cd build/gnucxx11_opt
+    - SKIP_INTEGRATION_TESTS=false SKIP_UNIT_TESTS=true ctest
+  services:
+    - rabbitmq:latest
+  variables:
+    RABBITMQ_DEFAULT_USER: guest
+    RABBITMQ_DEFAULT_PASS: guest
+    LOFAR_DEFAULT_BROKER: 'rabbitmq' # override default 'localhost' which does not work for CI service rabbitmq.
+  dependencies:
+    - build_LTAIngest
+  artifacts:
+    name: integration-test-report
+    when: always
+    paths:
+      - build/gnucxx11_opt/Testing/Temporary/LastTest.log
+
+

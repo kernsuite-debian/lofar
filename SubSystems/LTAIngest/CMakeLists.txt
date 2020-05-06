@@ -1,0 +1,1 @@
+lofar_package(LTAIngest DEPENDS LTAIngestServer LTAIngestClient LTAIngestWebServer MessageLogger)

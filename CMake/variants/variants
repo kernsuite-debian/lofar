@@ -6,7 +6,7 @@
 ## build variants (e.g., debug or optimized),
 ## defaults for several options.
 ##
-## $Id: variants 33123 2015-12-11 15:06:01Z mol $
+## $Id$
 
 # Default search path to use when searching for an external package.
 set_if_not_set(LOFAR_SEARCH_PATH 

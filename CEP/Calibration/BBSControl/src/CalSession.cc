@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CalSession.cc 27339 2013-11-11 14:52:11Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSControl/CalSession.h>
@@ -740,7 +740,7 @@ CalSession::Trigger::Init::Init()
 }
 
 CalSession::Trigger::Trigger(const CalSession& session, Type type)
-    :   pqxx::trigger(*session.itsConnection,
+    :   pqxx::notification_receiver(*session.itsConnection,
             theirTypes.find(type) == theirTypes.end() ? "" : theirTypes[type])
 {
     LOG_TRACE_LIFETIME(TRACE_LEVEL_COND, "");
@@ -748,13 +748,13 @@ CalSession::Trigger::Trigger(const CalSession& session, Type type)
     LOG_DEBUG_STR("Created trigger of type: " << theirTypes[type]);
 }
 
-void CalSession::Trigger::operator()(int be_pid)
+void CalSession::Trigger::operator()(const std::string& payload, int be_pid)
 {
-    LOG_DEBUG_STR("Received notification: " << name() << "; pid = " << be_pid);
+    LOG_DEBUG_STR("Received notification: " << channel() << "; pid = " << be_pid);
     TypeMap::const_iterator it;
     for(it = theirTypes.begin(); it != theirTypes.end(); ++it)
     {
-        if(it->second == name())
+        if(it->second == channel())
         {
             LOG_TRACE_COND_STR("Raising flag [" << it->first << ","
                 << it->second << "]");

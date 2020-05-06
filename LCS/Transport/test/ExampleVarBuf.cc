@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ExampleVarBuf.cc 24441 2013-03-28 07:47:57Z loose $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

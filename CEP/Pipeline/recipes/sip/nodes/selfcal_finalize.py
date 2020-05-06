@@ -4,7 +4,7 @@
 #                                                            Wouter Klijn 2012
 #                                                           klijn@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import subprocess
 import os
@@ -19,8 +19,9 @@ from lofarpipe.support.utilities import catch_segfaults
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.pipelinelogging import CatchLog4CPlus
 from lofarpipe.support.subprocessgroup import SubProcessGroup
+from lofar.common.subprocess_utils import communicate_returning_strings
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import lofarpipe.recipes.helpers.MultipartPostHandler as mph
 
 class selfcal_finalize(LOFARnodeTCP):
@@ -75,7 +76,7 @@ class selfcal_finalize(LOFARnodeTCP):
                 addimg.addImagingInfo(awimager_output, processed_ms_paths,
                     sourcedb, minbaseline, maxbaseline)
 
-            except Exception, error:
+            except Exception as error:
                 self.logger.warn("addImagingInfo Threw Exception:")
                 self.logger.warn(error)
                 # Catch raising of already done error: allows for rerunning
@@ -100,7 +101,7 @@ class selfcal_finalize(LOFARnodeTCP):
                 # save the image
                 pim_image.saveas(output_image, hdf5=True)
 
-            except Exception, error:
+            except Exception as error:
                 self.logger.error(
                     "Exception raised inside pyrap.images: {0}".format(
                                                                 str(error)))
@@ -123,7 +124,7 @@ class selfcal_finalize(LOFARnodeTCP):
                     catch_segfaults(["image2fits", '-in', awimager_output,
                                                  '-out', fits_output],
                                     temp_dir, self.environment, logger)
-            except Exception, excp:
+            except Exception as excp:
                 self.logger.error(str(excp))
                 return 1
             finally:
@@ -140,7 +141,7 @@ class selfcal_finalize(LOFARnodeTCP):
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE)
 
-            (stdoutdata, stderrdata) = proc.communicate()
+            (stdoutdata, stderrdata) = communicate_returning_strings(proc)
 
             exit_status = proc.returncode
 

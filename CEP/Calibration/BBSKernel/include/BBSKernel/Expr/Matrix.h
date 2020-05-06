@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Matrix.h 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_MATRIX_H
 #define LOFAR_BBSKERNEL_EXPR_MATRIX_H
@@ -30,7 +30,7 @@
 #include <BBSKernel/Expr/MatrixRep.h>
 
 //# Forward Declarations
-//#namespace casa
+//#namespace casacore
 //#{
 //#    template<class T> class Matrix;
 //#}
@@ -80,8 +80,8 @@ public:
   // @{
   Matrix (const double* values, int nx, int ny);
   Matrix (const dcomplex* values, int nx, int ny);
-//#  Matrix (const casa::Matrix<double>&);
-//#  Matrix (const casa::Matrix<dcomplex>&);
+//#  Matrix (const casacore::Matrix<double>&);
+//#  Matrix (const casacore::Matrix<dcomplex>&);
   // @}
 
   // Create a Matrix from a MatrixRep.
@@ -144,8 +144,8 @@ public:
   bool isComplex() const
     { return itsRep->isComplex(); }
 
-//#  casa::Matrix<double> getDoubleMatrix() const;
-//#  casa::Matrix<dcomplex> getDComplexMatrix() const;
+//#  casacore::Matrix<double> getDoubleMatrix() const;
+//#  casacore::Matrix<dcomplex> getDComplexMatrix() const;
 
   const double* doubleStorage() const
     { return itsRep->doubleStorage(); }

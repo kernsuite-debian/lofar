@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: SolveStep.cc 30631 2014-12-17 10:43:11Z dijkema $
+//#  $Id$
 
 #include <lofar_config.h>
 
@@ -30,7 +30,7 @@
 #include <Common/LofarLogger.h>
 #include <Common/lofar_iomanip.h>
 
-#include <casa/Quanta/MVAngle.h>
+#include <casacore/casa/Quanta/MVAngle.h>
 
 #include <limits>
 
@@ -266,7 +266,7 @@ namespace LOFAR
           vector<double>(defThreshold, defThreshold + 10));
       }
 
-      itsDirection = casa::MDirection();
+      itsDirection = casacore::MDirection();
       itsDirectionASCII = vector<string>();
       itsShiftFlag = ps.getBool(sp+"PhaseShift.Enable", false);
       if(itsShiftFlag) {
@@ -331,7 +331,7 @@ namespace LOFAR
 
     void SolveStep::setDirection(const ParameterSet& ps, const string prefix)
     {
-      // Parse PhaseShift.Direction value and convert to casa::MDirection.
+      // Parse PhaseShift.Direction value and convert to casacore::MDirection.
       itsDirectionASCII = ps.getStringVector(prefix+"PhaseShift.Direction");
       if(itsDirectionASCII.size() != 3)
       {
@@ -339,14 +339,14 @@ namespace LOFAR
           << name());
       }
 
-      casa::Bool status = true;
-      casa::MDirection::Types refType;
-      status = status && casa::MDirection::getType(refType,
+      casacore::Bool status = true;
+      casacore::MDirection::Types refType;
+      status = status && casacore::MDirection::getType(refType,
         itsDirectionASCII[0]);
 
-      casa::Quantity ra, dec;
-      status = status && casa::MVAngle::read(ra, itsDirectionASCII[1]);
-      status = status && casa::MVAngle::read(dec, itsDirectionASCII[2]);
+      casacore::Quantity ra, dec;
+      status = status && casacore::MVAngle::read(ra, itsDirectionASCII[1]);
+      status = status && casacore::MVAngle::read(dec, itsDirectionASCII[2]);
 
       if(!status)
       {
@@ -354,7 +354,7 @@ namespace LOFAR
           << name());
       }
 
-      itsDirection = casa::MDirection(ra, dec, refType);
+      itsDirection = casacore::MDirection(ra, dec, refType);
     }
 
 

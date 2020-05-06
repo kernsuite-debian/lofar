@@ -11,7 +11,6 @@
 
 #include <armadillo>
 
-using namespace arma;
 namespace LOFAR{
  
 class PiercePoint 
@@ -24,7 +23,7 @@ public:
   PiercePoint(const casacore::MPosition &ant,const casacore::MDirection &source);
   void init(const casacore::MPosition &ant,const casacore::MDirection &source,const double height);
   void evaluate(casacore::MEpoch time);
-  Col<double>  getValue() const {return itsValue;} 
+  arma::Col<double>  getValue() const {return itsValue;}
   casacore::MPosition  getPos() const {return itsPosition;}
   casacore::MDirection  getDir() const {return itsDirection;}
 private:
@@ -36,7 +35,7 @@ private:
   double              itsIonoHeight;
   //  square of length antenna vector (int ITRF) minus square of vector to piercepoint. This is constant for a assumed spherical Earth
   double              itsC;
-  Col<double>         itsValue; //PiercePoint in ITRF coordinates
+  arma::Col<double>         itsValue; //PiercePoint in ITRF coordinates
 };
 }
 #endif

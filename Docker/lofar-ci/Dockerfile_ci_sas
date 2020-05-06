@@ -1,0 +1,25 @@
+#
+# This builds an image with all dependencies for the SAS package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for SAS..." && \
+    yum install -y log4cplus log4cplus-devel python3 python3-libs python3-devel boost readline-devel boost-devel binutils-devel boost-python36 boost-python36-devel gettext which openldap-devel npm nodejs git java-11-openjdk python-twisted-core
+    
+# see https://www.postgresql.org/download/linux/redhat/ on how to install postgresql-server > 9.2 on centos7 
+RUN yum erase -y postgresql postgresql-server postgresql-devel && \
+    yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm  && \
+    yum install -y postgresql96 postgresql96-server postgresql96-devel  && \
+    cd /bin && ln -s /usr/pgsql-9.6/bin/initdb && ln -s /usr/pgsql-9.6/bin/postgres
+ENV PATH /usr/pgsql-9.6/bin:$PATH 
+
+RUN pip3 install cython kombu lxml requests pygcn xmljson mysql-connector-python python-dateutil django djangorestframework djangorestframework-xml ldap==1.0.2 flask fabric coverage python-qpid-proton PyGreSQL numpy h5py psycopg2 testing.postgresql Flask-Testing scipy Markdown django-filter python-ldap python-ldap-test ldap3 djangorestframework django-jsonforms django-json-widget django-jsoneditor drf-yasg flex swagger-spec-validator django-auth-ldap mozilla-django-oidc jsonschema comet
+
+RUN npm install -g npx && \
+    npm install -g n && \
+    n stable && \
+    npm install -g serve
+
+USER lofarsys

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ObjectFactory.h 32489 2015-09-26 18:38:13Z dijkema $
+//# $Id$
 
 // \file
 // Generic object factory.

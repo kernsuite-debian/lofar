@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: lofar_smartptr.h 32489 2015-09-26 18:38:13Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_COMMON_SMARTPTR_H
 #define LOFAR_COMMON_SMARTPTR_H

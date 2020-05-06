@@ -1,0 +1,16 @@
+[general]
+pvss_path = "/opt/WinCC_OA/3.10"
+proj_path = "/opt/pvss/pvssproj/CCU001"
+proj_version = "3.10"
+userName = "root"
+password = ""
+langs = "en_US.iso88591"
+distributed = 1
+ctrlMaxPendings = 7500
+#mxproxy = "none"
+
+[dist]
+distPeer = "mcu001" 61
+
+[ui]
+aesShowDistDisconnections = 0

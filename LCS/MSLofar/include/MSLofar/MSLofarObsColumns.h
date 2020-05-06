@@ -17,14 +17,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarObsColumns.h 17624 2011-03-23 13:44:51Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFAROBSCOLUMNS_H
 #define MSLOFAR_MSLOFAROBSCOLUMNS_H
 
-#include <ms/MeasurementSets/MSObsColumns.h>
+#include <casacore/ms/MeasurementSets/MSObsColumns.h>
 
 namespace LOFAR {
 
@@ -38,7 +38,7 @@ namespace LOFAR {
   // column. Access to non-predefined columns will still have to be done with
   // explicit declarations.
 
-  class ROMSLofarObservationColumns: public casa::ROMSObservationColumns
+  class ROMSLofarObservationColumns: public casacore::ROMSObservationColumns
   {
   public:
 
@@ -50,77 +50,77 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    const casa::ROScalarColumn<casa::String>& projectTitle() const
+    const casacore::ROScalarColumn<casacore::String>& projectTitle() const
       { return projectTitle_p; }
-    const casa::ROScalarColumn<casa::String>& projectPI() const
+    const casacore::ROScalarColumn<casacore::String>& projectPI() const
       { return projectPI_p; }
-    const casa::ROArrayColumn<casa::String>& projectCoI() const
+    const casacore::ROArrayColumn<casacore::String>& projectCoI() const
       { return projectCoI_p; }
-    const casa::ROScalarColumn<casa::String>& projectContact() const
+    const casacore::ROScalarColumn<casacore::String>& projectContact() const
       { return projectContact_p; }
-    const casa::ROScalarColumn<casa::String>& observationId() const
+    const casacore::ROScalarColumn<casacore::String>& observationId() const
       { return observationId_p; }
-    const casa::ROScalarColumn<casa::Double>& observationStart() const
+    const casacore::ROScalarColumn<casacore::Double>& observationStart() const
       { return observationStart_p; }
-    const casa::ROScalarColumn<casa::Double>& observationEnd() const
+    const casacore::ROScalarColumn<casacore::Double>& observationEnd() const
       { return observationEnd_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyMax() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyMax() const
       { return observationFrequencyMax_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyMin() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyMin() const
       { return observationFrequencyMin_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyCenter() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyCenter() const
       { return observationFrequencyCenter_p; }
-    const casa::ROScalarColumn<casa::Int>& subArrayPointing() const
+    const casacore::ROScalarColumn<casacore::Int>& subArrayPointing() const
       { return subArrayPointing_p; }
-    const casa::ROScalarColumn<casa::Int>& nofBitsPerSample() const
+    const casacore::ROScalarColumn<casacore::Int>& nofBitsPerSample() const
       { return nofBitsPerSample_p; }
-    const casa::ROScalarColumn<casa::String>& antennaSet() const
+    const casacore::ROScalarColumn<casacore::String>& antennaSet() const
       { return antennaSet_p; }
-    const casa::ROScalarColumn<casa::String>& filterSelection() const
+    const casacore::ROScalarColumn<casacore::String>& filterSelection() const
       { return filterSelection_p; }
-    const casa::ROScalarColumn<casa::Double>& clockFrequency() const
+    const casacore::ROScalarColumn<casacore::Double>& clockFrequency() const
       { return clockFrequency_p; }
-    const casa::ROArrayColumn<casa::String>& target() const
+    const casacore::ROArrayColumn<casacore::String>& target() const
       { return target_p; }
-    const casa::ROScalarColumn<casa::String>& systemVersion() const
+    const casacore::ROScalarColumn<casacore::String>& systemVersion() const
       { return systemVersion_p; }
-    const casa::ROScalarColumn<casa::String>& pipelineName() const
+    const casacore::ROScalarColumn<casacore::String>& pipelineName() const
       { return pipelineName_p; }
-    const casa::ROScalarColumn<casa::String>& pipelineVersion() const
+    const casacore::ROScalarColumn<casacore::String>& pipelineVersion() const
       { return pipelineVersion_p; }
-    const casa::ROScalarColumn<casa::String>& filename() const
+    const casacore::ROScalarColumn<casacore::String>& filename() const
       { return filename_p; }
-    const casa::ROScalarColumn<casa::String>& filetype() const
+    const casacore::ROScalarColumn<casacore::String>& filetype() const
       { return filetype_p; }
-    const casa::ROScalarColumn<casa::Double>& filedate() const
+    const casacore::ROScalarColumn<casacore::Double>& filedate() const
       { return filedate_p; }
     // </group>
 
     // Access to Quantity columns
     // <group>
-    const casa::ROScalarQuantColumn<casa::Double>& observationStartQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationStartQuant() const 
       { return observationStartQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationEndQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationEndQuant() const 
       { return observationEndQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyMaxQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyMaxQuant() const 
       { return observationFrequencyMaxQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyMinQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyMinQuant() const 
       { return observationFrequencyMinQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& clockFrequencyQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& clockFrequencyQuant() const 
       { return clockFrequencyQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyCenterQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyCenterQuant() const 
       { return observationFrequencyCenterQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& filedateQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& filedateQuant() const 
       { return filedateQuant_p; }
     // </group>
 
     // Access to Measure columns
     // <group>
-    const casa::ROScalarMeasColumn<casa::MEpoch>& observationStartMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& observationStartMeas() const 
       { return observationStartMeas_p; }
-    const casa::ROScalarMeasColumn<casa::MEpoch>& observationEndMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& observationEndMeas() const 
       { return observationEndMeas_p; }
-    const casa::ROScalarMeasColumn<casa::MEpoch>& filedateMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& filedateMeas() const 
       { return filedateMeas_p; }
     // </group>
 
@@ -139,40 +139,40 @@ namespace LOFAR {
     ROMSLofarObservationColumns& operator=(const ROMSLofarObservationColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::String> projectTitle_p;
-    casa::ROScalarColumn<casa::String> projectPI_p;
-    casa::ROArrayColumn<casa::String>  projectCoI_p;
-    casa::ROScalarColumn<casa::String> projectContact_p;
-    casa::ROScalarColumn<casa::String> observationId_p;
-    casa::ROScalarColumn<casa::Double> observationStart_p;
-    casa::ROScalarColumn<casa::Double> observationEnd_p;
-    casa::ROScalarColumn<casa::Double> observationFrequencyMax_p;
-    casa::ROScalarColumn<casa::Double> observationFrequencyMin_p;
-    casa::ROScalarColumn<casa::Double> observationFrequencyCenter_p;
-    casa::ROScalarColumn<casa::Int>    subArrayPointing_p;
-    casa::ROScalarColumn<casa::Int>    nofBitsPerSample_p;
-    casa::ROScalarColumn<casa::String> antennaSet_p;
-    casa::ROScalarColumn<casa::String> filterSelection_p;
-    casa::ROScalarColumn<casa::Double> clockFrequency_p;
-    casa::ROArrayColumn<casa::String>  target_p;
-    casa::ROScalarColumn<casa::String> systemVersion_p;
-    casa::ROScalarColumn<casa::String> pipelineName_p;
-    casa::ROScalarColumn<casa::String> pipelineVersion_p;
-    casa::ROScalarColumn<casa::String> filename_p;
-    casa::ROScalarColumn<casa::String> filetype_p;
-    casa::ROScalarColumn<casa::Double> filedate_p;
+    casacore::ROScalarColumn<casacore::String> projectTitle_p;
+    casacore::ROScalarColumn<casacore::String> projectPI_p;
+    casacore::ROArrayColumn<casacore::String>  projectCoI_p;
+    casacore::ROScalarColumn<casacore::String> projectContact_p;
+    casacore::ROScalarColumn<casacore::String> observationId_p;
+    casacore::ROScalarColumn<casacore::Double> observationStart_p;
+    casacore::ROScalarColumn<casacore::Double> observationEnd_p;
+    casacore::ROScalarColumn<casacore::Double> observationFrequencyMax_p;
+    casacore::ROScalarColumn<casacore::Double> observationFrequencyMin_p;
+    casacore::ROScalarColumn<casacore::Double> observationFrequencyCenter_p;
+    casacore::ROScalarColumn<casacore::Int>    subArrayPointing_p;
+    casacore::ROScalarColumn<casacore::Int>    nofBitsPerSample_p;
+    casacore::ROScalarColumn<casacore::String> antennaSet_p;
+    casacore::ROScalarColumn<casacore::String> filterSelection_p;
+    casacore::ROScalarColumn<casacore::Double> clockFrequency_p;
+    casacore::ROArrayColumn<casacore::String>  target_p;
+    casacore::ROScalarColumn<casacore::String> systemVersion_p;
+    casacore::ROScalarColumn<casacore::String> pipelineName_p;
+    casacore::ROScalarColumn<casacore::String> pipelineVersion_p;
+    casacore::ROScalarColumn<casacore::String> filename_p;
+    casacore::ROScalarColumn<casacore::String> filetype_p;
+    casacore::ROScalarColumn<casacore::Double> filedate_p;
     //# Access to Quantum columns
-    casa::ROScalarQuantColumn<casa::Double> observationStartQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> observationEndQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> observationFrequencyMaxQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> observationFrequencyMinQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> observationFrequencyCenterQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> clockFrequencyQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> filedateQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> observationStartQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> observationEndQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> observationFrequencyMaxQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> observationFrequencyMinQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> observationFrequencyCenterQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> clockFrequencyQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> filedateQuant_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MEpoch> observationStartMeas_p;
-    casa::ROScalarMeasColumn<casa::MEpoch> observationEndMeas_p;
-    casa::ROScalarMeasColumn<casa::MEpoch> filedateMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> observationStartMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> observationEndMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> filedateMeas_p;
   };
 
 
@@ -183,7 +183,7 @@ namespace LOFAR {
   // for every predefined column. Access to non-predefined columns will still
   // have to be done with explicit declarations.
 
-  class MSLofarObservationColumns: public casa::MSObservationColumns
+  class MSLofarObservationColumns: public casacore::MSObservationColumns
   {
   public:
 
@@ -195,153 +195,153 @@ namespace LOFAR {
 
     // Readonly access to columns.
     // <group>
-    const casa::ROScalarColumn<casa::String>& projectTitle() const
+    const casacore::ROScalarColumn<casacore::String>& projectTitle() const
       { return roProjectTitle_p; }
-    const casa::ROScalarColumn<casa::String>& projectPI() const
+    const casacore::ROScalarColumn<casacore::String>& projectPI() const
       { return roProjectPI_p; }
-    const casa::ROArrayColumn<casa::String>& projectCoI() const
+    const casacore::ROArrayColumn<casacore::String>& projectCoI() const
       { return roProjectCoI_p; }
-    const casa::ROScalarColumn<casa::String>& projectContact() const
+    const casacore::ROScalarColumn<casacore::String>& projectContact() const
       { return roProjectContact_p; }
-    const casa::ROScalarColumn<casa::String>& observationId() const
+    const casacore::ROScalarColumn<casacore::String>& observationId() const
       { return roObservationId_p; }
-    const casa::ROScalarColumn<casa::Double>& observationStart() const
+    const casacore::ROScalarColumn<casacore::Double>& observationStart() const
       { return roObservationStart_p; }
-    const casa::ROScalarColumn<casa::Double>& observationEnd() const
+    const casacore::ROScalarColumn<casacore::Double>& observationEnd() const
       { return roObservationEnd_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyMax() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyMax() const
       { return roObservationFrequencyMax_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyMin() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyMin() const
       { return roObservationFrequencyMin_p; }
-    const casa::ROScalarColumn<casa::Double>& observationFrequencyCenter() const
+    const casacore::ROScalarColumn<casacore::Double>& observationFrequencyCenter() const
       { return roObservationFrequencyCenter_p; }
-    const casa::ROScalarColumn<casa::Int>& subArrayPointing() const
+    const casacore::ROScalarColumn<casacore::Int>& subArrayPointing() const
       { return roSubArrayPointing_p; }
-    const casa::ROScalarColumn<casa::Int>& nofBitsPerSample() const
+    const casacore::ROScalarColumn<casacore::Int>& nofBitsPerSample() const
       { return roNofBitsPerSample_p; }
-    const casa::ROScalarColumn<casa::String>& antennaSet() const
+    const casacore::ROScalarColumn<casacore::String>& antennaSet() const
       { return roAntennaSet_p; }
-    const casa::ROScalarColumn<casa::String>& filterSelection() const
+    const casacore::ROScalarColumn<casacore::String>& filterSelection() const
       { return roFilterSelection_p; }
-    const casa::ROScalarColumn<casa::Double>& clockFrequency() const
+    const casacore::ROScalarColumn<casacore::Double>& clockFrequency() const
       { return roClockFrequency_p; }
-    const casa::ROArrayColumn<casa::String>& target() const
+    const casacore::ROArrayColumn<casacore::String>& target() const
       { return roTarget_p; }
-    const casa::ROScalarColumn<casa::String>& systemVersion() const
+    const casacore::ROScalarColumn<casacore::String>& systemVersion() const
       { return roSystemVersion_p; }
-    const casa::ROScalarColumn<casa::String>& pipelineName() const
+    const casacore::ROScalarColumn<casacore::String>& pipelineName() const
       { return roPipelineName_p; }
-    const casa::ROScalarColumn<casa::String>& pipelineVersion() const
+    const casacore::ROScalarColumn<casacore::String>& pipelineVersion() const
       { return roPipelineVersion_p; }
-    const casa::ROScalarColumn<casa::String>& filename() const
+    const casacore::ROScalarColumn<casacore::String>& filename() const
       { return roFilename_p; }
-    const casa::ROScalarColumn<casa::String>& filetype() const
+    const casacore::ROScalarColumn<casacore::String>& filetype() const
       { return roFiletype_p; }
-    const casa::ROScalarColumn<casa::Double>& filedate() const
+    const casacore::ROScalarColumn<casacore::Double>& filedate() const
       { return roFiledate_p; }
     // </group>
 
     // Readonly access to Quantity columns
     // <group>
-    const casa::ROScalarQuantColumn<casa::Double>& observationStartQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationStartQuant() const 
       { return roObservationStartQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationEndQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationEndQuant() const 
       { return roObservationEndQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyMaxQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyMaxQuant() const 
       { return roObservationFrequencyMaxQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyMinQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyMinQuant() const 
       { return roObservationFrequencyMinQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& observationFrequencyCenterQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& observationFrequencyCenterQuant() const 
       { return roObservationFrequencyCenterQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& clockFrequencyQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& clockFrequencyQuant() const 
       { return roClockFrequencyQuant_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& filedateQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& filedateQuant() const 
       { return roFiledateQuant_p; }
     // </group>
 
     // Readonly access to Measure columns
     // <group>
-    const casa::ROScalarMeasColumn<casa::MEpoch>& observationStartMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& observationStartMeas() const 
       { return roObservationStartMeas_p; }
-    const casa::ROScalarMeasColumn<casa::MEpoch>& observationEndMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& observationEndMeas() const 
       { return roObservationEndMeas_p; }
-    const casa::ROScalarMeasColumn<casa::MEpoch>& filedateMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MEpoch>& filedateMeas() const 
       { return roFiledateMeas_p; }
     // </group>
 
     // Read/write access to columns.
     // <group>
-    casa::ScalarColumn<casa::String>& projectTitle()
+    casacore::ScalarColumn<casacore::String>& projectTitle()
       { return rwProjectTitle_p; }
-    casa::ScalarColumn<casa::String>& projectPI()
+    casacore::ScalarColumn<casacore::String>& projectPI()
       { return rwProjectPI_p; }
-    casa::ArrayColumn<casa::String>& projectCoI()
+    casacore::ArrayColumn<casacore::String>& projectCoI()
       { return rwProjectCoI_p; }
-    casa::ScalarColumn<casa::String>& projectContact()
+    casacore::ScalarColumn<casacore::String>& projectContact()
       { return rwProjectContact_p; }
-    casa::ScalarColumn<casa::String>& observationId()
+    casacore::ScalarColumn<casacore::String>& observationId()
       { return rwObservationId_p; }
-    casa::ScalarColumn<casa::Double>& observationStart()
+    casacore::ScalarColumn<casacore::Double>& observationStart()
       { return rwObservationStart_p; }
-    casa::ScalarColumn<casa::Double>& observationEnd()
+    casacore::ScalarColumn<casacore::Double>& observationEnd()
       { return rwObservationEnd_p; }
-    casa::ScalarColumn<casa::Double>& observationFrequencyMax()
+    casacore::ScalarColumn<casacore::Double>& observationFrequencyMax()
       { return rwObservationFrequencyMax_p; }
-    casa::ScalarColumn<casa::Double>& observationFrequencyMin()
+    casacore::ScalarColumn<casacore::Double>& observationFrequencyMin()
       { return rwObservationFrequencyMin_p; }
-    casa::ScalarColumn<casa::Double>& observationFrequencyCenter()
+    casacore::ScalarColumn<casacore::Double>& observationFrequencyCenter()
       { return rwObservationFrequencyCenter_p; }
-    casa::ScalarColumn<casa::Int>& subArrayPointing()
+    casacore::ScalarColumn<casacore::Int>& subArrayPointing()
       { return rwSubArrayPointing_p; }
-    casa::ScalarColumn<casa::Int>& nofBitsPerSample()
+    casacore::ScalarColumn<casacore::Int>& nofBitsPerSample()
       { return rwNofBitsPerSample_p; }
-    casa::ScalarColumn<casa::String>& antennaSet()
+    casacore::ScalarColumn<casacore::String>& antennaSet()
       { return rwAntennaSet_p; }
-    casa::ScalarColumn<casa::String>& filterSelection()
+    casacore::ScalarColumn<casacore::String>& filterSelection()
       { return rwFilterSelection_p; }
-    casa::ScalarColumn<casa::Double>& clockFrequency()
+    casacore::ScalarColumn<casacore::Double>& clockFrequency()
       { return rwClockFrequency_p; }
-    casa::ArrayColumn<casa::String>& target()
+    casacore::ArrayColumn<casacore::String>& target()
       { return rwTarget_p; }
-    casa::ScalarColumn<casa::String>& systemVersion()
+    casacore::ScalarColumn<casacore::String>& systemVersion()
       { return rwSystemVersion_p; }
-    casa::ScalarColumn<casa::String>& pipelineName()
+    casacore::ScalarColumn<casacore::String>& pipelineName()
       { return rwPipelineName_p; }
-    casa::ScalarColumn<casa::String>& pipelineVersion()
+    casacore::ScalarColumn<casacore::String>& pipelineVersion()
       { return rwPipelineVersion_p; }
-    casa::ScalarColumn<casa::String>& filename()
+    casacore::ScalarColumn<casacore::String>& filename()
       { return rwFilename_p; }
-    casa::ScalarColumn<casa::String>& filetype()
+    casacore::ScalarColumn<casacore::String>& filetype()
       { return rwFiletype_p; }
-    casa::ScalarColumn<casa::Double>& filedate()
+    casacore::ScalarColumn<casacore::Double>& filedate()
       { return rwFiledate_p; }
     // </group>
 
     // Read/write access to Quantity columns
     // <group>
-    casa::ScalarQuantColumn<casa::Double>& observationStartQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& observationStartQuant() 
       { return rwObservationStartQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& observationEndQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& observationEndQuant() 
       { return rwObservationEndQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& observationFrequencyMaxQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& observationFrequencyMaxQuant() 
       { return rwObservationFrequencyMaxQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& observationFrequencyMinQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& observationFrequencyMinQuant() 
       { return rwObservationFrequencyMinQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& observationFrequencyCenterQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& observationFrequencyCenterQuant() 
       { return rwObservationFrequencyCenterQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& clockFrequencyQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& clockFrequencyQuant() 
       { return rwClockFrequencyQuant_p; }
-    casa::ScalarQuantColumn<casa::Double>& filedateQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& filedateQuant() 
       { return rwFiledateQuant_p; }
     // </group>
 
     // Read/write access to Measure columns
     // <group>
-    casa::ScalarMeasColumn<casa::MEpoch>& observationStartMeas() 
+    casacore::ScalarMeasColumn<casacore::MEpoch>& observationStartMeas() 
       { return rwObservationStartMeas_p; }
-    casa::ScalarMeasColumn<casa::MEpoch>& observationEndMeas() 
+    casacore::ScalarMeasColumn<casacore::MEpoch>& observationEndMeas() 
       { return rwObservationEndMeas_p; }
-    casa::ScalarMeasColumn<casa::MEpoch>& filedateMeas() 
+    casacore::ScalarMeasColumn<casacore::MEpoch>& filedateMeas() 
       { return rwFiledateMeas_p; }
     // </group>
 
@@ -360,75 +360,75 @@ namespace LOFAR {
     MSLofarObservationColumns& operator=(const MSLofarObservationColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::String> roProjectTitle_p;
-    casa::ROScalarColumn<casa::String> roProjectPI_p;
-    casa::ROArrayColumn<casa::String>  roProjectCoI_p;
-    casa::ROScalarColumn<casa::String> roProjectContact_p;
-    casa::ROScalarColumn<casa::String> roObservationId_p;
-    casa::ROScalarColumn<casa::Double> roObservationStart_p;
-    casa::ROScalarColumn<casa::Double> roObservationEnd_p;
-    casa::ROScalarColumn<casa::Double> roObservationFrequencyMax_p;
-    casa::ROScalarColumn<casa::Double> roObservationFrequencyMin_p;
-    casa::ROScalarColumn<casa::Double> roObservationFrequencyCenter_p;
-    casa::ROScalarColumn<casa::Int>    roSubArrayPointing_p;
-    casa::ROScalarColumn<casa::Int>    roNofBitsPerSample_p;
-    casa::ROScalarColumn<casa::String> roAntennaSet_p;
-    casa::ROScalarColumn<casa::String> roFilterSelection_p;
-    casa::ROScalarColumn<casa::Double> roClockFrequency_p;
-    casa::ROArrayColumn<casa::String>  roTarget_p;
-    casa::ROScalarColumn<casa::String> roSystemVersion_p;
-    casa::ROScalarColumn<casa::String> roPipelineName_p;
-    casa::ROScalarColumn<casa::String> roPipelineVersion_p;
-    casa::ROScalarColumn<casa::String> roFilename_p;
-    casa::ROScalarColumn<casa::String> roFiletype_p;
-    casa::ROScalarColumn<casa::Double> roFiledate_p;
+    casacore::ROScalarColumn<casacore::String> roProjectTitle_p;
+    casacore::ROScalarColumn<casacore::String> roProjectPI_p;
+    casacore::ROArrayColumn<casacore::String>  roProjectCoI_p;
+    casacore::ROScalarColumn<casacore::String> roProjectContact_p;
+    casacore::ROScalarColumn<casacore::String> roObservationId_p;
+    casacore::ROScalarColumn<casacore::Double> roObservationStart_p;
+    casacore::ROScalarColumn<casacore::Double> roObservationEnd_p;
+    casacore::ROScalarColumn<casacore::Double> roObservationFrequencyMax_p;
+    casacore::ROScalarColumn<casacore::Double> roObservationFrequencyMin_p;
+    casacore::ROScalarColumn<casacore::Double> roObservationFrequencyCenter_p;
+    casacore::ROScalarColumn<casacore::Int>    roSubArrayPointing_p;
+    casacore::ROScalarColumn<casacore::Int>    roNofBitsPerSample_p;
+    casacore::ROScalarColumn<casacore::String> roAntennaSet_p;
+    casacore::ROScalarColumn<casacore::String> roFilterSelection_p;
+    casacore::ROScalarColumn<casacore::Double> roClockFrequency_p;
+    casacore::ROArrayColumn<casacore::String>  roTarget_p;
+    casacore::ROScalarColumn<casacore::String> roSystemVersion_p;
+    casacore::ROScalarColumn<casacore::String> roPipelineName_p;
+    casacore::ROScalarColumn<casacore::String> roPipelineVersion_p;
+    casacore::ROScalarColumn<casacore::String> roFilename_p;
+    casacore::ROScalarColumn<casacore::String> roFiletype_p;
+    casacore::ROScalarColumn<casacore::Double> roFiledate_p;
     //# Access to Quantum columns
-    casa::ROScalarQuantColumn<casa::Double> roObservationStartQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roObservationEndQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roObservationFrequencyMaxQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roObservationFrequencyMinQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roObservationFrequencyCenterQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roClockFrequencyQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> roFiledateQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roObservationStartQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roObservationEndQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roObservationFrequencyMaxQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roObservationFrequencyMinQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roObservationFrequencyCenterQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roClockFrequencyQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> roFiledateQuant_p;
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MEpoch> roObservationStartMeas_p;
-    casa::ROScalarMeasColumn<casa::MEpoch> roObservationEndMeas_p;
-    casa::ROScalarMeasColumn<casa::MEpoch> roFiledateMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> roObservationStartMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> roObservationEndMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MEpoch> roFiledateMeas_p;
     //# required columns
-    casa::ScalarColumn<casa::String> rwProjectTitle_p;
-    casa::ScalarColumn<casa::String> rwProjectPI_p;
-    casa::ArrayColumn<casa::String>  rwProjectCoI_p;
-    casa::ScalarColumn<casa::String> rwProjectContact_p;
-    casa::ScalarColumn<casa::String> rwObservationId_p;
-    casa::ScalarColumn<casa::Double> rwObservationStart_p;
-    casa::ScalarColumn<casa::Double> rwObservationEnd_p;
-    casa::ScalarColumn<casa::Double> rwObservationFrequencyMax_p;
-    casa::ScalarColumn<casa::Double> rwObservationFrequencyMin_p;
-    casa::ScalarColumn<casa::Double> rwObservationFrequencyCenter_p;
-    casa::ScalarColumn<casa::Int>    rwSubArrayPointing_p;
-    casa::ScalarColumn<casa::Int>    rwNofBitsPerSample_p;
-    casa::ScalarColumn<casa::String> rwAntennaSet_p;
-    casa::ScalarColumn<casa::String> rwFilterSelection_p;
-    casa::ScalarColumn<casa::Double> rwClockFrequency_p;
-    casa::ArrayColumn<casa::String>  rwTarget_p;
-    casa::ScalarColumn<casa::String> rwSystemVersion_p;
-    casa::ScalarColumn<casa::String> rwPipelineName_p;
-    casa::ScalarColumn<casa::String> rwPipelineVersion_p;
-    casa::ScalarColumn<casa::String> rwFilename_p;
-    casa::ScalarColumn<casa::String> rwFiletype_p;
-    casa::ScalarColumn<casa::Double> rwFiledate_p;
+    casacore::ScalarColumn<casacore::String> rwProjectTitle_p;
+    casacore::ScalarColumn<casacore::String> rwProjectPI_p;
+    casacore::ArrayColumn<casacore::String>  rwProjectCoI_p;
+    casacore::ScalarColumn<casacore::String> rwProjectContact_p;
+    casacore::ScalarColumn<casacore::String> rwObservationId_p;
+    casacore::ScalarColumn<casacore::Double> rwObservationStart_p;
+    casacore::ScalarColumn<casacore::Double> rwObservationEnd_p;
+    casacore::ScalarColumn<casacore::Double> rwObservationFrequencyMax_p;
+    casacore::ScalarColumn<casacore::Double> rwObservationFrequencyMin_p;
+    casacore::ScalarColumn<casacore::Double> rwObservationFrequencyCenter_p;
+    casacore::ScalarColumn<casacore::Int>    rwSubArrayPointing_p;
+    casacore::ScalarColumn<casacore::Int>    rwNofBitsPerSample_p;
+    casacore::ScalarColumn<casacore::String> rwAntennaSet_p;
+    casacore::ScalarColumn<casacore::String> rwFilterSelection_p;
+    casacore::ScalarColumn<casacore::Double> rwClockFrequency_p;
+    casacore::ArrayColumn<casacore::String>  rwTarget_p;
+    casacore::ScalarColumn<casacore::String> rwSystemVersion_p;
+    casacore::ScalarColumn<casacore::String> rwPipelineName_p;
+    casacore::ScalarColumn<casacore::String> rwPipelineVersion_p;
+    casacore::ScalarColumn<casacore::String> rwFilename_p;
+    casacore::ScalarColumn<casacore::String> rwFiletype_p;
+    casacore::ScalarColumn<casacore::Double> rwFiledate_p;
     //# Access to Quantum columns
-    casa::ScalarQuantColumn<casa::Double> rwObservationStartQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwObservationEndQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwObservationFrequencyMaxQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwObservationFrequencyMinQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwObservationFrequencyCenterQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwClockFrequencyQuant_p;
-    casa::ScalarQuantColumn<casa::Double> rwFiledateQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwObservationStartQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwObservationEndQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwObservationFrequencyMaxQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwObservationFrequencyMinQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwObservationFrequencyCenterQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwClockFrequencyQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> rwFiledateQuant_p;
     //# Access to Measure columns
-    casa::ScalarMeasColumn<casa::MEpoch> rwObservationStartMeas_p;
-    casa::ScalarMeasColumn<casa::MEpoch> rwObservationEndMeas_p;
-    casa::ScalarMeasColumn<casa::MEpoch> rwFiledateMeas_p;
+    casacore::ScalarMeasColumn<casacore::MEpoch> rwObservationStartMeas_p;
+    casacore::ScalarMeasColumn<casacore::MEpoch> rwObservationEndMeas_p;
+    casacore::ScalarMeasColumn<casacore::MEpoch> rwFiledateMeas_p;
   };
 
 } //# end namespace

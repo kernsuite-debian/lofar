@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 14280 2009-10-16 13:48:46Z loose $
+# $Id$
 
 lofar_package(PLC 2.1 DEPENDS Common Blob Transport)
 

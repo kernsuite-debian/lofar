@@ -1,0 +1,8 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+yum -C list installed iperf || exit 1
+
+exit 0

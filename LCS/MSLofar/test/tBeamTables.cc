@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tBeamTables.cc 24920 2013-05-15 15:57:44Z loose $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -26,20 +26,20 @@
 #include <MSLofar/BeamTables.h>
 #include <MSLofar/FailedTileInfo.h>
 
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/TableRow.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <measures/TableMeasures/TableQuantumDesc.h>
-#include <measures/TableMeasures/ArrayQuantColumn.h>
-#include <casa/Quanta/MVTime.h>
-#include <casa/OS/Path.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/TableRow.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/measures/TableMeasures/TableQuantumDesc.h>
+#include <casacore/measures/TableMeasures/ArrayQuantColumn.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/OS/Path.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 
 void showTab (const String& name)
 {

@@ -18,30 +18,30 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: AzEl.cc 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/Expr/AzEl.h>
 #include <Common/LofarLogger.h>
 
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasFrame.h>
-#include <measures/Measures/MeasConvert.h>
-#include <casa/Quanta/Quantum.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasFrame.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/casa/Quanta/Quantum.h>
 
 namespace LOFAR
 {
 namespace BBS
 {
 
-AzEl::AzEl(const casa::MPosition &position,
+AzEl::AzEl(const casacore::MPosition &position,
     const Expr<Vector<2> >::ConstPtr &direction)
     :   BasicUnaryExpr<Vector<2>, Vector<2> >(direction),
-        itsPosition(casa::MPosition::Convert(position, casa::MPosition::ITRF)())
+        itsPosition(casacore::MPosition::Convert(position, casacore::MPosition::ITRF)())
 {
 }
 
@@ -54,24 +54,24 @@ const Vector<2>::View AzEl::evaluateImpl(const Grid &grid,
     ASSERTSTR(!direction(0).isComplex() && !direction(1).isComplex(), "Source"
         " directions should be real valued.");
 
-    casa::Quantum<casa::Double> qEpoch(0.0, "s");
-    casa::MEpoch mEpoch(qEpoch, casa::MEpoch::UTC);
+    casacore::Quantum<casacore::Double> qEpoch(0.0, "s");
+    casacore::MEpoch mEpoch(qEpoch, casacore::MEpoch::UTC);
 
     // Create and initialize a frame.
-    casa::MeasFrame frame;
+    casacore::MeasFrame frame;
     frame.set(itsPosition);
     frame.set(mEpoch);
 
     // Create conversion engine.
-    casa::MDirection mDirection(casa::MVDirection(direction(0).getDouble(),
+    casacore::MDirection mDirection(casacore::MVDirection(direction(0).getDouble(),
         direction(1).getDouble()),
-        casa::MDirection::Ref(casa::MDirection::J2000));
+        casacore::MDirection::Ref(casacore::MDirection::J2000));
 
     // TODO: Do we need to use AZEL or AZELGEO here?
-//    casa::MDirection::Convert converter = casa::MDirection::Convert(mDirection,
-//        casa::MDirection::Ref(casa::MDirection::AZEL, frame));
-    casa::MDirection::Convert converter = casa::MDirection::Convert(mDirection,
-        casa::MDirection::Ref(casa::MDirection::AZELGEO, frame));
+//    casacore::MDirection::Convert converter = casacore::MDirection::Convert(mDirection,
+//        casacore::MDirection::Ref(casacore::MDirection::AZEL, frame));
+    casacore::MDirection::Convert converter = casacore::MDirection::Convert(mDirection,
+        casacore::MDirection::Ref(casacore::MDirection::AZELGEO, frame));
 
     // Allocate space for the result.
     // TODO: This is a hack! The Matrix class does not support 1xN or Nx1
@@ -93,8 +93,8 @@ const Vector<2>::View AzEl::evaluateImpl(const Grid &grid,
         frame.set(mEpoch);
 
         // Compute azimuth and elevation.
-        casa::MVDirection mvAzel(converter().getValue());
-        const casa::Vector<casa::Double> azel =
+        casacore::MVDirection mvAzel(converter().getValue());
+        const casacore::Vector<casacore::Double> azel =
             mvAzel.getAngle("rad").getValue();
         *az_p++ = azel(0);
         *el_p++ = azel(1);

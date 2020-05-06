@@ -18,11 +18,11 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: Resampler.cc 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Resampler.h>
-#include <casa/Arrays.h>
+#include <casacore/casa/Arrays.h>
 
 namespace LOFAR
 {
@@ -131,8 +131,8 @@ FlagArray Resampler::resampleFlags(const FlagArray &in,
 
     // Allocate temporary 2-D arrays to store the number of samples per output
     // cell and the number of flagged samples per output cell.
-    casa::Matrix<unsigned int> count(nFreq, nTime, 0);
-    casa::Matrix<unsigned int> flagged(nFreq, nTime, 0);
+    casacore::Matrix<unsigned int> count(nFreq, nTime, 0);
+    casacore::Matrix<unsigned int> flagged(nFreq, nTime, 0);
 
     for(vector<Span>::const_iterator itTime = map[TIME].begin(),
         itTimeEnd = map[TIME].end(); itTime != itTimeEnd; ++itTime)
@@ -208,7 +208,7 @@ Matrix Resampler::resampleWithFlags(const Matrix &in, const FlagArray &flags,
     out.dcomplexStorage(outRe, outIm);
 
     // Allocate a temporary 2-D array to store the sum of the weights.
-    casa::Matrix<double> weight(nFreq, nTime, 0.0);
+    casacore::Matrix<double> weight(nFreq, nTime, 0.0);
 
     for(vector<Span>::const_iterator itTime = map[TIME].begin(),
         itTimeEnd = map[TIME].end(); itTime != itTimeEnd; ++itTime)
@@ -233,7 +233,7 @@ Matrix Resampler::resampleWithFlags(const Matrix &in, const FlagArray &flags,
     out.dcomplexStorage(outRe, outIm);
 
     // Normalize the output samples by dividing by the sum of the weights.
-    for(casa::Matrix<double>::const_iterator weightIt = weight.begin(),
+    for(casacore::Matrix<double>::const_iterator weightIt = weight.begin(),
         weightItEnd = weight.end(); weightIt != weightItEnd;
         ++weightIt, ++outRe, ++outIm)
     {
@@ -274,7 +274,7 @@ Matrix Resampler::resample(const Matrix &in, const vector<Span> (&map)[2]) const
     out.dcomplexStorage(outRe, outIm);
 
     // Allocate a temporary 2-D array to store the sum of the weights.
-    casa::Matrix<double> weight(nFreq, nTime, 0.0);
+    casacore::Matrix<double> weight(nFreq, nTime, 0.0);
 
     for(vector<Span>::const_iterator itTime = map[TIME].begin(),
         itTimeEnd = map[TIME].end(); itTime != itTimeEnd; ++itTime)
@@ -296,7 +296,7 @@ Matrix Resampler::resample(const Matrix &in, const vector<Span> (&map)[2]) const
     out.dcomplexStorage(outRe, outIm);
 
     // Normalize the output samples by dividing by the sum of the weights.
-    for(casa::Matrix<double>::const_iterator weightIt = weight.begin(),
+    for(casacore::Matrix<double>::const_iterator weightIt = weight.begin(),
         weightItEnd = weight.end(); weightIt != weightItEnd;
         ++weightIt, ++outRe, ++outIm)
     {

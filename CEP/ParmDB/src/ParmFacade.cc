@@ -18,16 +18,16 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacade.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacade.h>
 #include <ParmDB/ParmFacadeLocal.h>
 #include <ParmDB/ParmFacadeDistr.h>
-#include <tables/Tables/Table.h>
+#include <casacore/tables/Tables/Table.h>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 // Create tParmFacade.in_mep with parmdb using:
 //   create tablename='tParmFacade.in_mep'

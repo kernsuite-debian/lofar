@@ -23,7 +23,7 @@
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Rotation.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

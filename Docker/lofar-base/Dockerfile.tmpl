@@ -1,7 +1,37 @@
 #
 # base
 #
-FROM ubuntu:16.04
+FROM ubuntu:18.04
+
+# Make sure that Bash is the default shell.  Otherwise
+# the shell's string substitutions won't work.
+SHELL ["/bin/bash", "-c"]
+
+# Add build date to the environment
+ARG DOCKER_IMAGE_BUILD_DATE="The build date has to be set by a --build-arg parameter!"
+ENV DOCKER_IMAGE_BUILD_DATE=${DOCKER_IMAGE_BUILD_DATE}
+
+# Allow to specify the LOFAR branch at build time of the image.
+# Use master as the default if nothing is specified.
+ARG LOFAR_VERSION=latest
+ENV LOFAR_VERSION=${LOFAR_VERSION}
+
+# LOFAR_TAG is an environment variable that gets used
+# (at least) by the lofar-pipeline image config file
+# CEP/Pipeline/recipes/sip/pipeline.cfg.CEP4.
+# It determines which version of the lofar-pipeline
+# images gets executed on the nodes.
+ENV LOFAR_TAG=${LOFAR_VERSION}
+
+# Tell image build information.
+ARG LOFAR_BUILDVARIANT=gnucxx11_cep4_optarch
+ENV LOFAR_BUILDVARIANT=${LOFAR_BUILDVARIANT}
+
+# Allow to specify the wanted CXX
+# Default is the new one.
+ARG CXX_ABI=1
+ENV CXX_ABI=${CXX_ABI}
+
 
 #
 # common-environment
@@ -12,39 +42,53 @@ ENV INSTALLDIR=/opt
 # environment
 #
 ENV DEBIAN_FRONTEND=noninteractive \
-    PYTHON_VERSION=2.7
+    PYTHON_VERSION=3.6
 
 #
 # versions
 #
-ENV CASACORE_VERSION=2.2.0 \
-    CASAREST_VERSION=latest \
-    PYTHON_CASACORE_VERSION=2.1.2 \
-    BOOST_VERSION=1.58
+ENV CASACORE_VERSION=v3.1.0 \
+    CASAREST_VERSION=1.5.0 \
+    PYTHON_CASACORE_VERSION=v3.0.0 \
+    BOOST_VERSION=1.65 \
+    LIBHDF5_VERSION=100 \
+    READLINE_VERSION=7 \
+    NCURSES_VERSION=5 \
+    PYWCS_VERSION=1.12 \
+    PYFITS_VERSION=3.5
 
 #
 # set-build-options
+# Allow to specify the number of cpus as --build-arg.
 #
-ENV J=6
+ARG J=6
+ENV J=${J}
+
+# Allow to overwrite the default CXX_FLAGS settings for code compilation
+# by specifying --build-args CXX_FLAGS="blah blah"
+ARG CXX_FLAGS="--std=c++11 -W -Wall -Woverloaded-virtual -Wno-unknown-pragmas -D_GLIBCXX_USE_CXX11_ABI=${CXX_ABI} -O3"
+
+# Allow to overwrite the CPU optimisation default setting by specifying
+# --build-arg CPU_OPTIMISATION="native"
+ARG CPU_OPTIMISATION="haswell"
+ENV CPU_OPTIMISATION="-march=${CPU_OPTIMISATION}"
+
+# Combine CXX_FLAGS and CPU_OPTIMISATION
+ENV CXX_FLAGS="${CXX_FLAGS} ${CPU_OPTIMISATION}"
+
 
 #
 # Base and runtime dependencies
-#
-#RUN sed -i 's/archive.ubuntu.com/osmirror.rug.nl/' /etc/apt/sources.list 
-RUN apt-get update && \
-    apt-get install -y python2.7 libpython2.7 && \
-    apt-get install -y libopenblas-base libcfitsio-bin libwcs5 libfftw3-bin libhdf5-10 libboost-python${BOOST_VERSION}.0 && \
-    apt-get install -y python-pip && \
-    pip install numpy && \
-    apt-get purge -y python-pip && \
-    apt-get autoremove -y --purge && \
-    apt-get install -y nano sudo vim
+RUN apt-get update && apt-get install -y apt-utils aptitude && aptitude safe-upgrade -y && \
+    aptitude install -y bash-completion mc most htop nano sudo vim python3 libreadline${READLINE_VERSION} libncurses${NCURSES_VERSION} libopenblas-base libcfitsio-bin libwcs5 libfftw3-bin libhdf5-cpp-${LIBHDF5_VERSION} libboost-numpy${BOOST_VERSION}.1 python3-numpy python3-scipy python3-astropy libmunge2 && \
+    aptitude clean && \
+    aptitude autoclean
 
 #
 # open security holes (allow smooth user switching, allow sudo)
 #
 RUN echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    sed -i 's/requiretty/!requiretty/g' /etc/sudoers 
+    sed -i 's/requiretty/!requiretty/g' /etc/sudoers
 
 #
 # setup install dir
@@ -56,20 +100,21 @@ RUN mkdir -p ${INSTALLDIR}
 #   Casacore
 # *******************
 #
-RUN apt-get update && apt-get install -y wget git cmake g++ gfortran flex bison libopenblas-dev libfftw3-dev libhdf5-dev libboost-python-dev libcfitsio-dev wcslib-dev && \
+RUN export BUILD_PACKAGES="wget git cmake g++ gfortran flex bison libreadline-dev libncurses-dev libopenblas-dev libfftw3-dev libboost-python${BOOST_VERSION}-dev libcfitsio-dev wcslib-dev python3-numpy-dev libhdf5-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir -p ${INSTALLDIR}/casacore/build && \
     mkdir -p ${INSTALLDIR}/casacore/data && \
-    cd ${INSTALLDIR}/casacore && git clone https://github.com/casacore/casacore.git src && \
-    if [ "${CASACORE_VERSION}" != "latest" ]; then cd ${INSTALLDIR}/casacore/src && git checkout tags/v${CASACORE_VERSION}; fi && \
+    cd ${INSTALLDIR}/casacore && git clone --depth 1 --shallow-submodules --branch ${CASACORE_VERSION//latest/master} https://github.com/casacore/casacore.git src && \
     cd ${INSTALLDIR}/casacore/data && wget --retry-connrefused ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar && \
     cd ${INSTALLDIR}/casacore/data && tar xf WSRT_Measures.ztar  && rm -f WSRT_Measures.ztar && \
-    cd ${INSTALLDIR}/casacore/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casacore/ -DDATA_DIR=${INSTALLDIR}/casacore/data -DBUILD_PYTHON=True -DENABLE_TABLELOCKING=OFF -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCXX11=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fsigned-char -O2 -DNDEBUG -march=native" ../src/ && \
+    cd ${INSTALLDIR}/casacore/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casacore/ -DDATA_DIR=${INSTALLDIR}/casacore/data -DBUILD_PYTHON3=ON -DBUILD_PYTHON=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DENABLE_TABLELOCKING=OFF -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -fsigned-char -DNDEBUG" ../src/ && \
     cd ${INSTALLDIR}/casacore/build && make -j ${J} && \
     cd ${INSTALLDIR}/casacore/build && make install && \
     bash -c "strip ${INSTALLDIR}/casacore/{lib,bin}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/casacore/{build,src}" && \
-    apt-get purge -y wget git cmake g++ gfortran flex bison libopenblas-dev libfftw3-dev libhdf5-dev libboost-python-dev libcfitsio-dev wcslib-dev && \
-    apt-get autoremove -y --purge
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
 # Install and enable custom casarc
 COPY ["casarc",    "${INSTALLDIR}/"]
@@ -80,77 +125,92 @@ ENV  CASARCFILES=${INSTALLDIR}/casarc
 #   Casarest
 # *******************
 #
-RUN apt-get update && apt-get install -y git cmake g++ gfortran libboost-system-dev libboost-thread-dev libhdf5-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
+# Run-time dependencies
+RUN aptitude install -y libboost-system${BOOST_VERSION}.1 libboost-thread${BOOST_VERSION}.1
+
+# Install
+RUN export BUILD_PACKAGES="git cmake g++ gfortran libboost-system${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libcfitsio-dev wcslib-dev libopenblas-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir -p ${INSTALLDIR}/casarest/build && \
-    cd ${INSTALLDIR}/casarest && git clone https://github.com/casacore/casarest.git src && \
-    if [ "${CASAREST_VERSION}" != "latest" ]; then cd ${INSTALLDIR}/casarest/src && git checkout tags/v${CASAREST_VERSION}; fi && \
-    cd ${INSTALLDIR}/casarest/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casarest -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11 -O2 -march=native -DNDEBUG" ../src/ && \
+    cd ${INSTALLDIR}/casarest && git clone --depth 1 --shallow-submodules --branch ${CASAREST_VERSION//latest/master} https://github.com/casacore/casarest.git src && \
+    cd ${INSTALLDIR}/casarest/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/casarest -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -DNDEBUG" ../src/ && \
     cd ${INSTALLDIR}/casarest/build && make -j ${J} && \
     cd ${INSTALLDIR}/casarest/build && make install && \
     bash -c "strip ${INSTALLDIR}/casarest/{lib,bin}/* || true" && \
     bash -c "rm -rf ${INSTALLDIR}/casarest/{build,src}" && \
-    apt-get purge -y git cmake g++ gfortran libboost-system-dev libboost-thread-dev libhdf5-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
-    apt-get autoremove -y --purge
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
 
 #
 # *******************
-#   Pyrap
+#   Python-casacore
 # *******************
 #
-RUN apt-get update && apt-get install -y git make g++ python-setuptools libboost-python-dev libcfitsio3-dev wcslib-dev && \
+RUN export BUILD_PACKAGES="git make g++ python3-setuptools libboost-python${BOOST_VERSION}-dev libcfitsio-dev wcslib-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir ${INSTALLDIR}/python-casacore && \
-    cd ${INSTALLDIR}/python-casacore && git clone https://github.com/casacore/python-casacore && \
-    if [ "$PYTHON_CASACORE_VERSION" != "latest" ]; then cd ${INSTALLDIR}/python-casacore/python-casacore && git checkout tags/v${PYTHON_CASACORE_VERSION}; fi && \
-    cd ${INSTALLDIR}/python-casacore/python-casacore && ./setup.py build_ext -I${INSTALLDIR}/casacore/include/ -L${INSTALLDIR}/casacore/lib/ && \
+    cd ${INSTALLDIR}/python-casacore && git clone --depth 1 --shallow-submodules --branch ${PYTHON_CASACORE_VERSION//latest/master} https://github.com/casacore/python-casacore.git && \
+    cd ${INSTALLDIR}/python-casacore/python-casacore && python3 ./setup.py build_ext -I${INSTALLDIR}/casacore/include/ -L${INSTALLDIR}/casacore/lib/ && \
     mkdir -p ${INSTALLDIR}/python-casacore/lib/python${PYTHON_VERSION}/site-packages/ && \
     mkdir -p ${INSTALLDIR}/python-casacore/lib64/python${PYTHON_VERSION}/site-packages/ && \
-    export PYTHONPATH=${INSTALLDIR}/python-casacore/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/python-casacore/lib64/python${PYTHON_VERSION}/site-packages:$PYTHONPATH && cd ${INSTALLDIR}/python-casacore/python-casacore && ./setup.py install --prefix=${INSTALLDIR}/python-casacore/ && \
-    bash -c "find ${INSTALLDIR}/python-casacore/lib -name '*.so' | xargs strip || true" && \
+    export PYTHONPATH=${INSTALLDIR}/python-casacore/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/python-casacore/lib64/python${PYTHON_VERSION}/site-packages:${PYTHONPATH} && cd ${INSTALLDIR}/python-casacore/python-casacore && python3 ./setup.py install --prefix=${INSTALLDIR}/python-casacore/ && \
     bash -c "rm -rf ${INSTALLDIR}/python-casacore/python-casacore" && \
-    apt-get purge -y git make g++ python-setuptools libboost-python-dev libcfitsio3-dev wcslib-dev && \
-    apt-get autoremove -y --purge
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
 
 #
 # *******************
-#   QPID client
+#   QPID client for C++ from LOFAR repo
 # *******************
+# ATTENTION!!!
+# The LOFAR Offline package needs this until refactored!
 #
 
 # Run-time dependencies
 # QPID daemon legacy store would require: libaio1 libdb5.1++
-RUN apt-get update && apt-get install -y sasl2-bin libuuid1 libnss3 libnspr4 xqilla libboost-program-options${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0
+RUN aptitude install -y sasl2-bin libuuid1 libnss3 libnspr4 xqilla libssl1.1 libssl1.0.0 libboost-program-options${BOOST_VERSION}.1 libboost-filesystem${BOOST_VERSION}.1
 
 # Install
 # QPID daemon legacy store would require: libaio-dev libdb5.1++-dev
-RUN apt-get update && apt-get install -y subversion swig ruby ruby-dev python-dev libsasl2-dev pkg-config cmake libtool uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man fakeroot build-essential debhelper libsslcommon2-dev libxqilla-dev python-setuptools libboost-program-options${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev && \
+RUN export BUILD_PACKAGES="git rsync swig ruby ruby-dev python-dev python-setuptools libsasl2-dev pkg-config cmake libtool uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man fakeroot build-essential g++ debhelper libssl-dev libxqilla-dev libboost-program-options${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
     mkdir ${INSTALLDIR}/qpid && \
-    svn --non-interactive -q co ${LOFAR_BRANCH_URL}/LCS/MessageBus/qpid/ ${INSTALLDIR}/qpid; \
+    git clone --depth 1 --shallow-submodules --branch ${LOFAR_VERSION//latest/master} https://git.astron.nl/ro/lofar.git /tmp/LOFAR && \
+    rsync --archive /tmp/LOFAR/LCS/MessageBus/qpid/ ${INSTALLDIR}/qpid/ && \
+    rm -rf /tmp/LOFAR && \
     bash -c "HOME=/tmp ${INSTALLDIR}/qpid/local/sbin/build_qpid" && \
     bash -c "strip ${INSTALLDIR}/qpid/{bin,lib}/* || true" && \
     bash -c "rm -rf /tmp/sources" && \
-    apt-get purge -y subversion swig ruby ruby-dev python-dev libsasl2-dev pkg-config cmake libtool uuid-dev libxerces-c-dev libnss3-dev libnspr4-dev help2man fakeroot build-essential debhelper libsslcommon2-dev libxqilla-dev python-setuptools libboost-program-options${BOOST_VERSION}-dev libboost-filesystem${BOOST_VERSION}-dev && \
-    apt-get autoremove -y --purge
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
 #
 # *******************
-#   DAL
+#   Apache Proton
 # *******************
 #
-RUN apt-get update && apt-get install -y git cmake g++ swig python-dev libhdf5-dev && \
-    mkdir ${INSTALLDIR}/DAL && \
-    cd ${INSTALLDIR}/DAL && git clone https://github.com/nextgen-astrodata/DAL.git src && \
-    mkdir ${INSTALLDIR}/DAL/build && cd ${INSTALLDIR}/DAL/build && cmake -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/DAL ../src && \
-    make -j ${J} && \
-    make install && \
-    bash -c "find ${INSTALLDIR}/DAL/lib -name '*.so' | xargs strip || true" && \
-    bash -c "rm -rf ${INSTALLDIR}/DAL/{src,build}" && \
-    apt-get purge -y git cmake g++ swig python-dev libhdf5-dev && \
-    apt-get autoremove -y --purge
+RUN aptitude install -y libqpid-proton8 libqpid-proton-cpp8 python3-qpid-proton && \
+    aptitude clean && \
+    aptitude autoclean
+
+# *******************
+#   Kombu client for Python
+# *******************
+RUN aptitude install -y python3-kombu
 
 #
 # entry
 #
-COPY ["bashrc",    "${INSTALLDIR}/"]
-COPY ["bashrc.d",  "${INSTALLDIR}/bashrc.d/"]
+COPY ["bashrc", "${INSTALLDIR}/"]
+COPY ["bashrc.d", "${INSTALLDIR}/bashrc.d/"]
 COPY ["chuser.sh", "/usr/local/bin"]
+# Make sure that all files are readable by u,g,o and that
+# the ENTRYPOINT script is also executable.
+RUN chmod -R a+rx /usr/local/bin && \
+    find /opt/ ! -perm -a+r -exec chmod a+r {} +
 ENTRYPOINT ["/usr/local/bin/chuser.sh"]
 

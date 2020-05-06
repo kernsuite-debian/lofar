@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Request.cc 16068 2010-07-23 19:53:58Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Request.h>
@@ -46,10 +46,10 @@ void Request::append(const Grid &grid)
 {
 #ifdef LOFAR_DEBUG
     const Box &box = grid.getBoundingBox();
-    DBGASSERT(casa::near(box.lowerX(), itsDomain.lowerX())
-        && casa::near(box.lowerY(), itsDomain.lowerY())
-        && casa::near(box.upperX(), itsDomain.upperX())
-        && casa::near(box.upperY(), itsDomain.upperY()));
+    DBGASSERT(casacore::near(box.lowerX(), itsDomain.lowerX())
+        && casacore::near(box.lowerY(), itsDomain.lowerY())
+        && casacore::near(box.upperX(), itsDomain.upperX())
+        && casacore::near(box.upperY(), itsDomain.upperY()));
 #endif
 
     itsGrid.push_back(grid);

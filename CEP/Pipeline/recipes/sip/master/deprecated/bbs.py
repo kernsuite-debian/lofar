@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from contextlib import closing
 import psycopg2, psycopg2.extensions
 import subprocess
@@ -168,7 +168,7 @@ class bbs(BaseRecipe):
         for to_process in gvds_iterator(vds_file, int(self.inputs["nproc"])):
             #               to_process is a list of (host, filename, vds) tuples
             # ------------------------------------------------------------------
-            hosts, ms_names, vds_files = map(list, zip(*to_process))
+            hosts, ms_names, vds_files = list(map(list, list(zip(*to_process))))
 
             #             The BBS session database should be cleared for our key
             # ------------------------------------------------------------------
@@ -327,7 +327,7 @@ class bbs(BaseRecipe):
                 env,
                 arguments=arguments
             )
-        except Exception, e:
+        except Exception as e:
             self.logger.exception("BBS Kernel failed to start")
             self.killswitch.set()
             return 1
@@ -364,7 +364,7 @@ class bbs(BaseRecipe):
                     )
                     # _monitor_process() needs a convenient kill() method.
                     bbs_control_process.kill = lambda : os.kill(bbs_control_process.pid, signal.SIGKILL)
-                except OSError, e:
+                except OSError as e:
                     self.logger.error("Failed to spawn BBS Control (%s)" % str(e))
                     self.killswitch.set()
                     return 1

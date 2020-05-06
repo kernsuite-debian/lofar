@@ -1,0 +1,4 @@
+#!/bin/bash
+source ${INSTALLDIR}/qpid/.profile
+export QPID_LIBRARY=${INSTALLDIR}/qpid/lib
+export QPID_INCLUDE_DIR=${INSTALLDIR}/qpid/include

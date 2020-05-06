@@ -19,7 +19,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: ExprVisData.h 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_EXPRVISDATA_H
 #define LOFAR_BBSKERNEL_EXPR_EXPRVISDATA_H
@@ -95,7 +95,7 @@ void ExprVisData::makeAxisMapping(const Axis::ShPtr &from,
     Interval<double> overlap(std::max(from->start(), to->start()),
         std::min(from->end(), to->end()));
 
-    if(overlap.start >= overlap.end || casa::near(overlap.start, overlap.end))
+    if(overlap.start >= overlap.end || casacore::near(overlap.start, overlap.end))
     {
         return;
     }
@@ -111,7 +111,7 @@ void ExprVisData::makeAxisMapping(const Axis::ShPtr &from,
     // the overlap between the "from" and "to" axis.
     size_t target = 0;
     double center = from->center(domain.start);
-    if(center > overlap.start || casa::near(center, overlap.start))
+    if(center > overlap.start || casacore::near(center, overlap.start))
     {
         target = to->locate(center);
         *out++ = make_pair(domain.start, target);
@@ -128,7 +128,7 @@ void ExprVisData::makeAxisMapping(const Axis::ShPtr &from,
         // Special case for the last cell: cell center may be located outside of
         // the overlap between the "from" and "to" axis.
         center = from->center(domain.end);
-        if(center < overlap.end && !casa::near(center, overlap.end))
+        if(center < overlap.end && !casacore::near(center, overlap.end))
         {
             target = to->locate(center, false, target);
             *out++ = make_pair(domain.end, target);

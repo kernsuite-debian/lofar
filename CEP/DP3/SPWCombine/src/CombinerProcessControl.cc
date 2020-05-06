@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CombinerProcessControl.cc 14046 2009-09-18 07:54:49Z diepen $
+//# $Id$
 //#
 //# @author Adriaan Renting
 
@@ -25,10 +25,10 @@
 #include <cstdlib>
 #include <string>
 #include <limits>
-#include <tables/Tables.h>
-#include <tables/Tables/TableParse.h>
-#include <ms/MeasurementSets.h>
-#include <casa/Exceptions.h>
+#include <casacore/tables/Tables.h>
+#include <casacore/tables/TaQL/TableParse.h>
+#include <casacore/ms/MeasurementSets.h>
+#include <casacore/casa/Exceptions.h>
 
 #include <SPWCombine/CombinerProcessControl.h>
 #include <SPWCombine/SPWCombine.h>
@@ -43,7 +43,7 @@ namespace LOFAR
 {
   namespace CS1
   {
-    using namespace casa;
+    using namespace casacore;
     //===============>>> CombinerProcessControl::CombinerProcessControl  <<<===============
     CombinerProcessControl::CombinerProcessControl()
     : ProcessControl()
@@ -188,7 +188,7 @@ namespace LOFAR
         //Do the real stuff
         itsCombiner->Combine(inMS, outMS, "DATA");
       }
-      catch(casa::AipsError& err)
+      catch(casacore::AipsError& err)
       {
         std::cerr << "Aips++ error detected: " << err.getMesg() << std::endl;
         return false;
@@ -225,7 +225,7 @@ namespace LOFAR
       }
       itsCombiner = new SPWCombine();
       }
-      catch(casa::AipsError& err)
+      catch(casacore::AipsError& err)
       {
         std::cerr << "Aips++ error detected: " << err.getMesg() << std::endl;
         return false;

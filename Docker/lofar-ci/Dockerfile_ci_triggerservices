@@ -1,0 +1,10 @@
+#
+# This builds an image with all dependencies for the TriggerServices package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for TriggerServices..." && \
+    yum -y install postgresql-devel openldap-devel readline-devel qpid-cpp-server qpid-cpp-client-devel qpid-tools && \
+    pip3 install kombu psycopg2 requests lxml xmljson pygcn python-dateutil django djangorestframework djangorestframework-xml django-auth-ldap mysql-connector testing.mysqld testing.postgresql

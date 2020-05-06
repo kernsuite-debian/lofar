@@ -54,7 +54,7 @@ class MasterNodeInterface(BaseRecipe, RemoteCommandRecipeMixIn):
 
     def run_jobs(self):
         """
-        Starts the set of tasks in the job lists. If all jobs succeed, 
+        Starts the set of tasks in the job lists. If all jobs succeed,
         on_success() will be called. If some jobs fail, on_error() will be
         called. If all jobs fail, on_failure() will be called.
         An log message is displayed on the stdout or in a logger if the object
@@ -65,7 +65,7 @@ class MasterNodeInterface(BaseRecipe, RemoteCommandRecipeMixIn):
         if self.logger:
             self.logger.info(log_message)
         else:
-            print log_message
+            print(log_message)
 
         self._schedule_jobs(self._jobs)
 
@@ -94,7 +94,7 @@ class MasterNodeInterface(BaseRecipe, RemoteCommandRecipeMixIn):
         This method can be overridden in the derived class.
         """
         return 1
-        
+
     def on_succes(self):
         """
         This method is called when all node recipes return with a zero exit
@@ -103,7 +103,6 @@ class MasterNodeInterface(BaseRecipe, RemoteCommandRecipeMixIn):
         This method can be overridden in the derived class.
         """
         return 0
-        
 
 class copier(MasterNodeInterface):
     """
@@ -131,36 +130,36 @@ class copier(MasterNodeInterface):
     inputs = {
         'mapfile_source': ingredient.StringField(
             '--mapfile-source',
-            help="Full path of mapfile of node:path pairs of source dataset"
+            help = "Full path of mapfile of node:path pairs of source dataset"
         ),
         'mapfile_target': ingredient.StringField(
             '--mapfile-target',
-            help="Full path of mapfile of node:path pairs of target location"
+            help = "Full path of mapfile of node:path pairs of target location"
         ),
         'allow_rename': ingredient.BoolField(
             '--allow-rename',
-            default=True,
-            help="Allow renaming of basename at target location"
+            default = True,
+            help = "Allow renaming of basename at target location"
         ),
         'allow_move': ingredient.BoolField(
             '--allow-move',
-            default=True,
-            help="Allow moving files instead of copying them"
+            default = True,
+            help = "Allow moving files instead of copying them"
         ),
         'mapfiles_dir': ingredient.StringField(
             '--mapfiles-dir',
-            help="Path of directory, shared by all nodes, which will be used"
+            help = "Path of directory, shared by all nodes, which will be used"
                 " to write mapfile for master-node communication, "
         ),
         'mapfile': ingredient.StringField(
             '--mapfile',
-            help="full path to mapfile containing copied paths"
+            help = "full path to mapfile containing copied paths"
         ),
     }
 
     outputs = {
         'mapfile_target_copied': ingredient.StringField(
-            help="Path to mapfile containing all the succesfull copied"
+            help = "Path to mapfile containing all the succesfull copied"
             "target files")
     }
 
@@ -169,11 +168,11 @@ class copier(MasterNodeInterface):
         Constructor sets the python command used to call node scripts
         """
         super(copier, self).__init__(
-            "python {0}".format(self.__file__.replace('master', 'nodes')))
+            "python3 {0}".format(self.__file__.replace('master', 'nodes')))
         self.source_map = DataMap()
         self.target_map = DataMap()
 
-    def _validate_mapfiles(self, allow_rename=False):
+    def _validate_mapfiles(self, allow_rename = False):
         """
         Validation of input source and target map files. They must have equal
         length. Furthermore, if rename is not allowed, test that 'file names'
@@ -206,14 +205,14 @@ class copier(MasterNodeInterface):
         self.logger.debug("Writing mapfile: %s" % self.inputs['mapfile'])
         self.target_map.save(self.inputs['mapfile'])
         self.outputs['mapfile_target_copied'] = self.inputs['mapfile']
-        
+
     def on_failure(self):
         """
         All copier jobs failed. Bailing out.
         """
         self.logger.error("All copier jobs failed. Bailing out!")
         return 1
-        
+
     def on_error(self):
         """
         Some copier jobs failed. Update the target map, setting 'skip' to True
@@ -227,7 +226,7 @@ class copier(MasterNodeInterface):
                 target.skip = True
         self._write_mapfile()
         return 0
-        
+
     def on_succes(self):
         """
         All copier jobs succeeded. Save an updated mapfile.
@@ -237,7 +236,7 @@ class copier(MasterNodeInterface):
         return 0
 
     def go(self):
-        # TODO: Remove dependency on mapfile_dir 
+        # TODO: Remove dependency on mapfile_dir
         self.logger.info("Starting copier run")
         super(copier, self).go()
 

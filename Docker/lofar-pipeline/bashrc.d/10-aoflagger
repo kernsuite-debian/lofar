@@ -1,2 +1,3 @@
 #!/bin/bash
-export PATH=${PATH}:/opt/aoflagger/bin
+export PATH=${PATH}:${INSTALLDIR}/aoflagger/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/aoflagger/lib

@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2015
+# ASTRON (Netherlands Institute for Radio Astronomy)
+# P.O.Box 2, 7990 AA Dwingeloo, The Netherlands
+#
+# This file is part of the LOFAR software suite.
+# The LOFAR software suite is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# The LOFAR software suite is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
+#
+
+from lofar.lta.ingest.client.ingestbuslistener import IngestEventMessageHandler, IngestEventMesssageBusListener
+
+from lofar.sas.datamanagement.cleanup.rpc import CleanupRPC
+from lofar.sas.datamanagement.cleanup.config import DEFAULT_CLEANUP_SERVICENAME
+
+from lofar.mom.momqueryservice.momqueryrpc import MoMQueryRPC
+
+from lofar.messaging import *
+from lofar.messaging import DEFAULT_BROKER, DEFAULT_BUSNAME
+
+import logging
+logger = logging.getLogger(__name__)
+
+import os
+import os.path
+
+
+class AutoCleanupIngestEventMessageHandler(IngestEventMessageHandler):
+    def __init__(self, exchange=DEFAULT_BUSNAME, broker=DEFAULT_BROKER):
+        super().__init__(['TaskProgress', 'TaskFinished'])
+        self.__curpc = CleanupRPC.create(exchange=exchange, broker=broker)
+        self.__momrpc = MoMQueryRPC.create(exchange=exchange, broker=broker)
+
+    def start_handling(self):
+        self.__curpc.open()
+        self.__momrpc.open()
+        super().start_handling()
+
+    def stop_handling(self):
+        self.__momrpc.close()
+        self.__curpc.close()
+        super().stop_handling()
+
+    def onTaskFinished(self, task_dict):
+        try:
+            if task_dict.get('type','').lower() != 'mom':
+                return
+
+            if 'otdb_id' not in task_dict:
+                return
+
+            otdb_id = int(task_dict['otdb_id'])
+
+            mom_id = self.__momrpc.getMoMIdsForOTDBIds(otdb_id).get(otdb_id)
+
+            logger.info('otdb_id %s has mom_id %s', otdb_id, mom_id)
+
+            if not mom_id:
+                return
+
+            # get the graph for this task, and see if we can delete obsolete data upstream
+            graph = self.__momrpc.getTaskIdsGraph(mom_id)
+            logger.info('connected tasks graph for otdb_id %s mom_id %s has %s tasks with mom_ids: %s', otdb_id, mom_id, len(graph), sorted(graph.keys()))
+
+            #recursive helper function to get all the downstream successor_ids of a given node
+            def getAllDownstreamSuccessorIds(node_mom2id):
+                successor_ids = graph[node_mom2id]['successor_ids']
+                successor_downstream_ids = [getAllDownstreamSuccessorIds(id) for id in successor_ids]
+                # recurse and combine returned lists. Make entries unique.
+                return list(set(sum(successor_downstream_ids, successor_ids)))
+
+            #recursive helper function to delete the data of upstream tasks which are finished and have all finished downstream tasks
+            def cleanupUpstreamDataIfPossible(node_mom2id):
+                task_details = self.__momrpc.getObjectDetails(node_mom2id).get(node_mom2id)
+                if not task_details or task_details.get('object_status') != 'finished':
+                    logger.info('task with mom_id %s is not finished. skipping further cleanup.', node_mom2id)
+                    return
+
+                node = graph.get(node_mom2id)
+                if not node:
+                    return
+
+                predecessor_ids = node['predecessor_ids']
+
+                if not predecessor_ids:
+                    return
+                logger.debug('getting details for predecessor tasks of %s: %s', node_mom2id, predecessor_ids)
+                tasks_details = self.__momrpc.getObjectDetails(predecessor_ids)
+                finished_pred_tasks = [ v for v in tasks_details.values() if v.get('object_status') == 'finished' ]
+
+                logger.info('task with mom_id %s has %s as finished predecessor tasks', node_mom2id, [t.get('object_mom2id') for t in finished_pred_tasks])
+
+                for finished_pred_task in finished_pred_tasks:
+                    finished_pred_task_mom2id = finished_pred_task['object_mom2id']
+                    downstream_ids = getAllDownstreamSuccessorIds(finished_pred_task_mom2id)
+
+                    downstream_tasks = self.__momrpc.getObjectDetails(downstream_ids)
+                    unfinished_downstream_tasks = { k:v for k,v in downstream_tasks.items() if v.get('object_status') != 'finished' }
+
+                    if len(unfinished_downstream_tasks) == 0:
+                        upstream_deletable_otdb_id = self.__momrpc.getOTDBIdsForMoMIds(finished_pred_task_mom2id).get(finished_pred_task_mom2id)
+
+                        if self.__curpc.isTaskDataPinned(upstream_deletable_otdb_id):
+                            logger.info('data for mom_id %s otdb_id %s is pinned. skipping data deletion.', finished_pred_task_mom2id, upstream_deletable_otdb_id)
+                        else:
+                            logger.info('deleting data for mom_id %s otdb_id %s because it\'s output is not needed anymore and %s was safely ingested.',
+                                        finished_pred_task_mom2id, upstream_deletable_otdb_id, otdb_id)
+                            self.__curpc.removeTaskData(otdb_id=upstream_deletable_otdb_id)
+
+                #recurse further upstream for the finished_pred_tasks
+                for finished_pred_task in finished_pred_tasks:
+                    finished_pred_task_mom2id = finished_pred_task['object_mom2id']
+                    cleanupUpstreamDataIfPossible(finished_pred_task_mom2id)
+
+
+            # check if no downstream tasks depend on the data
+            downstream_ids = getAllDownstreamSuccessorIds(mom_id)
+            downstream_tasks = self.__momrpc.getObjectDetails(downstream_ids)
+            unfinished_downstream_tasks = { k:v for k,v in downstream_tasks.items() if v.get('object_status') != 'finished' }
+
+            if len(unfinished_downstream_tasks) == 0:
+                # delete data if not pinned
+                if self.__curpc.isTaskDataPinned(otdb_id):
+                    logger.info('data for otdb_id %s is pinned. skipping data deletion.', otdb_id)
+                else:
+                    logger.info('deleting data for otdb_id %s because the data was safely ingested.', otdb_id)
+                    self.__curpc.removeTaskData(otdb_id=otdb_id)
+            else:
+                logger.info('cannot auto cleanup data for %s because there are unfinished downstream tasks that depend on its data.', otdb_id)
+
+            # call cleanupUpstreamDataIfPossible for the current node mom_id
+            # it will recurse upstream
+            logger.info('start analyzing upstream tasks of mom_id %s for further data cleanup', mom_id)
+            cleanupUpstreamDataIfPossible(mom_id)
+            logger.info('finished analyzing upstream tasks of mom_id %s for further data cleanup', mom_id)
+        except Exception as e:
+            logger.exception('Error while cleaning up data for upstream tasks of %s: %s', otdb_id, e)
+            raise
+
+def main():
+    from lofar.common.util import waitForInterrupt
+    from optparse import OptionParser
+
+    # Check the invocation arguments
+    parser = OptionParser('%prog [options]',
+                          description='run autocleanupservice, which listens for finished ingest jobs, and then automatically deletes the ingested data')
+    parser.add_option('-b', '--broker', dest='broker', type='string', default=DEFAULT_BROKER,
+                      help='Address of the messaging broker, default: %default')
+    parser.add_option("-e", "--exchange", dest="exchange", type="string", default=DEFAULT_BUSNAME,
+                      help="Name of the bus exchange on the broker, [default: %default]")
+    (options, args) = parser.parse_args()
+
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                        level=logging.INFO)
+
+    logger.info('Starting AutoCleanupService...')
+
+    with IngestEventMesssageBusListener(AutoCleanupIngestEventMessageHandler,
+                                        handler_kwargs={'exchange': options.exchange,
+                                                        'broker': options.broker},
+                                        num_threads=1):
+        waitForInterrupt()
+
+    logger.info('Stopped AutoCleanupService')
+
+if __name__ == '__main__':
+    main()
+

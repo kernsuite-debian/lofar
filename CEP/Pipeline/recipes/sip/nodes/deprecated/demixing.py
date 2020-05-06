@@ -4,7 +4,7 @@
 #                                                             Marcel Loose, 2011
 #                                                                loose@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os
 import shutil
 import sys
@@ -60,7 +60,7 @@ class demixing(LOFARnodeTCP):
                                 os.path.basename(cmd[0])
             ) as logger:
                 catch_segfaults(cmd, temp_dir, self.environment, self.logger)
-        except Exception, e:
+        except Exception as e:
             self.logger.error(str(e))
             return False
         finally:
@@ -119,8 +119,8 @@ class demixing(LOFARnodeTCP):
                 f=open(basename + 'NDPPP_dmx.parset','w')
                 f.write('msin = %s\n' % infile)
                 f.write('msin.autoweight = True\n')
-                f.write('msin.startchan = nchan/32\n')
-                f.write('msin.nchan = 30*nchan/32\n')
+                f.write('msin.startchan = nchan//32\n')
+                f.write('msin.nchan = 30*nchan//32\n')
                 f.write('msout = %s\n' % mstarget)
                 f.write('steps=[preflag]\n')
                 f.write('preflag.type=preflagger\n')

@@ -1,0 +1,435 @@
+V 13
+3
+LANG:1 12 antennaField
+LANG:6 8 (NoName)
+LANG:30 8 (NoName)
+PANEL,-1 -1 1200 823 N "_3DFace" 0
+"main()
+{     
+  // Initialise the Panel
+  navPanel_initPanel(\"fw_viewBox\");
+  
+  
+  baseDP=g_currentDatapoint;
+  sysName = dpSubStr(g_currentDatapoint,DPSUB_SYS);
+
+  
+  if (navFunct_getRingFromStation(sysName) == \"Core\") {
+    isCore=true;
+    isRemote=false;
+    isEurope=false;
+  } else if(navFunct_getRingFromStation(sysName) == \"Remote\") {
+    isCore=false;
+    isRemote=true;
+    isEurope=false;
+  } else {
+    isCore=false;
+    isRemote=false;
+    isEurope=true;
+  }
+  strPanelName    = \"antennaListField\";
+  strModuleName   = myModuleName();   
+  
+  // get PanelSize to determine scaling and offsets
+  if ( panelSize( \"\" , mainpanel_horSize , mainpanel_vertSize) != 0 ) {
+    LOG_FATAL(\"Station_list.pnl:initialize|Error: couldn't define the size of the mainPanel : \" + strPanelName);
+  } else {
+    calcViewboxSize();
+  
+
+    
+    // get all dps from the type AntennaPattern
+    // each DP represents a different type of Antennas
+    // we need the lot to give a pulldown window where the kind of 
+    // representation can be chosen.
+    //
+    // The first found will be drawn and will be the default choice.    
+
+    bool fill=true;
+    for (int i=0; i<=1;i++) {
+      if (dpConnect(\"updatePositions\",fill,sysName+\"LOFAR_PIC_StationInfo.N_RSPBoards\",        
+                                           sysName+\"LOFAR_PIC_StationInfo.N_TBBoards\",
+                                           sysName+\"LOFAR_PIC_StationInfo.N_LBAS\",
+                                           sysName+\"LOFAR_PIC_StationInfo.N_HBAS\",
+                                           sysName+\"LOFAR_PIC_StationInfo.HBA_Split\",         
+                                           sysName+\"LOFAR_PIC_StationInfo.wide_LBAS\",
+                                           sysName+\"LOFAR_PIC_StationInfo.N_HBAS:_online.._invalid\") == -1) {
+        LOG_DEBUG(\"Station_list.pnl:main| couldn't connect to \"+sysName+\"LOFAR_PIC_StationInfo.N_HBAS \"+ getLastError());
+      }  
+
+      if (fill) {
+        fill=false;
+      }
+    }
+  }
+  
+}
+
+//
+// Callback for dpConnect to action point.
+// If there is an action required this point will tell so
+//
+void doAction(string aDP, string anAction) {
+  LOG_DEBUG(\"Station_list.pnl:doAction| Action required. found: \" + anAction);
+  // split action into essentials
+  dyn_string actionString;
+  if (!navFunct_splitAction(anAction,actionString)) {
+    return;
+  }
+  
+  LOG_DEBUG(\"Station_list.pnl:doAction|found actionString: \" + actionString);
+  
+  // Reload
+  if (actionString[1] == \"Reload\") {
+    redraw();
+    return;
+  } else if (actionString[1] == \"DistChanged\") {
+    // for dist system bound hardware only, if the distsystem went offline we need to replace 
+    // the screen with a broken connection screen.
+    if (!g_initializing) {
+    
+      // check if this syst is in the connectionlist and down
+      int iPos=dynContains(g_connections[\"NAME\"],sysName);
+      if (iPos > 0) {
+        if (!g_connections[\"UP\"][iPos]) {
+          navPanel_setEvent(\"invalid DP\",\"ChangePanel\");
+        }
+      }
+    }
+    return;
+  }
+}
+
+void updatePositions(string dp1, int nrsp,
+                     string dp2, int ntbb,
+                     string dp3, int nlbas,
+                     string dp4, int nhbas,
+                     string dp5, bool hbasplit,
+                     string dp6, bool widelbas,
+                     string dp7, bool invalid) {
+  
+  NRSP=nrsp;         
+  NTBB=ntbb;         
+  NLBA=nlbas;         
+  NHBA=nhbas;         
+  HBASplit=hbasplit;         
+  WideLBAs=widelbas;
+
+  redraw();
+}
+" 0
+ E E E E 1 0 0 0  20 20
+""0  1
+E "#uses \"navPanel.ctl\"
+
+string baseDP=\"\";
+string sysName = \"\";
+bool isCore=false;
+bool isRemote=false;
+bool isEurope=false;
+int mainpanel_midX;
+int mainpanel_midY;
+dyn_string refNames;
+dyn_string arrays;
+int mainpanel_horSize; 
+int mainpanel_vertSize;
+int symbolSize=44;
+float zoomFactor=1;
+
+int NRSP=-1;
+int NTBB=-1;
+int NLBA=-1;
+int NHBA=-1;
+bool HBASplit=false;
+bool WideLBAs=false;
+
+float HBA0Angle=0;
+float HBA1Angle=0;
+
+string strPanelName;
+string strModuleName;
+
+
+
+
+
+void clearRefNames() {
+  // remove all symbols because new ones will be added
+  for (int i=1; i <= dynlen(refNames); i++) {
+    removeSymbol(strModuleName,\"\",refNames[i]);
+  }
+  dynClear(refNames);
+}
+
+void calcViewboxSize() {
+    mainpanel_midX = floor( (mainpanel_horSize/2)-(symbolSize/2) );
+    mainpanel_midY = floor( (mainpanel_vertSize/2)-(symbolSize/2) );
+}
+
+void redraw() {
+  
+  
+  float maxXOffsetValue=1.;
+  float maxYOffsetValue=1.;
+  float expandFactorX;
+  float expandFactorY;
+  int   yStartPos = 100;
+  int   xPos_AddLBASymbol=40;
+  int   yPos_AddLBASymbol=yStartPos;
+  int   xPos_AddHBASymbol=590;
+  int   yPos_AddHBASymbol=yStartPos;
+  int   xOffSet = 50;
+  int   yOffSet = 50;
+  string addHBAPanelName = \"objects/Hardware/Station_HBA.pnl\";;
+  string addLBAPanelName = \"objects/Hardware/Station_LBA.pnl\";;
+  float angle=0;
+
+  
+  navFunct_clearGlobalLists();
+  
+  if (!undocked) g_stationList[1] = navFunct_bareDBName(sysName);
+  
+  LOG_DEBUG(\"Station_list.pnl:redraw\");
+
+  if (dynlen(refNames) > 0) {
+    clearRefNames();
+  }
+  
+  int largestAntNr = NLBA;
+  if (NHBA > NLBA) largestAntNr = NHBA;
+  
+  //  now start adding symbols to panel
+  int ref =   1;
+  for (int i = 0; i < largestAntNr; i++ ) {
+    int XRCU;
+    int YRCU;
+    if (i < NRSP*8/2) {
+      XRCU = 2 * (i);
+      YRCU = XRCU+1;
+    } else {
+      XRCU = 2*i+1 - NRSP*8;
+      YRCU = 2*i - NRSP*8;
+    }
+
+    if (fmod(i, 12) == 0 ) {
+      xPos_AddLBASymbol += xOffSet;
+      xPos_AddHBASymbol += xOffSet;
+      yPos_AddLBASymbol=yStartPos;
+      yPos_AddHBASymbol=yStartPos;
+    }
+    
+    string xDP=baseDP+\"_PIC_Cabinet\"+navFunct_receiver2Cabinet(XRCU)+\"_Subrack\"+
+               navFunct_receiver2Subrack(XRCU)+\"_RSPBoard\"+navFunct_receiver2RSP(XRCU)+\"_RCU\"+XRCU;
+    string yDP=baseDP+\"_PIC_Cabinet\"+navFunct_receiver2Cabinet(YRCU)+\"_Subrack\"+
+               navFunct_receiver2Subrack(YRCU)+\"_RSPBoard\"+navFunct_receiver2RSP(YRCU)+\"_RCU\"+YRCU;
+    if (i < NLBA && !undocked){
+      dynAppend(g_LBAList,i);
+      refNames[ref]=\"antLBA\"+(ref);
+      
+      if (  addSymbol(  strModuleName,                   // Stay in this modul
+                                    \"\",                  // Name of this panel
+  		      addLBAPanelName,                    // Panel to add
+  		      refNames[ref],                     // Ref of the addedPanel
+  		      makeDynString( \"$aNr:\" + (i) ,     // Define all $values
+  		                     \"$aX:-1\" ,
+  		                     \"$aY:-1\" ,
+  		                     \"$aZ:-1\" ,
+                          \"$sysName:\" + sysName) ,                  // of particular addedpanel
+  		      xPos_AddLBASymbol,                  // Xpos of the AddedSymbol
+  		      yPos_AddLBASymbol,                  // Ypos of the AddedSymbol
+  		      angle,                           // angle
+  		      1   ,1                          // zoomX , zoomY
+          ) < 0 ) {
+  	  LOG_ERROR(\"Station_list.pnl:redraw|Error Appending LBAantenna : \" + i + \" in this panel.\");
+            }
+      ref++;
+    }
+    
+    if (i < NHBA && !undocked) {
+      dynAppend(g_HBAList,i);
+      refNames[ref]=\"antHBA\"+(ref);
+      
+      if (  addSymbol(  strModuleName,                   // Stay in this modul
+                                    \"\",                  // Name of this panel
+  		      addHBAPanelName,                    // Panel to add
+  		      refNames[ref],                     // Ref of the addedPanel
+  		      makeDynString( \"$aNr:\" + (i) ,     // Define all $values
+  		                     \"$aX:-1\",    
+  		                     \"$aY:-1\",
+  		                     \"$aZ:-1\",
+                          \"$sysName:\" + sysName) ,                  // of particular addedpanel
+  		      xPos_AddHBASymbol,                  // Xpos of the AddedSymbol
+  		      yPos_AddHBASymbol,                  // Ypos of the AddedSymbol
+  		      angle,                           // angle
+  		      1 ,1                          // zoomX , zoomY
+          ) < 0 ) {
+  	  LOG_ERROR(\"Station_list.pnl:redraw|Error Appending HBAantenna : \" + i + \" in this panel.\");
+            }
+      ref++;
+    }
+    
+    yPos_AddLBASymbol += yOffSet;
+    yPos_AddHBASymbol += yOffSet;
+}
+ 
+  // trigger that the panel values are calculated and ready
+  dynClear(highlight);
+  dynClear(strHighlight);
+  
+  // set panel to ready
+  g_objectReady=true;
+  
+  navPanel_setEvent(\"Station_list.pnl\",\"Update\");
+}
+
+void updateField() {
+  
+  // Check if the update concerns the current view
+
+  sysName = dpSubStr(g_currentDatapoint,DPSUB_SYS);
+ 
+
+  string field=sysName+\"LOFAR_PIC_StationInfo.\";
+  if (dpExists(field+\".N_LBAS:_online.._value\")) {
+    dpGet(field+\"N_RSPBoards\",NRSP);         
+    dpGet(field+\"N_TBBoards\",NTBB);         
+    dpGet(field+\"N_LBAS\",NLBA);         
+    dpGet(field+\"N_HBAS\",NHBA);         
+    dpGet(field+\"HBA_Split\",HBASplit);         
+    dpGet(field+\"wide_LBAS\",WideLBAs);
+ 
+    redraw();
+  } else {
+    LOG_ERROR(\"Station_list.pnl:updateField|Error, couldn't find:\"+field+\".N_LBAS:_online.._value\");
+  }
+}
+
+
+
+
+
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+NC
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 6 Layer1
+1 27 5 "" 2190
+0
+2 5
+"PRIMITIVE_TEXT1"
+""
+1 200 70 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+14 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 3 2 1 E 2.666666666666665 0 2.625000000000001 -287.2727272727269 -152.4999999999999 0 E 200 70 223 82
+0 2 2 "0s" 0 0 0 192 0 0  200 70 1
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 3 LBA
+2 6
+"PRIMITIVE_TEXT2"
+""
+1 200 70 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+15 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 3 2 1 E 2.666666666666665 0 2.625000000000001 233.0303030303033 -152.4999999999999 0 E 200 70 225 82
+0 2 2 "0s" 0 0 0 192 0 0  200 70 1
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0 1
+LANG:1 3 HBA
+29 26
+"EMBEDDED_MODULE_ALARMS"
+""
+1 0 680 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+18 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+11
+"ModuleName" "string StationAlarms"
+"oldPanelAnimType" "string None"
+"newPanelAnimType" "string None"
+"oldPanelAnimateSize" "bool TRUE"
+"newPanelAnimateSize" "bool TRUE"
+"oldPanelAnimateOpacity" "bool TRUE"
+"newPanelAnimateOpacity" "bool TRUE"
+"oldPanelAnimDuration" "int 0"
+"newPanelAnimDuration" "int 0"
+"horizontalScrollBarPolicy" "enum 1"
+"verticalScrollBarPolicy" "enum 1"
+1
+LANG:1 35 MS Shell Dlg 2,-1,11,5,75,0,0,0,0,0
+0  0 680 1200 820
+15 Canvas.Canvas.1
+0
+"main()
+{
+  RootPanelOnModule( \"objects/Alerts/Station_Alerts.pnl\",
+                     \"StationAlerts\",
+                     this.ModuleName(),
+                     makeDynString() );
+}" 0
+0
+LAYER, 1 
+1
+LANG:1 6 Layer2
+0
+LAYER, 2 
+1
+LANG:1 6 Layer3
+0
+LAYER, 3 
+1
+LANG:1 6 Layer4
+0
+LAYER, 4 
+1
+LANG:1 6 Layer5
+0
+LAYER, 5 
+1
+LANG:1 6 Layer6
+0
+LAYER, 6 
+1
+LANG:1 6 Layer7
+0
+LAYER, 7 
+1
+LANG:1 6 Layer8
+0
+3 5 "PANEL_REF6" -1
+"" ""
+"objects/Hardware/Station_Cabinet_top.pnl" 298 258 T 13 1 0 1 -118 -138
+0
+0

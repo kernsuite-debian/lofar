@@ -1,0 +1,11 @@
+/**
+
+\ingroup Packages
+\defgroup LTA LTA
+
+The LTA package contains the LOFAR Long Term Archive software. It is subdivided in the following components:
+- \ref lta_ingest "LTA Ingest Service"
+- \ref lta_storage_overview "LTA Storage Overview"
+
+*/
+

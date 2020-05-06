@@ -5,6 +5,7 @@ import os
 import tempfile
 
 from lofarpipe.support.xmllogging import add_child
+from lofar.common.subprocess_utils import communicate_returning_strings
 import xml.dom.minidom as xml
 
 
@@ -65,7 +66,7 @@ class UsageStats(threading.Thread):
                     pps = subprocess.Popen(["bash", temp_path, str(pid)],
                                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
-                    out, err = pps.communicate()
+                    out, err = communicate_returning_strings(pps)
 
                     parset_output = eval(out.rstrip()) # remove trailing white space
                     self.pid_stats[pid].append(parset_output)
@@ -92,7 +93,7 @@ class UsageStats(threading.Thread):
             return resource_stat_xml.toxml(encoding = "ascii")
         
         try:
-            for idx,(key,value) in enumerate(self.pid_stats.iteritems()):
+            for idx,(key,value) in enumerate(self.pid_stats.items()):
                 #if there are entries
                 if value:  
                     child_pid = add_child(resource_stat_xml, "process")

@@ -13,7 +13,7 @@ import struct
 import platform
 import logging
 import logging.handlers
-import cPickle as pickle
+import pickle as pickle
 
 from lofarpipe.support.usagestats import UsageStats
 from lofarpipe.support.utilities  import socket_recv
@@ -107,13 +107,13 @@ class LOFARnodeTCP(LOFARnode):
             tries -= 1
             try:
                 sock.connect((self.host, self.port))
-            except socket.error, e:
-                print("Could not connect to %s:%s (got %s)" %
-                      (self.host, str(self.port), str(e)))
+            except socket.error as e:
+                print(("Could not connect to %s:%s (got %s)" %
+                      (self.host, str(self.port), str(e))))
                 if tries > 0:
                     timeout = random.uniform(min_timeout, max_timeout)
-                    print("Retrying in %f seconds (%d more %s)." %
-                          (timeout, tries, "try" if tries == 1 else "tries"))
+                    print(("Retrying in %f seconds (%d more %s)." %
+                          (timeout, tries, "try" if tries == 1 else "tries")))
                     time.sleep(timeout)
                 else:
                     raise
@@ -134,7 +134,7 @@ class LOFARnodeTCP(LOFARnode):
                 self.__try_connect(s)
 
                 # send request
-                message = "GET %d" % self.job_id
+                message = ("GET %d" % self.job_id).encode()
                 s.sendall(struct.pack(">L", len(message)) + message)
 
                 # receive response length
@@ -147,11 +147,11 @@ class LOFARnodeTCP(LOFARnode):
                 # parse response
                 self.arguments = pickle.loads(chunk)
             except (IOError, socket.error) as e:
-                print "Failed to get recipe arguments from server: %s" % (e,)
+                print("Failed to get recipe arguments from server: %s" % (e,))
                 if tries > 0:
                     timeout = random.uniform(min_timeout, max_timeout)
-                    print("Retrying in %f seconds (%d more %s)." %
-                          (timeout, tries, "try" if tries == 1 else "tries"))
+                    print(("Retrying in %f seconds (%d more %s)." %
+                          (timeout, tries, "try" if tries == 1 else "tries")))
                     time.sleep(timeout)
                 else:
                     # we tried 5 times, abort with original exception
@@ -165,7 +165,7 @@ class LOFARnodeTCP(LOFARnode):
         Send the contents of self.outputs to the originating job dispatch
         server.
         """
-        message = "PUT %d %s" % (self.job_id, pickle.dumps(self.outputs))
+        message = ("PUT %d " % (self.job_id,)).encode() + pickle.dumps(self.outputs)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.__try_connect(s)

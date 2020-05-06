@@ -4,10 +4,10 @@
 COVERAGE_EXCLUDE_LINES="[report]\nexclude_lines = \n  if __name__ == .__main__.\n  def main\n"
 
 # Determine python-coverage executable
-if type "coverage" >& /dev/null; then
-  COVERAGE=coverage
-elif type "python-coverage" >& /dev/null; then
-  COVERAGE=python-coverage
+if type "coverage3" >& /dev/null; then
+  COVERAGE=coverage3
+elif type "python3-coverage" >& /dev/null; then
+  COVERAGE=python3-coverage
 else
   COVERAGE=""
 fi
@@ -43,9 +43,9 @@ function python_coverage_test {
       exit $RESULT
   else
       #python-coverage not available
-      echo "Please run: 'pip install python-coverage' to enable code coverage reporting of the unit tests"
+      echo "Please run: 'pip3 install coverage' to enable code coverage reporting of the unit tests"
       #run plain test script
-      python "$@"
+      python3 "$@"
   fi
 }
 

@@ -18,19 +18,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tTimeAxis.cc 14255 2009-10-13 13:58:44Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Axis.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
 #include <Common/LofarLogger.h>
 #include <Common/lofar_iostream.h>
 #include <Common/lofar_sstream.h>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 
 void doIt (const string& msname, int timestep, int timestart)
 {
@@ -58,7 +58,7 @@ void doIt (const string& msname, int timestep, int timestart)
     Axis::ShPtr axis2 (axis1->subset (size_t(i), size_t(i+n-1)));
     cout << "step " << i << ": " << n << " times  " << axis2->lower(0)
          << ' ' <<  axis2->upper(n-1) << "  " 
-         << casa::near(axis2->lower(0), last2);
+         << casacore::near(axis2->lower(0), last2);
     last2 = axis2->upper(n-1);
     // Create a few times the same axis.
     // Each time it converts from start/end to center/width and back.
@@ -74,7 +74,7 @@ void doIt (const string& msname, int timestep, int timestart)
     }
     cout << "  diff: " << axis3->lower(0) - axis2->lower(0)
          << ' ' <<  axis3->upper(n-1) - axis2->upper(n-1)<< "  " 
-         << casa::near(axis3->lower(0), last3) << endl;
+         << casacore::near(axis3->lower(0), last3) << endl;
     last3 = axis3->upper(n-1);
   }
 }

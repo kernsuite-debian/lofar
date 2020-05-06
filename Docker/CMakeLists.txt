@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35908 2016-11-04 15:41:28Z mol $
+# $Id$
 
 lofar_package(Docker 1.0 DEPENDS Common)
 

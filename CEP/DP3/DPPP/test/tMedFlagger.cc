@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMedFlagger.cc 24221 2013-03-12 12:24:48Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -28,14 +28,14 @@
 #include <DPPP/DPInfo.h>
 #include <Common/ParameterSet.h>
 #include <Common/StringUtil.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::DPPP;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 // Simple class to generate input arrays.

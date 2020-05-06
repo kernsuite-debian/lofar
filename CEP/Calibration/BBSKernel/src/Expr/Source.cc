@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Source.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Source.h>

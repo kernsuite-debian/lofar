@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                        LOFAR IMAGING PIPELINE
 #
 #                                                 long baseline Pipeline recipe
@@ -290,7 +290,7 @@ class longbaseline_pipeline(control):
                 output_ms_mapfile = output_ms_mapfile)
 
         # validate that the prepare phase produced the correct data
-        output_keys = outputs.keys()
+        output_keys = list(outputs.keys())
         if not ('mapfile' in output_keys):
             error_msg = "The imager_prepare master script did not"\
                     "return correct data. missing: {0}".format('mapfile')

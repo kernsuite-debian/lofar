@@ -22,7 +22,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#  $Id: LofarVariants.cmake 31753 2015-06-10 08:01:44Z schaap $
+#  $Id$
 
 if(NOT DEFINED LOFAR_VARIANTS_INCLUDED)
 

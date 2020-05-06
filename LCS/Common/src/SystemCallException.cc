@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SystemCallException.cc 25574 2013-07-04 16:02:41Z amesfoort $
+//# $Id$
 
 #include <lofar_config.h>
 

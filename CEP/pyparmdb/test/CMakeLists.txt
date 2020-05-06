@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 39709 2018-06-14 12:07:59Z dijkema $
+# $Id$
 
 include(LofarCTest)
 include(FindPythonModule)

@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPRun.cc 40692 2018-09-04 08:46:13Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

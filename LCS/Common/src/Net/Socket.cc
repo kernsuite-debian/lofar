@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Socket.cc 37773 2017-07-05 07:11:30Z schaap $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -319,7 +319,7 @@ int32 Socket::initUnixSocket(bool		asServer)
 	LOG_TRACE_CALC(formatString("Socket::initUnixSocket(%s,%d)",
 		itsSocketname.c_str(), asServer));
 
-        (void)asServer;        
+  (void)asServer; //prevent unused var warning in release mode
 
 	// setup socket address
 	string path = itsPort;
@@ -474,6 +474,8 @@ int32 Socket::openTCPSocket (bool asServer)
 							socketType, itsProtocolType, errno, strerror(errno)));
 		return (setErrno(SOCKET));
 	}
+
+  (void)asServer; //prevent unused var warning in release mode
 
 	LOG_DEBUG(formatString("Socket(%d):Created %s socket, host %s, port %d, protocol %d",
 			       itsSocketID, asServer ? "server" : "client",

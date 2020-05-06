@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PosixTime.h 31792 2015-06-15 07:42:54Z mol $
+//# $Id$
 
 #ifndef APPLCOMMON_POSIXTIME_H
 #define APPLCOMMON_POSIXTIME_H

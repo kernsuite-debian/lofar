@@ -43,7 +43,7 @@ public:
     typedef shared_ptr<StationLOFAR>        Ptr;
     typedef shared_ptr<const StationLOFAR>  ConstPtr;
 
-    StationLOFAR(const string &name, const casa::MPosition &position,
+    StationLOFAR(const string &name, const casacore::MPosition &position,
         const StationResponse::Station::ConstPtr &station);
 
     StationResponse::Station::ConstPtr station() const;

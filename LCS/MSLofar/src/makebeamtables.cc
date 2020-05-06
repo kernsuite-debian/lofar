@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: makebeamtables.cc 31221 2015-03-18 12:13:53Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -27,11 +27,11 @@
 #include <Common/InputParSet.h>
 #include <Common/SystemUtil.h>
 #include <Common/LofarLogger.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 
 int main (int argc, char* argv[])
 {

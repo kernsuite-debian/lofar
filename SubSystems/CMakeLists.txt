@@ -1,0 +1,18 @@
+# $Id$
+
+lofar_add_package(CCU_MAC)
+lofar_add_package(LCU_MAC)
+lofar_add_package(MCU_MAC)
+lofar_add_package(CN_MAC)
+lofar_add_package(Online_Cobalt)
+lofar_add_package(Online_OutputProc)
+lofar_add_package(ST_MAC)
+lofar_add_package(Offline)
+lofar_add_package(SAS_OTDB)
+lofar_add_package(SAS_Tools)
+lofar_add_package(WinCC_DB)
+lofar_add_package(RAServices)
+lofar_add_package(DataManagement)
+lofar_add_package(Dragnet)
+lofar_add_package(LTAIngest)
+lofar_add_package(LTAIngestTransfer)

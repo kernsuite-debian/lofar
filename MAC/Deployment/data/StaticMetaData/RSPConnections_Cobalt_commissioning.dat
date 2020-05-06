@@ -1,0 +1,173 @@
+#
+# RSPConnections_Cobalt
+#
+# $Id: $
+#
+# List of Connections between RSP boards and the Cobalt nodes at CEP.
+#
+# The Core stations have two possible connections: one for 
+# 1x48 HBA tiles, one for 2x24 HBA tiles. These have two separate 
+# entries in this file.
+#
+# International stations have one entry per VLAN. Each set of entries
+# must be duplicated to obtain the settings for the 4 RSP boards that
+# send data.
+#
+#                IMPORTANT !!!!!! BEWARE
+#
+# 	The items in the seperate lines of this file must be seperated by either a SINGLE whitespace or a single tab!!!!
+#	Furthermore, this file is read by PVSS controllers to fill in the database, ANY change could possibly have an impact
+#	on PVSS, so please double check. In case of doubt, contact the PVSS maintainer
+#
+# The network configuration is as follows:
+#
+# RD0 -> cbt207 ... cbt213
+# RD1 -> cbt201 ... cbt206
+#
+# NOTES:
+# - This is a mapping for COMMISSIONING
+
+CS002 RSP_0 cbt207-10GB01.online.lofar 10.168.166.1 E4:43:4B:3E:93:51
+CS002 RSP_1 cbt207-10GB01.online.lofar 10.168.166.1 E4:43:4B:3E:93:51
+
+CS026 RSP_0 cbt207-10GB04.online.lofar 10.168.166.4 F8:F2:1E:42:2F:80
+CS026 RSP_1 cbt207-10GB04.online.lofar 10.168.166.4 F8:F2:1E:42:2F:80
+
+CS302 RSP_0 cbt207-10GB04.online.lofar 10.168.166.4 F8:F2:1E:42:2F:80
+CS302 RSP_1 cbt207-10GB06.online.lofar 10.168.166.6 F8:F2:1E:42:2F:82
+
+DE602 RSP_0 cbt207-10GB06.online.lofar 10.200.41.207 F8:F2:1E:42:2F:82
+
+FR606 RSP_0 cbt207-10GB06.online.lofar 10.211.1.207 F8:F2:1E:42:2F:82
+FR606 RSP_0 cbt207-10GB06.online.lofar 10.212.1.207 F8:F2:1E:42:2F:82
+FR606 RSP_0 cbt207-10GB06.online.lofar 10.213.1.207 F8:F2:1E:42:2F:82
+FR606 RSP_0 cbt207-10GB06.online.lofar 10.214.1.207 F8:F2:1E:42:2F:82
+
+CS003 RSP_0 cbt208-10GB01.online.lofar 10.168.167.1 E4:43:4B:3E:94:11
+CS003 RSP_1 cbt208-10GB01.online.lofar 10.168.167.1 E4:43:4B:3E:94:11
+
+CS028 RSP_0 cbt208-10GB04.online.lofar 10.168.167.4 F8:F2:1E:42:34:B0
+CS028 RSP_1 cbt208-10GB04.online.lofar 10.168.167.4 F8:F2:1E:42:34:B0
+
+PL610 RSP_0 cbt208-10GB06.online.lofar 10.220.11.208 F8:F2:1E:42:34:B2
+
+DE601 RSP_0 cbt208-10GB06.online.lofar 10.211.1.208 F8:F2:1E:42:34:B2
+DE601 RSP_0 cbt208-10GB06.online.lofar 10.212.1.208 F8:F2:1E:42:34:B2
+DE601 RSP_0 cbt208-10GB06.online.lofar 10.213.1.208 F8:F2:1E:42:34:B2
+DE601 RSP_0 cbt208-10GB06.online.lofar 10.214.1.208 F8:F2:1E:42:34:B2
+
+RS106 RSP_0 cbt208-10GB06.online.lofar 10.168.167.6 F8:F2:1E:42:34:B2
+
+CS004 RSP_0 cbt209-10GB01.online.lofar 10.168.168.1 E4:43:4B:3E:5F:61
+CS004 RSP_1 cbt209-10GB01.online.lofar 10.168.168.1 E4:43:4B:3E:5F:61
+
+CS031 RSP_0 cbt209-10GB04.online.lofar 10.168.168.4 F8:F2:1E:42:30:E0
+CS031 RSP_1 cbt209-10GB04.online.lofar 10.168.168.4 F8:F2:1E:42:30:E0
+
+DE604 RSP_0 cbt209-10GB06.online.lofar 10.200.81.209 F8:F2:1E:42:30:E2
+
+SE607 RSP_0 cbt209-10GB06.online.lofar 10.211.1.209 F8:F2:1E:42:30:E2
+SE607 RSP_0 cbt209-10GB06.online.lofar 10.212.1.209 F8:F2:1E:42:30:E2
+SE607 RSP_0 cbt209-10GB06.online.lofar 10.213.1.209 F8:F2:1E:42:30:E2
+SE607 RSP_0 cbt209-10GB06.online.lofar 10.214.1.209 F8:F2:1E:42:30:E2
+
+RS210 RSP_0 cbt209-10GB06.online.lofar 10.168.168.6 F8:F2:1E:42:30:E2
+
+CS006 RSP_0 cbt210-10GB01.online.lofar 10.168.169.1 E4:43:4B:3E:A2:21
+CS006 RSP_1 cbt210-10GB01.online.lofar 10.168.169.1 E4:43:4B:3E:A2:21
+
+CS103 RSP_0 cbt210-10GB04.online.lofar 10.168.169.4 F8:F2:1E:42:2F:30
+CS103 RSP_1 cbt210-10GB04.online.lofar 10.168.169.4 F8:F2:1E:42:2F:30
+
+DE603 RSP_0 cbt210-10GB06.online.lofar 10.211.1.210 F8:F2:1E:42:2F:32
+DE603 RSP_0 cbt210-10GB06.online.lofar 10.212.1.210 F8:F2:1E:42:2F:32
+DE603 RSP_0 cbt210-10GB06.online.lofar 10.213.1.210 F8:F2:1E:42:2F:32
+DE603 RSP_0 cbt210-10GB06.online.lofar 10.214.1.210 F8:F2:1E:42:2F:32
+
+PL611 RSP_0 cbt210-10GB06.online.lofar 10.220.41.210 F8:F2:1E:42:2F:32
+
+RS306 RSP_0 cbt210-10GB06.online.lofar 10.168.169.6 F8:F2:1E:42:2F:32
+
+CS011 RSP_0 cbt211-10GB01.online.lofar 10.168.170.1 E4:43:4B:3E:91:81
+CS011 RSP_1 cbt211-10GB01.online.lofar 10.168.170.1 E4:43:4B:3E:91:81
+
+CS201 RSP_0 cbt211-10GB04.online.lofar 10.168.170.4 F8:F2:1E:42:39:70
+CS201 RSP_1 cbt211-10GB04.online.lofar 10.168.170.4 F8:F2:1E:42:39:70
+
+DE609 RSP_0 cbt211-10GB06.online.lofar 10.200.91.211 F8:F2:1E:42:39:72
+DE609 RSP_0 cbt211-10GB06.online.lofar 10.200.92.211 F8:F2:1E:42:39:72
+
+UK608 RSP_0 cbt211-10GB06.online.lofar 10.211.1.211 F8:F2:1E:42:39:72
+UK608 RSP_0 cbt211-10GB06.online.lofar 10.212.1.211 F8:F2:1E:42:39:72
+UK608 RSP_0 cbt211-10GB06.online.lofar 10.213.1.211 F8:F2:1E:42:39:72
+UK608 RSP_0 cbt211-10GB06.online.lofar 10.214.1.211 F8:F2:1E:42:39:72
+
+RS307 RSP_0 cbt211-10GB06.online.lofar 10.168.170.6 F8:F2:1E:42:39:72
+
+CS013 RSP_0 cbt212-10GB01.online.lofar 10.168.171.1 E4:43:4B:3E:A1:A1
+CS013 RSP_1 cbt212-10GB01.online.lofar 10.168.171.1 E4:43:4B:3E:A1:A1
+
+CS301 RSP_0 cbt212-10GB04.online.lofar 10.168.171.4 F8:F2:1E:42:2C:C0
+CS301 RSP_1 cbt212-10GB04.online.lofar 10.168.171.4 F8:F2:1E:42:2C:C0
+
+DE605 RSP_0 cbt212-10GB06.online.lofar 10.211.1.212 F8:F2:1E:42:2C:C2
+DE605 RSP_0 cbt212-10GB06.online.lofar 10.212.1.212 F8:F2:1E:42:2C:C2
+DE605 RSP_0 cbt212-10GB06.online.lofar 10.213.1.212 F8:F2:1E:42:2C:C2
+DE605 RSP_0 cbt212-10GB06.online.lofar 10.214.1.212 F8:F2:1E:42:2C:C2
+
+PL612 RSP_0 cbt212-10GB06.online.lofar 10.220.61.212 F8:F2:1E:42:2C:C2
+
+RS508 RSP_0 cbt212-10GB06.online.lofar 10.168.171.6 F8:F2:1E:42:2C:C2
+
+CS001 RSP_0 cbt201-10GB01.online.lofar 10.168.160.1 E4:43:4B:3D:89:81
+CS001 RSP_1 cbt201-10GB01.online.lofar 10.168.160.1 E4:43:4B:3D:89:81
+
+CS024 RSP_0 cbt201-10GB04.online.lofar 10.168.160.4 F8:F2:1E:40:D9:30
+CS024 RSP_1 cbt201-10GB04.online.lofar 10.168.160.4 F8:F2:1E:40:D9:30
+
+RS406 RSP_0 cbt201-10GB04.online.lofar 10.168.160.4 F8:F2:1E:40:D9:30
+
+CS005 RSP_0 cbt202-10GB01.online.lofar 10.168.161.1 E4:43:4B:3E:5E:91
+CS005 RSP_1 cbt202-10GB01.online.lofar 10.168.161.1 E4:43:4B:3E:5E:91
+
+RS205 RSP_0 cbt202-10GB01.online.lofar 10.168.161.1 E4:43:4B:3E:5E:91
+
+CS501 RSP_0 cbt202-10GB04.online.lofar 10.168.161.4 3C:FD:FE:07:FD:A0
+CS501 RSP_1 cbt202-10GB04.online.lofar 10.168.161.4 3C:FD:FE:07:FD:A0
+
+RS407 RSP_0 cbt202-10GB04.online.lofar 10.168.161.4 3C:FD:FE:07:FD:A0
+
+CS007 RSP_0 cbt203-10GB01.online.lofar 10.168.162.1 E4:43:4B:3D:86:E1
+CS007 RSP_1 cbt203-10GB01.online.lofar 10.168.162.1 E4:43:4B:3D:86:E1
+
+RS208 RSP_0 cbt203-10GB01.online.lofar 10.168.162.1 E4:43:4B:3D:86:E1
+
+CS032 RSP_0 cbt203-10GB04.online.lofar 10.168.162.4 F8:F2:1E:40:DA:50
+CS032 RSP_1 cbt203-10GB04.online.lofar 10.168.162.4 F8:F2:1E:40:DA:50
+
+RS409 RSP_0 cbt203-10GB04.online.lofar 10.168.162.4 F8:F2:1E:40:DA:50
+
+CS017 RSP_0 cbt204-10GB01.online.lofar 10.168.163.1 E4:43:4B:3E:A1:91
+CS017 RSP_1 cbt204-10GB01.online.lofar 10.168.163.1 E4:43:4B:3E:A1:91
+
+RS305 RSP_0 cbt204-10GB01.online.lofar 10.168.163.1 E4:43:4B:3E:A1:91
+
+CS101 RSP_0 cbt204-10GB04.online.lofar 10.168.163.4 F8:F2:1E:42:38:50
+CS101 RSP_1 cbt204-10GB04.online.lofar 10.168.163.4 F8:F2:1E:42:38:50
+
+RS503 RSP_0 cbt204-10GB04.online.lofar 10.168.163.4 F8:F2:1E:42:38:50
+
+IE613 RSP_0 cbt204-10GB06.online.lofar 10.220.81.204 F8:F2:1E:42:38:52
+
+CS030 RSP_0 cbt204-10GB06.online.lofar 10.168.163.6 F8:F2:1E:42:38:52
+CS030 RSP_1 cbt204-10GB06.online.lofar 10.168.163.6 F8:F2:1E:42:38:52
+
+CS021 RSP_0 cbt205-10GB01.online.lofar 10.168.164.1 E4:43:4B:3D:C4:01
+CS021 RSP_1 cbt205-10GB01.online.lofar 10.168.164.1 E4:43:4B:3D:C4:01
+
+RS310 RSP_0 cbt205-10GB01.online.lofar 10.168.164.1 E4:43:4B:3D:C4:01
+
+CS401 RSP_0 cbt205-10GB04.online.lofar 10.168.164.4 F8:F2:1E:40:CC:10
+CS401 RSP_1 cbt205-10GB04.online.lofar 10.168.164.4 F8:F2:1E:40:CC:10
+
+RS509 RSP_0 cbt205-10GB04.online.lofar 10.168.164.4 F8:F2:1E:40:CC:10

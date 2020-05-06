@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMSLofar.cc 32355 2015-08-31 10:00:31Z schoenmakers $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -32,14 +32,14 @@
 #include <MSLofar/MSElementFailureColumns.h>
 #include <Common/LofarLogger.h>
 
-#include <ms/MeasurementSets/MSSpectralWindow.h>
-#include <ms/MeasurementSets/MSSpWindowColumns.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/OS/Timer.h>
+#include <casacore/ms/MeasurementSets/MSSpectralWindow.h>
+#include <casacore/ms/MeasurementSets/MSSpWindowColumns.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/OS/Timer.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void createMS (MDirection::Types dirRef)

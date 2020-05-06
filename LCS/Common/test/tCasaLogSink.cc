@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tCasaLogSink.cc 21139 2012-06-06 22:08:36Z loose $
+//# $Id$
 
 // @author Ger van Diepen (gvd AT astron DOT nl)
 
@@ -27,7 +27,7 @@
 #include <Common/lofar_iostream.h>
 
 #ifdef HAVE_AIPSPP
-#include <casa/Logging/LogIO.h>
+#include <casacore/casa/Logging/LogIO.h>
 #endif
 
 using namespace LOFAR;
@@ -38,11 +38,11 @@ int main()
 
 #ifdef HAVE_AIPSPP
   cout << "writing to casa logger ..." << endl;
-  casa::LogIO logger;
-  logger << casa::LogIO::DEBUG1 << "debug  message" << casa::LogIO::POST;
-  logger << casa::LogIO::NORMAL << "normal message" << casa::LogIO::POST;
-  logger << casa::LogIO::WARN   << "warn   message" << casa::LogIO::POST;
-  logger << casa::LogIO::SEVERE << "error  message" << casa::LogIO::POST;
+  casacore::LogIO logger;
+  logger << casacore::LogIO::DEBUG1 << "debug  message" << casacore::LogIO::POST;
+  logger << casacore::LogIO::NORMAL << "normal message" << casacore::LogIO::POST;
+  logger << casacore::LogIO::WARN   << "warn   message" << casacore::LogIO::POST;
+  logger << casacore::LogIO::SEVERE << "error  message" << casacore::LogIO::POST;
 #endif
 
   return 0;

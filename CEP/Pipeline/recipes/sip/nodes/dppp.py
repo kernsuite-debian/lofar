@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import logging
 import os
@@ -158,11 +158,11 @@ class dppp(LOFARnodeTCP):
                         # Replace outfile with the updated working copy
                         shutil.rmtree(outfile, ignore_errors=True)
                         os.rename(tmpfile, outfile)
-                except CalledProcessError, err:
+                except CalledProcessError as err:
                     # CalledProcessError isn't properly propagated by IPython
                     self.logger.error(str(err))
                     return 1
-                except Exception, err:
+                except Exception as err:
                     self.logger.error(str(err))
                     return 1
                 finally:

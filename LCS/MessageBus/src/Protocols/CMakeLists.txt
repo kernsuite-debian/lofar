@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 30977 2015-02-11 14:01:26Z mol $
+# $Id$
 
 include(PythonInstall)
 

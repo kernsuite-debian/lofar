@@ -105,7 +105,7 @@ def enter_active_stack(calling_object, child,
                              "Contains functions not left with a return")
     # if child is a string add a xml node with this name
     stacked_child = None
-    if isinstance(child, basestring):
+    if isinstance(child, str):
         stacked_child = add_child(active_stack_node, child)
     # else try adding it as a node
     elif isinstance(child, _xml.Node):

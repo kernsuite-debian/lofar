@@ -1,0 +1,1736 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 1627 38 N "_Transparent" 1
+"$station"
+"main()
+{
+  stationName = $station;
+}" 0
+ E E E E 1 -1 -1 0  65.00000000000003 24.16666666666665
+""0  1
+E "#uses \"navPanel.ctl\"
+
+string stationName = \"\";" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+14 37
+"txt_dooropen1"
+""
+1 155.9999999999999 22 E E E 1 E 1 E N "yellow" E N "black" E E
+ E E
+37 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 34 Nimbus Sans L,-1,13,5,75,0,0,0,0,0
+0  158 6 486 34
+2 "0s" 0 0 0 1 0 -1  E "main()
+{
+  this.visible = false;
+  
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"doorsCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.backDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void doorsCB(string dp1, bool fdoor,
+             string dp2, bool bdoor,
+             string dp3, bool invalid)
+{
+  if (invalid || (!bdoor && !fdoor))
+  {
+    this.visible(false);
+  } 
+  else
+  {
+    this.visible = true;
+    
+    if (fdoor && bdoor)
+    {
+      this.text = \"BOTH DOORS OPEN\";
+    }
+    else if (fdoor)    
+    {
+      this.text = \"FRONT DOOR OPEN\";
+    }
+    else if (bdoor)    
+    {
+      this.text = \"BACK DOOR OPEN\";
+    }
+  }
+}
+" 0
+ E
+2 0
+"stationstattemp1"
+""
+1 250 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+0 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.status.state:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"statusCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.status.state:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.status.state:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void statusCB(string dp1, int status,
+              string dp2, bool invalid)
+{
+  this.text = status;
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = -1;
+  } 
+  else
+  {
+    this.foreCol = getStateColor(status);
+    this.text = status;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 4.000000000000056 -20 0 E 250 30 292.0000000000001 44.99999999999999
+0 2 2 "0s" 0 0 0 64 0 0  250 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 3  ok
+2 1
+"stationmodetemp1"
+""
+1 180 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+1 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.controlMode:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"controlModeCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.controlMode:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.controlMode:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void controlModeCB(string dp1, string sNewValue,
+                   string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = sNewValue;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 180 30 221.9999999999999 44.99999999999999
+0 2 2 "0s" 0 0 0 64 0 0  180 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 4 auto
+2 4
+"PRIMITIVE_TEXT11"
+""
+1 470 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+4 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 470 30 530 60.00000000000001
+0 2 2 "0s" 0 0 0 64 0 0  470 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 %
+2 5
+"stationhumtemp1"
+""
+1 420 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+5 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.humidity:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"humCB\",stationName+\":LOFAR_PIC_Cabinet0.humidity:_online.._value\",
+                    stationName+\":LOFAR_PIC_Cabinet0.humidity:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void humCB(string dp1, float humidity,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = humidity;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 420 30 486 52.00000000000001
+0 2 2 "0s" 0 0 0 64 0 0  420 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 6
+"stationtemptemp1"
+""
+1 360 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+6 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.temperature:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"tempCB\",stationName+\":LOFAR_PIC_Cabinet0.temperature:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet0.temperature:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void tempCB(string dp1, float temp,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = temp;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 360 30 450 70
+0 2 2 "0s" 0 0 0 64 0 0  360 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 7
+"text_station_name"
+""
+1 70 30.00000000000002 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":\"))
+  {
+    this.color = \"Lofar_dpdoesnotexist\";
+    return;
+  }
+
+  // core connect to update the state of the system
+  dpConnect(\"textFieldCB\", stationName+\":LOFAR.status.state\",
+                           stationName+\":LOFAR.status.state:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0) 
+  {
+    this.color = \"Lofar_dpdoesnotexist\";
+  }
+
+  // connect to create the tooltip with systeminfo
+  dpConnect(\"stationInfoCB\", stationName+\":LOFAR_PIC_StationInfo.status.state\",
+                             stationName+\":LOFAR_PIC_StationInfo.status.state:_online.._invalid\");
+  err = getLastError();  
+  if (dynlen(err) > 0) 
+  {
+    DebugN(\"Couldnt connect to \"+stationName+\":LOFAR_PIC_StationInfo.status.state\");
+  }
+}
+
+void textFieldCB(string dp1, int status,
+                 string dp2, bool invalid)
+{
+  this.text = stationName;
+  if (invalid)
+  {
+    this.color = \"Lofar_dpOffline\";
+    this.color = \"black\";
+  }
+}
+
+void stationInfoCB(string dp1, int status,
+                   string dp2, bool invalid)
+{
+    // gather info and prepare tooltip
+}" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 0.9999999999999991 -19.99999999999998 0 E 70 30.00000000000002 143.9999999999998 48.00000000000002
+0 2 2 "0s" 0 0 0 64 0 0  70 30.00000000000002 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 9 - st nr -
+2 8
+"stationstattemp2"
+""
+1 650 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.status.state:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"statusCB\",
+            stationName+\":LOFAR_PIC_Cabinet1.status.state:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet1.status.state:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void statusCB(string dp1, int status,
+              string dp2, bool invalid)
+{
+  this.text = status;
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = -1;
+  } 
+  else
+  {
+    this.foreCol = getStateColor(status);
+    this.text = status;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 650 30 692.0000000000008 45.00000000000004
+0 2 2 "0s" 0 0 0 64 0 0  650 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 3  ok
+2 9
+"stationmodetemp2"
+""
+1 580 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.controlMode:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"controlModeCB\",
+            stationName+\":LOFAR_PIC_Cabinet1.controlMode:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet1.controlMode:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void controlModeCB(string dp1, string sNewValue,
+                   string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = sNewValue;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 580 30 622.0000000000002 45.00000000000004
+0 2 2 "0s" 0 0 0 64 0 0  580 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 4 auto
+2 12
+"PRIMITIVE_TEXT19"
+""
+1 870 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+12 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 3 2 1 E 0.9999999999999998 0 1 2 -20 0 E 870 30 930 60.00000000000001
+0 2 2 "0s" 0 0 0 64 0 0  870 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 %
+2 14
+"stationtemptemp2"
+""
+1 760 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+14 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.temperature:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"tempCB\",stationName+\":LOFAR_PIC_Cabinet1.temperature:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet1.temperature:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void tempCB(string dp1, float temp,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = temp;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 4.999999999999999 -20 0 E 760 30 850 70.00000000000001
+0 2 2 "0s" 0 0 0 64 0 0  760 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 15
+"stationstattemp3"
+""
+1 1050 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+15 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.status.state:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"statusCB\",
+            stationName+\":LOFAR_PIC_Cabinet3.status.state:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet3.status.state:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void statusCB(string dp1, int status,
+              string dp2, bool invalid)
+{
+  this.text = status;
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = -1;
+  } 
+  else
+  {
+    this.foreCol = getStateColor(status);
+    this.text = status;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -20 0 E 1050 30 1092 45.00000000000006
+0 2 2 "0s" 0 0 0 64 0 0  1050 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 3  ok
+2 16
+"stationmodetemp3"
+""
+1 990.3333333333334 28 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+16 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.controlMode:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"controlModeCB\",
+            stationName+\":LOFAR_PIC_Cabinet3.controlMode:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet3.controlMode:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void controlModeCB(string dp1, string sNewValue,
+                   string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = sNewValue;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 -8.881784197001252e-016 -18 0 E 990.3333333333334 28 1032.333333333333 43.00000000000006
+0 2 2 "0s" 0 0 0 64 0 0  990.3333333333334 28 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 4 auto
+2 19
+"PRIMITIVE_TEXT26"
+""
+1 1280 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 3 2 1 E U  0 E 1280 10 1340 40.00000000000004
+0 2 2 "0s" 0 0 0 64 0 0  1280 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 %
+2 22
+"text_station_name_2"
+""
+1 1330 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+22 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":\"))
+  {
+    this.color = \"Lofar_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"textFieldCB\", stationName+\":LOFAR.status.state\",
+                           stationName+\":LOFAR.status.state:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0) 
+  {
+    this.color = \"Lofar_dpdoesnotexist\";
+  }
+
+}
+
+void textFieldCB(string dp1, int status,
+                 string dp2, bool invalid)
+{
+  this.text = stationName;
+  if (invalid)
+  {
+    this.color = \"Lofar_dpOffline\";
+    this.color = \"black\";
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1330 10 1404 28
+0 2 2 "0s" 0 0 0 64 0 0  1330 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 9 - st nr -
+2 23
+"station48temp"
+""
+1 1450 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+23 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_StationInfo.power48On:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"power48CB\",stationName+\":LOFAR_PIC_StationInfo.power48On:_online.._value\",
+                        stationName+\":LOFAR_PIC_StationInfo.power48On:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void power48CB(string dp1, bool power48,
+                string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    if (power48) 
+    {
+      this.text = \"T\";
+    }
+    else
+    {
+      this.text = \"F\";
+    }
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1450 10 1516 32.00000000000004
+0 2 2 "0s" 0 0 0 64 0 0  1450 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 1
+2 24
+"stationlcutemp"
+""
+1 1490 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+24 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_StationInfo.power220On:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"power220CB\",stationName+\":LOFAR_PIC_StationInfo.power220On:_online.._value\",
+                        stationName+\":LOFAR_PIC_StationInfo.power220On:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void power220CB(string dp1, bool power48,
+                string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    if (power48) 
+    {
+      this.text = \"T\";
+    }
+    else
+    {
+      this.text = \"F\";
+    }
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1490 10 1556 32.00000000000003
+0 2 2 "0s" 0 0 0 64 0 0  1490 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 1
+2 25
+"stationaftemp"
+""
+1 1530 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+25 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_StationInfo.AARTFAAC:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"aartfaacCB\",stationName+\":LOFAR_PIC_StationInfo.AARTFAAC:_online.._value\",
+                         stationName+\":LOFAR_PIC_StationInfo.AARTFAAC:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void aartfaacCB(string dp1, bool aartfaac,
+                string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    if (aartfaac) 
+    {
+      this.text = \"X\";
+    }
+    else
+    {
+      this.text = \"-\";
+    }
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1530 10 1596 32.00000000000003
+0 2 2 "0s" 0 0 0 64 0 0  1530 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 1
+2 26
+"humidity_1"
+""
+1 820 30 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+26 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.humidity:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"humCB\",stationName+\":LOFAR_PIC_Cabinet1.humidity:_online.._value\",
+                    stationName+\":LOFAR_PIC_Cabinet1.humidity:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void humCB(string dp1, float humidity,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = humidity;
+  }
+}
+" 0
+ E 0 1 3 2 1 E 0.9999999999999998 0 1 6.999999999999999 -20 0 E 820 30 886 52.00000000000001
+0 2 2 "0s" 0 0 0 64 0 0  820 30 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 27
+"humidity_2"
+""
+1 1230 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+27 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.humidity:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"humCB\",stationName+\":LOFAR_PIC_Cabinet3.humidity:_online.._value\",
+                    stationName+\":LOFAR_PIC_Cabinet3.humidity:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void humCB(string dp1, float humidity,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = humidity;
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1230 10 1296 32
+0 2 2 "0s" 0 0 0 64 0 0  1230 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 21
+"stationtemptemp3E_TEXT28"
+""
+1 1170 10 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+21 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.temperature:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"tempCB\",stationName+\":LOFAR_PIC_Cabinet3.temperature:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet3.temperature:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void tempCB(string dp1, float temp,
+            string dp2, bool invalid)
+{
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.foreCol = \"black\";
+    this.text = temp;
+  }
+}
+" 0
+ E 0 1 3 2 1 E U  0 E 1170 10 1260 50.00000000000004
+0 2 2 "0s" 0 0 0 64 0 0  1170 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 5 00.00
+2 28
+"frontairflow_0"
+""
+1 300 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+28 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.frontAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"frontAirCB\",stationName+\":LOFAR_PIC_Cabinet0.frontAirflow:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet0.frontAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void frontAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 300 10 310 26
+0 2 2 "0s" 0 0 0 192 0 0  300 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+2 29
+"backairflow_0"
+""
+1 330 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+29 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.backAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"backAirCB\",stationName+\":LOFAR_PIC_Cabinet0.backAirflow:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet0.backAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void backAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 330 10 340 26
+0 2 2 "0s" 0 0 0 192 0 0  330 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+2 30
+"frontairflow_1"
+""
+1 702.9999999999999 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+30 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.frontAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"frontAirCB\",stationName+\":LOFAR_PIC_Cabinet1.frontAirflow:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet1.frontAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void frontAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 702.9999999999999 10 712 26
+0 2 2 "0s" 0 0 0 192 0 0  702.9999999999999 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+2 31
+"backairflow_1"
+""
+1 732.9999999999999 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+31 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet1.backAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"backAirCB\",stationName+\":LOFAR_PIC_Cabinet1.backAirflow:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet1.backAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void backAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 732.9999999999999 10 742 26
+0 2 2 "0s" 0 0 0 192 0 0  732.9999999999999 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+2 32
+"frontairflow_2"
+""
+1 1100 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+32 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.frontAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"frontAirCB\",stationName+\":LOFAR_PIC_Cabinet3.frontAirflow:_online.._value\",
+                     stationName+\":LOFAR_PIC_Cabinet3.frontAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void frontAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 1100 10 1110 26
+0 2 2 "0s" 0 0 0 192 0 0  1100 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+2 33
+"backairflow_2"
+""
+1 1132 10 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+33 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+"main()
+{
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet3.backAirflow:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"backAirCB\",stationName+\":LOFAR_PIC_Cabinet3.backAirflow:_online.._value\",
+                        stationName+\":LOFAR_PIC_Cabinet3.backAirflow:_online.._invalid\");
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+void backAirCB(string dp1, bool flow,
+                string dp2, bool invalid)
+{
+   
+  if (invalid)
+  {
+    this.foreCol = \"Lofar_dpOffline\";
+    this.text = \"\";
+  } 
+  else
+  {
+    this.backCol = \"_Window\";
+    if (flow) 
+    {
+      this.text = \"T\";
+      this.foreCol = \"black\";
+    }
+    else
+    {
+      this.text = \"F\";
+      this.foreCol = \"red\";
+    }
+  }
+}" 0
+ E 0 1 3 2 1 E U  0 E 1132 10 1142 26
+0 2 2 "0s" 0 0 0 192 0 0  1132 10 1
+1
+LANG:1 31 Sans Serif,-1,14,5,50,0,0,0,0,0
+0 1
+LANG:1 1 T
+14 38
+"txt_dooropen2"
+""
+1 556 22 E E E 1 E 1 E N "yellow" E N "black" E E
+ E E
+38 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 34 Nimbus Sans L,-1,13,5,75,0,0,0,0,0
+0  558 6 886 34
+2 "0s" 0 0 0 1 0 -1  E "main()
+{
+  this.visible = false;
+  
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"doorsCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.backDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void doorsCB(string dp1, bool fdoor,
+             string dp2, bool bdoor,
+             string dp3, bool invalid)
+{
+  if (invalid || (!bdoor && !fdoor))
+  {
+    this.visible(false);
+  } 
+  else
+  {
+    this.visible = true;
+    
+    if (fdoor && bdoor)
+    {
+      this.text = \"BOTH DOORS OPEN\";
+    }
+    else if (fdoor)    
+    {
+      this.text = \"FRONT DOOR OPEN\";
+    }
+    else if (bdoor)    
+    {
+      this.text = \"BACK DOOR OPEN\";
+    }
+  }
+}
+" 0
+ E
+14 39
+"txt_dooropen3"
+""
+1 172 20 E E E 1 E 1 E N "yellow" E N "black" E E
+ E E
+39 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 34 Nimbus Sans L,-1,13,5,75,0,0,0,0,0
+0  961 6 1297 34
+2 "0s" 0 0 0 1 0 -1  E "main()
+{
+  this.visible = false;
+  
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"doorsCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.backDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void doorsCB(string dp1, bool fdoor,
+             string dp2, bool bdoor,
+             string dp3, bool invalid)
+{
+  if (invalid || (!bdoor && !fdoor))
+  {
+    this.visible(false);
+  } 
+  else
+  {
+    this.visible = true;
+    
+    if (fdoor && bdoor)
+    {
+      this.text = \"BOTH DOORS OPEN\";
+    }
+    else if (fdoor)    
+    {
+      this.text = \"FRONT DOOR OPEN\";
+    }
+    else if (bdoor)    
+    {
+      this.text = \"BACK DOOR OPEN\";
+    }
+  }
+}
+" 0
+ E
+14 40
+"txt_dooropen4"
+""
+1 1103.029940119761 18 E E E 1 E 1 E N "yellow" E N "black" E E
+ E E
+40 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 34 Nimbus Sans L,-1,13,5,75,0,0,0,0,0
+0  1418 6 1555 34
+2 "0s" 0 0 0 1 0 -1  E "main()
+{
+  this.visible = false;
+  
+  dyn_errClass err;
+
+  if( !dpExists( stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\"))
+  {
+    this.foreCol = \"_dpdoesnotexist\";
+    return;
+  }
+
+  dpConnect(\"doorsCB\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.backDoorOpen:_online.._value\",
+            stationName+\":LOFAR_PIC_Cabinet0.frontDoorOpen:_online.._invalid\"
+            );
+  err = getLastError();
+  if (dynlen(err) > 0)
+    this.foreCol = \"_dpdoesnotexist\";
+
+}
+
+
+void doorsCB(string dp1, bool fdoor,
+             string dp2, bool bdoor,
+             string dp3, bool invalid)
+{
+  if (invalid || (!bdoor && !fdoor))
+  {
+    this.visible(false);
+  } 
+  else
+  {
+    this.visible = true;
+    
+    if (fdoor && bdoor)
+    {
+      this.text = \"BOTH DOORS OPEN\";
+    }
+    else if (fdoor)    
+    {
+      this.text = \"FRONT DOOR OPEN\";
+    }
+    else if (bdoor)    
+    {
+      this.text = \"BACK DOOR OPEN\";
+    }
+  }
+}
+" 0
+ E
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

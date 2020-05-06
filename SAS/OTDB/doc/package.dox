@@ -1,0 +1,10 @@
+/*
+\ingroup OTDB
+\defgroup OTDB OTDB \\Observation-Tree DataBase
+\ref otdb
+
+Package for managing the observation specification and scheduling
+
+
+*/
+

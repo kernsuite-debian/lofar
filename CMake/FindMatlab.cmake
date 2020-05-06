@@ -11,7 +11,7 @@
 # The user can specify MATLAB_ROOT_DIR as a hint to the find_XXX() calls,
 # ensuring that MATLAB_ROOT_DIR is searched before any system directories.
 
-# $Id: FindMatlab.cmake 16402 2010-09-27 14:50:22Z loose $
+# $Id$
 #
 # Copyright (C) 2010
 # ASTRON (Netherlands Institute for Radio Astronomy)

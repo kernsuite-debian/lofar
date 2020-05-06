@@ -144,14 +144,14 @@ def plot(sol, fig=None, sub=None, scatter=False, stack=False, sep=5.0,
     for i in range(0,len(sol)):
         if labels is None:
             if scatter:
-                pylab.scatter(range(0, len(sol[i])), sol[i] + offset,
+                pylab.scatter(list(range(0, len(sol[i]))), sol[i] + offset,
                     edgecolors="None", c=__styles[i % len(__styles)][0],
                     marker="o")
             else:
                 pylab.plot(sol[i] + offset, __styles[i % len(__styles)])
         else:
             if scatter:
-                pylab.scatter(range(0, len(sol[i])), sol[i] + offset,
+                pylab.scatter(list(range(0, len(sol[i]))), sol[i] + offset,
                     edgecolors="None", c=__styles[i % len(__styles)][0],
                     marker="o", label=labels[i])
             else:

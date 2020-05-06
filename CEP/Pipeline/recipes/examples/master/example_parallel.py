@@ -16,7 +16,7 @@ from lofarpipe.support.remotecommand import ComputeJob
 class example_parallel(BaseRecipe, RemoteCommandRecipeMixIn):
     def go(self):
         super(example_parallel, self).go()
-        node_command = "python %s" % (self.__file__.replace("master", "nodes"))
+        node_command = "python3 %s" % (self.__file__.replace("master", "nodes"))
         job = ComputeJob("localhost", node_command, arguments = ["example_argument"])
         self._schedule_jobs([job])
         if self.error.isSet():

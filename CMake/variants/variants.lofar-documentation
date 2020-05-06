@@ -1,7 +1,5 @@
-option(USE_CUDA "Use CUDA" ON)
 option(USE_MPI "Use MPI" ON)
 option(USE_OPENMP "Use OPENMP" ON)
-option(USE_OPENCL "Don't use OPENCL" OFF)
 
 
 set(WINCC_ROOT_DIR /opt/WinCC_OA/3.14)

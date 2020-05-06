@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import unittest
 import tempfile
@@ -11,45 +11,25 @@ def tearDownModule():
     pass
 
 class TestUtils(unittest.TestCase):
-    def test_string_to_buffer_and_back(self):
-        original = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'
+    def test_is_iterable(self):
+        #list
+        self.assertTrue(is_iterable([]))
+        self.assertTrue(is_iterable([1, 2, 3]))
 
-        d = { 'test-key' : original }
-        #print str(d)
-        self.assertTrue(isinstance(d['test-key'], basestring))
+        #dict
+        self.assertTrue(is_iterable({}))
+        self.assertTrue(is_iterable({1:2, 3:4}))
 
-        d2 = convertStringValuesToBuffer(d, 0)
-        print d2
-        self.assertTrue(isinstance(d2['test-key'], buffer))
+        #tuple
+        self.assertTrue(is_iterable((1,2,4)))
 
-        d3 = convertBufferValuesToString(d2)
-        print d3
-        self.assertTrue(isinstance(d3['test-key'], basestring))
-        self.assertEqual(original, d3['test-key'])
+        #string
+        self.assertTrue(is_iterable("abc"))
 
-        #try conversion again but only for long strings
-        d2 = convertStringValuesToBuffer(d, 10000)
-        print d2
-        #type should still be basestring (so no conversion happened)
-        self.assertTrue(isinstance(d2['test-key'], basestring))
+        # non-iterale types
+        self.assertFalse(is_iterable(1))
+        self.assertFalse(is_iterable(None))
 
-        d3 = convertBufferValuesToString(d2)
-        print d3
-        #type should still be basestring (so no conversion back was needed)
-        self.assertTrue(isinstance(d3['test-key'], basestring))
-        self.assertEqual(original, d3['test-key'])
-
-        #try with nested dict
-        d4 = { 'outer': d }
-
-        d2 = convertStringValuesToBuffer(d4, 0)
-        print d2
-        self.assertTrue(isinstance(d2['outer']['test-key'], buffer))
-
-        d3 = convertBufferValuesToString(d2)
-        print d3
-        self.assertTrue(isinstance(d3['outer']['test-key'], basestring))
-        self.assertEqual(original, d3['outer']['test-key'])
 
 def main(argv):
     unittest.main()

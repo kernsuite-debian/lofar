@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixInverse.cc 20625 2012-04-02 09:42:09Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 

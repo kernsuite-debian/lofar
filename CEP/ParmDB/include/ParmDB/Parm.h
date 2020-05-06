@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Parm.h 14038 2009-09-17 13:59:12Z diepen $
+//# $Id$
 
 // @file
 // @brief Class giving access to a parameter
@@ -30,7 +30,7 @@
 #include <ParmDB/Grid.h>
 #include <ParmDB/ParmSet.h>
 #include <Common/lofar_vector.h>
-#include <casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Array.h>
 
 namespace LOFAR {
 namespace BBS {
@@ -122,7 +122,7 @@ namespace BBS {
     // The argument <src>emptyResult</src> tells if an empty result can be
     // returned. Normally this is not the case (otherwise a default would
     // not be picked up), but in case of ParmFacade it is used.
-    void getResult (casa::Array<double>& result, const Grid& predictGrid,
+    void getResult (casacore::Array<double>& result, const Grid& predictGrid,
                     bool emptyResult=false);
 
     // Get the values for the given predict grid.
@@ -132,31 +132,31 @@ namespace BBS {
     // Otherwise only the first array in the vector is filled in.
     // As above, the shape of the array is normally [nx,ny],
     // but can be [1,1] if constant.
-    void getResult (vector<casa::Array<double> >& result,
+    void getResult (vector<casacore::Array<double> >& result,
                     const Grid& predictGrid, bool perturb);
 
     // Form the vector from values and mask.
-    static vector<double> copyValues (const casa::Array<double>& values,
-                                      const casa::Array<bool>& mask,
+    static vector<double> copyValues (const casacore::Array<double>& values,
+                                      const casacore::Array<bool>& mask,
                                       bool useMask);
 
     // Evaluate the result for funklet coefficients.
-    static void getResultCoeff (casa::Array<double>* resultVec,
+    static void getResultCoeff (casacore::Array<double>* resultVec,
                                 const Grid& predictGrid,
                                 const ParmValueSet& pvset,
                                 const vector<double>& perturbations,
                                 AxisMappingCache& axisMappingCache);
 
     // Get the result for a single ParmValue with an array of scalars.
-    static void getResultScalar (casa::Array<double>& result,
+    static void getResultScalar (casacore::Array<double>& result,
                                  const Grid& predictGrid,
                                  const ParmValue& pval,
                                  AxisMappingCache& axisMappingCache);
 
     // Get the result for multiple ParmValues containing scalars.
     // If the <src>errors</src> argument is non-zero, the errors are filled too.
-    static void getResultScalar (casa::Array<double>& result,
-                                 casa::Array<double>* errors,
+    static void getResultScalar (casacore::Array<double>& result,
+                                 casacore::Array<double>* errors,
                                  const Grid& predictGrid,
                                  const ParmValueSet& pvset,
                                  AxisMappingCache& axisMappingCache);

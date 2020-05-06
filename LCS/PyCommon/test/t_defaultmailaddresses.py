@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import unittest
 import tempfile
@@ -15,7 +15,7 @@ def tearDownModule():
 class TestPipelineEmailAddress(unittest.TestCase):
     def test_access_returns_correct_value(self):
         f = tempfile.NamedTemporaryFile()
-        f.write("""
+        f.write(b"""
 [Pipeline]
 error-sender = softwaresupport@astron.nl
         """)
@@ -26,14 +26,14 @@ error-sender = softwaresupport@astron.nl
 
     def test_access_nonexistent_key_raises_exception(self):
         f = tempfile.NamedTemporaryFile()
-        f.write("""
+        f.write(b"""
 [Pipeline]
 error-sender = softwaresupport@astron.nl
         """)
         f.flush()
         pec = PipelineEmailConfig(filepatterns=[f.name])
         with self.assertRaises(Exception):
-            print pec["non-existant"]
+            print(pec["non-existant"])
 
     def test_access_nonexisting_config_file_raises_exception(self):
 
@@ -42,14 +42,14 @@ error-sender = softwaresupport@astron.nl
 
     def test_access_malformed_config_file_raises_exception(self):
         f = tempfile.NamedTemporaryFile()
-        f.write("""
+        f.write(b"""
 [Pipeline]
 error-sender
         """)
         f.flush()
         pec = PipelineEmailConfig(filepatterns=[f.name])
         with self.assertRaises(Exception):
-            print pec["error-sender"]
+            print(pec["error-sender"])
         
 
 def main():

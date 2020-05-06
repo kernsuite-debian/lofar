@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SingleStep.h 30631 2014-12-17 10:43:11Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_BBSSINGLESTEP_H
 #define LOFAR_BBSCONTROL_BBSSINGLESTEP_H

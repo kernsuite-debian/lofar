@@ -168,16 +168,16 @@ int main(int argc, char *argv[])
 
 int run(const ParameterSet &options, const OptionParser::ArgumentList &args)
 {
-  casa::Path pathMS(args[1]);
+  casacore::Path pathMS(args[1]);
   MeasurementAIPS::Ptr ms(new MeasurementAIPS(pathMS.absoluteName()));
 
-  casa::Path pathSourceDB(pathMS);
+  casacore::Path pathSourceDB(pathMS);
   pathSourceDB.append("sky");
   SourceDB sourceDB(ParmDBMeta("casa", options.getString("SourceDB",
     pathSourceDB.absoluteName())));
   ParmManager::instance().initCategory(SKY, sourceDB.getParmDB());
 
-  casa::Path pathParmDB(pathMS);
+  casacore::Path pathParmDB(pathMS);
   pathParmDB.append("instrument");
   ParmDB parmDB(ParmDBMeta("casa", options.getString("ParmDB",
     pathParmDB.absoluteName())));
@@ -237,7 +237,7 @@ int run(const ParameterSet &options, const OptionParser::ArgumentList &args)
     Interval<double>(msFreqRange.first, msFreqRange.second),
     Interval<double>(msTimeRange.first, msTimeRange.second));
 
-  casa::Path logPath(options.getString("LogPath", args[1]));
+  casacore::Path logPath(options.getString("LogPath", args[1]));
   CommandHandlerReducer handler(group, ms, parmDB, sourceDB, logPath);
 
   // Fake initialization.
@@ -334,16 +334,16 @@ int run(const ParameterSet &options, const OptionParser::ArgumentList &args)
 int runDistributed(const ParameterSet &options,
   const OptionParser::ArgumentList &args)
 {
-  casa::Path pathMS(args[2]);
+  casacore::Path pathMS(args[2]);
   MeasurementAIPS::Ptr ms(new MeasurementAIPS(pathMS.absoluteName()));
 
-  casa::Path pathSourceDB(pathMS);
+  casacore::Path pathSourceDB(pathMS);
   pathSourceDB.append("sky");
   SourceDB sourceDB(ParmDBMeta("casa", options.getString("SourceDB",
     pathSourceDB.absoluteName())));
   ParmManager::instance().initCategory(SKY, sourceDB.getParmDB());
 
-  casa::Path pathParmDB(pathMS);
+  casacore::Path pathParmDB(pathMS);
   pathParmDB.append("instrument");
   ParmDB parmDB(ParmDBMeta("casa", options.getString("ParmDB",
     pathParmDB.absoluteName())));
@@ -385,7 +385,7 @@ int runDistributed(const ParameterSet &options,
 
   // Process commands until finished.
   bool wait = false;
-  casa::Path logPath(options.getString("LogPath", args[2]));
+  casacore::Path logPath(options.getString("LogPath", args[2]));
   CommandHandlerReducer handler(makeProcessGroup(session), ms, parmDB, sourceDB,
     logPath);
 

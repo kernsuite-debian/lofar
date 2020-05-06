@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: getparsetvalue.cc 28857 2014-04-07 15:32:08Z diepen $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

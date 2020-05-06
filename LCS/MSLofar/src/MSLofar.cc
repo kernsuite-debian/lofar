@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofar.cc 32355 2015-08-31 10:00:31Z schoenmakers $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -26,10 +26,10 @@
 #include <MSLofar/MSLofarAntenna.h>
 #include <MSLofar/MSLofarField.h>
 #include <MSLofar/MSLofarObservation.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableColumn.h>
-using namespace casa;
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/TableColumn.h>
+using namespace casacore;
 
 namespace LOFAR {
 

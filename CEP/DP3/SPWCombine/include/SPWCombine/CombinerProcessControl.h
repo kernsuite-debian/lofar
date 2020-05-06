@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CombinerProcessControl.h 14046 2009-09-18 07:54:49Z diepen $
+//# $Id$
 //#
 //# @author Adriaan Renting
 
@@ -30,7 +30,7 @@
 /**
 @author Adriaan Renting
 */
-namespace casa
+namespace casacore
 {
   class MeasurementSet; //foreward declaration
 }
@@ -46,7 +46,7 @@ namespace LOFAR
     private:
       vector<std::string> itsInMS;
       std::string  itsOutMS;
-      vector<casa::MeasurementSet*> inMS;
+      vector<casacore::MeasurementSet*> inMS;
       SPWCombine*   itsCombiner;
     public:
       CombinerProcessControl(void);

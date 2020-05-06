@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Box.h 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 // @file
 // @brief Class representing a 2-dim box
@@ -31,7 +31,7 @@
 #include <Common/lofar_vector.h>
 #include <Common/lofar_algorithm.h>
 #include <Common/LofarLogger.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 
 namespace LOFAR {
 namespace BBS {
@@ -114,13 +114,13 @@ namespace BBS {
     bool intersects (const Box& other) const
     {
       return (other.itsStart.first < itsEnd.first
-              && !casa::near(other.itsStart.first, itsEnd.first)
+              && !casacore::near(other.itsStart.first, itsEnd.first)
               && other.itsEnd.first > itsStart.first
-              && !casa::near(other.itsEnd.first, itsStart.first)
+              && !casacore::near(other.itsEnd.first, itsStart.first)
               && other.itsStart.second < itsEnd.second
-              && !casa::near(other.itsStart.second, itsEnd.second)
+              && !casacore::near(other.itsStart.second, itsEnd.second)
               && other.itsEnd.second > itsStart.second
-              && !casa::near(other.itsEnd.second, itsStart.second));
+              && !casacore::near(other.itsEnd.second, itsStart.second));
     }
 
     // A box A contains a box B if all points within or on the border of B
@@ -128,20 +128,20 @@ namespace BBS {
     bool contains (const Box& other) const
     {
       return ((other.itsStart.first >= itsStart.first
-               || casa::near(other.itsStart.first, itsStart.first))
+               || casacore::near(other.itsStart.first, itsStart.first))
               && (other.itsEnd.first <= itsEnd.first
-                  || casa::near(other.itsEnd.first, itsEnd.first))
+                  || casacore::near(other.itsEnd.first, itsEnd.first))
               && (other.itsStart.second >= itsStart.second
-                  || casa::near(other.itsStart.second, itsStart.second))
+                  || casacore::near(other.itsStart.second, itsStart.second))
               && (other.itsEnd.second <= itsEnd.second
-                  || casa::near(other.itsEnd.second, itsEnd.second)));
+                  || casacore::near(other.itsEnd.second, itsEnd.second)));
     }
 
     // Check if the box is empty.
     bool empty() const
     {
-      return (casa::near(itsStart.first, itsEnd.first)
-              || casa::near(itsStart.second, itsEnd.second));
+      return (casacore::near(itsStart.first, itsEnd.first)
+              || casacore::near(itsStart.second, itsEnd.second));
     }
 
     // Return the intersection of this and that box. An empty box is

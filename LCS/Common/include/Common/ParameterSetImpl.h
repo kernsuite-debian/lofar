@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParameterSetImpl.h 23459 2013-01-08 08:49:52Z diepen $
+//# $Id$
 
 #ifndef LOFAR_COMMON_PARAMETERSETIMPL_H
 #define LOFAR_COMMON_PARAMETERSETIMPL_H

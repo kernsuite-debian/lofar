@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                        LOFAR IMAGING PIPELINE
 #
 #                                                        Imager Pipeline recipe
@@ -498,7 +498,7 @@ class msss_imager_pipeline(control):
                 add_beam_tables = add_beam_tables)
 
         # validate that the prepare phase produced the correct data
-        output_keys = outputs.keys()
+        output_keys = list(outputs.keys())
         if not ('mapfile' in output_keys):
             error_msg = "The imager_prepare master script did not"\
                     "return correct data. missing: {0}".format('mapfile')

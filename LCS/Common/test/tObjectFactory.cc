@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tObjectFactory.cc 32490 2015-09-27 21:05:19Z loose $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -38,19 +38,19 @@ void doShapes()
        << ShapeFactory::instance().registeredClassIds()
        << endl;
   {
-    auto_ptr<Shape> shape(ShapeFactory::instance().create("Rectangle"));
+    unique_ptr<Shape> shape(ShapeFactory::instance().create("Rectangle"));
     cout << *shape << endl;
   }
   {
-    auto_ptr<Shape> shape(ShapeFactory::instance().create("Square"));
+    unique_ptr<Shape> shape(ShapeFactory::instance().create("Square"));
     cout << *shape << endl;
   }
   {
-    auto_ptr<Shape> shape(ShapeFactory::instance().create("Ellipse"));
+    unique_ptr<Shape> shape(ShapeFactory::instance().create("Ellipse"));
     cout << *shape << endl;
   }
   {
-    auto_ptr<Shape> shape(ShapeFactory::instance().create("Circle"));
+    unique_ptr<Shape> shape(ShapeFactory::instance().create("Circle"));
     cout << *shape << endl;
   }
 }
@@ -61,17 +61,17 @@ void doCoordinates()
        << CoordinateFactory::instance().registeredClassIds()
        << endl;
   {
-    auto_ptr<Coordinate> coord(CoordinateFactory::instance().
+    unique_ptr<Coordinate> coord(CoordinateFactory::instance().
       create("Cartesian", 2.4, 3.6, 4.8));
     cout << *coord << endl;
   }
   {
-    auto_ptr<Coordinate> coord(CoordinateFactory::instance().
+    unique_ptr<Coordinate> coord(CoordinateFactory::instance().
       create("Cylindrical", 0.6, 1.2, 2.4));
     cout << *coord << endl;
   }
   {
-    auto_ptr<Coordinate> coord(CoordinateFactory::instance().
+    unique_ptr<Coordinate> coord(CoordinateFactory::instance().
       create("Spherical", 0.3, 0.15, 9.6));
     cout << *coord << endl;
   }

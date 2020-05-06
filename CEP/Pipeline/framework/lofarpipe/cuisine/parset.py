@@ -81,7 +81,7 @@ if __name__ == '__main__':
     # Parsets p and q must be equal
     sys.stdout.write('Comparing parameter sets ...   ')
     if p == q:
-        print 'ok'
+        print('ok')
     else:
-        print 'FAIL: Expected equal parameter sets!'
+        print('FAIL: Expected equal parameter sets!')
 

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 40690 2018-09-03 20:13:20Z dijkema $
+# $Id$
 
 # List of header files that will be installed.
 set(inst_HEADERS

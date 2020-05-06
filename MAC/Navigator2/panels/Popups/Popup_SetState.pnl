@@ -1,0 +1,677 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 504 576 N "_3DFace" 1
+"$baseDP"
+"main()
+{
+  Init();
+}" 0
+ E "main(int x, int y)
+{
+  Check();
+}" 0
+ E E 1 -1 -1 0  25 43
+""0  1
+E "string _baseDP;
+bool isHBA = false;
+bool isLBA = false;
+mapping _mStateNr;
+string messageCode = \"\";
+
+dyn_string HBAmodes = makeDynString(\"Free choice\",
+                                    \"REPAIRED (REPAIRED)\",
+                                    \"OSCILLATION (OSC)\",
+                                    \"FLAT (FLAT)\",
+                                    \"HIGH NOISE (HN)\",
+                                    \"SHORT  (SHORT)\",
+                                    \"SPURIOUS (SPUR)\",
+                                    \"LOW NOISE (LN)\",
+                                    \"SUMMATOR NOISE (SN)\",
+                                    \"C-SUMMATOR (CSUM)\",
+                                    \"JITTER > 3dB (JIT)\",
+                                    \"RF element FAIL (E_FAIL)\",
+                                    \"MODEM element FAIL (MODEM)\",
+                                    \"MISSING (MISSING)\");
+
+dyn_string LBAmodes = makeDynString(\"Free choice\",
+                                    \"REPAIRED (REPAIRED)\",
+                                    \"OSCILLATION (OSC)\",
+                                    \"FLAT (FLAT)\",
+                                    \"HIGH NOISE (HN)\",
+                                    \"SHORT  (SHORT)\",
+                                    \"SPURIOUS (SPUR)\",
+                                    \"LOW NOISE (LN)\",
+                                    \"DOWN (DOWN)\",
+                                    \"MISSING (MISSING)\");
+
+
+void Init()
+{
+  _baseDP = $baseDP;
+  
+  // for HBA and LBA elements we have a fixed pile of errors, so we need to determine if we are dealing with
+  // HBAAntenna or LBAAntenna types. If we are, then we can enable a combobox with the available choices and
+ //  put these in the comment accordingly.
+  
+  if (dpTypeName(_baseDP) == \"HBAAntenna\") 
+  {
+    isHBA = true;
+    isLBA = false;
+    fill_cb_comment();
+  } 
+  else if (dpTypeName(_baseDP) == \"LBAAntenna\") 
+  {
+    isLBA = true;
+    isHBA = false;
+    fill_cb_comment();
+  }
+  else
+  {
+    isLBA = false;
+    isHBA = false;
+    txt_ant.visible(false);
+    cb_comment.visible(false);
+    cb_comment.enabled(false);
+  }
+  
+  setWindowTitle( myModuleName(), myPanelName(), \"Set state: \" + _baseDP );
+   
+  cb_state.appendItem( \"Select state...\" );
+  
+  // Fill dropdown with states
+  for (int i = 1; i <= mappinglen(stateName); i++)
+  {
+    string stateText = mappingGetValue(stateName,i);
+    int    stateNr   = mappingGetKey(stateName,i);
+    
+    if( patternMatch( \"*came*\", stateText ) ||
+        patternMatch( \"*went*\", stateText ) )
+    {
+      continue;
+    }
+    
+    cb_state.appendItem( stateText );
+    
+    // Store data in mapping with statetext as key to be able to get the statenr after selection
+    _mStateNr[stateText] = stateNr;
+  }
+ 
+  GetHistory();
+}
+
+void fill_cb_comment() 
+{
+  cb_comment.enabled(true);
+  cb_comment.visible(true);
+  txt_ant.visible(true);
+  cb_comment.deleteAllItems();
+  if (isLBA)
+  {
+    for (int i = 1; i <= dynlen(LBAmodes); i++) 
+    {
+      cb_comment.appendItem(LBAmodes[i]);
+    }
+  }
+  else if (isHBA)
+  {
+    for (int i = 1; i <= dynlen(HBAmodes); i++) 
+    {
+      cb_comment.appendItem(HBAmodes[i]);
+    }
+  }
+}
+
+string strip_comment(string txt) {
+  string code = substr(txt,strpos(txt,\"(\")+1,(strpos(txt,\")\")) - (strpos(txt,\"(\")+1));
+  return code;  
+}
+  
+
+void Check_comment()
+{
+  if (cb_comment.selectedPos > 1)
+  {
+    message.enabled(false);
+    string txt = cb_comment.selectedText;
+    message.text(txt);
+    messageCode = strip_comment(txt);
+  }
+  else
+  {
+    message.text(\"\");
+    message.enabled(true);
+    messageCode = \"\";
+  }
+  
+  
+}
+
+void Check()
+{
+  // when a force of LBA/HBA broken to only the messages in the list is needed we can check for this here also
+  
+  // for now ok button is on when there is chosen a state and a message has been filled.
+  ok.enabled = ( cb_state.selectedPos > 1 ) && ( message.text != \"\" );
+}
+
+
+void Set()
+{
+  int stateNr;
+  string strAlertComment;
+  
+  // Run Check and evaluate if OK button is still enabled
+  Check();
+  
+  if( ok.enabled == false )
+    return;
+  
+  bool recursive = check_recursive.state(0);
+  
+  if( mappingHasKey( _mStateNr, cb_state.selectedText ) )
+  {
+    stateNr = _mStateNr[ cb_state.selectedText ];
+  }
+  else
+  {
+    return;
+  }
+  
+  LOG_DEBUG(\"navPanel.ctl:navPanel_statePopup|recursive=\"+recursive);
+  
+  string database = dpSubStr(_baseDP,DPSUB_SYS);
+  string DPName   = _baseDP + \".status.state\";
+  if (messageCode != \"\") 
+  {
+    strAlertComment = messageCode;
+  }
+  else
+  {
+    strAlertComment = message.text;
+  }
+  
+  if (!recursive)
+  {
+    LOG_DEBUG(\"navPanel.ctl:navPanel_statePopup|Operator sets \"+_baseDP+\".status.state to \"+getStateName(stateNr)+ \" (SINGLE) on database: \"+database);
+    dpSet(database+\"__navObjectState.DPName\",DPName,
+          database+\"__navObjectState.stateNr\",stateNr,
+          database+\"__navObjectState.message\",strAlertComment,
+          database+\"__navObjectState.force\",true);
+
+  } 
+  else
+  {
+    // we will write the info to the __resetObjectState point.
+    // All existing stations, CCU's and MCU's will be connected to this point
+    // via a ctl script that runs on each machine.
+    // that script will do an update (if needed) for their own Database.
+    LOG_DEBUG(\"navPanel.ctl:navPanel_statePopup|Operator sets \"+_baseDP+\".status.state to \"+getStateName(stateNr)+\" (RECURSIVE) on database: \"+database);
+    dpSet(database+\"__resetObjectState.DPName\",_baseDP,
+          database+\"__resetObjectState.stateNr\",stateNr,
+          database+\"__resetObjectState.message\",strAlertComment);
+  }
+  
+  /*
+  
+delay(0,100);  
+  string Query = \"SELECT ALERT '_alert_hdl.._prior' FROM '\" + dpSubStr( DPName, DPSUB_DP_EL ) + \"' REMOTE '\" + dpSubStr( DPName, DPSUB_SYS ) + \"'\";
+  dyn_dyn_anytype ddaAlerts;
+  dpQuery( Query, ddaAlerts );
+  if( dynlen(ddaAlerts) >= 2 )
+  {
+    // Sort on alerttime, descending
+    dynRemove( ddaAlerts, 1 );
+    dynDynSort( ddaAlerts, 2, false );
+    atime AlertTime = ddaAlerts[1][2];
+
+    // Get current comment of alert
+    string comment;
+    alertGet( (time)AlertTime, getACount(AlertTime), dpSubStr(getAIdentifier(AlertTime), DPSUB_SYS_DP_EL_CONF_DET) + \"._comment\", comment);
+    
+    // Add comment
+//    comment += getUserName() + \"|\" + (string)getCurrentTime() + \"|\" + message.text + \"\\uA7\";
+    comment += \"marcel\" + \"|\" + (string)getCurrentTime() + \"|\" + message.text + \"\\uA7\";
+
+    int ret = alertSet( (time)AlertTime, getACount(AlertTime), dpSubStr(getAIdentifier(AlertTime), DPSUB_SYS_DP_EL_CONF_DET) + \"._comment\", comment);
+
+    DebugN( ddaAlerts[1] );
+    
+  }
+//    return;
+  */
+  
+  delay(0,500);
+  PanelOff(); 
+}
+
+
+
+
+void GetHistory()
+{
+  string strQuery;
+  dyn_dyn_anytype ddaHist;  
+  time tNow = getCurrentTime();
+
+  DebugTN( __FUNCTION__, _baseDP );
+  
+  strQuery = \"SELECT ALERT '_alert_hdl.._prior', '_alert_hdl.._add_value_5', '_alert_hdl.._direction', '_alert_hdl.._sum' \" + 
+             \" FROM '\" + _baseDP + \".status.state' \" + 
+             \" REMOTE '\" + dpSubStr( _baseDP, DPSUB_SYS ) + \"'\" + 
+             \" WHERE ('_alert_hdl.._direction' == 1) AND ('_alert_hdl.._sum' == 0)\" +
+             \" TIMERANGE(\\\"\" + (string)tNow + \"\\\",\\\"\" + (string)tNow + \"\\\",1,50)\";
+  
+  dpQuery( strQuery, ddaHist );
+  
+//  DebugTN( strQuery, ddaHist );
+  
+  for( int i=2; i<=dynlen(ddaHist); i++ )
+  {
+    int iPrio           = ddaHist[i][3];
+    string strColor     = ( iPrio == 1 ) ? getStateColor( 0 ) : getStateColor( iPrio );       // Prio state 1 means state 0
+    time tCameTime      = (time)ddaHist[i][2];
+    string strStateText = ddaHist[i][4];
+    
+    TABLEHIST.appendLine( \"PRIO\", makeDynString( iPrio, strColor ),
+                          \"TIME\", (string)tCameTime,
+                          \"STATE\", strStateText,
+                          \"STATETYPE\", ( iPrio <= 10 ) ? \"NORMAL\" : \"\" );                                                    
+  }
+  
+  TABLEHIST.sort( true, \"TIME\" );
+  
+  ShowAllStates( false );
+}
+
+
+void ShowAllStates( bool bShowAll )
+{
+  if( bShowAll )
+  {
+    TABLEHIST.filterRows( makeDynString( \"STATETYPE\" ), makeDynString( \"*\" ), true );
+  }
+  else
+  {
+    TABLEHIST.filterRows( makeDynString( \"STATETYPE\" ), makeDynString( \"NORMAL\" ), false );
+  }
+}
+
+" 0
+ 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+NC
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+22 0
+"cb_state"
+""
+1 10 270 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+0 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  8 270 232 299
+0
+
+E
+"main()
+{
+  Check();
+}" 0
+
+E
+ 0 0
+2 2
+"PRIMITIVE_TEXT2"
+""
+1 10 250 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+2 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E U  0 E 10 250 123 265
+0 2 2 "0s" 0 0 0 192 0 0  10 250 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 20 Select state to set:
+20 3
+"check_recursive"
+""
+1 10 305 E E E 1 E 1 E N "_3DText" E N "_Transparent" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  8 303 227 327
+1
+T 
+1
+LANG:1 29 Set recursive (to all childs)
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+0
+E"main(int button, int state)
+{
+  Check();
+}" 0
+13 4
+"nok"
+""
+1 395 535.5 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+5 0 0 0 27 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 arial,-1,13,5,50,0,0,0,0,0
+0  395 536 493 564
+
+T 
+4
+LANG:1 6 Cancel
+LANG:10000 9 Abbrechen
+LANG:10001 6 Cancel
+LANG:10027 16 Отменить
+"main()
+{
+  PanelOff();
+}
+" 0
+ E E E
+13 5
+"ok"
+""
+1 285 535.5 E E E 0 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+6 0 0 0 16777221 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+0
+4
+LANG:1 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10000 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10001 26 arial,-1,13,5,50,0,0,0,0,0
+LANG:10027 26 arial,-1,13,5,50,0,0,0,0,0
+0  285 536 384 564
+
+T 
+4
+LANG:1 2 OK
+LANG:10000 2 OK
+LANG:10001 2 OK
+LANG:10027 2 OK
+"main()
+{
+  Set();
+}
+" 0
+ E E E
+1 23 0 "" 0
+0
+2 9
+"PRIMITIVE_TEXT3"
+""
+1 11.99999999999994 348 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+8 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E U  0 E 11.99999999999994 348 163 363
+0 2 2 "0s" 0 0 0 192 0 0  11.99999999999994 348 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 22 Enter comment/message:
+29 12
+"message"
+""
+1 9.999999999999998 372 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+11 0 0 0 0 0
+E E "main(bool enter)
+{
+  if( !enter )
+    Check();
+}" 0
+
+0
+1
+LANG:1 0 
+
+1
+"layoutAlignment" "AlignTop"
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  10 372 490 487
+15 PVSS.TextEdit.1
+0
+E22 15
+"cb_comment"
+""
+1 271 270 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+12 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  269 270 493 299
+0
+
+E
+"main()
+{
+  Check_comment();
+}" 0
+
+E
+ 0 0
+2 18
+"txt_ant"
+""
+1 273 253 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+13 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E U  0 E 273 253 471 268
+0 2 2 "0s" 0 0 0 192 0 0  273 253 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 30 Select LBA/HBA comment to set:
+25 21
+"TABLEHIST"
+""
+1 10 30 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+14 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  8 28 492 222
+EE 1 0 1 4 0 "PRIO" 2 1 0 "s" 1
+LANG:1 4 Prio
+E
+1
+LANG:1 0 
+
+40 "TIME" 14 1 0 "s" 1
+LANG:1 4 Time
+E
+1
+LANG:1 0 
+
+162 "STATE" 24 1 0 "s" 1
+LANG:1 13 State comment
+E
+1
+LANG:1 0 
+
+277 "STATETYPE" 6 0 0 "s" 1
+LANG:1 2 #1
+E
+1
+LANG:1 0 
+
+277 
+17 17 10 0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 0 1 1 1 7
+1 0
+2 22
+"PRIMITIVE_TEXT4"
+""
+1 12 13 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+15 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 2 3 2 1 E U  0 E 12 13 83 28
+0 2 2 "0s" 0 0 0 192 0 0  12 13 1
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0 1
+LANG:1 12 Last states:
+20 25
+"CHECK_SHOWALL"
+""
+1 383 7 E E E 1 E 1 E N "_3DText" E N "_Transparent" E E
+ E E
+16 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+0
+1
+LANG:1 26 Arial,-1,13,5,50,0,0,0,0,0
+0  381 5 505 30
+1
+T 
+1
+LANG:1 15 show all states
+
+0 
+1
+LANG:1 0 
+E E
+0 0 0 0 0
+0
+E"main(int button, int state)
+{
+  ShowAllStates( (bool)state );
+}" 0
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+3 0 "PANEL_REF0" -1
+"" ""
+"objects_parts/STD_OBJECTS/ButtonBarBackground.pnl" 10 60 T 4 1.038076152304609 0 1.25 -14.38076152304609 447
+0
+0

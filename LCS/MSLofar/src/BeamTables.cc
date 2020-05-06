@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BeamTables.cc 22387 2012-10-17 12:53:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -34,15 +34,15 @@
 #include <ApplCommon/StationInfo.h>
 #include <Common/StreamUtil.h>
 
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/Cube.h>
-#include <casa/Arrays/MatrixMath.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/Cube.h>
+#include <casacore/casa/Arrays/MatrixMath.h>
 
 using namespace LOFAR;
-using namespace casa;
+using namespace casacore;
 
 void BeamTables::create (Table& ms, bool overwrite)
 {

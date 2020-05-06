@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SolverInterfaceTypes.h 17462 2011-02-23 16:54:09Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_SOLVERINTERFACETYPES_H
 #define LOFAR_BBSKERNEL_SOLVERINTERFACETYPES_H
@@ -28,7 +28,7 @@
 #include <Common/lofar_vector.h>
 #include <Common/lofar_string.h>
 
-#include <scimath/Fitting/LSQFit.h>
+#include <casacore/scimath/Fitting/LSQFit.h>
 
 
 namespace LOFAR
@@ -154,7 +154,7 @@ public:
     {}
 
     uint32          id;
-    casa::LSQFit    equation;
+    casacore::LSQFit    equation;
 };
 
 // BlobStream I/O

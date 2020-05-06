@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobArray.cc 25266 2013-06-11 08:09:03Z diepen $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -131,7 +131,7 @@ BlobIStream& operator>> (BlobIStream& bs, std::vector<bool>& vec)
 }
 
 #if defined(HAVE_AIPSPP) 
-BlobOStream& operator<< (BlobOStream& bs, const casa::IPosition& ipos)
+BlobOStream& operator<< (BlobOStream& bs, const casacore::IPosition& ipos)
 {
   uint64 size = ipos.size();
   putBlobArrayHeader (bs, true,
@@ -143,7 +143,7 @@ BlobOStream& operator<< (BlobOStream& bs, const casa::IPosition& ipos)
   return bs;
 }
 
-BlobIStream& operator>> (BlobIStream& bs, casa::IPosition& ipos)
+BlobIStream& operator>> (BlobIStream& bs, casacore::IPosition& ipos)
 {
   bs.getStart (LOFAR::typeName((const int64**)0));
   bool fortranOrder;

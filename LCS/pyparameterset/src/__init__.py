@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 40691 2018-09-04 08:24:38Z klazema $
+# $Id$
 
 from ._pyparameterset import PyParameterValue
 from ._pyparameterset import PyParameterSet
@@ -137,7 +137,7 @@ class parameterset(PyParameterSet):
     def dict(self, removeQuotes=False):
         """Turn the parset into a dict"""
         d = {}
-        for key in self.keys():
+        for key in list(self.keys()):
             s = self.get(key).get()
             if removeQuotes:
                 if len(s) >= 2  and  s[0] in ['"',"'"]  and  s[0] == s[-1]:
@@ -152,7 +152,7 @@ class parameterset(PyParameterSet):
                 self.replace (kv[0], kv[1])
 
     def adoptDict(self, parms):
-        for (k,v) in parms.items():
+        for (k,v) in list(parms.items()):
             # str(container) calls __repr__ on its items, which ends
             # badly for us for lists of unicode strings ([u"a"] -> ['ua']).
             # We thus stringify the items first.
@@ -266,3 +266,6 @@ class parameterset(PyParameterSet):
             return self._getStringVector1 (key, default)
         return self._getStringVector2 (key, default, expandable)
 
+    def __str__(self):
+        """:returns the parset in a human readable string (lines of key=value, sorted by key)"""
+        return '\n'.join("%s=%s" % (key, self[key]) for key in sorted(self.keys()))

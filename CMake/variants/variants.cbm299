@@ -1,0 +1,7 @@
+## -*- CMake -*-
+##
+## Host specific variants file. 
+## Settings in this file extend or override those in the global variants file.
+##
+
+MESSAGE(FATAL_ERROR "Cannot build cobalt software on cbm299/cbm2head.\nPlease use the cobalt2 build host cbm206.")

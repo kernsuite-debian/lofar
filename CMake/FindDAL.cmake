@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindDAL.cmake 21886 2012-09-04 11:57:26Z mol $
+# $Id$
 
 if(NOT DAL_FOUND)
 

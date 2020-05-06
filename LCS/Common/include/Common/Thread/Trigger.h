@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Trigger.h 30223 2014-10-16 06:48:09Z mol $ 
+//# $Id$ 
 
 #ifndef  LOFAR_LCS_COMMON_TRIGGER_H
 #define  LOFAR_LCS_COMMON_TRIGGER_H

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMeqPolc.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/MNS/MeqPolc.h>
@@ -30,7 +30,7 @@
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 
 
 bool compare (const MeqMatrix& m1, const MeqMatrix& m2)

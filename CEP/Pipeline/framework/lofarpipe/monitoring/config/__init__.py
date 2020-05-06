@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 from os.path import dirname
 
 class Config(object):
@@ -77,5 +77,5 @@ class Config(object):
         return str(self.__valsdict)
 
 if __name__ == "__main__":
-    print __doc__
+    print(__doc__)
     

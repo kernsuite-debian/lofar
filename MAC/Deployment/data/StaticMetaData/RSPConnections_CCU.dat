@@ -1,7 +1,7 @@
 #
 # RSPConnections_CCU.dat (for CCU)
 #
-# $Id: RSPConnections_CCU.dat 22265 2012-10-09 13:13:58Z schoenmakers $
+# $Id$
 #
 # List of Connections between RSP boards and the BG/P at CEP.
 # Each station can have four RSP boards broadcasting at the same

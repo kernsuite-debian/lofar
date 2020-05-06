@@ -20,7 +20,7 @@
 //#
 //#  Note: This source is read best with tabstop 4.
 //#
-//#  $Id: KernelProcessControl.cc 28194 2014-02-05 14:41:55Z dijkema $
+//#  $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -76,7 +76,7 @@
 #include <BBSKernel/Apply.h>
 #include <BBSKernel/Estimate.h>
 
-#include <casa/OS/Path.h>
+#include <casacore/casa/OS/Path.h>
 
 namespace LOFAR
 {
@@ -399,9 +399,9 @@ namespace LOFAR
         itsMeasurement->grid()[FREQ]->range();
 
       ASSERT((freqRangeObs.first >= freqRangeCmd.first
-        || casa::near(freqRangeObs.first, freqRangeCmd.first))
+        || casacore::near(freqRangeObs.first, freqRangeCmd.first))
         && (freqRangeObs.second <= freqRangeCmd.second
-        || casa::near(freqRangeObs.second, freqRangeCmd.second)));
+        || casacore::near(freqRangeObs.second, freqRangeCmd.second)));
 
       // Update domain.
       const pair<double, double> timeRangeCmd(command.getTimeRange());
@@ -923,7 +923,7 @@ namespace LOFAR
         options.setEpsilon(command.epsilon().begin(), command.epsilon().end());
 
         // Open solution log.
-        casa::Path path(itsPath);
+        casacore::Path path(itsPath);
         path.append(command.logName());
         ParmDBLog log(path.absoluteName(),
           ParmDBLoglevel(command.logLevel()).get(), itsChunkCount == 0);

@@ -1,0 +1,9 @@
+#
+# This builds an image with all dependencies for the QA package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for Docker..." && \
+    yum -y install boost-python36-devel readline-devel

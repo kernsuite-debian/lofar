@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Script that parses BBS kernel log for timing information
 #
@@ -66,13 +66,13 @@ class BBSTiming:
             __import__(module)
             return True
       except ImportError:        # Catches every error
-            print "No module ", module, " found"
+            print("No module ", module, " found")
             return False
 
    # Identify if we are working on 
    #
    def identifyLog(self):
-      print "BBStimming.py: identifyLog()"   # DEBUG
+      print("BBStimming.py: identifyLog()")   # DEBUG
       
       # If we find "Pipeline starting" we have a pipeline.log!
       i=0           # only look for i 10 lines
@@ -90,24 +90,24 @@ class BBSTiming:
       if self.logtype=="pipeline":
          # Define timer log format for pipeline.log
          # has additional SUBBAND_FIELD=2 (e.g. node.locus020.bbs.L25960_SAP000_SB231_uv.MS.dppp:)
-         SUBBAND_FIELD, IDENTIFIER, UNIT_FIELD, STEP_FIELD, SUBSTEP_FIELD, TOTAL_KEY, TOTAL_FIELD, COUNT_KEY, COUNT_FIELD, AVG_KEY, AVG_FIELD = range(2, 13)
-         TOTAL_ALL_FIELD, TOTAL_COUNT_FIELD, TOTAL_AVG_FIELD = range(3, 6)
+         SUBBAND_FIELD, IDENTIFIER, UNIT_FIELD, STEP_FIELD, SUBSTEP_FIELD, TOTAL_KEY, TOTAL_FIELD, COUNT_KEY, COUNT_FIELD, AVG_KEY, AVG_FIELD = list(range(2, 13))
+         TOTAL_ALL_FIELD, TOTAL_COUNT_FIELD, TOTAL_AVG_FIELD = list(range(3, 6))
       else:
          # Define timer log format for kernel_<pid>.log
-         IDENTIFIER, UNIT_FIELD, STEP_FIELD, SUBSTEP_FIELD, TOTAL_KEY, TOTAL_FIELD, COUNT_KEY, COUNT_FIELD, AVG_KEY, AVG_FIELD = range(10)
-         TOTAL_ALL_FIELD, TOTAL_COUNT_FIELD, TOTAL_AVG_FIELD = range(3)
+         IDENTIFIER, UNIT_FIELD, STEP_FIELD, SUBSTEP_FIELD, TOTAL_KEY, TOTAL_FIELD, COUNT_KEY, COUNT_FIELD, AVG_KEY, AVG_FIELD = list(range(10))
+         TOTAL_ALL_FIELD, TOTAL_COUNT_FIELD, TOTAL_AVG_FIELD = list(range(3))
 
 
    # Read BBS Kernellog from location and parse it into timing components
    #
    #
    def readLogfile(self, filename):
-      print "readLogfile()"          # DEBUG
+      print("readLogfile()")          # DEBUG
 
       try:
          log_fh=open(filename, "r")
-      except IOError, err:
-         print str(err)
+      except IOError as err:
+         print(str(err))
          raise
 
       # Look for timing information
@@ -239,7 +239,7 @@ class BBSTiming:
       #print "searchSteps = ", searchSteps
         
       if stepName not in searchSteps:
-         print "getSubsteps() ", stepName, "not found in dictionary ", searchSteps, "."
+         print("getSubsteps() ", stepName, "not found in dictionary ", searchSteps, ".")
       else:
          #print "getSubsteps() stepName = ", stepName     # DEBUG
       
@@ -266,10 +266,10 @@ class BBSTiming:
    # Extract processed subbands from pipeline.log
    #
    def getSubbands(self):
-      print "getSubbands()"   # DEBUG
+      print("getSubbands()")   # DEBUG
 
       if self.logtype!="pipeline":
-         print "BBStiming.py: ", self.filename, " is not a pipeline.log"
+         print("BBStiming.py: ", self.filename, " is not a pipeline.log")
          self.subbands=[]
 
 
@@ -303,7 +303,7 @@ class BBSTiming:
       
       # Check if stepname is in steps
       if stepname not in searchSteps:
-         print "getStep() " + stepname + " is not in self.timedSteps"
+         print("getStep() " + stepname + " is not in self.timedSteps")
          return False
       else:
          for line in self.modifiedLines:          # find stepname in lines with matching keyword
@@ -331,7 +331,7 @@ class BBSTiming:
 
       pos=line.find(keyword)
       if pos == -1:
-         print "getValue() " + keyword + " not found."
+         print("getValue() " + keyword + " not found.")
          return False
       else:
          fields=line.split()
@@ -358,10 +358,10 @@ class BBSTiming:
       step=step.upper()
       substep=substep.upper()
       if step not in self.timedSteps:
-         print "getSubStepValue() ", step , "not in", self.timedSteps
+         print("getSubStepValue() ", step , "not in", self.timedSteps)
          return -1
       if len(self.modifiedLines)==0:
-         print "getSubStepValue() no UPPERCASE lines unified"
+         print("getSubStepValue() no UPPERCASE lines unified")
          return -1
 
       for line in self.modifiedLines:
@@ -384,7 +384,7 @@ class BBSTiming:
    # and keyword (default="TOTAL")
    #
    def getSummedValueOfStep(self, step, keyword="TOTAL"):
-      print "getSummedValueOfStep()"      # DEBUG
+      print("getSummedValueOfStep()")      # DEBUG
 
       sum=0                  # depending on the keyword this can be the summed avg, counts or total
       for line in self.lines:       
@@ -400,7 +400,7 @@ class BBSTiming:
    # this can be a step or substep list
    #
    def findPattern(self, pattern, list):
-      print "findExpression()"     # DEBUG
+      print("findExpression()")     # DEBUG
    
       results=[]
       for l in list:
@@ -418,8 +418,8 @@ class BBSTiming:
    
       try:
          outfile_fh=open(filename, "wa")
-      except IOError, err:
-         print str(err)
+      except IOError as err:
+         print(str(err))
 
       if modified==False:
          lines=self.lines
@@ -586,7 +586,7 @@ class PlotWindow(QFrame):
 
 
    def createSubstepComboBox(self):
-      print "createSubstepComboBox()"     # DEBUG
+      print("createSubstepComboBox()")     # DEBUG
 
       self.substepComboBox=QComboBox()    # we create this here once
       self.substepComboBox.hide()
@@ -599,7 +599,7 @@ class PlotWindow(QFrame):
    # numbered steps
    #
    def fillSteps(self):
-      print "fillSteps()"           # DEBUG
+      print("fillSteps()")           # DEBUG
    
       self.stepComboBox.clear()
       # Decide if we want the steps grouped or individually numbered
@@ -619,7 +619,7 @@ class PlotWindow(QFrame):
    # Get the corresponding substeps for a step
    #
    def fillSubsteps(self):
-      print "fillSubsteps()"         # DEBUG
+      print("fillSubsteps()")         # DEBUG
 
       # Get substeps for currently selected step (or all if "all")
       step=str(self.stepComboBox.currentText())
@@ -644,11 +644,11 @@ class PlotWindow(QFrame):
             
             #print "fillSubsteps() index = ", index, "maxCount = ", self.stepComboBox.count()
             step=str(self.stepComboBox.itemText(index))
-            print "fillSubsteps() step = ", step
+            print("fillSubsteps() step = ", step)
             if step != "all" and step != "ALL":
                substeps=self.parent.getSubsteps(step)
             
-               keys=substeps.keys()
+               keys=list(substeps.keys())
                #print "keys = ", keys
                for j in range(len(substeps)-1):
                   #print "fillSubsteps() substeps = ", substeps
@@ -681,7 +681,7 @@ class PlotWindow(QFrame):
    # On timing combobox event
    #
    def createKeywordComboBox(self):   
-      print "createTimingComboBox()"   # DEBUG
+      print("createTimingComboBox()")   # DEBUG
       
       self.keywordComboBox=QComboBox()
       for key in self.parent.keywords:
@@ -694,7 +694,7 @@ class PlotWindow(QFrame):
    # Create a comboBox offering different Matplotlib styles
    #
    def createPlotstyleComboBox(self):
-      print "createPlotstyleComboBox()"     # DEBUG
+      print("createPlotstyleComboBox()")     # DEBUG
       
       self.plotStyleComboBox=QComboBox()
       for style in self.plotStyles:
@@ -707,7 +707,7 @@ class PlotWindow(QFrame):
    # Create subbands comboBox which allows selection of an individual subband
    # from a pipeline.log
    def createSubbandComboBox(self):
-      print "createSubbandComboBox()"   # DEBUG
+      print("createSubbandComboBox()")   # DEBUG
 
       self.subbandComboBox=QComboBox()
       for sub in self.parent.subbands:
@@ -724,7 +724,7 @@ class PlotWindow(QFrame):
    #**************************************
 
    def createConnections(self):
-      print "createConnections()"      # DEBUG
+      print("createConnections()")      # DEBUG
 
       self.connect(self.loadButton, SIGNAL('clicked()'), self.on_loadfile)   
       self.connect(self.quitButton, SIGNAL('clicked()'), self, SLOT('close()')) 
@@ -759,19 +759,19 @@ class PlotWindow(QFrame):
       else:
          setDir=QString('')
 
-      path = unicode(QFileDialog.getOpenFileName(self, 'Load Kernellog', setDir))
+      path = str(QFileDialog.getOpenFileName(self, 'Load Kernellog', setDir))
       path=str(path)  # Convert to string so that it can be used by load table
 
       if path:
          self.parent.readLogfile(path)
       else:
-         print "load_table: invalid path"
+         print("load_table: invalid path")
 
 
    # On step combobox event
    #      
    def on_step(self):
-      print "on_step()"                # DEBUG
+      print("on_step()")                # DEBUG
       #step=str(self.stepComboBox.currentText())
       self.on_plot()
 
@@ -779,7 +779,7 @@ class PlotWindow(QFrame):
    # On substep combobox event
    #
    def on_substep(self):
-      print "on_substep()"             # DEBUG    
+      print("on_substep()")             # DEBUG    
       #step=str(self.stepComboBox.currentText())
       self.on_plot()
 
@@ -787,7 +787,7 @@ class PlotWindow(QFrame):
    # On toggle individual treatment of counted steps
    #
    def on_individualSteps(self):
-      print "on_individualSteps()"     # DEBUG
+      print("on_individualSteps()")     # DEBUG
       self.fillSteps()                 # update steps combobox
       self.on_showSubsteps()           # also update substeps combobox
       #step=str(self.stepComboBox.currentText())
@@ -796,7 +796,7 @@ class PlotWindow(QFrame):
    # On selection of different subbands
    #
    def on_subband(self):
-      print "on_subband()"             # DEBUG
+      print("on_subband()")             # DEBUG
       self.fillSteps()                 # update steps combobox
       self.on_showSubsteps()           # also update substeps combobox
       self.on_plot()
@@ -804,7 +804,7 @@ class PlotWindow(QFrame):
    # On toggling of show substeps
    #
    def on_showSubsteps(self):
-      print "on_substeps()"            # DEBUG
+      print("on_substeps()")            # DEBUG
       
       if self.showSubstepsCheckBox.isChecked()==True:
          self.showSubSteps=True
@@ -818,14 +818,14 @@ class PlotWindow(QFrame):
    # On keyword combobox event
    #
    def on_keyword(self):
-      print "on_keyword()"             # DEBUG
+      print("on_keyword()")             # DEBUG
       self.on_plot()
       
 
    # On change of plot style
    #
    def on_plotStyle(self):
-      print "on_plotStyle()"           # DEBUG
+      print("on_plotStyle()")           # DEBUG
       
       self.plotStyle=self.plotStyleComboBox.currentText()      # change class attribute
  
@@ -835,7 +835,7 @@ class PlotWindow(QFrame):
    def on_plot(self):
       self.fig.clf()       # clear the figure
       
-      print "on_plot()"
+      print("on_plot()")
       
       step=str(self.stepComboBox.currentText())
       self.plot(step)
@@ -857,7 +857,7 @@ class PlotWindow(QFrame):
    # Replot diagram 
    #
    def plot(self, step):
-      print "plot()"                    # DEBUG
+      print("plot()")                    # DEBUG
 
       width=0.25            # width of bar plots
       
@@ -867,7 +867,7 @@ class PlotWindow(QFrame):
       keyword=str(self.keywordComboBox.currentText())
       style=str(self.plotStyleComboBox.currentText())
       
-      print "plot() step = ", step, "substep = ", substep, "keyword = ", keyword, "style = ", style      # DEBUG
+      print("plot() step = ", step, "substep = ", substep, "keyword = ", keyword, "style = ", style)      # DEBUG
 
       self.axes=self.fig.add_subplot(111)          # add 1 subplot to the canvas
       result=[]
@@ -879,13 +879,13 @@ class PlotWindow(QFrame):
          else:
             steps=self.parent.timedSteps
          
-         print "plot() steps = ", steps      # DEBUG        
+         print("plot() steps = ", steps)      # DEBUG        
          for i in range(0, len(steps)):
             #print "plot()", self.parent.getSubStepValue(str(steps[i]), substep, keyword)
             result.append(self.parent.getStepFinal(str(steps[i]), keyword))
             
             #print "len(result) = ", len(result)
-            print "plot() result[" + str(i) + "] = " + str(result[i])
+            print("plot() result[" + str(i) + "] = " + str(result[i]))
             #self.axes.bar(i, result[i], width)
 
       
@@ -895,7 +895,7 @@ class PlotWindow(QFrame):
             steps=self.parent.getSubsteps(step, keyword)
          else:
             steps=self.parent.timedSteps
-            print "steps = ", steps
+            print("steps = ", steps)
             #steps.append(self.parent.timedSteps)
             newsteps=[]
             if isinstance(steps, list):
@@ -904,7 +904,7 @@ class PlotWindow(QFrame):
             
             result=newsteps
       elif substep=="all" or substep=="ALL":
-          print "plot(): substep=all"
+          print("plot(): substep=all")
           result=(self.parent.getSubStepValue(step, keyword))
       elif substep==None or substep=="":
          result=(self.parent.getStepFinal(step, keyword))
@@ -916,8 +916,8 @@ class PlotWindow(QFrame):
       #   result=self.linearizeList(result)
       
       if isinstance(result, list):
-         print "plot() len(result) = ", len(result)        # DEBUG
-         print "plot() result = ", result                  # DEBUG
+         print("plot() len(result) = ", len(result))        # DEBUG
+         print("plot() result = ", result)                  # DEBUG
          #print "plot() result[1] = ", result[1]           # DEBUG
 
       #
@@ -927,7 +927,7 @@ class PlotWindow(QFrame):
       if isinstance(result, float) or isinstance(result, int):
          ind=0
       elif isinstance(result, bool):
-         print "plot() invalid result returned"
+         print("plot() invalid result returned")
       else:
          maxInd=len(result)
          for i in range(0, maxInd):
@@ -935,14 +935,14 @@ class PlotWindow(QFrame):
       
       # Decide on plotstyle which plotting to do
       if self.currentPlotStyle=="bar":
-         print "ind = ", ind           # DEBUG
-         print "result = ", result     # DEBUG
+         print("ind = ", ind)           # DEBUG
+         print("result = ", result)     # DEBUG
          rects1 = self.axes.bar(ind, result, width, color='r')
       
       elif self.currentPlotStyle=="colorbar":
-         print "plot() colorbar"
+         print("plot() colorbar")
       else:
-         print "plot() lines"
+         print("plot() lines")
          self.axes.scatter(0, result)
 
       #
@@ -964,7 +964,7 @@ class PlotWindow(QFrame):
    #*******************************************************   
 
    def linearizeList(self, reorderlist):
-      print "linearizeList()"          # DEBUG
+      print("linearizeList()")          # DEBUG
    
       newlist=[]
       
@@ -989,7 +989,7 @@ class PlotWindow(QFrame):
    # and recreating them
    #   
    def updateWidgets(self):
-      print "updateWidgets()"       # DEBUG
+      print("updateWidgets()")       # DEBUG
 
       self.deleteWidgets()
       self.createWidgets()   
@@ -998,7 +998,7 @@ class PlotWindow(QFrame):
    # Delete GUI Widgets that are created dynamically from the log
    #
    def deleteWidgets(self):         # DEBUG
-      print "deleteWidgets()"
+      print("deleteWidgets()")
       
       self.stepComboBox.deleteLater()
       self.keywordComboBox.deleteLater()
@@ -1017,12 +1017,12 @@ class PlotWindow(QFrame):
 # Display usage help info (is not part of class)
 #
 def usage():
-   print "Usage: ", sys.argv[0], "<options> <filename>"
-   print "" 
-   print "-o --output      output to ASCII text"
-   print "-p --parameter   display info for only specific parameter"
-   print "-v --verbose     activate verbose output"
-   print "-h --help        display this help information"
+   print("Usage: ", sys.argv[0], "<options> <filename>")
+   print("") 
+   print("-o --output      output to ASCII text")
+   print("-p --parameter   display info for only specific parameter")
+   print("-v --verbose     activate verbose output")
+   print("-h --help        display this help information")
 
 
 #****************************************
@@ -1052,8 +1052,8 @@ def main():
    output=""
    try:
       opts, args = getopt.getopt(sys.argv[1:], "ho:p:v", ["help", "output", "parameter", "verbose"])
-   except getopt.GetoptError, err:
-      print str(err)
+   except getopt.GetoptError as err:
+      print(str(err))
       usage()
       sys.exit(2)
    output = None

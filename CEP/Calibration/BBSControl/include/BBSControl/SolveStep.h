@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SolveStep.h 30631 2014-12-17 10:43:11Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_BBSSOLVESTEP_H
 #define LOFAR_BBSCONTROL_BBSSOLVESTEP_H
@@ -33,7 +33,7 @@
 #include <Common/lofar_vector.h>
 #include <Common/lofar_string.h>
 
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 
 namespace LOFAR
@@ -116,7 +116,7 @@ namespace LOFAR
 
       bool                  shift()             const
         { return itsShiftFlag; }
-      casa::MDirection      direction()         const
+      casacore::MDirection      direction()         const
         { return itsDirection; }
 
       unsigned int          maxIter()           const
@@ -197,7 +197,7 @@ namespace LOFAR
       // TODO: Extend casacore with I/O stream operators for MDirection
       // instances (alla MVAngle but including the reference type, e.g. J2000).
       vector<string>        itsDirectionASCII;
-      casa::MDirection      itsDirection;
+      casacore::MDirection      itsDirection;
 
       // Maximum number of iterations.
       unsigned int          itsMaxIter;

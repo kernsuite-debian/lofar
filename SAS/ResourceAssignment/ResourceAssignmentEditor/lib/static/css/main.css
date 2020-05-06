@@ -1,0 +1,242 @@
+/* $Id: app.js 32724 2015-10-28 13:24:49Z schaap $ */
+
+body {
+    font-family: DejaVu Sans Monospace;
+    font-size: 12px;
+}
+
+.grid {
+    height: 100%;
+    width: 100%;
+
+}
+
+.stretch {
+    overflow: initial;
+}
+
+.gantt {
+    min-height: 100px;
+}
+
+.dropdown-menu {
+    z-index: 1010;
+}
+
+.md-dialog-container {
+    z-index: 1000;
+}
+
+.ui-grid-cell {
+    overflow: visible;
+    padding: 0px 2px;
+}
+
+.datepicker-wrapper ul {
+/*     visibility: hidden; */
+}
+
+.ui-splitbar {
+    z-index: 1000;
+}
+
+.ui-layout-row > .ui-splitbar {
+    height: 6px;
+    background-color: #CCCCCC;
+}
+
+.ui-layout-column > .ui-splitbar {
+    width: 6px;
+    background-color: #CCCCCC;
+}
+
+ul.uib-datepicker-popup.dropdown-menu button.btn.btn-sm.btn-danger.uib-clear {
+    visibility: hidden;
+}
+
+table.uib-timepicker td.uib-time {
+    max-width: 50px;
+}
+
+
+.gantt-current-date-line {
+    border: 2px solid #000000;
+    z-index: 0;
+}
+
+.gantt-side {
+    width: 180px;
+}
+
+.top-stretch {
+    top: 65px;
+}
+
+.modal-content {
+    width: 105%
+}
+
+.modal-dialog {
+    width: 960px
+}
+
+.md-dialog-content {
+    font-size: 14px;
+}
+
+.gantt-task-content {
+/* margin-top: 2.2px; */
+  padding-top: 2.2px;
+}
+
+.gantt-task.task-selected-task {
+  border: 1.5px solid #000000;
+  border-radius: 2px;
+}
+
+.gantt-task.claim-selected-task {
+  border: 1.5px solid #777777;
+  border-radius: 2px;
+}
+
+.gantt-task.claim-selected-claim {
+  border: 1.5px solid #000000;
+  border-radius: 2px;
+}
+
+div.gantt-task span {
+  padding: 0px 10px;
+}
+
+
+/* 
+   The same status coloring is used for both the grid items and the gantt-chart items (a.k.a. tasks)
+*/
+
+.grid-status-prepared, 
+div.gantt-task.task-status-prepared div,
+div.gantt-task.claim-task-status-prepared span {
+  background-color: #cccccc !important;
+}
+
+.grid-status-opened,
+div.gantt-task.task-status-opened div,
+div.gantt-task.claim-task-status-opened span {
+  background-color: #aaaaaa !important;
+}
+
+.grid-status-suspended,
+div.gantt-task.task-status-suspended div,
+div.gantt-task.claim-task-status-suspended span {
+  background-color: #776666 !important;
+}
+
+.grid-status-approved,
+div.gantt-task.task-status-approved div,
+div.gantt-task.claim-task-status-approved span {
+  background-color: #8cb3d9 !important;
+}
+
+.grid-status-on_hold,
+div.gantt-task.task-status-on_hold div,
+div.gantt-task.claim-task-status-on_hold span {                                                               
+  background-color: #b34700 !important;
+  color: #ffffff;
+}
+
+.grid-status-conflict, 
+div.gantt-task.task-status-conflict div,
+div.gantt-task.claim-task-status-conflict span {
+  background-color: #ff0000 !important;
+}
+
+.grid-status-prescheduled, 
+div.gantt-task.task-status-prescheduled div,
+div.gantt-task.claim-task-status-prescheduled span {
+  background-color: #6666ff !important;
+  color: #ffffff;
+}
+
+.grid-status-scheduled, .grid-status-blocked, 
+div.gantt-task.task-status-scheduled div,
+div.gantt-task.task-status-blocked div,
+div.gantt-task.claim-task-status-scheduled span {
+  background-color: #0000ff !important;
+  color: #ffffff;
+}
+
+.grid-status-queued, 
+div.gantt-task.task-status-queued div,
+div.gantt-task.claim-task-status-queued span {
+  background-color: #ccffff !important;
+}
+
+.grid-status-active, 
+div.gantt-task.task-status-active div,
+div.gantt-task.claim-task-status-active span {
+  background-color: #ffff00 !important;
+}
+
+.grid-status-completing, 
+div.gantt-task.task-status-completing div,
+div.gantt-task.claim-task-status-completing span {
+  background-color: #ffdd99 !important;
+}
+
+.grid-status-finished, 
+div.gantt-task.task-status-finished div,
+div.gantt-task.claim-task-status-finished span {
+  background-color: #00ff00 !important;
+}
+
+.grid-status-aborted, 
+div.gantt-task.task-status-aborted div,
+div.gantt-task.claim-task-status-aborted span {
+  background-color: #cc0000 !important;
+  color: #ffffff;
+}
+
+.grid-status-error, 
+div.gantt-task.task-status-error div,
+div.gantt-task.claim-task-status-error span {
+  background-color: #990033 !important;
+  color: #ffffff;
+}
+
+.grid-status-obsolete,
+div.gantt-task.task-status-obsolete div,
+div.gantt-task.claim-task-status-obsolete span {
+  background-color: #bcb39c !important;
+}
+
+div.gantt-task.task-status-blocked div {
+/*   background-image: url(/static/icons/blocked.png);
+   background-repeat: no-repeat; */
+}
+
+div.gantt-task.task-status-blocked div{ 
+   background-position: left 50%;
+}
+
+
+.grid-cluster-CEP2 {
+  background-color: #ccffff !important;
+}
+
+.grid-cluster-CEP4 {
+  background-color: #ccffcc !important;
+}
+
+.grid-cluster-DRAGNET {
+  background-color: #ffffcc !important;
+}
+
+
+
+
+
+
+
+
+
+

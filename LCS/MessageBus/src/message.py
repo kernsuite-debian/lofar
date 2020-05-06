@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
 #
@@ -17,12 +17,14 @@
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
 try:
-  import qpid.messaging as messaging
+  import proton
+  import proton.utils
   MESSAGING_ENABLED = True
 except ImportError:
-  import noqpidfallback as messaging
+  from . import noqpidfallback as proton
   MESSAGING_ENABLED = False
 
+import uuid
 import xml.dom.minidom as xml
 import xml.parsers.expat as expat
 from xml.sax.saxutils import escape
@@ -66,7 +68,7 @@ def _uuid():
   """
     Return an UUID
   """
-  return str(messaging.uuid4())
+  return str(uuid.uuid4())
 
 class MessageException(Exception):
     pass
@@ -75,8 +77,8 @@ class XMLDoc(object):
     def __init__(self, content):
       try:
         self.document = xml.parseString(content)
-      except expat.ExpatError, e:
-        #print "Could not parse XML message content: ", e, qpidMsg.content
+      except expat.ExpatError as e:
+        #print "Could not parse XML message content: ", e, qpidMsg.body
         raise MessageException(e)
 
     def content(self):
@@ -136,7 +138,7 @@ class XMLDoc(object):
       for child in node.childNodes:
         if child.nodeType == child.TEXT_NODE:
           node.replaceChild(newchild, child)
-          break;
+          break
       else:
         node.appendChild(newchild)
 
@@ -166,7 +168,7 @@ class MessageContent(object):
 
     def __init__(self, from_="", forUser="", summary="", protocol="", protocolVersion="", momid="", sasid="", qpidMsg=None):
       # Add properties to get/set header fields
-      for name, element in self._property_list().iteritems():
+      for name, element in self._property_list().items():
         self._add_property(name, element)
 
       # Set the content from either the parameters or from the provided qpidMsg
@@ -190,19 +192,26 @@ class MessageContent(object):
         # Try to encode '<', '&', '>' in the content payload, whenever possible.
         # Content header should not have these. For C++ MessageBus non-libxml++
         # builds, skip encode if XML tags continue in <payload>. Hack ahead!
-        if qpidMsg.content is None:
-          qpidMsg.content = ''  # avoid find() or replace() via escape() on None
-        plIdx = qpidMsg.content.find('<payload>')
+        if qpidMsg.body is None:
+          qpidMsg.body = ''  # avoid find() or replace() via escape() on None
+
+        if isinstance(qpidMsg.body, bytes):
+            qpidMsg.body = qpidMsg.body.decode('utf-8')
+
+        plIdx = qpidMsg.body.find('<payload>')
+        if isinstance(qpidMsg.body, bytes):
+            qpidMsg.body = qpidMsg.body.decode('utf-8')
+
         if plIdx != -1:
           plIdx += len('<payload>')
-          plEndIdx = qpidMsg.content.rfind('</payload>', plIdx)
+          plEndIdx = qpidMsg.body.rfind('</payload>', plIdx)
           if plEndIdx != -1:
-            eqIdx = qpidMsg.content.find('=', plIdx, plEndIdx)  # non-empty parset
-            if eqIdx != -1 and eqIdx < qpidMsg.content.find('<', plIdx, plEndIdx):
-              qpidMsg.content = qpidMsg.content[ : plIdx] + \
-                                escape(qpidMsg.content[plIdx : plEndIdx]) + \
-                                qpidMsg.content[plEndIdx : ]
-        self.document = XMLDoc(qpidMsg.content)  # may raise MessageException
+            eqIdx = qpidMsg.body.find('=', plIdx, plEndIdx)  # non-empty parset
+            if eqIdx != -1 and eqIdx < qpidMsg.body.find('<', plIdx, plEndIdx):
+              qpidMsg.body = qpidMsg.body[ : plIdx] + \
+                                escape(qpidMsg.body[plIdx : plEndIdx]) + \
+                                qpidMsg.body[plEndIdx : ]
+        self.document = XMLDoc(qpidMsg.body)  # may raise MessageException
 
     def _add_property(self, name, element):
       def getter(self):
@@ -214,7 +223,7 @@ class MessageContent(object):
 
     def _property_list(self):
       """ List of XML elements that are exposed as properties. """
-      return { 
+      return {
         "system":          "message.header.system",
         "headerVersion":   "message.header.version",
         "protocol":        "message.header.protocol.name",
@@ -246,8 +255,8 @@ class MessageContent(object):
     def qpidMsg(self):
       """ Construct a NEW QPID message. """
 
-      msg = messaging.Message(content_type="text/plain", durable=True)
-      msg.content = self.content()
+      msg = proton.Message(content_type="text/plain", durable=True)
+      msg.body = self.content()
 
       return msg
 
@@ -269,7 +278,7 @@ class Message(object):
       return MessageContent(qpidMsg=self._qpidMsg)
 
     def raw_content(self):
-      return self._qpidMsg.content
+      return self._qpidMsg.body
 
     def __repr__(self):
       msg = self.content()
@@ -277,6 +286,5 @@ class Message(object):
 
 if __name__ == "__main__":
   m = MessageContent("FROM", "FORUSER", "SUMMARY", "PROTOCOL", "1.2.3", "11111", "22222")
-  print str(m)
-  print m.content()
-
+  print(str(m))
+  print(m.content())

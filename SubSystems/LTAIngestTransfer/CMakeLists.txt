@@ -1,0 +1,1 @@
+lofar_package(LTAIngestTransfer DEPENDS LTAIngestTransferServer LTAIngestClient)

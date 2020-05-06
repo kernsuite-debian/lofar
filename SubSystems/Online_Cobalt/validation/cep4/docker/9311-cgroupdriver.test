@@ -1,0 +1,15 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+# Test for cgroupdriver=cgroupfs workaround for Docker 1.9.1
+
+DOCKER_VERSION=`docker --version | awk '{ print $3; }'`
+
+[ "$DOCKER_VERSION" == "1.9.1," ] || exit 0
+
+# Docker startup line must contain "--exec-opt=native.cgroupdriver=cgroupfs"
+fgrep "ExecStart" /usr/lib/systemd/system/docker.service | fgrep -- "--exec-opt=native.cgroupdriver=cgroupfs" || exit 1
+
+exit 0

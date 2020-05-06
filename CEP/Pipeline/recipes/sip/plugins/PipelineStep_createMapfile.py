@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 import re
 from lofarpipe.support.data_map import DataMap
@@ -18,7 +18,7 @@ def plugin_main(args, **kwargs):
             exclude = False
             if 'exclude_pattern' in kwargs and kwargs['exclude_pattern']:
                 exclude = True
-                if isinstance(kwargs['exclude_pattern'], basestring) and kwargs['exclude_pattern'] == 'False':
+                if isinstance(kwargs['exclude_pattern'], str) and kwargs['exclude_pattern'] == 'False':
                     exclude = False
             datamap = _create_mapfile_from_folder(kwargs['folder'], kwargs['pattern'], exclude)
         else:
@@ -84,20 +84,20 @@ class MapfileManager(DataMap):
     def expand(self, number, hostlist=None, filelist=None):
         if hostlist:
             if len(hostlist) != number:
-                print 'Error: length of hostlist should correspond to number of expansions'
+                print('Error: length of hostlist should correspond to number of expansions')
                 exit(1)
         else:
-            print 'Info: no hostlist given. Will use "localhost" instead'
+            print('Info: no hostlist given. Will use "localhost" instead')
             hostlist = []
             for item in range(number):
                 hostlist.append('localhost')
 
         if filelist:
             if len(filelist) != number:
-                print 'Error: length of hostlist should correspond to number of expansions'
+                print('Error: length of hostlist should correspond to number of expansions')
                 exit(1)
         else:
-            print 'Info: no filelist given. Will use "dummy" instead'
+            print('Info: no filelist given. Will use "dummy" instead')
             filelist = []
             for item in range(number):
                 filelist.append('dummy')
@@ -185,7 +185,7 @@ class MapfileManager(DataMap):
         datalist = self._input_to_list(data)
         skiplist = self._input_to_list(skip)
         if len(hostlist) is not len(datalist) or len(hostlist) is not len(skiplist) or len(hostlist) is not ntimes:
-            print 'Length of parts is not equal. Will expand to max length given.'
+            print('Length of parts is not equal. Will expand to max length given.')
             maxval = max(len(hostlist), len(datalist), len(skiplist), ntimes)
             lastval = hostlist[-1]
             if len(hostlist) is not maxval:
@@ -225,7 +225,7 @@ class MultiDataProduct(DataProduct):
             self.file = list()
         else:
             self._set_file(file)
-        print 'FILE: ', self.file
+        print('FILE: ', self.file)
 
     def __repr__(self):
         """Represent an instance as a Python dict"""
@@ -251,13 +251,13 @@ class MultiDataProduct(DataProduct):
             raise DataProduct("No known method to set a filelist from %s" % str(file))
 
     def _from_dataproduct(self, prod):
-        print 'setting filelist from DataProduct'
+        print('setting filelist from DataProduct')
         self.host = prod.host
         self.file = prod.file
         self.skip = prod.skip
 
     def _from_datamap(self, inmap):
-        print 'setting filelist from DataMap'
+        print('setting filelist from DataMap')
         filelist = {}
         for item in inmap:
             if not item.host in filelist:
@@ -284,17 +284,17 @@ class MultiDataMap(DataMap):
                     mdpdict[item.host] = []
                 mdpdict[item.host].append(item.file)
             mdplist = []
-            for k, v in mdpdict.iteritems():
+            for k, v in mdpdict.items():
                 mdplist.append(MultiDataProduct(k, v, False))
             self._set_data(mdplist, dtype=MultiDataProduct)
         else:
-            print 'HELP: ', data
+            print('HELP: ', data)
             self._set_data(data, dtype=MultiDataProduct)
 
     def split_list(self, number):
         mdplist = []
         for item in self.data:
-            for i in xrange(0, len(item.file), number):
+            for i in range(0, len(item.file), number):
                 chunk = item.file[i:i+number]
                 mdplist.append(MultiDataProduct(item.host, chunk, item.skip))
         self._set_data(mdplist)

@@ -1,0 +1,5 @@
+This directory contains templates for LOFAR microservices in Python. To use:
+
+* Clone this directory into a new folder.
+* Replace all occurances of "Skeleton" and "skeleton" with the name of the new service.
+* Update CMake/LofarPackageList.cmake to make the new packages known to CMake.

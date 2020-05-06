@@ -4,7 +4,7 @@
 #                                                            John Swinbank, 2010
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os.path
 import sys
 import imp
@@ -31,7 +31,7 @@ class make_flaggable(LOFARnodeTCP):
             try:
                 mFw_module = imp.load_source('mFw_module', makeFLAGwritable)
                 mFw_module.makeFlagWritable(infile, '')
-            except Exception, e:
+            except Exception as e:
                 self.logger.warn(str(e))
                 return 1
 

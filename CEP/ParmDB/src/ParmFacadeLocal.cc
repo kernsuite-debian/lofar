@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacadeLocal.cc 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacadeLocal.h>
@@ -28,11 +28,11 @@
 #include <ParmDB/Parm.h>
 #include <Common/LofarLogger.h>
 #include <Common/StringUtil.h>
-#include <casa/Utilities/Regex.h>
-#include <casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Utilities/Regex.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 // Create tParmFacade.in_mep with parmdb using:
 //   create tablename='tParmFacade.in_mep'

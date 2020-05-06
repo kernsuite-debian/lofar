@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 40029 2018-08-24 06:27:42Z klazema $
+# $Id$
 
 lofar_add_package(Calibration)
 lofar_add_package(DP3)
@@ -10,4 +10,3 @@ lofar_add_package(ParmDB)
 lofar_add_package(Pipeline)
 lofar_add_package(PyBDSM)
 lofar_add_package(pyparmdb)
-lofar_add_package(LAPS)

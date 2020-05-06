@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmDBCasa.h 29469 2014-06-10 09:37:25Z diepen $
+//# $Id$
 
 // @file
 // @brief Class to hold parameters in a Casa table
@@ -29,9 +29,9 @@
 
 //# Includes
 #include <ParmDB/ParmDB.h>
-#include <casa/Arrays/Array.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ArrayColumn.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
 
 
 namespace LOFAR {
@@ -119,25 +119,25 @@ namespace BBS {
 
     // If not empty, put the domain into the table.
     // The DOMAIN column is added to the table if it does not exist.
-    void putDefDomain (const Box& domain, casa::Table& tab, uint rownr);
+    void putDefDomain (const Box& domain, casacore::Table& tab, uint rownr);
 
     // If defined in the table, set the scale domain in the ParmValue.
-    Box getDefDomain (const casa::Table& tab, uint row);
+    Box getDefDomain (const casacore::Table& tab, uint row);
 
     // Get a selection from the NAME table.
     // <group>
-    casa::Table getNameSel (const std::string& parmNamePattern) const;
-    casa::Vector<uint> getNameIds (const std::string& parmNamePattern) const;
-    casa::Vector<uint> getNameIds (const std::vector<std::string>& parmNames) const;
+    casacore::Table getNameSel (const std::string& parmNamePattern) const;
+    casacore::Vector<uint> getNameIds (const std::string& parmNamePattern) const;
+    casacore::Vector<uint> getNameIds (const std::vector<std::string>& parmNames) const;
     // </group>
 
     // Find the minmax range in the table.
-    Box findRange (const casa::Table& table) const;
+    Box findRange (const casacore::Table& table) const;
 
     // Extract the parm values from a table selection with a single parm name.
     // <group>
-    //void extractValues (ParmMap& result, const casa::Table& table);
-    pair<string,ParmValueSet> extractDefValue (const casa::Table& sel, int row);
+    //void extractValues (ParmMap& result, const casacore::Table& table);
+    pair<string,ParmValueSet> extractDefValue (const casacore::Table& sel, int row);
     // </group>
 
     // Do the actual put of a value.
@@ -159,29 +159,29 @@ namespace BBS {
     void putNewDefValue (const string& parmName, const ParmValueSet& value);
 
     // Put the begin/end of an irregular axis.
-    void putInterval (const Axis& axis, casa::ArrayColumn<double>& col,
+    void putInterval (const Axis& axis, casacore::ArrayColumn<double>& col,
                       uint rownr);
 
     // Form an axis from the interval array in the given row.
     // If no interval array, return a regular axis made from (st,end,n).
-    Axis::ShPtr getInterval (casa::ROArrayColumn<double>& col, uint rownr,
+    Axis::ShPtr getInterval (casacore::ROArrayColumn<double>& col, uint rownr,
                              double st, double end, uint n);
 
     // Find the table subset containing the parameter values for the
     // requested domain.
-    casa::Table find (const std::string& parmName, 
+    casacore::Table find (const std::string& parmName, 
                       const Box& domain);
 
     // Create a select expression node on domain.
-    casa::TableExprNode makeExpr (const casa::Table& table,
+    casacore::TableExprNode makeExpr (const casacore::Table& table,
                                   const Box& domain) const;
 
     // And two table select expressions, where the first one can be null.
-    void andExpr (casa::TableExprNode& expr,
-                  const casa::TableExprNode& right) const;
+    void andExpr (casacore::TableExprNode& expr,
+                  const casacore::TableExprNode& right) const;
 
     //# Data members
-    casa::Table itsTables[3];    //# normal,names,default
+    casacore::Table itsTables[3];    //# normal,names,default
   };
 
   // @}

@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPython.cmake 39709 2018-06-14 12:07:59Z dijkema $
+# $Id$
 
 # Set options string to pass to the find_package() commands below.
 set(_options ${Python_FIND_VERSION})

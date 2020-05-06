@@ -38,7 +38,7 @@ def demixing (msname, mixingname, avg_msnames, N_channel_per_cell, N_time_per_ce
    if N_channel_per_cell > N_channel:
       N_channel_per_cell = N_channel
 
-   print "Number of channels: %i" % N_channel
+   print("Number of channels: %i" % N_channel)
 
    wavelength = c / freqs
 
@@ -107,10 +107,10 @@ def demixing (msname, mixingname, avg_msnames, N_channel_per_cell, N_time_per_ce
                 'valueType': 'complex'}}
    t_mix = pyrap.tables.table(mixingname, tabledesc, nrow = len(avg_tables[0]))
 
-   for avg_msname, i in zip(avg_msnames, range(len(avg_msnames))) :
+   for avg_msname, i in zip(avg_msnames, list(range(len(avg_msnames)))) :
       t_mix.putcolkeywords('MIXING', {'avg_msname%i' % i :avg_msname})
    
-   for avg_dem_msname, i in zip(avg_dem_msnames, range(len(avg_dem_msnames))) :
+   for avg_dem_msname, i in zip(avg_dem_msnames, list(range(len(avg_dem_msnames)))) :
       t_mix.putcolkeywords('MIXING', {'avg_dem_msname%i' % i: avg_dem_msname})
    
 

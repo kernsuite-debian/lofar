@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TaskFeedbackDataproducts.h 31845 2015-06-18 10:13:45Z mol $
+//# $Id$
 
 #ifndef LOFAR_MESSAGEBUS_TASK_FEEDBACK_DATAPRODUCTS_H
 #define LOFAR_MESSAGEBUS_TASK_FEEDBACK_DATAPRODUCTS_H

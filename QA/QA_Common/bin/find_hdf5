@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
+# P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
+#
+# This file is part of the LOFAR software suite.
+# The LOFAR software suite is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# The LOFAR software suite is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
+
+if __name__ == '__main__':
+    import logging
+    logger = logging.getLogger(__name__)
+
+    import os
+    import os.path
+    import sys
+    import fnmatch
+    from pathlib import Path
+    from optparse import OptionParser, OptionGroup
+    from datetime import datetime, timedelta
+
+    from lofar.parameterset import *
+    from lofar.qa.hdf5_io import *
+    from lofar.common.datetimeutils import parseDatetime
+
+    # make sure we run in UTC timezone
+    os.environ['TZ'] = 'UTC'
+
+    # Check the invocation arguments
+    parser = OptionParser(usage='find_hdf5 [options] <path_or_current_dir_if_omitted>',
+                          description='find all h5 files in <path> matching the given filter options.')
+
+    group = OptionGroup(parser, "Type", "Filter by observation/pipeline type. If all type options are omitted, then all types are selected")
+    group.add_option('-o', '--observation', dest='observation', action='store_true', default=False,
+                      help='find observations. default: %default')
+    group.add_option('-p', '--pipeline', dest='pipeline', action='store_true', default=False,
+                      help='find pipelines. default: %default')
+    parser.add_option_group(group)
+
+    group = OptionGroup(parser, "Antenna", "Filter by antenna type (LBA/HBA). If all antenna options are omitted, then all types are selected. If an antenna option is given, then only observations are selected.")
+    group.add_option('--lba', dest='lba', action='store_true', default=False,
+                      help='find LBA observations. default: %default')
+    group.add_option('--hba', dest='hba', action='store_true', default=False,
+                      help='find HBA observations. default: %default')
+    parser.add_option_group(group)
+
+    group = OptionGroup(parser, "Name/Project", "Filter by observation/project name. Wildcards are allowed.")
+    group.add_option('--name', dest='name', type='string', default=None,
+                      help='find by observation name (use quotes when using wildcards). default: %default')
+    group.add_option('--project', dest='project', type='string', default=None,
+                      help='find by project name/description (use quotes when using wildcards). default: %default')
+    parser.add_option_group(group)
+
+    group = OptionGroup(parser, "Date/Duration", "Filter by starttime/endtime date and/or duration.")
+    group.add_option('-d', '--date', dest='date', type='string', default=None,
+                      help='find by observations/pipelines by date (YYYY-MM-DD). default: %default')
+    group.add_option('--min_duration', dest='min_duration', type='string', default=None,
+                      help='find by observations/pipelines which are at least this duration long (HH:MM). default: %default')
+    group.add_option('--max_duration', dest='max_duration', type='string', default=None,
+                      help='find by observations/pipelines which are at most this duration long (HH:MM). default: %default')
+    parser.add_option_group(group)
+
+    group = OptionGroup(parser, "Clusters", "Filter by cluster options.")
+    group.add_option('-c', '--clusters', dest='clusters', action="store_true", default=False,
+                      help='find clustered h5 files. default: %default')
+    group.add_option('-C', '--no_clusters', dest='no_clusters', action="store_true", default=False,
+                      help='find non-clustered h5 files. default: %default')
+    parser.add_option_group(group)
+
+    group = OptionGroup(parser, "Output/Display", "Output format and display options. Display list of matching files by default.")
+    group.add_option('-i', '--info', dest='info', action='store_true', default=False,
+                      help='show info for each matching file. default: %default')
+    group.add_option('-v', '--verbose', dest='verbose', action='store_true', default=False,
+                      help='verbose logging. default: %default')
+    parser.add_option_group(group)
+
+    (options, args) = parser.parse_args()
+
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                        level=logging.DEBUG if options.verbose else logging.WARN)
+
+    if not options.observation and not options.pipeline:
+        options.observation = True
+        options.pipeline = True
+
+    if options.lba or options.hba:
+        options.observation = True
+        options.pipeline = False
+
+    path = os.path.dirname(os.path.expanduser(args[0]) if len(args) == 1 else os.getcwd())
+
+    files = [str(p) for p in Path(path).glob('*.h*5')]
+
+    if not files:
+        print("Could not find any h5/hdf5 files in", path)
+
+    files = sorted(files)
+
+    info_dicts = {}
+
+    for file in files:
+        try:
+            info_dict = read_info_dict(file)
+            if info_dict:
+                info_dicts[file] = info_dict
+        except:
+            pass
+
+    if not (options.observation and options.pipeline):
+        if options.observation:
+            files = [f for f in files
+                     if f in info_dicts and 'observation' in info_dicts[f].get('type', '').lower()]
+
+        if options.pipeline:
+            files = [f for f in files
+                     if f in info_dicts and 'pipeline' in info_dicts[f].get('type', '').lower()]
+
+
+    if not (options.lba and options.hba):
+        if options.lba:
+            files = [f for f in files
+                     if f in info_dicts and 'lba' in info_dicts[f].get('antenna_array', '').lower()]
+
+        if options.hba:
+            files = [f for f in files
+                     if f in info_dicts and 'hba' in info_dicts[f].get('antenna_array', '').lower()]
+
+    if options.name:
+        files = [f for f in files if f in info_dicts and
+                 fnmatch.fnmatch(info_dicts[f].get('name', '').lower(), options.name.lower())]
+
+    if options.project:
+        files = [f for f in files if f in info_dicts and
+                 (fnmatch.fnmatch(info_dicts[f].get('project', '').lower(), options.project.lower()) or
+                  fnmatch.fnmatch(info_dicts[f].get('project_description', '').lower(), options.project.lower()))]
+
+    if options.date:
+        options.date = datetime.strptime(options.date, '%Y-%m-%d').date()
+        files = [f for f in files if f in info_dicts and
+                 'start_time' in info_dicts[f] and info_dicts[f]['start_time'].date() == options.date]
+
+    if options.min_duration:
+        hours, sep, minutes = options.min_duration.partition(':')
+        options.min_duration = timedelta(hours=int(hours), minutes=int(minutes))
+        files = [f for f in files if f in info_dicts and
+                 'stop_time' in info_dicts[f] and info_dicts[f]['stop_time'].date() == options.date]
+
+    if options.max_duration:
+        hours, sep, minutes = options.max_duration.partition(':')
+        options.max_duration = timedelta(hours=int(hours), minutes=int(minutes))
+        files = [f for f in files
+                 if f in info_dicts and info_dicts[f].get('duration', timedelta()) <= options.max_duration]
+
+    if options.clusters or options.no_clusters:
+        def has_clusters(h5_path):
+            with h5py.File(h5_path, "r+") as file:
+                return len(file.get('clustering',{}))
+
+        if options.clusters:
+            files = [f for f in files if has_clusters(f)]
+
+        if options.no_clusters:
+            files = [f for f in files if not has_clusters(f)]
+
+    if options.info:
+        for file in files:
+            print(read_info_from_hdf5(file, read_data_info=False))
+    else:
+        print('\n'.join(files))
+
+
+

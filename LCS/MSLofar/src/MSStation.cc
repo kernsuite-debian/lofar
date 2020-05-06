@@ -17,16 +17,16 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSStation.cc 17574 2011-03-18 09:07:29Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
 #include <MSLofar/MSStation.h>
 
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

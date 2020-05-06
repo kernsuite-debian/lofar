@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 16887 2010-12-08 10:46:43Z diepen $
+# $Id$
 
 lofar_package(MS 0.1 DEPENDS Common Blob LMWCommon)
 

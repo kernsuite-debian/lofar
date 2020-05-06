@@ -1,0 +1,9 @@
+/**
+
+\ingroup Packages
+\defgroup SAS SAS
+
+The SAS package contains the LOFAR Specification Administration, and Scheduling software.
+
+*/
+

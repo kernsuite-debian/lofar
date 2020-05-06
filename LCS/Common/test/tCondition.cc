@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tCondition.cc 27153 2013-10-30 18:07:49Z amesfoort $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

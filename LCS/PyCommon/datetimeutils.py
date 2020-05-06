@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Copyright (C) 2012-2015    ASTRON (Netherlands Institute for Radio Astronomy)
 # P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 
-# $Id: datetimeutils.py 40691 2018-09-04 08:24:38Z klazema $
+# $Id$
 
 from datetime import datetime, timedelta
 import sys
@@ -100,3 +100,44 @@ def from_modified_julian_date_in_seconds(modified_julian_date_secs):
     :return: datetime, the timestamp as python datetime
     '''
     return MDJ_EPOCH + timedelta(seconds=modified_julian_date_secs)
+
+def to_seconds_since_unix_epoch(timestamp):
+    '''
+    computes the (fractional) number of seconds since the unix epoch for a python datetime.timestamp
+    :param timestamp: datetime a python datetime timestamp (in UTC)
+    :return: double, the (fractional) number of seconds since the unix epoch
+    '''
+    return totalSeconds(timestamp - datetime.utcfromtimestamp(0))
+
+def to_milliseconds_since_unix_epoch(timestamp):
+    '''
+    computes the (fractional) number of milliseconds since the unix epoch for a python datetime.timestamp
+    :param timestamp: datetime a python datetime timestamp
+    :return: double, the (fractional) number of milliseconds since the unix epoch
+    '''
+    return 1000.0 * to_seconds_since_unix_epoch(timestamp)
+
+def from_seconds_since_unix_epoch(nr_of_seconds_since_epoch):
+    '''
+    computes a python datetime.timestamp given the (fractional) number of seconds since the unix epoch
+    :param double or int, the (fractional) number of seconds since the unix epoch
+    :return: timestamp: datetime a python datetime timestamp (in UTC)
+    '''
+    return datetime.utcfromtimestamp(nr_of_seconds_since_epoch)
+
+def from_milliseconds_since_unix_epoch(nr_of_milliseconds_since_epoch):
+    '''
+    computes a python datetime.timestamp given the (fractional) number of milliseconds since the unix epoch
+    :param double or int, the (fractional) number of milliseconds since the unix epoch
+    :return: timestamp: datetime a python datetime timestamp (in UTC)
+    '''
+    return from_seconds_since_unix_epoch(nr_of_milliseconds_since_epoch/1000.0)
+
+def round_to_millisecond_precision(timestamp):
+    """
+    returns the given timestamp rounded to the nearest millisecond
+    :param timestamp: datetime a python datetime timestamp
+    :return: the given timestamp rounded to the nearest millisecond
+    """
+    diff_to_rounded_millisecond = timestamp.microsecond - 1000*round(timestamp.microsecond/1000)
+    return timestamp - timedelta(microseconds=diff_to_rounded_millisecond)

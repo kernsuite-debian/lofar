@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: testSocket.cc 15061 2010-02-25 08:44:59Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/lofar_string.h>

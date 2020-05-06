@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Run the unit test
+source python-coverage.sh
+python_coverage_test "lib/lofarxml_to_momxmlmodel_translator.py" t_lofarxml_to_momxmlmodel_translator.py

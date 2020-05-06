@@ -37,7 +37,7 @@ class thumbnail_combine(LOFARnodeTCP):
         command_line = [executable] + input_files + [output_file]
         try:
             catch_segfaults(command_line, None, None, self.logger)
-        except Exception, e:
+        except Exception as e:
             self.logger.error(str(e))
             return 1
 

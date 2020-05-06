@@ -40,8 +40,8 @@ namespace BBS
 
 StationExprLOFAR::StationExprLOFAR(SourceDB &sourceDB, const BufferMap &buffers,
     const ModelConfig &config, const Instrument::ConstPtr &instrument,
-    double refFreq, const casa::MDirection &refPhase,
-    const casa::MDirection &refDelay, const casa::MDirection &refTile,
+    double refFreq, const casacore::MDirection &refPhase,
+    const casacore::MDirection &refDelay, const casacore::MDirection &refTile,
     bool inverse, bool useMMSE, double sigmaMMSE)
 {
     initialize(sourceDB, buffers, config, instrument, refFreq, refPhase,
@@ -60,8 +60,8 @@ StationExprLOFAR::StationExprLOFAR(SourceDB &sourceDB, const BufferMap &buffers,
 
 void StationExprLOFAR::initialize(SourceDB &sourceDB, const BufferMap &buffers,
     const ModelConfig &config, const Instrument::ConstPtr &instrument,
-    double refFreq, const casa::MDirection &refPhase,
-    const casa::MDirection &refDelay, const casa::MDirection &refTile,
+    double refFreq, const casacore::MDirection &refPhase,
+    const casacore::MDirection &refDelay, const casacore::MDirection &refTile,
     bool inverse, bool useMMSE, double sigmaMMSE)
 {
     // Allocate space for the station response expressions.
@@ -450,7 +450,7 @@ const JonesMatrix StationExprLOFAR::evaluate(unsigned int i)
 }
 
 PatchExprBase::Ptr StationExprLOFAR::makePatchExpr(const string &name,
-    const casa::MDirection &refPhase,
+    const casacore::MDirection &refPhase,
     SourceDB &sourceDB,
     const BufferMap &buffers)
 {

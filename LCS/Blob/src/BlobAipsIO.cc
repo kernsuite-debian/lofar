@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobAipsIO.cc 31210 2015-03-17 08:51:26Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -28,7 +28,7 @@
 
 #include <Blob/BlobAipsIO.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

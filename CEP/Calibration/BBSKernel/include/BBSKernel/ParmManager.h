@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmManager.h 18319 2011-06-22 15:24:02Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_PARMMANAGER_H
 #define LOFAR_BBSKERNEL_PARMMANAGER_H
@@ -38,7 +38,7 @@
 #include <Common/LofarTypes.h>
 #include <Common/Singleton.h>
 
-namespace casa
+namespace casacore
 {
     class Regex;
 }
@@ -94,8 +94,8 @@ private:
 
     friend class Singleton<ParmManagerImpl>;
 
-    bool isIncluded(const string &candidate, const vector<casa::Regex> &include,
-        const vector<casa::Regex> &exclude) const;
+    bool isIncluded(const string &candidate, const vector<casacore::Regex> &include,
+        const vector<casacore::Regex> &exclude) const;
 
     const ParmDB &getParmDBForCategory(unsigned int category) const;
     ParmDB &getParmDBForCategory(unsigned int category);

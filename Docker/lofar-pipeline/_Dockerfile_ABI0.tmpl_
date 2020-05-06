@@ -1,0 +1,254 @@
+#
+# base
+#
+
+# Allow to specify a specific base image version.
+ARG LOFAR_BASE_IMAGE_VERSION=latest
+FROM lofar-base:${LOFAR_BASE_IMAGE_VERSION}
+ENV LOFAR_BASE_IMAGE_VERSION=${LOFAR_BASE_IMAGE_VERSION}
+
+# Allow to specify the LOFAR branch at build time of the image.
+# Use master as the default if nothing is specified.
+ARG LOFAR_VERSION=latest
+ENV LOFAR_VERSION=${LOFAR_VERSION}
+
+
+# Note:
+# AOFlagger iv v2.8.0 does not compile on systems with glibc
+# version >= 2.27.  We use the version that fixes this.
+ENV AOFLAGGER_VERSION=389e4cd3302f8774d993153721f75849e2416c4e \
+    PYBDSF_VERSION=v1.8.12 \
+    DYSCO_VERSION=v1.0.1 \
+    BLITZ_VERSION=1.0.1 \
+    LIBLAPACK_VERSION=3 \
+    LIBLOG4CPLUS_VERSION=1.1-9 \
+    LIBSIGCPP_VERSION=2.0 \
+    LIBXMLPP_VERSION=2.6 \
+    LIBGSL_VERSION=23 \
+    LIBPQXX_VERSION=4.0v5 \
+    DAL_VERSION=v3.3.1 \
+    HDF5BRANCH=hdf5-1_10_1
+
+RUN apt-get install -y wget && \
+    cd /tmp && \
+    wget http://nl.archive.ubuntu.com/ubuntu/pool/universe/l/log4cplus/liblog4cplus-1.0-4_1.0.4-1_amd64.deb && \
+    wget http://nl.archive.ubuntu.com/ubuntu/pool/universe/l/log4cplus/liblog4cplus-dev_1.0.4-1_amd64.deb && \
+    dpkg -i liblog4cplus-1.0-4_1.0.4-1_amd64.deb liblog4cplus-dev_1.0.4-1_amd64.deb && \
+    rm -rf *.deb
+
+# Run-time dependencies
+RUN apt-get install -y python-xmlrunner python-scipy libxml2-utils libpng-tools libsigc++-${LIBSIGCPP_VERSION}-0v5 libxml++${LIBXMLPP_VERSION}-2v5 libgsl${LIBGSL_VERSION} openssh-client gettext-base rsync python-matplotlib ipython libcfitsio-bin libwcs5
+
+# Install
+RUN export BUILD_PACKAGES="python-pip python-dev libpng-dev libsigc++-${LIBSIGCPP_VERSION}-dev libxml++${LIBXMLPP_VERSION}-dev libgsl-dev libcfitsio-dev wcslib-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    pip install pyfits pywcs python-monetdb && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+
+#
+# *******************
+#   PyBDSF
+# *******************
+#
+# 2018-05-30, Thomas:
+# ATTENTION!  PyBDSF <= 1.8.14 needs Boost < 1.65!
+# There is an unresolved symbol thing when importing bdsf in Python:
+#
+# root@768bb78135d4:/# PYTHONPATH=/opt/pybdsf/lib/python2.7/site-packages/ python
+# Python 2.7.15rc1 (default, Apr 15 2018, 21:51:34) [GCC 7.3.0] on linux2
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>> import bdsf
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+#   File "/opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/__init__.py", line 19, in <module>
+#     from collapse import Op_collapse
+#   File "/opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/collapse.py", line 10, in <module>
+#     import _cbdsm
+# ImportError: /opt/pybdsf/lib/python2.7/site-packages/bdsf-1.8.14-py2.7-linux-x86_64.egg/bdsf/_cbdsm.so: undefined symbol: _ZN5boost6python5numpy6detail13get_int_dtypeILi64ELb0EEENS1_5dtypeEv
+# >>>
+#
+RUN export BUILD_PACKAGES="git g++ gfortran python-dev python-setuptools" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir ${INSTALLDIR}/pybdsf && \
+    git clone --branch ${PYBDSF_VERSION//latest/master} https://github.com/lofar-astron/pybdsf.git ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    cd ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    mkdir -p ${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ && \
+    export PYTHONPATH=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/pybdsf/lib64/python${PYTHON_VERSION}/site-packages:${PYTHONPATH} && \
+    export CPLUS_INCLUDE_PATH=${LIBRARY_PATH}:${CPLUS_INCLUDE_PATH} && \
+    cd ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    python setup.py install --prefix=${INSTALLDIR}/pybdsf/ && \
+    cd .. && \
+    rm -rf ${INSTALLDIR}/pybdsf/pybdsf-${PYBDSF_VERSION} && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+
+#
+# *******************
+#   AOFlagger
+# *******************
+#
+# Run-time dependencies
+RUN apt-get install -y libxml++${LIBXMLPP_VERSION}-2v5 libpng-tools libfftw3-bin
+
+# Install
+RUN export BUILD_PACKAGES="doxygen git cmake g++ libxml++${LIBXMLPP_VERSION}-dev libpng-dev libfftw3-dev libcfitsio-dev libopenblas-dev python2.7-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/aoflagger && \
+    git clone https://git.code.sf.net/p/aoflagger/code ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && \
+    cd ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && git checkout ${AOFLAGGER_VERSION//latest/master} && \
+    mkdir ${INSTALLDIR}/aoflagger/build && \
+    cd ${INSTALLDIR}/aoflagger/build && \
+    cmake -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DBOOST_ROOT=${INSTALLDIR}/boost -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -DNDEBUG" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/aoflagger ${INSTALLDIR}/aoflagger/aoflagger-${AOFLAGGER_VERSION} && \
+    make -j ${J} && \
+    make install && \
+    cd .. && \
+    rm -rf ${INSTALLDIR}/aoflagger/{build,aoflagger-${AOFLAGGER_VERSION}} && \
+    bash -c "strip ${INSTALLDIR}/aoflagger/{lib,bin}/* || true" && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+
+#
+# *******************
+#   DYSCO
+# *******************
+#
+# Run-time dependencies
+RUN apt-get install -y libgsl${LIBGSL_VERSION}
+
+RUN export BUILD_PACKAGES="git cmake g++ python-setuptools doxygen libgsl0-dev python2.7-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir ${INSTALLDIR}/dysco && \
+    git clone --branch ${DYSCO_VERSION//latest/master} https://github.com/aroffringa/dysco.git ${INSTALLDIR}/dysco/dysco-${DYSCO_VERSION} && \
+    cd ${INSTALLDIR}/dysco && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/dysco/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ ${INSTALLDIR}/dysco/dysco-${DYSCO_VERSION} && \
+    make -j ${J} && \
+    make install && \
+    #mkdir -p ${INSTALLDIR}/dysco/lib/python${PYTHON_VERSION}/site-packages/ && \
+    #export PYTHONPATH=${INSTALLDIR}/dysco/lib/python${PYTHON_VERSION}/site-packages:${INSTALLDIR}/dysco/lib64/python${PYTHON_VERSION}/site-packages:${PYTHONPATH} && \
+    rm -rf ${INSTALLDIR}/dysco/{build,dysco-${DYSCO_VERSION}} && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+ ENV LD_LIBRARY_PATH=${INSTALLDIR}/dysco/lib:${LD_LIBRARY_PATH}
+ ENV PATH=${INSTALLDIR}/dysco/bin:${PATH}
+
+
+#
+# *******************
+#   Blitz++
+# *******************
+#
+# Run-time dependencies
+# RUN apt-get install -y libboost${BOOST_VERSION}-all
+
+RUN export BUILD_PACKAGES="git g++ gfortran autoconf automake build-essential libtool" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/blitz && \
+    git clone --branch ${BLITZ_VERSION//latest/master} https://github.com/blitzpp/blitz.git ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    cd ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    autoreconf -fiv && ./configure --prefix=${INSTALLDIR}/blitz/ && \
+    make -j ${J} lib && \
+    make install && \
+    rm -rf ${INSTALLDIR}/blitz/blitz-${BLITZ_VERSION} && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+ENV LD_LIBRARY_PATH=${INSTALLDIR}/blitz/lib:${LD_LIBRARY_PATH}
+ENV PATH=${INSTALLDIR}/blitz/bin:${PATH}
+
+
+#
+# *******************
+#   DAL
+# *******************
+#
+#
+# Run-time dependencies
+RUN apt-get install -y python2.7
+
+RUN export BUILD_PACKAGES="git cmake g++ swig python-setuptools python2.7-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/DAL/build && \
+    git clone --branch ${DAL_VERSION//latest/master} https://git.astron.nl/ro/dal2.git ${INSTALLDIR}/DAL/DAL.src && \
+    cd ${INSTALLDIR}/DAL/build && \
+    cmake -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -fpermissive" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/DAL ${INSTALLDIR}/DAL/DAL.src && \
+    make -j ${J} && \
+    make install && \
+    bash -c "rm -rf ${INSTALLDIR}/DAL/{DAL.src,build}" && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+
+
+#
+# *******************
+#  PQXX
+# *******************
+#
+
+RUN export BUILD_PACKAGES="git cmake g++ gfortran libpqxx-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/libpqxx/src  && \
+    git clone --branch 6.2.4 https://github.com/jtv/libpqxx.git ${INSTALLDIR}/libpqxx/src  && \
+    cd ${INSTALLDIR}/libpqxx/src  && \
+    ./configure --enable-shared --prefix=/opt/libpqxx --disable-documentation CXXFLAGS="${CXX_FLAGS}"  && \
+    make -j ${J} && \
+    make install  && \
+    rm -r ${INSTALLDIR}/libpqxx/src  && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+ENV LD_LIBRARY_PATH=${INSTALLDIR}/libpqxx/include/pqxx:${INSTALLDIR}/libpqxx/lib:${LD_LIBRARY_PATH} \
+    LIBRARY_PATH=${INSTALLDIR}/libpqxx/include/pqxx:${INSTALLDIR}/libpqxx/lib:${LIBRARY_PATH}
+
+
+#
+# *******************
+#   LOFAR
+# *******************
+#
+# Run-time dependencies
+RUN apt-get install -y libncurses${NCURSES_VERSION} python libxml2 libpng-tools liblapack${LIBLAPACK_VERSION} libfftw3-bin libxml++${LIBXMLPP_VERSION}-2v5 libgsl${LIBGSL_VERSION} libreadline${READLINE_VERSION} binutils libcfitsio-bin libwcs5 libopenblas-base
+
+# Install
+RUN export BUILD_PACKAGES="git cmake g++ gfortran python-setuptools bison flex libncurses-dev python-dev libxml2-dev pkg-config libpng-dev liblapack-dev libfftw3-dev libunittest++-dev libxml++${LIBXMLPP_VERSION}-dev libgsl-dev libreadline-dev binutils-dev libcfitsio-dev wcslib-dev libopenblas-dev python2.7-dev" && \
+    apt-get install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
+    git clone --branch ${LOFAR_VERSION//latest/master} https://git.astron.nl/LOFAR ${INSTALLDIR}/lofar/src && \
+    cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
+    HDF5_ROOT=${INSTALLDIR}/libhdf5 PYTHONPATH=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages cmake -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" -DBUILD_PACKAGES=Offline -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASAREST_ROOT_DIR=${INSTALLDIR}/casarest/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DBLITZ_ROOT_DIR=${INSTALLDIR}/blitz -DAOFLAGGER_ROOT_DIR=${INSTALLDIR}/aoflagger/ -DBDSF_ROOT_DIR=${INSTALLDIR}/pybdsf/lib/python${PYTHON_VERSION}/site-packages/ -DQPID_ROOT_DIR=${INSTALLDIR}/qpid/ -DHDF5_hdf5_hl_LIBRARY_RELEASE:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5_hl-shared.so -DHDF5_hdf5_hl_LIBRARY_DEBUG:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5_hl-shared.so -DHDF5_hdf5_cpp_LIBRARY_RELEASE:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5_cpp-shared.so -DHDF5_hdf5_cpp_LIBRARY_DEBUG:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5_cpp-shared.so -DHDF5_hdf5_LIBRARY_RELEASE:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5-shared.so -DHDF5_hdf5_LIBRARY_DEBUG:FILEPATH=${INSTALLDIR}/libhdf5/lib/libhdf5-shared.so -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
+    sed -i '29,31d' include/ApplCommon/PosixTime.h && \
+    make -j ${J} && \
+    make install && \
+    mkdir -p ${INSTALLDIR}/lofar/var/{log,run} && \
+    chmod a+rwx  ${INSTALLDIR}/lofar/var/{log,run} && \
+    bash -c "strip ${INSTALLDIR}/lofar/{bin,sbin,lib64}/* || true" && \
+    rm -rf ${INSTALLDIR}/lofar/{build,src} && \
+    apt-get purge -y ${BUILD_PACKAGES} && \
+    apt-get clean -y && \
+    apt-get autoclean -y && \
+    apt-get autoremove -y --purge
+
+# install additional bashrc files
+COPY ["bashrc.d",  "${INSTALLDIR}/bashrc.d/"]
+RUN find /opt/ ! -perm -a+r -exec chmod a+r {} +

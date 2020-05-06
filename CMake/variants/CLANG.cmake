@@ -1,6 +1,6 @@
 # Definitions file for the CLANG compiler suite.
 #
-# $Id: CLANG.cmake 38300 2017-09-05 11:18:02Z dijkema $
+# $Id$
 
 
 # Compiler suite

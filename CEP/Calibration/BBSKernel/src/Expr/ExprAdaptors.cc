@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: ExprAdaptors.cc 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/ExprAdaptors.h>

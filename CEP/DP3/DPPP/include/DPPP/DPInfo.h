@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPInfo.h 39071 2018-02-08 15:50:02Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

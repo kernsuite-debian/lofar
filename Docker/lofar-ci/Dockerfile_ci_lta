@@ -1,0 +1,20 @@
+#
+# This builds an image with all dependencies for the LTA package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for LTA..."
+
+# see https://www.postgresql.org/download/linux/redhat/ on how to install postgresql-server > 9.2 on centos7
+RUN yum erase -y postgresql postgresql-server postgresql-devel && \
+    yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm  && \
+    yum install -y postgresql96 postgresql96-server postgresql96-devel && \
+    cd /bin && ln -s /usr/pgsql-9.6/bin/initdb && ln -s /usr/pgsql-9.6/bin/postgres
+ENV PATH /usr/pgsql-9.6/bin:$PATH
+
+RUN pip3 install kombu requests pysimplesoap mysql-connector flask lxml jsonschema psycopg2 testing.postgresql
+
+RUN adduser ingest
+USER ingest

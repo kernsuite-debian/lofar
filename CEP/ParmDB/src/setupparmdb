@@ -183,7 +183,7 @@ if test $setsteps = 1; then
   steptime=`getparsetvalue "$msvds" StepTime`
   stfreq=`getparsetvalue "$msvds" StartFreqs 0`
   endfreq=`getparsetvalue "$msvds" EndFreqs 0`
-  stepfreq=`python -c "print $endfreq - $stfreq"`
+  stepfreq=`python3 -c "print $endfreq - $stfreq"`
 fi
 
 # Get clusterdesc name from the VDS file if not given.

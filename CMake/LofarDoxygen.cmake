@@ -1,6 +1,6 @@
 # - Generate script to configure and run the code documentation tool Doxygen.
 
-# $Id: LofarDoxygen.cmake 38670 2017-10-17 09:38:03Z beukema $
+# $Id$
 #
 # Copyright (C) 2010
 # ASTRON (Netherlands Institute for Radio Astronomy)

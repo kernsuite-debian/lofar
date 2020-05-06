@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tPSet.cc 24221 2013-03-12 12:24:48Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -26,13 +26,13 @@
 #include <DPPP/DPInfo.h>
 #include <Common/ParameterSet.h>
 #include <Common/LofarLogger.h>
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Quanta/MVTime.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::DPPP;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 // Simple class to generate input arrays.

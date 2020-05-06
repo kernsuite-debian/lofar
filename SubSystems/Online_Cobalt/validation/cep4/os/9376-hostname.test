@@ -1,0 +1,19 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+FQDN=`hostname --fqdn`
+
+# FQDN hostname must give full-length name
+case $FQDN in
+  *.cep4.control.lofar)
+    exit 0
+    ;;
+  *)
+    exit 1
+    ;;
+esac
+
+
+exit 0

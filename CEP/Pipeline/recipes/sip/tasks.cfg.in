@@ -48,10 +48,6 @@ recipe = gainoutliercorrection
 executable = %(lofarroot)s/bin/parmexportcal
 mapfile = %(runtime_directory)s/%(job_name)s/mapfiles/instrument.mapfile
 
-[rficonsole]
-recipe = rficonsole
-executable = %(aoflaggerroot)s/bin/aoflagger
-
 [get_metadata]
 recipe = get_metadata
 

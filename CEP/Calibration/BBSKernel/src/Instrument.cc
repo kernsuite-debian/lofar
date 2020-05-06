@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Instrument.cc 40029 2018-08-24 06:27:42Z klazema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Instrument.h>
@@ -29,7 +29,7 @@ namespace LOFAR
 namespace BBS
 {
 
-Station::Station(const string &name, const casa::MPosition &position)
+Station::Station(const string &name, const casacore::MPosition &position)
     :   itsName(name),
         itsPosition(position)
 {
@@ -44,12 +44,12 @@ const string &Station::name() const
     return itsName;
 }
 
-const casa::MPosition &Station::position() const
+const casacore::MPosition &Station::position() const
 {
     return itsPosition;
 }
 
-Instrument::Instrument(const string &name, const casa::MPosition &position)
+Instrument::Instrument(const string &name, const casacore::MPosition &position)
     :   itsName(name),
         itsPosition(position)
 {
@@ -60,7 +60,7 @@ const string &Instrument::name() const
     return itsName;
 }
 
-const casa::MPosition &Instrument::position() const
+const casacore::MPosition &Instrument::position() const
 {
     return itsPosition;
 }

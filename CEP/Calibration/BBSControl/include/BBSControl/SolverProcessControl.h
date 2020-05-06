@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SolverProcessControl.h 26898 2013-10-08 17:33:06Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_SOLVERPROCESSCONTROL_H
 #define LOFAR_BBSCONTROL_SOLVERPROCESSCONTROL_H

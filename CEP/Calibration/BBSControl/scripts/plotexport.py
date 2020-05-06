@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Solver statistics preferences dialog
 #
@@ -41,7 +41,7 @@ class plotexport(QDialog):
       self.createConnections()      # create connections between widgets
       
     def createWidgets(self):
-      print "createWidgets()"             # DEBUG
+      print("createWidgets()")             # DEBUG
       
       # Group boxes to group widgets into logical units
       self.parmGroup=QGroupBox()
@@ -97,14 +97,14 @@ class plotexport(QDialog):
       self.updateComboBoxes()
   
     def createConnections(self):
-      print "createConnections()"      # DEBUG
+      print("createConnections()")      # DEBUG
 
       self.connect(self.saveButton, SIGNAL('clicked()'), self.saveAs)
       self.connect(self.exportButton, SIGNAL('clicked()'), self.exportData)
       self.connect(self.cancelButton, SIGNAL('clicked()'), SLOT('close()'))
       
     def createLayouts(self):
-      print "createLayouts()"               # DEBUG
+      print("createLayouts()")               # DEBUG
       
       self.parametersLayout=QVBoxLayout()
       self.parmGroup.setLayout(self.parametersLayout)
@@ -131,14 +131,14 @@ class plotexport(QDialog):
       self.setLayout(self.mainLayout)          
     
     def updateParmComboBox(self):
-      print "updateComboBox()"              # DEBUG
+      print("updateComboBox()")              # DEBUG
       self.deleteEntriesComboBox()          # Delete entries in parmComboBox
       # Read entries from solverQuery table
       #for i in range(0, self.parent.parametersComboBox.count()):
       #  self.parmComboBox.addItem(self.parent.parametersComboBox.itemText(i))               
  
     def updateComboBoxes(self):
-      print "updateFormatComboBox()"        # DEBUG
+      print("updateFormatComboBox()")        # DEBUG
       self.deleteEntriesComboBox()
 
       # loop over parms and add them to parmComboBox
@@ -150,41 +150,41 @@ class plotexport(QDialog):
       self.addEntriesSolverComboBox()
       
     def deleteEntriesComboBox(self):
-      print "deleteEntriesParmComboBox()"   # DEBUG
+      print("deleteEntriesParmComboBox()")   # DEBUG
       
       # Loop over elements in parmComboBox with parmDB parameters
       i=self.parmComboBox.count()
       while i > 0:     # Delete entries in parmComboBox
-        print "removing i = ", i, parmComboBox.currentText()          # DEBUG
+        print("removing i = ", i, parmComboBox.currentText())          # DEBUG
         self.parmComboBox.removeItem(i-1)
         i=self.parmComboBox.count()
 
       i=self.formatComboBox.count()
       while i > 0:   # Delete entries in formatComboBox
-        print "removing i = ", i, self.formatComboBox.currentText()   # DEBUG
+        print("removing i = ", i, self.formatComboBox.currentText())   # DEBUG
         self.formatComboBox.removeItem(i-1)
         i=self.formatComboBox.count()
 
       i=self.solverComboBox.count()
       while i > 0:   # Delete entries in solverComboBox
-        print "removing i = ", i, self.solverComboBox.currentText()   # DEBUG
+        print("removing i = ", i, self.solverComboBox.currentText())   # DEBUG
         self.solverComboBox.removeItem(i-1)
         i=self.solverComboBox.count()
     
     def addEntriesParmComboBox(self):
-      print "addEntriesParmComboBox()"      # DEBUG
+      print("addEntriesParmComboBox()")      # DEBUG
 
     def addEntriesSolverComboBox(self):
-      print "addEntriesSolverComboBox()"    # DEBUG
+      print("addEntriesSolverComboBox()")    # DEBUG
       
     def saveAs(self):
-      print "saveAs()"                      # DEBUG
-      self.path = unicode(self.fileDialog.getSaveFileName(self, 'Save file'))
+      print("saveAs()")                      # DEBUG
+      self.path = str(self.fileDialog.getSaveFileName(self, 'Save file'))
       self.filenameLineEdit.setText(self.path)
 
     
     def exportData(self):
-      print "exportData()"                  # DEBUG
+      print("exportData()")                  # DEBUG
       
     
     #****************************************
@@ -197,7 +197,7 @@ class plotexport(QDialog):
 # Main function used for debugging
 #
 def main():
-  print "main()"        # DEBUG
+  print("main()")        # DEBUG
 
   app = QApplication(sys.argv)
   form=plotexport(app)

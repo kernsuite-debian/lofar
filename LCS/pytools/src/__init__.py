@@ -17,5 +17,5 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: __init__.py 14047 2009-09-18 09:19:08Z diepen $
+# $Id$
 

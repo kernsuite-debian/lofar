@@ -17,19 +17,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarObservation.h 17582 2011-03-18 15:29:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSLOFAROBSERVATION_H
 #define MSLOFAR_MSLOFAROBSERVATION_H
 
-#include <ms/MeasurementSets/MSObservation.h>
+#include <casacore/ms/MeasurementSets/MSObservation.h>
 #include <MSLofar/MSLofarTable.h>
 
 namespace LOFAR {
 
-  class MSLofarObservation: public casa::MSObservation
+  class MSLofarObservation: public casacore::MSObservation
   {
   public:
 
@@ -37,15 +37,15 @@ namespace LOFAR {
     MSLofarObservation();
 
     // Create from an existing table.
-    MSLofarObservation (const casa::String& tableName,
-                    casa::Table::TableOption option);
+    MSLofarObservation (const casacore::String& tableName,
+                    casacore::Table::TableOption option);
 
     // Create a new table.
-    MSLofarObservation (casa::SetupNewTable& newTab, casa::uInt nrrow,
-                    casa::Bool initialize);
+    MSLofarObservation (casacore::SetupNewTable& newTab, casacore::uInt nrrow,
+                    casacore::Bool initialize);
 
     // Create from an existing Table object.
-    MSLofarObservation (const casa::Table& table);
+    MSLofarObservation (const casacore::Table& table);
 
     // Copy constructor (reference semnatics).
     MSLofarObservation (const MSLofarObservation& that);
@@ -57,7 +57,7 @@ namespace LOFAR {
     MSLofarObservation& operator= (const MSLofarObservation& that);
   
     // Create the table description containing the required columns. 
-    static casa::TableDesc requiredTableDesc();
+    static casacore::TableDesc requiredTableDesc();
   };
 
 } //# end namespace

@@ -1,0 +1,39 @@
+-------------------------------------
+SQL script update procedure
+-------------------------------------
+To update the .sql files in this directory, follow the following steps.
+
+SOURCE = directory of the root of your checkout
+
+* Build and install this package ("ResourceAssignmentDatabase"):
+    mkdir -p ~/build/gnu_opt && cd ~/build/gnu_opt
+    cmake -DBUILD_PACKAGES=ResourceAssignmentDatabase $SOURCE
+    make -j 8 install
+* Add its paths to your environment:
+    source ~/build/gnu_opt/installed/lofarinit.sh
+* Go back to this source dir
+    cd $SOURCE/SAS/ResourceAssignment/ResourceAssignmentDatabase/sql
+* Regenerate the .sql files
+    ./create_add_notifications.sql.py
+    ./create_add_virtual_instrument.sql.py
+
+-------------------------------------
+Database creation procedure (test system)
+-------------------------------------
+To create a fresh and empty RADB, follow the following steps.
+
+* Obtain credentials. Login as lofarsys@scu199 and:
+* Copy *.sql to scu199 and go there:
+    scp *.sql scu199:
+    ssh scu199
+* Obtain/adjust the relevant credentials. As lofarsys:
+    cat ~/.lofar/dbcredentials/radb.ini
+* Stop any services interacting with the radb:
+    supervisorctl -p 123 stop ra_services:
+* If you want a NEW database, create one (see radb.ini for the relevant parameters):
+    (see create_database.sql)
+* Reinitialise the database (see radb.ini for the relevant parameters):
+    psql -h $DBHOST $DATABASE -U $DBUSER -f create_and_populate_database.sql -W
+* Ignore all NOTICES.
+* Stop any services interacting with the radb:
+    supervisorctl -p 123 start RA_Services:

@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import os
 import os.path
@@ -132,11 +132,11 @@ def movemss (srcPattern, dstPattern, userName, bandsPerBeam=80, dryrun=False):
         srcSB = dstSB - (dstSAP-srcSAP)*bandsPerBeam 
         # See if the SRC is already on the right node.
         srcName = srcTemplate % srcSB
-        if srcNodeMap.has_key(dstHosts[i] + '-' + srcName):
+        if dstHosts[i] + '-' + srcName in srcNodeMap:
             nInPlace += 1
         else:
             # Has DST to be moved from another node?
-            if not srcMap.has_key(srcName):
+            if srcName not in srcMap:
                 print('Src', srcName, 'not found for DST', dstFiles[i])
             else:
                 inx = srcMap[srcName]
@@ -346,7 +346,7 @@ def expandps (parsetin, parsetout, keymap, nsubbands, ngroups=0, nodeindex=0, no
 """
     # Open parset and get all keywords.
     ps = lofar.parameterset.parameterset (parsetin)
-    pskeys = ps.keys()
+    pskeys = list(ps.keys())
     # See if ngroups parameter is given.
     havegroups = False
     nsbpergroup = 1

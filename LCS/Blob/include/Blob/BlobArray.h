@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobArray.h 29040 2014-04-23 08:45:54Z diepen $
+//# $Id$
 
 #ifndef LOFAR_BLOB_BLOBARRAY_H
 #define LOFAR_BLOB_BLOBARRAY_H
@@ -33,7 +33,7 @@
 # include <blitz/array.h>
 #endif
 #if defined(HAVE_AIPSPP) 
-# include <casa/Arrays/Array.h>
+# include <casacore/casa/Arrays/Array.h>
 #endif
 
 
@@ -127,18 +127,18 @@ namespace LOFAR
 #if defined(HAVE_AIPSPP) 
   // Write an AIPS++ array (which can be non-contiguous).
   template<typename T>
-  BlobOStream& operator<< (BlobOStream&, const casa::Array<T>&);
+  BlobOStream& operator<< (BlobOStream&, const casacore::Array<T>&);
 
   // Read back an AIPS++ array.
   // If the shape mismatches, the array is resized.
   // If the shape matches, the array can be non-contiguous.
   template<typename T>
-  BlobIStream& operator>> (BlobIStream&, casa::Array<T>&);
+  BlobIStream& operator>> (BlobIStream&, casacore::Array<T>&);
 
   // Write/read the shape of an AIPS++ array.
   // <group>
-  BlobOStream& operator<< (BlobOStream&, const casa::IPosition&);
-  BlobIStream& operator>> (BlobIStream&, casa::IPosition&);
+  BlobOStream& operator<< (BlobOStream&, const casacore::IPosition&);
+  BlobIStream& operator>> (BlobIStream&, casacore::IPosition&);
   // </group>
 #endif
 

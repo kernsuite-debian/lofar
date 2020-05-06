@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from contextlib import contextmanager
 
 import signal
@@ -15,15 +15,15 @@ import socket
 import select
 import logging
 import logging.handlers
-import Queue
-import SocketServer
-import cPickle as pickle
+import queue
+import socketserver
+import pickle as pickle
 
 from lofarpipe.support.lofarexceptions import PipelineQuit
 from lofarpipe.support.pipelinelogging import log_process_output
 from lofarpipe.support.utilities import spawn_process, socket_recv
 
-class JobStreamHandler(SocketServer.StreamRequestHandler):
+class JobStreamHandler(socketserver.StreamRequestHandler):
     """
     Networked job server.
 
@@ -53,18 +53,26 @@ class JobStreamHandler(SocketServer.StreamRequestHandler):
             # Read message
             chunk = socket_recv(self.request, slen)
             try:
-                input_msg = chunk.split(" ", 2)
+                input_msg = chunk.split(b" ", 2)
+                try:
+                    command = input_msg[0].decode()
+                except UnicodeDecodeError:
+                    # This will be a log record
+                    command = ""
 
                 # Can we handle this message type?
-                if input_msg[0] == "GET":
-                    self.send_arguments(int(input_msg[1]))
-                elif input_msg[0] == "PUT":
-                    self.read_results(input_msg[1], input_msg[2])
+                if command == "GET":
+                    job_id = input_msg[1].decode()
+                    self.send_arguments(job_id)
+                elif command == "PUT":
+                    job_id = input_msg[1].decode()
+                    self.read_results(job_id, input_msg[2])
                 else:
                     self.handle_log_record(chunk)
-            except:
+            except Exception as e:
                 # Otherwise, fail.
                 self.server.error.set()
+                self.server.logger.exception(e)
                 self.server.logger.error("Protocol error; received %s" % chunk)
                 self.server.logger.error("Aborting.")
 
@@ -95,7 +103,7 @@ class JobStreamHandler(SocketServer.StreamRequestHandler):
         record = logging.makeLogRecord(pickle.loads(chunk))
         self.server.queue.put_nowait(record)
 
-class JobSocketReceiver(SocketServer.ThreadingTCPServer):
+class JobSocketReceiver(socketserver.ThreadingTCPServer):
     """
     Simple TCP socket-based job dispatch and results collection as well as
     network logging.
@@ -110,10 +118,10 @@ class JobSocketReceiver(SocketServer.ThreadingTCPServer):
     ):
         if not host:
             host = socket.gethostname()
-        SocketServer.ThreadingTCPServer.__init__(self, (host, port), JobStreamHandler)
+        socketserver.ThreadingTCPServer.__init__(self, (host, port), JobStreamHandler)
         self.abort = False
         self.timeout = 1
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.logger = logger
         self.jobpool = jobpool
         self.error = error
@@ -144,7 +152,7 @@ class JobSocketReceiver(SocketServer.ThreadingTCPServer):
                     # Not sure this should be necessary, but it seems to work...
                     if self.logger.isEnabledFor(record.levelno):
                         self.logger.handle(record)
-                except Queue.Empty:
+                except queue.Empty:
                     if self.abort:
                         break
 

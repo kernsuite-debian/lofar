@@ -1,0 +1,8 @@
+/**
+
+\ingroup SAS
+\defgroup MoMQueryService MoMQueryService
+\ref mom_query_service
+The MoMQueryService is composed by a server and a client used to extract the information about the objects that MoM manages from the MoM database to a QPID.
+
+*/

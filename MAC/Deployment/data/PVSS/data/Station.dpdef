@@ -1,0 +1,5 @@
+# description of the station placeholder in the maindatabase
+# next two points indicate if a stations and/or the stationswitch are in local mode or not
+localMode.networkSwitch		bool
+localMode.stationSwitch		bool
+dist_childSumAlert		int

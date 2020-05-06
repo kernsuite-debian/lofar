@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 31882 2015-06-22 07:50:04Z mol $
+# $Id$
 
 include(LofarCTest)
 
@@ -17,6 +17,8 @@ if(HAVE_QPID)
     lofar_add_test(tMessageBus tMessageBus.cc)
   endif(HAVE_UNITTEST++)
 
-  lofar_add_test(tPyMsgBus)
-  lofar_add_test(tPyProtocols)
+  if(USE_PYTHON)
+    lofar_add_test(tPyMsgBus)
+    lofar_add_test(tPyProtocols)
+  endif(USE_PYTHON)
 endif(HAVE_QPID)

@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: StationUVW.h 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_STATIONUVW_H
 #define LOFAR_BBSKERNEL_EXPR_STATIONUVW_H
@@ -28,8 +28,8 @@
 
 #include <BBSKernel/Expr/Expr.h>
 
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -45,18 +45,18 @@ public:
     typedef shared_ptr<StationUVW>          Ptr;
     typedef shared_ptr<const StationUVW>    ConstPtr;
 
-    StationUVW(const casa::MPosition &arrayPosition,
-        const casa::MPosition &stationPosition,
-        const casa::MDirection &direction);
+    StationUVW(const casacore::MPosition &arrayPosition,
+        const casacore::MPosition &stationPosition,
+        const casacore::MDirection &direction);
 
 protected:
     virtual const Vector<3> evaluateExpr(const Request &request, Cache &cache,
         unsigned int grid) const;
 
 private:
-    casa::MPosition     itsArrayPosition;
-    casa::MPosition     itsStationPosition;
-    casa::MDirection    itsDirection;
+    casacore::MPosition     itsArrayPosition;
+    casacore::MPosition     itsStationPosition;
+    casacore::MDirection    itsDirection;
 };
 
 // @}

@@ -1,0 +1,11 @@
+
+# Configure the loggers
+log4cplus.rootLogger=INFO, STDOUT
+log4cplus.logger.TRC=INFO
+
+# Logging to console
+log4cplus.appender.STDOUT=log4cplus::ConsoleAppender
+log4cplus.appender.STDOUT.layout=log4cplus::PatternLayout
+log4cplus.appender.STDOUT.layout.ConversionPattern=generate:${MPIRANK}@%h %D{%Y-%m-%d %H:%M:%S.%q} %-5p %c{3} - %m [%b:%L]%n
+
+log4cplus.appender.DUMP=log4cplus::NullAppender

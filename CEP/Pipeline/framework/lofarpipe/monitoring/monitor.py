@@ -1,9 +1,9 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 
 
-from config import Config # this is a subdir
-from listener import Listener
-from poller import Poller
+from .config import Config # this is a subdir
+from .listener import Listener
+from .poller import Poller
 import sys
 
 if __name__ == "__main__":
@@ -15,9 +15,9 @@ if __name__ == "__main__":
     cfg.add_item('parentpid',parpid)
     lst = Listener(cfg)
     lst.start()
-    print "listener started"
+    print("listener started")
     # Where is the output class?
     
     pol = Poller(cfg)   
     pol.start()
-    print "Poller started"
+    print("Poller started")

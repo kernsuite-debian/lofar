@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSStation.h 17574 2011-03-18 09:07:29Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -36,15 +36,15 @@ namespace LOFAR {
     MSStation();
 
     // Create from an existing table.
-    MSStation (const casa::String& tableName,
-                    casa::Table::TableOption option);
+    MSStation (const casacore::String& tableName,
+                    casacore::Table::TableOption option);
 
     // Create a new table.
-    MSStation (casa::SetupNewTable& newTab, casa::uInt nrrow,
-                    casa::Bool initialize);
+    MSStation (casacore::SetupNewTable& newTab, casacore::uInt nrrow,
+                    casacore::Bool initialize);
 
     // Create from an existing Table object.
-    MSStation (const casa::Table& table);
+    MSStation (const casacore::Table& table);
 
     // Copy constructor (reference semnatics).
     MSStation (const MSStation& that);
@@ -56,7 +56,7 @@ namespace LOFAR {
     MSStation& operator= (const MSStation& that);
   
     // Create the table description containing the required columns. 
-    static casa::TableDesc requiredTableDesc();
+    static casacore::TableDesc requiredTableDesc();
   };
 
 } //# end namespace

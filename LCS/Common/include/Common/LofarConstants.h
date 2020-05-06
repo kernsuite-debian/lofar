@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LofarConstants.h 22248 2012-10-08 12:34:59Z overeem $
+//# $Id$
 
 #ifndef LOFAR_COMMON_LOFARCONSTANTS_H
 #define LOFAR_COMMON_LOFARCONSTANTS_H

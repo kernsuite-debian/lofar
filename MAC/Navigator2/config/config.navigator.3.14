@@ -1,0 +1,37 @@
+[general]
+pvss_path = "D:/Siemens/Automation/WinCC_OA/3.14"
+proj_path = "D:/Data/TRUNK-MCU001"
+proj_path = "D:/Data/TRUNK-Navigator2"
+proj_version = "3.14"
+langs = "en_US.iso88591"
+distributed = 1
+ctrlMaxPendings = 2000
+# avoid proxyserver to be used for contacts between 3.12 onwards and 3.10
+# can be removed as soon as all installations are updated to 3.14
+mxProxy = "None"
+
+#Set maximum connect messages size to unlimmited (needed for version 3.12 onwards because of the huge amount of Cobalt processes to connect to
+maxConnectMessageSize = 0
+messageCompression = "zlib-bzip2"
+useValueArchive = 1
+
+[ui]
+aesShowDistDisconnections = 0
+
+#local via putty from home or if working with local instantations of mcu/ccc/cs001
+#data = "localhost"
+#event = "localhost"
+
+#mcu001
+#data = "10.149.96.3"
+#event = "10.149.96.3"
+data = "mcu001.control.lofar"
+event = "mcu001.control.lofar"
+
+#mcu099
+#data = "10.149.96.23"
+#event = "10.149.96.23"
+
+#eventPort = 5997
+#dataPort = 5998
+pmonPort = 2025

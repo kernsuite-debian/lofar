@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: lofar_complex.h 20543 2012-03-23 13:30:50Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_COMPLEX_H
 #define LOFAR_COMMON_COMPLEX_H

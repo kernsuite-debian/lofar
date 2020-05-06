@@ -13,7 +13,7 @@
 # Wouter Klijn 2012
 # klijn@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import shutil
 import os.path
@@ -147,11 +147,11 @@ class imager_awimager(LOFARnodeTCP):
                                             logger, usageStats=self.resourceMonitor)
 
             # Thrown by catch_segfault
-            except CalledProcessError, exception:
+            except CalledProcessError as exception:
                 self.logger.error(str(exception))
                 return 1
 
-            except Exception, exception:
+            except Exception as exception:
                 self.logger.error(str(exception))
                 return 1
 
@@ -396,10 +396,10 @@ class imager_awimager(LOFARnodeTCP):
                 catch_segfaults(cmd, working_directory, self.environment,
                                         logger)
         # Thrown by catch_segfault
-        except CalledProcessError, exception:
+        except CalledProcessError as exception:
             self.logger.error(str(exception))
             return 1
-        except Exception, exception:
+        except Exception as exception:
             self.logger.error(str(exception))
             return 1
 
@@ -529,8 +529,8 @@ class imager_awimager(LOFARnodeTCP):
                 self.logger.info(
                     "WARNING: source {0} falls across map edge".format(source))
 
-            for pixel_x in xrange(xmin, xmax):
-                for pixel_y in xrange(ymin, ymax):
+            for pixel_x in range(xmin, xmax):
+                for pixel_y in range(ymin, ymax):
                     # skip pixels outside the mask field
                     if pixel_x >= xlen or pixel_y >= ylen or\
                        pixel_x < 0 or pixel_y < 0:

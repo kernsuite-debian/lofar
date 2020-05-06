@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 import os
 import sys
 import copy
@@ -9,57 +9,56 @@ from lofarpipe.support.remotecommand import ComputeJob
 from lofarpipe.support.remotecommand import RemoteCommandRecipeMixIn
 from lofarpipe.support.data_map import DataMap
 
-
 class imager_source_finding(BaseRecipe, RemoteCommandRecipeMixIn):
     """
     Master side of imager_source_finder. Collects arguments from command line
     and pipeline inputs. (for the implementation details see node):
-    
+
     1. load mapfiles with input images and collect some parameters from
        The input ingredients.
     2. Call the node recipe.
-    3. Validate performance of the node recipe and construct output value.   
-    
+    3. Validate performance of the node recipe and construct output value.
+
     **CommandLine Arguments**
-    
+
     A mapfile containing (node, image_path) pairs. The image to look for sources
-    in.    
+    in.
     """
     inputs = {
         'bdsm_parset_file_run1': ingredient.FileField(
             '--bdsm-parset-file-run1',
-            help="Path to bdsm parameter set for the first sourcefinding run"
+            help = "Path to bdsm parameter set for the first sourcefinding run"
         ),
         'bdsm_parset_file_run2x': ingredient.FileField(
             '--bdsm-parset-file-run2x',
-            help="Path to bdsm parameter set for the second and later" \
+            help = "Path to bdsm parameter set for the second and later" \
                    " sourcefinding runs"
         ),
         'catalog_output_path': ingredient.StringField(
             '--catalog-output-path',
-            help="Path to write the catalog created by bdsm)"
+            help = "Path to write the catalog created by bdsm)"
         ),
         'mapfile': ingredient.StringField(
             '--mapfile',
-            help="Full path of mapfile; containing the succesfull generated"
+            help = "Full path of mapfile; containing the succesfull generated"
             "source list"
         ),
         'working_directory': ingredient.StringField(
             '--working-directory',
-            help="Working directory used by the nodes: local data"
+            help = "Working directory used by the nodes: local data"
         ),
         'sourcedb_target_path': ingredient.StringField(
             '--sourcedb-target-path',
-            help="Target path for the sourcedb created based on the"
+            help = "Target path for the sourcedb created based on the"
                  " found sources"
         ),
         'makesourcedb_path': ingredient.ExecField(
              '--makesourcedb-path',
-             help="Path to makesourcedb executable."
+             help = "Path to makesourcedb executable."
         ),
         'sourcedb_map_path': ingredient.StringField(
             '--sourcedb-map-path',
-            help="Full path of mapfile; containing the succesfull generated"
+            help = "Full path of mapfile; containing the succesfull generated"
             "sourcedbs"
         ),
 
@@ -67,10 +66,10 @@ class imager_source_finding(BaseRecipe, RemoteCommandRecipeMixIn):
 
     outputs = {
         'mapfile': ingredient.StringField(
-        help="Full path of mapfile; containing the succesfull generated"
+        help = "Full path of mapfile; containing the succesfull generated"
             ),
         'sourcedb_map_path': ingredient.StringField(
-        help="Full path of mapfile; containing the succesfull generated"
+        help = "Full path of mapfile; containing the succesfull generated"
              "sourcedbs"
             )
     }
@@ -82,13 +81,13 @@ class imager_source_finding(BaseRecipe, RemoteCommandRecipeMixIn):
         self.logger.info("Starting imager_source_finding run")
         # ********************************************************************
         # 1. load mapfiles with input images and collect some parameters from
-        # The input ingredients       
+        # The input ingredients
         input_map = DataMap.load(self.inputs['args'][0])
         catalog_output_path = self.inputs["catalog_output_path"]
 
         # ********************************************************************
         # 2. Start the node script
-        node_command = " python %s" % (self.__file__.replace("master", "nodes"))
+        node_command = " python3 %s" % (self.__file__.replace("master", "nodes"))
         jobs = []
         input_map.iterator = DataMap.SkipIterator
         for idx, item in enumerate(input_map):
@@ -101,7 +100,7 @@ class imager_source_finding(BaseRecipe, RemoteCommandRecipeMixIn):
                          "%s-%s" % (catalog_output_path, idx),
                          os.path.join(
                              self.inputs["working_directory"],
-                             "bdsm_output-%s.img" % (idx, )),
+                             "bdsm_output-%s.img" % (idx,)),
                          "%s-%s" % (self.inputs['sourcedb_target_path'], idx),
                          self.environment,
                          working_dir,

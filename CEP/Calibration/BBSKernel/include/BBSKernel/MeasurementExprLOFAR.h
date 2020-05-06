@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MeasurementExprLOFAR.h 20693 2012-04-06 13:40:52Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_MEASUREMENTEXPRLOFAR_H
 #define LOFAR_BBSKERNEL_MEASUREMENTEXPRLOFAR_H
@@ -45,7 +45,7 @@
 #include <Common/lofar_vector.h>
 #include <Common/lofar_map.h>
 
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -66,9 +66,9 @@ public:
         const Instrument::ConstPtr &instrument,
         const BaselineSeq &baselines,
         double refFreq,
-        const casa::MDirection &refPhase,
-        const casa::MDirection &refDelay,
-        const casa::MDirection &refTile,
+        const casacore::MDirection &refPhase,
+        const casacore::MDirection &refDelay,
+        const casacore::MDirection &refTile,
         bool circular = false);
 
     MeasurementExprLOFAR(SourceDB &sourceDB,
@@ -108,9 +108,9 @@ private:
         const ModelConfig &config,
         const Instrument::ConstPtr &instrument,
         double refFreq,
-        const casa::MDirection &refPhase,
-        const casa::MDirection &refDelay,
-        const casa::MDirection &refTile,
+        const casacore::MDirection &refPhase,
+        const casacore::MDirection &refDelay,
+        const casacore::MDirection &refTile,
         bool circular);
 
     void makeInverseExpr(SourceDB &sourceDB,
@@ -125,7 +125,7 @@ private:
     vector<string> makePatchList(SourceDB &sourceDB, vector<string> patterns);
 
     PatchExprBase::Ptr makePatchExpr(const string &name,
-        const casa::MDirection &phaseRef,
+        const casacore::MDirection &phaseRef,
         SourceDB &sourceDB,
         const BufferMap &buffers);
 

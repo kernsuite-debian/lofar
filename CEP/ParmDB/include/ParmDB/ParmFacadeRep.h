@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacadeRep.h 27639 2013-12-04 08:02:12Z diepen $
+//# $Id$
 
 #ifndef LOFAR_PARMDB_PARMFACADEREP_H
 #define LOFAR_PARMDB_PARMFACADEREP_H
@@ -28,7 +28,7 @@
 
 //# Includes
 #include <ParmDB/ParmDB.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/Containers/Record.h>
 #include <Common/lofar_vector.h>
 #include <Common/lofar_map.h>
 #include <Common/lofar_string.h>
@@ -84,13 +84,13 @@ namespace LOFAR { namespace BBS {
     virtual vector<string> getDefNames (const string& parmNamePattern) const = 0;
 
     // Get the default values of parameters matching the pattern.
-    virtual casa::Record getDefValues (const string& parmNamePattern) const = 0;
+    virtual casacore::Record getDefValues (const string& parmNamePattern) const = 0;
 
     // Add one or more default values.
     // The name of each field in the record is the parameter name.
     // The values are subrecords containing the parameter values, etc.
     // <br>By default it checks if the name does not exist.
-    virtual void addDefValues (const casa::Record&, bool check=true) = 0;
+    virtual void addDefValues (const casacore::Record&, bool check=true) = 0;
 
     // Delete the default value records for the given parameters.
     virtual void deleteDefValues (const string& parmNamePattern) = 0;
@@ -98,7 +98,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given regular grid
     // where v1/v2 represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     double freqv1, double freqv2,
                                     double freqStep,
                                     double timev1, double timev2,
@@ -109,7 +109,7 @@ namespace LOFAR { namespace BBS {
     // Get the values of the given parameters on the given grid where v1/v2
     // represents center/width or start/end.
     // The Record contains a map of parameter name to Array<double>.
-    virtual casa::Record getValues (const string& parmNamePattern,
+    virtual casacore::Record getValues (const string& parmNamePattern,
                                     const vector<double>& freqv1,
                                     const vector<double>& freqv2,
                                     const vector<double>& timev1,
@@ -123,13 +123,13 @@ namespace LOFAR { namespace BBS {
     // used for each parameters. Their names have the form <parmname>/xx
     // where xx is freqs, freqwidths, times, and timewidths. Their values
     // are the center and width of each cell.
-    virtual casa::Record getValuesGrid (const string& parmNamePattern,
+    virtual casacore::Record getValuesGrid (const string& parmNamePattern,
                                         double freqv1, double freqv2,
                                         double timev1, double timev2,
                                         bool asStartEnd) = 0;
 
     // Get coefficients, errors, and domains they belong to.
-    virtual casa::Record getCoeff (const string& parmNamePattern,
+    virtual casacore::Record getCoeff (const string& parmNamePattern,
                                    double freqv1, double freqv2,
                                    double timev1, double timev2,
                                    bool asStartEnd) = 0;
@@ -167,7 +167,7 @@ namespace LOFAR { namespace BBS {
     // The name of each field in the record is the parameter name.
     // The values are subrecords containing the domains, parameter values, etc.
     // <br>It checks if no values exist for the parameters and domains yet.
-    virtual void addValues (const casa::Record&) = 0;
+    virtual void addValues (const casacore::Record&) = 0;
   };
 
   // @}

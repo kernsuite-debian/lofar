@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Matrix.cc 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/Matrix.h>
@@ -31,9 +31,9 @@
 #include <Blob/BlobOStream.h>
 #include <Blob/BlobIStream.h>
 #include <Common/LofarLogger.h>
-//#include <casa/Arrays/Matrix.h>
+//#include <casacore/casa/Arrays/Matrix.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {
@@ -508,16 +508,16 @@ LOFAR::BlobIStream& operator>> (LOFAR::BlobIStream& bs, Matrix& vec)
 } // namespace LOFAR
 /*
 //# Instantiate the AIPS++ templates needed for Matrix<dcomplex>
-//# This is needed because dcomplex is usually not the same as casa::DComplex.
+//# This is needed because dcomplex is usually not the same as casacore::DComplex.
 //# The inclusion of the other .cc files is needed for the automatic
 //# instantiation of the templates used by Matrix.
 #ifdef AIPS_NO_TEMPLATE_SRC
-#include <casa/Arrays/Matrix.cc>
-#include <casa/Arrays/Vector.cc>
-#include <casa/Arrays/Array.cc>
-#include <casa/Arrays/MaskedArray.cc>
-#include <casa/Utilities/Copy.cc>
-#include <casa/Utilities/CountedPtr.cc>
+#include <casacore/casa/Arrays/Matrix.cc>
+#include <casacore/casa/Arrays/Vector.cc>
+#include <casacore/casa/Arrays/Array.cc>
+#include <casacore/casa/Arrays/MaskedArray.cc>
+#include <casacore/casa/Utilities/Copy.cc>
+#include <casacore/casa/Utilities/CountedPtr.cc>
 template class Matrix<LOFAR::dcomplex>;
 #endif
 */

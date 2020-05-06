@@ -17,18 +17,18 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMedian.cc 29034 2014-04-22 14:37:41Z loose $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
-#include <casa/OS/Timer.h>
-#include <casa/Utilities/GenSort.h>
+#include <casacore/casa/OS/Timer.h>
+#include <casacore/casa/Utilities/GenSort.h>
 #include <vector>
 #include <algorithm>
 #include <iostream>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void testCasa (size_t sz, size_t n)

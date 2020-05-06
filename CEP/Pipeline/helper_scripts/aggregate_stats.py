@@ -38,7 +38,7 @@ def usage():
         - disk usage
     """
 
-    print usage_string
+    print(usage_string)
 
     
 def open_file_and_parse(xml_stats_path):
@@ -56,7 +56,7 @@ def open_file_and_parse(xml_stats_path):
     except:
         # TODO: Failing to open a file is expected faulty behaviour,
         # should we do something else than an exception here?
-        print "could not open file: {0}".format(xml_stats_path)
+        print("could not open file: {0}".format(xml_stats_path))
         raise ImportError("Could not open supplied file for parsing")
     
     # Parse to xml
@@ -68,7 +68,7 @@ def open_file_and_parse(xml_stats_path):
         # Parsing of xml should succeed if written by the pipeline framework
         # In this case an exception should be allowed
         
-        print "Attempted to parse '{0}' as an xml file. This failed".format(xml_stats_path)
+        print("Attempted to parse '{0}' as an xml file. This failed".format(xml_stats_path))
 
     # return as xml_minidom object
     return stats_xml
@@ -89,11 +89,11 @@ def convert_xml_attributes_to_dict(attributes, clean_empty_values=True):
     """
     # put all the intries into a dict
     attribute_dict = {}
-    for attribute in attributes.items():
+    for attribute in list(attributes.items()):
         attribute_dict[attribute[0].encode("ascii", 'ignore')] = \
                 attribute[1].encode("ascii", 'ignore')
 
-    for key, value in attribute_dict.items():
+    for key, value in list(attribute_dict.items()):
         try:
             casted_value = eval(value)
             
@@ -174,9 +174,9 @@ def collect_job_information(job_xml):
     # statistics are burried one node deeper   
     resource_xml = job_xml.getElementsByTagName('resource_usage')
     if len(resource_xml) != 1:
-        print "Encountered an error while parsing resource node"
-        print "Continue parsing with other available nodes."
-        print "information might be corrupted or incomplete"
+        print("Encountered an error while parsing resource node")
+        print("Continue parsing with other available nodes.")
+        print("information might be corrupted or incomplete")
     
     # get the attributes mainly needed for the pid of the job recipe 
     resource_dict = convert_xml_attributes_to_dict(resource_xml[0].attributes)
@@ -216,19 +216,19 @@ def collect_recipe_information(node_xml):
         return node_dict
     
     if len(nodes) > 1:    # there should only be a single node entry failure state otherwise
-        print "Encountered an error while parsing node {0}".format(node_dict['node_name'])
-        print "Continue parsing with other available nodes."
-        print "information might be corrupted or incomplete"
+        print("Encountered an error while parsing node {0}".format(node_dict['node_name']))
+        print("Continue parsing with other available nodes.")
+        print("information might be corrupted or incomplete")
         return node_dict
     
     # we have a single node as expected
     # grab the job (node level information)   
     jobs = nodes[0].getElementsByTagName('job')
     if len(jobs) == 0:
-        print "Encountered an error while parsing node {0}".format(node_dict['node_name'])
-        print "No job / node level information was found"
-        print "Continue parsing with other available nodes."
-        print "information might be corrupted or incomplete"
+        print("Encountered an error while parsing node {0}".format(node_dict['node_name']))
+        print("No job / node level information was found")
+        print("Continue parsing with other available nodes.")
+        print("information might be corrupted or incomplete")
         return node_dict
 
     # now parse the individual nodes   
@@ -269,8 +269,8 @@ def get_pipeline_information(stats_xml):
         # this node should be empty. print warning if not!              
         if (node_name == 'active_stack'):
             if (len(dom.childNodes) != 0):        
-                print "The active stack contained leftover nodes" 
-                print "This probably means that the pipeline failed in a step"
+                print("The active stack contained leftover nodes") 
+                print("This probably means that the pipeline failed in a step")
                 
             # TODO: The mem size could be of interest: might point into
             # the direction of an issue with the config.
@@ -290,7 +290,7 @@ def create_recipe_duration_lists(pipeline_information):
     """
     duration_list = []
     step_name_list = []
-    for idx in range(1, len(pipeline_information.items())):
+    for idx in range(1, len(list(pipeline_information.items()))):
         duration_list.append(pipeline_information[idx]["duration"])
         step_name_list.append( pipeline_information[idx]["node_name"])
     
@@ -425,12 +425,12 @@ def create_trace_plot_information(step_dict, plot_debug):
     max_time_stamp = 0
     min_time_stamp = 9999999999999 # insanely large timestamp know larger then in the stats (somewhere aound 300 years in the future)
 
-    if not step_dict.has_key('jobs'):
+    if 'jobs' not in step_dict:
         time_stamps = []
         return time_stamps, all_traces, aggregate_traces
 
-    for id, node_dict in step_dict['jobs'].items():      # the node level information        
-        for id, pid_dict in node_dict['traces'].items(): # traces of the actual executables
+    for id, node_dict in list(step_dict['jobs'].items()):      # the node level information        
+        for id, pid_dict in list(node_dict['traces'].items()): # traces of the actual executables
              if len(pid_dict['trace']['timestamp']) == 0:
                 continue
                 
@@ -453,7 +453,7 @@ def create_trace_plot_information(step_dict, plot_debug):
     time_stamps = [x for x in range(min_time_stamp, max_time_stamp + poll_step_ms, poll_step_ms)] # we also need the last bin range() is exclusive
 
     # loop the data, clean and pad.     
-    for id, node_dict in step_dict['jobs'].items():      # the nodes
+    for id, node_dict in list(step_dict['jobs'].items()):      # the nodes
         # list needed to calculate the total load on a node: aggregate        
         cpu_job = [0] * len(time_stamps)
         mem_job = [0] * len(time_stamps)
@@ -461,7 +461,7 @@ def create_trace_plot_information(step_dict, plot_debug):
         write_bytes_job = [0] * len(time_stamps)
         cancelled_bytes_job = [0] * len(time_stamps)
 
-        for id2, pid_dict in node_dict['traces'].items(): # traces of the actual executables running on the node
+        for id2, pid_dict in list(node_dict['traces'].items()): # traces of the actual executables running on the node
             # 'rounding' errors might cause the binning to be non continues
             # therefore floor the first entry in the timestamp list and complete
             # the array 
@@ -501,7 +501,7 @@ def create_trace_plot_information(step_dict, plot_debug):
             # add the recorded timelines   
             for cpu_value in pid_dict['trace']['cpu']:
                 if cpu_value > 10000:    # TODO: Why this if statement?
-                    print  pid_dict['trace']['cpu']
+                    print(pid_dict['trace']['cpu'])
                     raise Exception
 
             cpu = cpu + pid_dict['trace']['cpu']
@@ -557,7 +557,7 @@ def create_trace_plot_information(step_dict, plot_debug):
                     write_bytes_job[idx] += write_entrie
                     cancelled_bytes_job[idx] += cancelled_entrie
                   except:
-                    print pid_dict
+                    print(pid_dict)
                     raise BaseException
 
 
@@ -641,7 +641,7 @@ def create_pipeline_traces_and_stat(pipeline_information):
              'cancelled_bytes':{'max_max':0.0}}
     traces = {}
     idx = 0
-    for key, entrie in pipeline_information.items()[1:]:  # skip first entry not a step
+    for key, entrie in list(pipeline_information.items())[1:]:  # skip first entry not a step
         # First create the traces
 
         if idx == 2:
@@ -659,7 +659,7 @@ def create_pipeline_traces_and_stat(pipeline_information):
 
         statistical_traces = {}
         # use numpy to calculate some statistics
-        for metric_key, node_traces in aggregate_traces.items():
+        for metric_key, node_traces in list(aggregate_traces.items()):
             statistical_traces[metric_key] =  {}
             # TODO: The current statistical properties have a problem:
             # They are calculated on all traces, they might start delayed, due to node congestion
@@ -716,7 +716,7 @@ def create_plot_of_full_pipeline(pipeline_information, stats,
     f = plt.figure()
 
     # step 1, add all the information to the plots
-    for (key, entrie), step_name in zip(pipeline_information.items(), step_name_list):
+    for (key, entrie), step_name in zip(list(pipeline_information.items()), step_name_list):
         if first_loop:
             first_time_stamp = entrie['time_stamps'][0]            
             first_loop = False

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Copyright (C) 2017
 # ASTRON (Netherlands Institute for Radio Astronomy)
@@ -21,7 +21,7 @@
 import unittest
 from lofarpipe.recipes.helpers.metadata import *
 from numpy import *
-import mock
+from unittest import mock
 
 import logging
 logger = logging.getLogger(__name__)

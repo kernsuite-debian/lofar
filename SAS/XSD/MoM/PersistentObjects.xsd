@@ -1,0 +1,40 @@
+
+<xsd:schema targetNamespace="http://www.astron.nl/PersistentObjects" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.astron.nl/PersistentObjects">
+	<xsd:annotation>
+		<xsd:documentation>Definition of base types for astron web application persistent objects</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="PersistentObjectType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+    			Base persistent object type
+    		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:integer" default="0"/>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedListType" abstract="true">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element ref="indexedListItem"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="IndexedListItemType" abstract="true">
+		<xsd:attribute name="index" type="xsd:nonNegativeInteger"/>
+	</xsd:complexType>
+	<xsd:complexType name="PersistentListType" abstract="true">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+    				A choice group with min/max occurences is used since
+    				the intention is that the referenced (abstract)
+    				element &quot;"persistentListElement&quot;" is
+    				replaced by a member of it's substitution group. (A
+    				sequence with an unbouded number of these elemets
+    				will not work as the substitution group is treated
+    				as a choice group.)
+    			</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element ref="persistentObject"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:element name="indexedListItem" type="IndexedListItemType" abstract="true"/>
+	<xsd:element name="persistentObject" type="PersistentObjectType" abstract="true"/>
+</xsd:schema>

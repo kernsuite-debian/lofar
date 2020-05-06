@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tCSConnection.cc 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 // \file 
 // Test program for CSConnection using one DataHolder for send and

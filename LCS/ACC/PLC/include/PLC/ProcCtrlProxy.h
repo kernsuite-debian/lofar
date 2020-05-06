@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProcCtrlProxy.h 14084 2009-09-23 13:30:51Z overeem $
+//# $Id$
 
 #ifndef LOFAR_PLC_PROCCTRLPROXY_H
 #define LOFAR_PLC_PROCCTRLPROXY_H

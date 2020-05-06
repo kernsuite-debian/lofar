@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisBuffer.cc 21733 2012-08-01 11:49:08Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/VisBuffer.h>
@@ -29,15 +29,15 @@
 #include <Common/lofar_algorithm.h>
 #include <Common/LofarLogger.h>
 
-#include <measures/Measures/MBaseline.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MeasFrame.h>
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MCBaseline.h>
-#include <casa/Quanta/MVuvw.h>
-#include <casa/BasicSL/Complex.h>
+#include <casacore/measures/Measures/MBaseline.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MeasFrame.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MCBaseline.h>
+#include <casacore/casa/Quanta/MVuvw.h>
+#include <casacore/casa/BasicSL/Complex.h>
 
 namespace LOFAR
 {
@@ -70,22 +70,22 @@ VisBuffer::VisBuffer(const VisDimensions &dims, bool hasCovariance,
         << " MB.");
 }
 
-void VisBuffer::setPhaseReference(const casa::MDirection &reference)
+void VisBuffer::setPhaseReference(const casacore::MDirection &reference)
 {
-    itsPhaseReference = casa::MDirection::Convert(reference,
-        casa::MDirection::J2000)();
+    itsPhaseReference = casacore::MDirection::Convert(reference,
+        casacore::MDirection::J2000)();
 }
 
-void VisBuffer::setDelayReference(const casa::MDirection &reference)
+void VisBuffer::setDelayReference(const casacore::MDirection &reference)
 {
-    itsDelayReference = casa::MDirection::Convert(reference,
-        casa::MDirection::J2000)();
+    itsDelayReference = casacore::MDirection::Convert(reference,
+        casacore::MDirection::J2000)();
 }
 
-void VisBuffer::setTileReference(const casa::MDirection &reference)
+void VisBuffer::setTileReference(const casacore::MDirection &reference)
 {
-    itsTileReference = casa::MDirection::Convert(reference,
-        casa::MDirection::J2000)();
+    itsTileReference = casacore::MDirection::Convert(reference,
+        casacore::MDirection::J2000)();
 }
 
 bool VisBuffer::isLinear() const
@@ -126,26 +126,26 @@ void VisBuffer::computeUVW()
     uvw.resize(boost::extents[nStations()][nTime()][3]);
 
     // Initialize reference frame.
-    casa::Quantum<casa::Double> qEpoch(0.0, "s");
-    casa::MEpoch mEpoch(qEpoch, casa::MEpoch::UTC);
-    casa::MeasFrame mFrame(mEpoch, itsInstrument->position(),
+    casacore::Quantum<casacore::Double> qEpoch(0.0, "s");
+    casacore::MEpoch mEpoch(qEpoch, casacore::MEpoch::UTC);
+    casacore::MeasFrame mFrame(mEpoch, itsInstrument->position(),
         itsPhaseReference);
 
     // Compute UVW.
-    casa::MVPosition mvArrayPosition = itsInstrument->position().getValue();
+    casacore::MVPosition mvArrayPosition = itsInstrument->position().getValue();
     for(size_t i = 0; i < nStations(); ++i)
     {
         // Use station positions relative to the array reference position (to
         // keep values small).
-        casa::MVPosition mvPosition =
+        casacore::MVPosition mvPosition =
             itsInstrument->station(i)->position().getValue();
-        casa::MVBaseline mvBaseline(mvPosition, mvArrayPosition);
+        casacore::MVBaseline mvBaseline(mvPosition, mvArrayPosition);
 
-        casa::MBaseline mBaseline(mvBaseline,
-            casa::MBaseline::Ref(casa::MBaseline::ITRF, mFrame));
+        casacore::MBaseline mBaseline(mvBaseline,
+            casacore::MBaseline::Ref(casacore::MBaseline::ITRF, mFrame));
 
         // Setup coordinate transformation engine.
-        casa::MBaseline::Convert convertor(mBaseline, casa::MBaseline::J2000);
+        casacore::MBaseline::Convert convertor(mBaseline, casacore::MBaseline::J2000);
 
         // Compute UVW coordinates.
         for(size_t j = 0; j < nTime(); ++j)
@@ -157,8 +157,8 @@ void VisBuffer::computeUVW()
             // Create MVuvw from a baseline (MVBaseline) and a reference
             // direction (MVDirection). Baseline and reference direction are
             // _assumed_ to be in the same frame (see casacore documentation).
-            casa::MBaseline mBaselineJ2000(convertor());
-            casa::MVuvw mvUVW(mBaselineJ2000.getValue(),
+            casacore::MBaseline mBaselineJ2000(convertor());
+            casacore::MVuvw mvUVW(mBaselineJ2000.getValue(),
                 itsPhaseReference.getValue());
 
             uvw[i][j][0] = mvUVW(0);
@@ -225,7 +225,7 @@ void VisBuffer::flagsNaN()
         // If any of the correlations is NaN, flag all correlations.
         for(size_t i = 0; i < nCorrelations(); i++)
         {
-            if(casa::isNaN(sample_it[i]))
+            if(casacore::isNaN(sample_it[i]))
             {
                 for(size_t j = 0; j < nCorrelations(); j++)
                 {

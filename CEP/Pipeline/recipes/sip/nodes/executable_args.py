@@ -5,7 +5,7 @@
 #                                                      s.froehlich@fz-juelich.de
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import os
 #import shutil
@@ -65,23 +65,23 @@ class executable_args(LOFARnodeTCP):
             argsformat = args_format['args_format']
             # deal with multiple input files for wsclean
             if argsformat == 'wsclean':
-                for i in reversed(xrange(len(args))):
+                for i in reversed(range(len(args))):
                     if str(args[i]).startswith('[') and str(args[i]).endswith(']'):
                         tmplist = args.pop(i).lstrip('[').rstrip(']').split(',')
                         for val in reversed(tmplist):
                             args.insert(i, val.strip(' \'\"'))
             if not parsetasfile:
                 if argsformat == 'gnu':
-                    for k, v in kwargs.items():
+                    for k, v in list(kwargs.items()):
                         args.append('--' + k + '=' + v)
                 if argsformat == 'lofar':
-                    for k, v in kwargs.items():
+                    for k, v in list(kwargs.items()):
                         args.append(k + '=' + v)
                 if argsformat == 'argparse':
-                    for k, v in kwargs.items():
+                    for k, v in list(kwargs.items()):
                         args.append('--' + k + ' ' + v)
                 if argsformat == 'wsclean':
-                    for k, v in kwargs.items():
+                    for k, v in list(kwargs.items()):
                         if str(v).startswith('[') and str(v).endswith(']'):
                             v = v.lstrip('[').rstrip(']').replace(' ', '')
                             multargs = v.split(',')
@@ -98,7 +98,7 @@ class executable_args(LOFARnodeTCP):
             else:
                 nodeparset = Parset()
                 parsetname = os.path.join(work_dir, os.path.basename(infile) + '.parset')
-                for k, v in kwargs.items():
+                for k, v in list(kwargs.items()):
                     nodeparset.add(k, v)
                 nodeparset.writeFile(parsetname)
                 if argsformat == 'losoto':
@@ -119,11 +119,11 @@ class executable_args(LOFARnodeTCP):
                     catch_segfaults(
                         cmd, work_dir, self.environment, logger
                     )
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 # CalledProcessError isn't properly propagated by IPython
                 self.logger.error(str(err))
                 return 1
-            except Exception, err:
+            except Exception as err:
                 self.logger.error(str(err))
                 return 1
 

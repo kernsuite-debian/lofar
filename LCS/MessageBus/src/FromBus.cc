@@ -2,7 +2,7 @@
 
 #include <MessageBus/FromBus.h>
 #include <MessageBus/Exceptions.h>
-#include "Util.h"
+#include <MessageBus/Util.h>
 
 #include <Common/LofarLogger.h>
 
@@ -14,7 +14,7 @@
 using namespace qpid::messaging;
 
 namespace LOFAR {
-  FromBus::FromBus(const std::string &address, const std::string &options, const std::string &broker)
+  FromBus::FromBus(const std::string &address, const std::string &broker, const std::string &options)
   try:
     itsConnection(broker,"{reconnect:true}"),
     itsNrMissingACKs(0)

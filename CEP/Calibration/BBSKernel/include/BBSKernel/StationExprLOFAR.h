@@ -38,7 +38,7 @@
 #include <BBSKernel/Expr/ExprValue.h>
 #include <BBSKernel/Expr/Scope.h>
 #include <ParmDB/SourceDB.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MDirection.h>
 
 namespace LOFAR
 {
@@ -56,8 +56,8 @@ public:
 
     StationExprLOFAR(SourceDB &sourceDB, const BufferMap &buffers,
         const ModelConfig &config, const Instrument::ConstPtr &instrument,
-        double refFreq, const casa::MDirection &refPhase,
-        const casa::MDirection &refDelay, const casa::MDirection &refTile,
+        double refFreq, const casacore::MDirection &refPhase,
+        const casacore::MDirection &refDelay, const casacore::MDirection &refTile,
         bool inverse = false, bool useMMSE = false, double sigmaMMSE = 0.0);
 
     StationExprLOFAR(SourceDB &sourceDB, const BufferMap &buffers,
@@ -88,15 +88,15 @@ private:
         const ModelConfig &config,
         const Instrument::ConstPtr &instrument,
         double refFreq,
-        const casa::MDirection &refPhase,
-        const casa::MDirection &refDelay,
-        const casa::MDirection &refTile,
+        const casacore::MDirection &refPhase,
+        const casacore::MDirection &refDelay,
+        const casacore::MDirection &refTile,
         bool inverse,
         bool useMMSE,
         double sigmaMMSE);
 
     PatchExprBase::Ptr makePatchExpr(const string &name,
-        const casa::MDirection &refPhase,
+        const casacore::MDirection &refPhase,
         SourceDB &sourceDB,
         const BufferMap &buffers);
 

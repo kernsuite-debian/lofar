@@ -17,16 +17,16 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSStationColumns.h 17574 2011-03-18 09:07:29Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSSTATIONCOLUMNS_H
 #define MSLOFAR_MSSTATIONCOLUMNS_H
 
-#include <casa/aips.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/BasicSL/String.h>
 
 namespace LOFAR {
 
@@ -52,17 +52,17 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    casa::ROScalarColumn<casa::String>& name()
+    casacore::ROScalarColumn<casacore::String>& name()
       { return name_p; }
-    casa::ROScalarColumn<casa::Int>& clockId()
+    casacore::ROScalarColumn<casacore::Int>& clockId()
       { return clockId_p; }
-    casa::ROScalarColumn<casa::Bool>& flagRow()
+    casacore::ROScalarColumn<casacore::Bool>& flagRow()
       { return flagRow_p; }
     // </group>
 
     // Convenience function that returns the number of rows
     // in any of the columns.
-    casa::uInt nrow() const
+    casacore::uInt nrow() const
       { return name_p.nrow(); }
 
   protected:
@@ -80,9 +80,9 @@ namespace LOFAR {
     ROMSStationColumns& operator=(const ROMSStationColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::String> name_p;
-    casa::ROScalarColumn<casa::Int>    clockId_p;
-    casa::ROScalarColumn<casa::Bool>   flagRow_p;
+    casacore::ROScalarColumn<casacore::String> name_p;
+    casacore::ROScalarColumn<casacore::Int>    clockId_p;
+    casacore::ROScalarColumn<casacore::Bool>   flagRow_p;
   };
 
 
@@ -105,11 +105,11 @@ namespace LOFAR {
 
     // Read-write access to required columns.
     // <group>
-    casa::ScalarColumn<casa::String>& name()
+    casacore::ScalarColumn<casacore::String>& name()
       { return name_p; }
-    casa::ScalarColumn<casa::Int>& clockId()
+    casacore::ScalarColumn<casacore::Int>& clockId()
       { return clockId_p; }
-    casa::ScalarColumn<casa::Bool>& flagRow()
+    casacore::ScalarColumn<casacore::Bool>& flagRow()
       { return flagRow_p; }
     // </group>
 
@@ -128,9 +128,9 @@ namespace LOFAR {
     MSStationColumns& operator=(const MSStationColumns&);
 
     //# required columns
-    casa::ScalarColumn<casa::String> name_p;
-    casa::ScalarColumn<casa::Int>    clockId_p;
-    casa::ScalarColumn<casa::Bool>   flagRow_p;
+    casacore::ScalarColumn<casacore::String> name_p;
+    casacore::ScalarColumn<casacore::Int>    clockId_p;
+    casacore::ScalarColumn<casacore::Bool>   flagRow_p;
 
   };
 

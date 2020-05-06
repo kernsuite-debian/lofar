@@ -18,13 +18,13 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tAxisMapping.cc 14038 2009-09-17 13:59:12Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/AxisMapping.h>
 #include <Common/LofarLogger.h>
 #include <Common/lofar_iostream.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
@@ -49,7 +49,7 @@ void checkMapping (const Axis& predictAxis, const AxisMapping& mapping)
     }
     //cout << nr << ' '<<parmCell<<' '<<cen <<' ' <<*centers<<endl;
     ASSERT (*iter == parmCell);
-    ASSERT (casa::near (*centers, cen));
+    ASSERT (casacore::near (*centers, cen));
     ++centers;
     ++nr;
     cen += 1/5.;

@@ -94,9 +94,11 @@ PL610      TBB_0      locus082
 PL611      TBB_0      locus083
 PL612      TBB_0      locus084
 IE613      TBB_0      locus085
+LV614      TBB_0      locus086
 
 # Non-ILT Stations (for completeness)
 FI901      TBB_0      locus081
 
 # Test entries can follow here
 RS511      TBB_0      locus085
+RS512      TBB_0      locus085

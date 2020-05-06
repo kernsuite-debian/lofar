@@ -1,0 +1,146 @@
+V 13
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+PANEL,-1 -1 1024 768 N "_3DFace" 0
+"main()
+{
+  if(getUserName() == \"\")
+    LoginDialog(-1, \"LoginDialog\", \"WinCC_OA.gif\"); 
+ 
+}" 0
+ E E E E 1 -1 -1 0  94 688
+""0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+"lofar_core_background.jpg" 0 0 1024 768
+-1
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+6 11
+"RECTANGLE1"
+""
+1 0 610 E E E 1 E 1 E N "_Transparent" E N {127,170,188,197} E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1.028846153846154 0 0.7777777777777778 0 94.55555555555549 1 E 0 610 1040 700
+13 18
+"PUSH_BUTTON8"
+""
+1 270.25 284.5 E E E 1 E 1 E N {12,58,71} E N {222,243,239} E E
+ E E
+18 0 0 0 0 0
+E E E
+0
+4
+LANG:1 0 
+LANG:10000 0 
+LANG:10001 0 
+LANG:10027 0 
+
+1
+"sizePolicy" "Preferred Preferred"
+4
+LANG:1 26 Arial,-1,13,5,75,0,0,0,0,0
+LANG:10000 26 Arial,10,-1,5,75,0,0,0,0,0
+LANG:10001 26 Arial,10,-1,5,75,0,0,0,0,0
+LANG:10027 26 Arial,10,-1,5,75,0,0,0,0,0
+0  436 578 589 631
+
+T 
+4
+LANG:1 5 Login
+LANG:10000 5 Login
+LANG:10001 5 Login
+LANG:10027 26 Вход в систему
+"main()
+{
+  LoginDialog(-1, \"LoginDialog\", \"WinCC_OA.gif\");
+}" 0
+ E E E
+14 19
+"TEXT_FIELD1"
+""
+1 413.440414507772 108 E E E 1 E 1 E N {2,56,149} E N "_Transparent" E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+3
+"shadowOffset" "[8,8]"
+"shadowColor" "{63,63,63,131}"
+"shadowRadius" "18"
+1
+LANG:1 35 MS Shell Dlg 2,-1,48,5,50,0,0,0,0,0
+0  -2 -4 1025 63
+3 "0s" 0 0 0 1 0 -1  E "main()
+{
+  TEXT_FIELD1.text(\"LOFAR Navigator\");
+}" 0
+ E
+6 20
+"RECTANGLE2"
+""
+1 880 0 E E E 1 E 1 E N {0,0,0} E N "_Transparent" E E
+ E E
+20 0 0 0 0 0
+E E E
+0
+1
+LANG:1 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 3.999999999999986 0 1.18 -2696.999999999987 0 2  0 0  "pictures/logo.gif" 4294967295 E 880 0 930 50
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                LOFAR STANDARD IMAGING PIPELINE
 #
 #                                                        Imager Pipeline recipe
@@ -488,7 +488,7 @@ class imaging_pipeline(control):
                 processed_ms_dir = processed_ms_dir)
 
         # validate that the prepare phase produced the correct data
-        output_keys = outputs.keys()
+        output_keys = list(outputs.keys())
         if not ('mapfile' in output_keys):
             error_msg = "The imager_prepare master script did not"\
                     "return correct data. missing: {0}".format('mapfile')

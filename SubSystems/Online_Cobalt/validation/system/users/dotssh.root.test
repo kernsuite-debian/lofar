@@ -1,0 +1,15 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_root_privileges
+
+for DIR in lofarbuild lofarsys
+do
+  AUTHKEYS=/localhome/$DIR/.ssh/authorized_keys
+
+  # Specified user should have an authorized_keys file
+  [ -f $AUTHKEYS ] || exit 1
+done
+
+
+exit 0

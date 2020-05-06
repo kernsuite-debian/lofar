@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tStringUtil.cc 27335 2013-11-11 13:48:40Z overeem $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PolynomialLayer.h 14789 2010-01-13 12:39:15Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_POLYNOMIALPHASESCREEN_H
 #define LOFAR_BBSKERNEL_EXPR_POLYNOMIALPHASESCREEN_H
@@ -30,9 +30,9 @@
 
 #include <BBSKernel/Expr/Expr.h>
 
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasConvert.h>
 
 namespace LOFAR
 {
@@ -49,7 +49,7 @@ public:
     typedef shared_ptr<const PolynomialLayer> ConstPtr;
 
     template <typename T_ITER>
-    PolynomialLayer(const casa::MPosition &refStation,
+    PolynomialLayer(const casacore::MPosition &refStation,
         const Expr<Vector<4> >::ConstPtr &pp, T_ITER first, T_ITER last);
 
     virtual ~PolynomialLayer();
@@ -65,7 +65,7 @@ protected:
         const Vector<4>::View &pp, const vector<Scalar::View> &coeff) const;
 
 private:
-    casa::MPosition                 itsRefStation;
+    casacore::MPosition                 itsRefStation;
     Expr<Vector<4> >::ConstPtr      itsPiercePoint;
     vector<Expr<Scalar>::ConstPtr>  itsCoeff;
 };
@@ -77,10 +77,10 @@ private:
 // -------------------------------------------------------------------------- //
 
 template <typename T_ITER>
-PolynomialLayer::PolynomialLayer(const casa::MPosition &refStation,
+PolynomialLayer::PolynomialLayer(const casacore::MPosition &refStation,
     const Expr<Vector<4> >::ConstPtr &pp, T_ITER first, T_ITER last)
-    :   itsRefStation(casa::MPosition::Convert(refStation,
-            casa::MPosition::ITRF)()),
+    :   itsRefStation(casacore::MPosition::Convert(refStation,
+            casacore::MPosition::ITRF)()),
         itsPiercePoint(pp),
         itsCoeff(first, last)
 {

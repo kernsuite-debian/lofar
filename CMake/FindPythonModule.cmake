@@ -23,10 +23,10 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindPythonModule.cmake 39709 2018-06-14 12:07:59Z dijkema $
+# $Id$
 
 # Search for the Python interpreter.
-find_package(PythonInterp)
+find_package(PythonInterp 3)
 
 # -----------------------------------------------------------------------------
 # find_python_module(module [REQUIRED])

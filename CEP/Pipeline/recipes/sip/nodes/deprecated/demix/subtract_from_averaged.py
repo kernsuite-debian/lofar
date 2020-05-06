@@ -37,8 +37,8 @@ def subtract_from_averaged (msname, mixingname, mspredictnames, msnameout):
    target_idx = avg_msnames.index(msname)
    predict_idx = [avg_dem_msnames.index(mspredictname) for mspredictname in mspredictnames]
 
-   print target_idx
-   print predict_idx
+   print(target_idx)
+   print(predict_idx)
 
    t = pyrap.tables.table(msname)
    t.copy(msnameout)

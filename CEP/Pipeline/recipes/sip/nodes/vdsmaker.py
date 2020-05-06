@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT
 import os
 import sys
@@ -34,10 +34,10 @@ class vdsmaker(LOFARnodeTCP):
                     raise ExecutableMissing(executable)
                 cmd = [executable, clusterdesc, infile, outfile]
                 return catch_segfaults(cmd, None, None, self.logger).returncode
-            except ExecutableMissing, e:
+            except ExecutableMissing as e:
                 self.logger.error("%s not found" % (e.args[0]))
                 return 1
-            except CalledProcessError, e:
+            except CalledProcessError as e:
                 # For CalledProcessError isn't properly propagated by IPython
                 # Temporary workaround...
                 self.logger.error(str(e))

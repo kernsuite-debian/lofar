@@ -44,7 +44,7 @@ class control(StatefulRecipe):
         """
         Display usage information
         """
-        print >> sys.stderr, "Usage: %s <parset-file>  [options]" % sys.argv[0]
+        print("Usage: %s <parset-file>  [options]" % sys.argv[0], file=sys.stderr)
         return 1
 
     def send_feedback_processing(self, feedback):
@@ -55,7 +55,7 @@ class control(StatefulRecipe):
         """
 
         if self.feedback_method == "messagebus":
-          bus = messagebus.ToBus("lofar.task.feedback.processing")
+          bus = messagebus.ToBus("otdb.task.feedback.processing", broker=messagebus.broker_feedback)
           msg = TaskFeedbackProcessing(
             "lofarpipe.support.control",
             "",
@@ -74,7 +74,7 @@ class control(StatefulRecipe):
         """
 
         if self.feedback_method == "messagebus":
-          bus = messagebus.ToBus("lofar.task.feedback.dataproducts")
+          bus = messagebus.ToBus("otdb.task.feedback.dataproducts", broker=messagebus.broker_feedback)
           msg = TaskFeedbackDataproducts(
             "lofarpipe.support.control",
             "",
@@ -94,7 +94,7 @@ class control(StatefulRecipe):
         """
 
         if self.feedback_method == "messagebus" and self.feedback_send_status:
-          bus = messagebus.ToBus("lofar.task.feedback.state")
+          bus = messagebus.ToBus("mac.task.feedback.state", broker=messagebus.broker_state)
           msg = TaskFeedbackState(
             "lofarpipe.support.control",
             "",
@@ -153,7 +153,7 @@ class control(StatefulRecipe):
 
         try:
             self.pipeline_logic()
-        except Exception, message:
+        except Exception as message:
             self.logger.error("*******************************************")
             self.logger.error("Failed pipeline run: {0}".format(
                         self.inputs['job_name']))
@@ -163,9 +163,10 @@ class control(StatefulRecipe):
             self.logger.error("Detailed exception information:")
             self.logger.error(str(type))
             self.logger.error(str(value))
+            self.logger.exception(message)
             # Get the stacktrace and pretty print it:
-            # self.logger.error("\n" + " ".join(traceback.format_list(
-            #            traceback.extract_tb(traceback_object))))
+            self.logger.error("\n" + " ".join(traceback.format_list(
+                        traceback.extract_tb(traceback_object))))
 
             self.logger.error("*******************************************")
 
@@ -184,9 +185,9 @@ class control(StatefulRecipe):
                 xmlfile = self.config.get("logging", "xml_stat_file")
                 try:
                     fp = open(xmlfile, "w")
-                    fp.write(get_active_stack(self).toxml(encoding='ascii'))
+                    fp.write(get_active_stack(self).toxml(encoding='ascii').decode('ascii'))
                     fp.close()
-                except Exception, except_object:
+                except Exception as except_object:
                     self.logger.error("Failed opening xml stat file:")
                     self.logger.error(except_object)
 

@@ -28,7 +28,7 @@ namespace LOFAR
 namespace BBS
 {
 
-StationLOFAR::StationLOFAR(const string &name, const casa::MPosition &position,
+StationLOFAR::StationLOFAR(const string &name, const casacore::MPosition &position,
     const StationResponse::Station::ConstPtr &station)
     :   Station(name, position),
         itsStation(station)

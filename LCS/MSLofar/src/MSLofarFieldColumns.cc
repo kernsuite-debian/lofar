@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarFieldColumns.cc 19654 2011-12-22 08:59:57Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -25,7 +25,7 @@
 #include <MSLofar/MSLofarFieldColumns.h>
 #include <MSLofar/MSLofarField.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 

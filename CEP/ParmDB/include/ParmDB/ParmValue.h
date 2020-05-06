@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmValue.h 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 // @file
 // @brief A class containing the values of a parameter
@@ -30,7 +30,7 @@
 #include <ParmDB/Grid.h>
 #include <ParmDB/Axis.h>
 #include <Common/lofar_smartptr.h>
-#include <casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Array.h>
 #include <string>
 #include <vector>
 
@@ -81,16 +81,16 @@ namespace BBS {
     void setScalar (double value);
 
     // Set as an array of coefficients.
-    void setCoeff (const casa::Array<double>&);
+    void setCoeff (const casacore::Array<double>&);
 
     // Set as an array of scalar values with the grid.
     // The shape of grid and values must match.
-    void setScalars (const Grid&, const casa::Array<double>&);
+    void setScalars (const Grid&, const casacore::Array<double>&);
 
     // Set the errors.
     // They must have the same shape as the values, so the values must have
     // been set before.
-    void setErrors (const casa::Array<double>&);
+    void setErrors (const casacore::Array<double>&);
 
     // Get the value shape.
     // <group>
@@ -102,9 +102,9 @@ namespace BBS {
 
     // Get the values.
     // <group>
-    const casa::Array<double>& getValues() const
+    const casacore::Array<double>& getValues() const
       { return itsValues; }
-    casa::Array<double>& getValues()
+    casacore::Array<double>& getValues()
       { return itsValues; }
     // </group>
 
@@ -118,9 +118,9 @@ namespace BBS {
 
     // Get the arrays with errors. Undefined if <src>getErrors()==false</src>.
     // <group>
-    const casa::Array<double>& getErrors() const
+    const casacore::Array<double>& getErrors() const
       { return *itsErrors; }
-    casa::Array<double>& getErrors()
+    casacore::Array<double>& getErrors()
       { return *itsErrors; }
     // </group>
 
@@ -136,7 +136,7 @@ namespace BBS {
     
     // Return the scaled coefficients of a 2D polynomial using the
     // given offset and scale factor.
-    static casa::Matrix<double> scale2 (const casa::Matrix<double>& coeff,
+    static casacore::Matrix<double> scale2 (const casacore::Matrix<double>& coeff,
                                         double offx, double offy,
                                         double scalex, double scaley);
 
@@ -152,12 +152,12 @@ namespace BBS {
 
     // Fill Pascal's triangle till the given order.
     // The matrix will be resized as needed.
-    static void fillPascal (casa::Matrix<double>& pascal, int order);
+    static void fillPascal (casacore::Matrix<double>& pascal, int order);
 
     /// Data members.
     Grid                 itsGrid;          //# grid of the values
-    casa::Array<double>  itsValues;        //# scalar values or funklet coeff
-    casa::Array<double>* itsErrors;
+    casacore::Array<double>  itsValues;        //# scalar values or funklet coeff
+    casacore::Array<double>* itsErrors;
     int                  itsRowId;         //# rowid in ParmDB
   };
 
@@ -210,9 +210,9 @@ namespace BBS {
     // Get/set the mask telling which coefficients are solvable.
     // The array can be empty meaning that all coefficients are solvable.
     // <group>
-    const casa::Array<bool>& getSolvableMask() const
+    const casacore::Array<bool>& getSolvableMask() const
       { return itsSolvableMask; }
-    void setSolvableMask (const casa::Array<bool>& mask)
+    void setSolvableMask (const casacore::Array<bool>& mask)
       { itsSolvableMask.assign (mask); }
     // <group>
 
@@ -285,7 +285,7 @@ namespace BBS {
     ParmValue::FunkletType itsType;
     double                 itsPerturbation;
     bool                   itsPertRel;
-    casa::Array<bool>      itsSolvableMask;
+    casacore::Array<bool>      itsSolvableMask;
     Grid                   itsDomainGrid;
     std::vector<ParmValue::ShPtr> itsValues;
     ParmValue              itsDefaultValue;

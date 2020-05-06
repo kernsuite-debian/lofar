@@ -1,0 +1,23 @@
+#!/bin/bash -v
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cobalt2
+
+EXIT_CODE=0
+
+for i in {201..213} ; do
+    NODE=cbm$i.control.lofar
+    # the following interfaces need to be connected
+    # 10GB03 and 10GB07 are spares and do not need to connected at this moment
+    for INTERFACE in ib0 ib1 10GB01 10GB02 10GB04 10GB05 10GB06 em1 ; do
+        RESULT=$(ssh $NODE /usr/sbin/ethtool $INTERFACE |& grep "Link detected: yes")
+        if [ $? -eq 0 ] ; then
+            echo "$NODE : interface $INTERFACE has a detected link"
+        else
+            echo "ERROR: $NODE : interface $INTERFACE has no detected link"
+            EXIT_CODE=1
+        fi
+    done
+done
+
+exit $EXIT_CODE

@@ -23,7 +23,7 @@ def plugin_main(args, **kwargs):
         fileid = os.path.join(os.path.dirname(fileid), kwargs['newname'])
 
     if datamap:
-        print 'Writing mapfile: ',fileid
+        print('Writing mapfile: ',fileid)
         datamap.save(fileid)
         result['mapfile'] = fileid
     return result

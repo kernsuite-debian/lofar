@@ -4,8 +4,8 @@
 #                                                            John Swinbank, 2010
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
-from cPickle import load
+
+from pickle import load
 import os.path
 import sys
 
@@ -54,7 +54,7 @@ class flag_baseline(LOFARnodeTCP):
 
                 try:
                     taql(cmd)
-                except Exception, e:
+                except Exception as e:
                     self.logger.warn(str(e))
                     return 1
             else:
@@ -68,7 +68,7 @@ class flag_baseline(LOFARnodeTCP):
             self.logger.info("Running TaQL: " + cmd)
             try:
                 taql(cmd)
-            except Exception, e:
+            except Exception as e:
                 self.logger.warn(str(e))
                 return 1
 

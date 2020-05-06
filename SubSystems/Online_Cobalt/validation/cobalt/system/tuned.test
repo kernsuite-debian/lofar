@@ -1,0 +1,9 @@
+#!/bin/bash -ve
+
+# Our own hostname must be resolvable
+
+for i in {201..213} ; do
+  ssh cbm$i systemctl status tuned.service | grep "Active: inactive" || exit 1
+done
+
+exit 0

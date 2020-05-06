@@ -24,7 +24,7 @@
 This package contains the default mail addresses used in the LOFAR software
 """
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 import os
 import pwd
 from glob import glob

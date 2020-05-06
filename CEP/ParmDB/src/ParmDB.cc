@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmDB.cc 21598 2012-07-16 08:07:34Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -29,16 +29,16 @@
 #include <ParmDB/ParmDBPostgres.h>
 #endif
 #include <Common/LofarLogger.h>
-#include <casa/Utilities/Regex.h>
+#include <casacore/casa/Utilities/Regex.h>
 
 #ifdef AIPS_NO_TEMPLATE_SRC
-# include <casa/Utilities/GenSort.cc>     // for automatic template
+# include <casacore/casa/Utilities/GenSort.cc>     // for automatic template
 #else
-# include <casa/Utilities/GenSort.h>
+# include <casacore/casa/Utilities/GenSort.h>
 #endif
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 namespace BBS {

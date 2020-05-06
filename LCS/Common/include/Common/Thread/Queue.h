@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: Queue.h 35309 2016-09-08 09:57:51Z schoenmakers $
+//#  $Id$
 
 #ifndef LOFAR_LCS_COMMON_QUEUE_H
 #define LOFAR_LCS_COMMON_QUEUE_H

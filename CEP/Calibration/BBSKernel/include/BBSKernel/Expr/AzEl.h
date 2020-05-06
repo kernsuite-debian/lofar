@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: AzEl.h 14632 2009-12-08 21:26:54Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_AZEL_H
 #define LOFAR_BBSKERNEL_EXPR_AZEL_H
@@ -28,7 +28,7 @@
 
 #include <BBSKernel/Expr/BasicExpr.h>
 
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -46,7 +46,7 @@ public:
     typedef shared_ptr<AzEl>        Ptr;
     typedef shared_ptr<const AzEl>  ConstPtr;
 
-    AzEl(const casa::MPosition &position,
+    AzEl(const casacore::MPosition &position,
         const Expr<Vector<2> >::ConstPtr &direction);
 
 protected:
@@ -54,7 +54,7 @@ protected:
         const Vector<2>::View &direction) const;
 
 private:
-    casa::MPosition itsPosition;
+    casacore::MPosition itsPosition;
 };
 
 // @}

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 36939 2017-03-25 18:42:49Z dijkema $
+# $Id$
 
 lofar_package(DPPP 1.0 DEPENDS LofarStMan Common MS ParmDB StationResponse)
 

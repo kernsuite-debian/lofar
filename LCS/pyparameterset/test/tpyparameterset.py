@@ -1,9 +1,9 @@
-from __future__ import print_function
+
 
 from lofar.parameterset import *
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
@@ -84,16 +84,16 @@ ps.add ("vecbool", "[true,false,true]")
 ps.add ("vec", "[1,2,3]")
 ps.add ("vecexp", "[1..3,5..10]")
 ps.add ("vecnest", "[[1..3,5*10],[5..10]]")
-print(ps.keys())
+print(list(ps.keys()))
 checkps (ps)
 
 # Check if a subset can be made and its name can be read.
 pss = ps.makeSubset('a.')
-print(pss.keys())
+print(list(pss.keys()))
 print('b.c =', pss.getString ('b.c'))
-print(pss.makeSubset('b.', 'aa.bb.').keys())
+print(list(pss.makeSubset('b.', 'aa.bb.').keys()))
 print(pss.makeSubset('b.').size())
-print(pss.makeSubset('cc').keys())    # should be empty
+print(list(pss.makeSubset('cc').keys()))    # should be empty
 print(len(pss.makeSubset('cc')))
 
 # Check the dict functionality.

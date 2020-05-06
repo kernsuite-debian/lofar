@@ -1,11 +1,11 @@
 import numpy as np
-import format
-import cStringIO
+from . import format
+import io
 import os
 import itertools
 import sys
 
-from cPickle import load as _cload, loads
+from pickle import load as _cload, loads
 
 _file = file
 
@@ -22,7 +22,7 @@ def seek_gzip_factory(f):
             offset = self.offset + offset
 
         if whence not in [0, 1]:
-            raise IOError, "Illegal argument"
+            raise IOError("Illegal argument")
 
         if offset < self.offset:
             # for negative seek, rewind and do positive seek
@@ -62,7 +62,7 @@ class BagObj(object):
         try:
             return object.__getattribute__(self, '_obj')[key]
         except KeyError:
-            raise AttributeError, key
+            raise AttributeError(key)
 
 class NpzFile(object):
     """A dictionary-like object with lazy-loading of files in the zipped
@@ -107,12 +107,12 @@ class NpzFile(object):
         if member:
             bytes = self.zip.read(key)
             if bytes.startswith(format.MAGIC_PREFIX):
-                value = cStringIO.StringIO(bytes)
+                value = io.StringIO(bytes)
                 return format.read_array(value)
             else:
                 return bytes
         else:
-            raise KeyError, "%s is not a file in the archive" % key
+            raise KeyError("%s is not a file in the archive" % key)
 
 def load(file, mmap_mode=None):
     """
@@ -170,7 +170,7 @@ def load(file, mmap_mode=None):
     """
     import gzip
 
-    if isinstance(file, basestring):
+    if isinstance(file, str):
         fid = _file(file,"rb")
     elif isinstance(file, gzip.GzipFile):
         fid = seek_gzip_factory(file)
@@ -193,8 +193,7 @@ def load(file, mmap_mode=None):
         try:
             return _cload(fid)
         except:
-            raise IOError, \
-                "Failed to interpret file %s as a pickle" % repr(file)
+            raise IOError("Failed to interpret file %s as a pickle" % repr(file))
 
 def save(file, arr):
     """
@@ -226,7 +225,7 @@ def save(file, arr):
     array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
     """
-    if isinstance(file, basestring):
+    if isinstance(file, str):
         if not file.endswith('.npy'):
             file = file + '.npy'
         fid = open(file, "wb")
@@ -275,15 +274,15 @@ def savez(file, *args, **kwds):
     # component of the so-called standard library.
     import zipfile
 
-    if isinstance(file, basestring):
+    if isinstance(file, str):
         if not file.endswith('.npz'):
             file = file + '.npz'
 
     namedict = kwds
     for i, val in enumerate(args):
         key = 'arr_%d' % i
-        if key in namedict.keys():
-            raise ValueError, "Cannot use un-named variables and keyword %s" % key
+        if key in list(namedict.keys()):
+            raise ValueError("Cannot use un-named variables and keyword %s" % key)
         namedict[key] = val
 
     zip = zipfile_factory(file, mode="w")
@@ -294,7 +293,7 @@ def savez(file, *args, **kwds):
     direc = tempfile.gettempdir()
     todel = []
 
-    for key, val in namedict.iteritems():
+    for key, val in namedict.items():
         fname = key + '.npy'
         filename = os.path.join(direc, fname)
         todel.append(filename)

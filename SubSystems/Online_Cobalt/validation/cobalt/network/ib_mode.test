@@ -1,0 +1,19 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cobalt2
+
+EXIT_CODE=0
+
+for i in {201..213} ; do
+    NODE=cbm$i.control.lofar
+    RESULT=$(ssh $NODE "grep connected /sys/class/net/ib{0,1}/mode  | wc -l | grep '^2$'")
+    if [ $? -eq 0 ] ; then
+        echo "ib mode on $NODE is 'connected'"
+    else
+        echo "ERROR: ib mode on $NODE is incorrect: $RESULT"
+        EXIT_CODE=1
+    fi
+done
+
+exit $EXIT_CODE

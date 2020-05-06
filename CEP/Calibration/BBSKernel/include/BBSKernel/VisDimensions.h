@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisDimensions.h 18524 2011-07-19 16:40:34Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_VISDIMENSIONS_H
 #define LOFAR_BBSKERNEL_VISDIMENSIONS_H

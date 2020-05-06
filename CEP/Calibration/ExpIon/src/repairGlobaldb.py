@@ -16,7 +16,7 @@ def get_source_list( pdb, source_pattern_list ):
       source_list.extend([n.split(':')[-1] for n in parmname_list])
       parmname_list = pdb.getNames( 'ScalarPhase:*:' + pattern )
       source_list.extend([n.split(':')[-1] for n in parmname_list])
-   print set(source_list)
+   print(set(source_list))
    return sorted(set(source_list))
 
 def get_station_list( pdb, station_pattern_list, DirectionalGainEnable ):
@@ -33,7 +33,7 @@ def repair_station_table(myion,globaldbpath,instrumentdb):
 
     antenna_table_name = os.path.join( globaldbpath, "ANTENNA")
     if not os.path.exists(antenna_table_name) :
-        print "ANTENNA table not existing, please copy to globaldb"
+        print("ANTENNA table not existing, please copy to globaldb")
         return
     antenna_table = pt.table(antenna_table_name) 
     name_col = antenna_table.getcol('NAME')
@@ -55,7 +55,7 @@ def repair_station_table(myion,globaldbpath,instrumentdb):
 def repair_pointing(myion,globaldbpath):
     field_table_name = os.path.join( globaldbpath, "FIELD" )
     if not os.path.exists(field_table_name) :
-        print "FIELD table not existing, please copy to globaldb"
+        print("FIELD table not existing, please copy to globaldb")
         return
     field_table = pt.table( field_table_name)
     field_table = pt.table( globaldbpath + "/FIELD")
@@ -68,7 +68,7 @@ def repair_pointing(myion,globaldbpath):
 def repair_sources(myion,globaldb,instrumentdb):
     skydbname = globaldb + "/sky"
     if not os.path.exists(skydbname) : 
-        print "No skydb found, copy first to globaldb"
+        print("No skydb found, copy first to globaldb")
         return
     skydb = lofar.parmdb.parmdb( skydbname )
     sources = ["*"]
@@ -80,8 +80,8 @@ def repair_sources(myion,globaldb,instrumentdb):
             dec = skydb.getDefValues( 'Dec:' + source )['Dec:' + source][0][0]
         except KeyError:
             # Source not found in skymodel parmdb, try to find components
-            RA = np.array(skydb.getDefValues( 'Ra:' + source + '.*' ).values()).mean()
-            dec = np.array(skydb.getDefValues( 'Dec:' + source + '.*' ).values()).mean()
+            RA = np.array(list(skydb.getDefValues( 'Ra:' + source + '.*' ).values())).mean()
+            dec = np.array(list(skydb.getDefValues( 'Dec:' + source + '.*' ).values())).mean()
         myion.source_positions.append([RA, dec])
 
 def add_to_h5_func(h5file,data,name='test',dtype=None):
@@ -96,7 +96,7 @@ def doRepair(globaldbpath,
              GainEnable = False, DirectionalGainEnable = False,
              PhasorsEnable = False, RotationEnable = False, CommonRotationEnable = False,ScalarPhaseEnable = False, CommonScalarPhaseEnable = False,polarizations=[0,1],tablename='instrument-0'):
     if not os.path.isdir(globaldbpath):
-        print "error:",globaldbpath,"does not exist"
+        print("error:",globaldbpath,"does not exist")
         return
     if os.path.isfile(globaldbpath+'/ionmodel.hdf5'):
         try:
@@ -134,7 +134,7 @@ def doRepair(globaldbpath,
 
     if not hasattr(myion,'sources'):
         if DirectionalGainEnable or myion.RotationEnable or ScalarPhaseEnable:
-            print "getting source names from instrumentdb"
+            print("getting source names from instrumentdb")
             repair_sources(myion,globaldbpath,instrumentdb)
         
         else:
@@ -173,13 +173,13 @@ def doRepair(globaldbpath,
     myion.freqwidths = []
     newdblist=[]
     for instrumentdb_name in myion.instrument_db_list:
-        print "opening",instrumentdb_name,parmname_check
+        print("opening",instrumentdb_name,parmname_check)
         try:
             instrumentdb = lofar.parmdb.parmdb( instrumentdb_name )
             v0 = instrumentdb.getValuesGrid( parmname_check )[ parmname_check ]
             freqs = v0['freqs']
         except:
-            print "Error opening " + instrumentdb_name,"removing from list"
+            print("Error opening " + instrumentdb_name,"removing from list")
         else:
             myion.freqs = np.concatenate([myion.freqs, freqs])
             myion.freqwidths = np.concatenate([myion.freqwidths, v0['freqwidths']])
@@ -192,8 +192,8 @@ def doRepair(globaldbpath,
     # We will use the following form
     #    sorted_freqs[inverse_sorted_freq_idx[selection]] = unsorted_freqs[selection]
     # to process chunks (=selections) of unsorted data and store them in sorted order
-    sorted_freq_idx = sorted(range(len(myion.freqs)), key = lambda idx: myion.freqs[idx])
-    inverse_sorted_freq_idx = sorted(range(len(myion.freqs)), key = lambda idx: sorted_freq_idx[idx])
+    sorted_freq_idx = sorted(list(range(len(myion.freqs))), key = lambda idx: myion.freqs[idx])
+    inverse_sorted_freq_idx = sorted(list(range(len(myion.freqs))), key = lambda idx: sorted_freq_idx[idx])
       
     myion.freqs = myion.freqs[sorted_freq_idx]
     myion.freqwidths = myion.freqwidths[sorted_freq_idx]
@@ -241,7 +241,7 @@ def doRepair(globaldbpath,
     freq_idx = 0
 
     for instrumentdb_name in myion.instrument_db_list:
-        print "processing",instrumentdb_name
+        print("processing",instrumentdb_name)
         instrumentdb = lofar.parmdb.parmdb( instrumentdb_name )
         v0 = instrumentdb.getValuesGrid( parmname_check )[ parmname_check ]
         freqs = v0['freqs']
@@ -264,7 +264,7 @@ def doRepair(globaldbpath,
                       if hasPhase:
                         gain_phase = instrumentdb.getValuesGrid( parmname1 )[ parmname1 ]['values']
                         if gain_phase.shape != ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0, pol_idx].shape:
-                            print "wrong shape",gain_phase.shape,parmname1
+                            print("wrong shape",gain_phase.shape,parmname1)
                             continue;
                         
                         ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0, pol_idx] = gain_phase
@@ -278,7 +278,7 @@ def doRepair(globaldbpath,
 
                         cdata=gain_real+1.j*gain_imag
                         if cdata.shape != ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0, pol_idx].shape:
-                            print "wrong shape",cdata.shape,parmname1
+                            print("wrong shape",cdata.shape,parmname1)
                             continue;
 
                         ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0, pol_idx] =np.angle(cdata)
@@ -301,7 +301,7 @@ def doRepair(globaldbpath,
                             if hasPhase:
                                 gain_phase = instrumentdb.getValuesGrid( parmname1 )[ parmname1 ]['values']
                                 if gain_phase.shape != ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx, pol_idx].shape:
-                                    print "wrong shape",gain_phase.shape,parmname1
+                                    print("wrong shape",gain_phase.shape,parmname1)
                                     continue;
                         
                                 ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx, pol_idx] = gain_phase
@@ -314,7 +314,7 @@ def doRepair(globaldbpath,
 
                             cdata=gain_real+1.j*gain_imag
                             if cdata.shape != ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx, pol_idx].shape:
-                                print "wrong shape",cdata.shape,parmname1
+                                print("wrong shape",cdata.shape,parmname1)
                                 continue;
                         
                             ph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx, pol_idx] =np.angle(cdata)
@@ -325,7 +325,7 @@ def doRepair(globaldbpath,
                 parmname1 = ':'.join(['CommonScalarPhase', station])
                 gain_phase = instrumentdb.getValuesGrid( parmname1 )[ parmname1 ]['values']
                 if gain_phase.shape != scalarph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0].shape:
-                    print "wrong shape",gain_phase.shape,parmname1
+                    print("wrong shape",gain_phase.shape,parmname1)
                     continue;
 
                 scalarph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, 0] = gain_phase
@@ -334,7 +334,7 @@ def doRepair(globaldbpath,
                     parmname1 = ':'.join(['ScalarPhase', station,source])
                     gain_phase = instrumentdb.getValuesGrid( parmname1 )[ parmname1 ]['values']
                     if gain_phase.shape != scalarph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx].shape:
-                        print "wrong shape",gain_phase.shape,parmname1
+                        print("wrong shape",gain_phase.shape,parmname1)
                         continue;
 
                     scalarph[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx] = gain_phase
@@ -351,7 +351,7 @@ def doRepair(globaldbpath,
                     parmname = ':'.join(['RotationAngle', station,source])
                     rot = instrumentdb.getValuesGrid( parmname )[ parmname ]['values']
                     if rot.shape != rotation[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx, source_idx].shape:
-                        print "wrong shape",rot.shape,parmname
+                        print("wrong shape",rot.shape,parmname)
                         continue;
                     rotation[:, sorted_freq_selection[0]:sorted_freq_selection[-1]+1, station_idx,source_idx] = rot
 

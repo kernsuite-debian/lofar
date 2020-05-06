@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobString.h 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 #ifndef LOFAR_BLOB_BLOBSTRING_H
 #define LOFAR_BLOB_BLOBSTRING_H

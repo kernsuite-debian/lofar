@@ -1,0 +1,26 @@
+#
+# This builds an image with all dependencies for the CEP package based on the ci_base image
+#
+# base
+#
+FROM ci_base:latest
+
+RUN echo "Installing packages for CEP..." && \
+    yum -y install boost-python36-devel hdf5-devel blas-devel lapack-devel cfitsio-devel wcslib-devel
+    pip3 install numpy
+
+RUN echo "Installing Casacore..." && \
+    git clone https://github.com/casacore/casacore && \
+    mkdir /casacore/build/ && \
+    cd /casacore/build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/casacore -DBUILD_PYTHON3=ON -DBUILD_PYTHON=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_OPENMP=ON -DUSE_FFTW3=TRUE -DUSE_HDF5=ON -DCMAKE_BUILD_TYPE=Release .. && \
+    make && \
+    make install
+
+RUN echo "Installing Casarest..." && \
+    cd / && git clone https://github.com/casacore/casarest.git && \
+    mkdir -p /casarest/build/ && \
+    cd /casarest/build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/casarest -DCASACORE_ROOT_DIR=/opt/casacore -DCMAKE_BUILD_TYPE=Release .. && \
+    make && \
+    make install

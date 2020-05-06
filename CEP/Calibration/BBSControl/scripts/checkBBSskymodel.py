@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Python script that tries to check, if a BBS sky model file
 # is syntactically correct
@@ -20,8 +20,8 @@ import re      # regular expressions for string checking
 # Display usage information for this script
 #
 def usage():
-   print "Usage: ", sys.argv[0], "<skymodelfile>"
-   print
+   print("Usage: ", sys.argv[0], "<skymodelfile>")
+   print()
 
 #********************************************
 #
@@ -54,11 +54,11 @@ def main():
  
    # Indicate result of the test
    if correct==True:
-      print bcolors.OKGREEN + "skymodel " + filename + " passed test." 
-      print bcolors.ENDC
+      print(bcolors.OKGREEN + "skymodel " + filename + " passed test.") 
+      print(bcolors.ENDC)
    else:
-      print bcolors.FAIL + "skymodel " + filename + " contains above errors." 
-      print bcolors.ENDC
+      print(bcolors.FAIL + "skymodel " + filename + " contains above errors.") 
+      print(bcolors.ENDC)
  
 # Parse the required format line (also check if it is on one line)
 #
@@ -80,62 +80,62 @@ def parseFormat(line):
    # Check for required fields
    # (Name, Type, Ra, Dec, I, Q, U, V, ReferenceFrequency='60e6', SpectralIndexDegree='0', SpectralIndex:0='0.0', MajorAxis, MinorAxis, Orientation) = format
    if line.find("Name")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Name'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Name'")
       correct=False
    if line.find("Type")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Type'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Type'")
       correct=False
    if line.find("Type")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Type'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Type'")
       correct=False
    if line.find("Ra")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Ra'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Ra'")
       correct=False
    if line.find("Dec")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Dec'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Dec'")
       correct=False
    if line.find("I")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Q'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Q'")
       correct=False
    if line.find("Q")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Q'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "format line missing 'Q'")
       correct=False
    if line.find("U")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'U'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'U'")
       correct=False
    if line.find("V")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'V'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'V'")
       correct=False
    if line.find("ReferenceFrequency")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'ReferenceFrequency'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'ReferenceFrequency'")
       correct=False
    if line.find("SpectralIndexDegree")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'SpectralIndexDegree'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'SpectralIndexDegree'")
       correct=False
    if line.find("SpectralIndex")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'SpectralIndex'"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing 'SpectralIndex'")
       correct=False
    if line.find("MajorAxis")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing MajorAxis"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing MajorAxis")
       correct=False
    if line.find("MinorAxis")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing MinorAxis"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing MinorAxis")
       correct=False
    if line.find("Orientation")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing Orientation"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing Orientation")
       correct=False
       
    # Check if there is a =format et the end
    if line.find("= format")==-1:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing '= format' at the end"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " format line missing '= format' at the end")
       correct=False
 
    # Check if all parameters are separated with commas
    splits=line.split(",")
    # num of commas must be equal to (num of splits) - 4 (the beginning and ending splits are not parameters)
    if getNumComma(line) < len(splits)-4:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " missing ',' in format line"
-      print line
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " missing ',' in format line")
+      print(line)
       correct=False
 
 
@@ -166,8 +166,8 @@ def checkFormatOneLine(lines):
          if keyword in line and line[0]!="#":   # ignore comments
             #print "keyword = ", keyword , "line[0] = ", line[0]        # DEBUG
             #print "line = ", line                                      # DEBUG
-            print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "first line must be format line and MUST be one line" 
-            print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "line No. " + bcolors.FAIL + str(index) + bcolors.ENDC + ": " + line
+            print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "first line must be format line and MUST be one line") 
+            print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + "line No. " + bcolors.FAIL + str(index) + bcolors.ENDC + ": " + line)
             correct=False
             return correct
       index=index+1
@@ -217,16 +217,16 @@ def parseSkymodel(lines):
          continue
 
       if numFields < minNumFields:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field"
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field")
+         print(line)
          correct=False
 
       # Check if we have enough commata
       numComma=getNumComma(line)      
       #print "numComma = ", numComma, " numFields = ", numFields
       if numComma < (numFields-1):
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): missing ',' in"
-         print line           
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): missing ',' in")
+         print(line)           
          correct=False
       
 
@@ -237,13 +237,13 @@ def parseSkymodel(lines):
       # source identifiers, users are practically allowed to use an number or character...
       #
       if sourceName in ['POINT', 'GAUSSIAN', 'SHAPELET']:   # SHAPELET is still experimental
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") invalid source identifier '" +  sourceName, "'"
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") invalid source identifier '" +  sourceName, "'")
+         print(line)
          correct=False
          
       if sourceName in fileSources:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): duplicate source definition '" + sourceName+ "'"
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): duplicate source definition '" + sourceName+ "'")
+         print(line)
          correct=False
       else:      
          fileSources.append(sourceName)
@@ -261,10 +261,10 @@ def parseSkymodel(lines):
          #print "GAUSSIAN source"
          checkGaussianSource(line)
       elif type == "SHAPELET":
-         print "SHAPELET source"
+         print("SHAPELET source")
       else:                # if we encounter an unknown source type...
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): unknown source type"
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): unknown source type")
+         print(line)
          correct=False
          
       # If we did all the tests on that specific source definition line
@@ -306,15 +306,15 @@ def checkPositionFields(line, lineIndex):
    #
    if colons > dots and not (colons==2 and dots==1):    # hours
       if colons!=3:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in RA definition " + str(RA)
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in RA definition " + str(RA))
+         print(line)
          correct=False
 
    else:                               # degrees
       #print "User defined degrees"   # DEBUG
       if colons!=2 and dots==1:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in RA definition " + str(RA)
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in RA definition " + str(RA))
+         print(line)
          correct=False
   
    # Declination is only allowed to be in degrees
@@ -322,8 +322,8 @@ def checkPositionFields(line, lineIndex):
    for iter in re.finditer('\.', Dec):
       dots=dots+1
    if dots!=3:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in Dec definition " + str(Dec)
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + "): error in Dec definition " + str(Dec))
+         print(line)
          correct=False
    
    return correct
@@ -350,7 +350,7 @@ def checkPointSource(line):
    #print "numFields = ", numFields, " minNumFields = ", minNumFields   # DEBUG
    
    if numFields < minNumFields:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field '"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field '")
    
    # Strip off the first four fields that already were checked before
    fields=fields[4:]
@@ -359,8 +359,8 @@ def checkPointSource(line):
    fields=stripall(fields)
    for field in fields:
       if isnumeric(field) == False:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") must be numeric: " + str(field)
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") must be numeric: " + str(field))
+         print(line)
          check=False
          
    return check
@@ -384,7 +384,7 @@ def checkGaussianSource(line):
    fields=line.split(',')
    numFields=len(fields)
    if numFields < minNumFields:
-      print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field '"
+      print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") missing required field '")
    
    # Strip off the first four fields that already were checked before
    fields=fields[4:]
@@ -393,8 +393,8 @@ def checkGaussianSource(line):
    for field in fields:
       field=field.strip(',').strip()
       if isnumeric(field) == False:
-         print bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") must be numeric: " + str(field)
-         print line
+         print(bcolors.FAIL + "checkBBSskymodel: " + bcolors.ENDC + " (line " + str(lineIndex) + ") must be numeric: " + str(field))
+         print(line)
          correct=False
    
    return correct

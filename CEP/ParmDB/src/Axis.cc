@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Axis.cc 20771 2012-04-19 12:04:48Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Axis.h>
@@ -27,7 +27,7 @@
 #include <Blob/BlobSTL.h>
 #include <Common/LofarLogger.h> 
 #include <Common/StreamUtil.h> 
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 
 namespace LOFAR {
 namespace BBS {
@@ -114,7 +114,7 @@ namespace BBS {
       ASSERT (itsWidth[i] > 0);
       if (i > 0) {
         ASSERT(itsUpper[i-1] <= itsLower[i]  ||
-               casa::near(itsUpper[i-1],itsLower[i]));
+               casacore::near(itsUpper[i-1],itsLower[i]));
       }
     }
   }
@@ -139,10 +139,10 @@ namespace BBS {
     for (uint i=0; i<nr; ++i) {
       double low1 = ax1->lower(i);
       double low2 = ax2->lower(i);
-      if (!casa::near(low1, low2)) return false;
+      if (!casacore::near(low1, low2)) return false;
       double upp1 = ax1->upper(i);
       double upp2 = ax2->upper(i);
-      if (!casa::near(upp1, upp2)) return false;
+      if (!casacore::near(upp1, upp2)) return false;
     }
     return true;
   }
@@ -161,7 +161,7 @@ namespace BBS {
     if (start >= nr) {
       // At the end, so restart at the beginning.
       start = 0;
-    } else if (casa::near(x, itsLower[start])) {
+    } else if (casacore::near(x, itsLower[start])) {
       // At the left edge, so use it if a bias to the right.
       if (biasRight) {
         return pair<size_t,bool> (start, true);
@@ -183,14 +183,14 @@ namespace BBS {
       }
       double s = itsLower[start];
       double e = itsUpper[start];
-      if (casa::near(x,s)) {
+      if (casacore::near(x,s)) {
         // On the left edge; take it if biased to the right.
         // Otherwise the value is before the interval (thus nothing found).
         if (!biasRight) {
           fnd = false;
         }
         break;
-       } else if (casa::near(x,e)) {
+       } else if (casacore::near(x,e)) {
         // On the right edge; take it if biased to the left.
         // Otherwise continue searching.
         if (!biasRight) {
@@ -221,7 +221,7 @@ namespace BBS {
     pair<double,double> range1 = range();
     pair<double,double> range2 = that.range();
     if (range1.second <= range2.first  ||
-        casa::near(range1.second, range2.first)) {
+        casacore::near(range1.second, range2.first)) {
       // this is fully left of that.
       Axis::ShPtr newAxis (add (that));
       s1 = 0;
@@ -231,7 +231,7 @@ namespace BBS {
       return newAxis;
     }
     if (range2.second <= range1.first  ||
-        casa::near(range2.second, range1.first)) {
+        casacore::near(range2.second, range1.first)) {
       // that is fully left of this.
       Axis::ShPtr newAxis (that.add (*this));
       e1 = newAxis->size();
@@ -269,8 +269,8 @@ namespace BBS {
       double upp1 = upper(s2+i);
       double low2 = that.lower(s1+i);
       double upp2 = that.upper(s1+i);
-      ASSERTSTR ((low1==low2 || casa::near(low1,low2))  &&
-                 (upp1==upp2 || casa::near(upp1,upp2)),
+      ASSERTSTR ((low1==low2 || casacore::near(low1,low2))  &&
+                 (upp1==upp2 || casacore::near(upp1,upp2)),
                  "Axis::combine: interval [" << low1 << ',' << upp1
                  << "] mismatches [" << low2 << ',' << upp2 << ']');
     }
@@ -338,7 +338,7 @@ namespace BBS {
     }
     // See if there is a hole between the axes.
     // If so, create an extra interval for the hole.
-    if (! casa::near (range1.second, range2.first)) {
+    if (! casacore::near (range1.second, range2.first)) {
       // Check this is before that.
       ASSERT (range1.second < range2.first);
       low.push_back (upp[nr1-1]);
@@ -359,7 +359,7 @@ namespace BBS {
     // Check if the width is constant, thus if the result is a regular axis.
     double width = upp[0] - low[0];
     for (uint i=1; i<low.size(); ++i) {
-      if (!casa::near (width, upp[i]-low[i])) {
+      if (!casacore::near (width, upp[i]-low[i])) {
         return Axis::ShPtr (new OrderedAxis (low, upp, true));
       }
     }
@@ -436,11 +436,11 @@ namespace BBS {
 //     // on the biasRight argument.
 //     if (biasRight) {
 //       if (inx < last) {
-//         if (casa::near (double(inx+1), inxd)) ++inx;
+//         if (casacore::near (double(inx+1), inxd)) ++inx;
 //       }
 //     } else {
 //       if (inx > 0) {
-//         if (casa::near(double(inx), inxd)) --inx;
+//         if (casacore::near(double(inx), inxd)) --inx;
 //       }
 //     }
 //     return inx;

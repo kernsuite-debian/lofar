@@ -48,10 +48,7 @@ class Parset(parameterset):
 
     def subtractSubset(self, baseKey):
         super(Parset, self).subtractSubset(baseKey)
-        self.keys = filter(
-            lambda key: False if key[:len(baseKey)] == baseKey else True,
-            self.keys
-        )
+        self.keys = [key for key in self.keys if (False if key[:len(baseKey)] == baseKey else True)]
 
     #def makeSubset(self, baseKey, prefix=None):
         #newps = Parset()
@@ -113,7 +110,7 @@ def patch_parset(parset, data, output_dir=None):
         temp_parset = parameterset(parset)
     else:
         temp_parset = parset.makeSubset('')  # a sneaky way to copy the parset
-    for key, value in data.iteritems():
+    for key, value in data.items():
         temp_parset.replace(key, str(value))
     fd, output = mkstemp(dir=output_dir)
     temp_parset.writeFile(output)

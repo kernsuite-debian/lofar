@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tLofarTypedefs.cc 22804 2012-11-15 12:23:59Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <Common/LofarTypedefs.h>

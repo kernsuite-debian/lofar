@@ -20,7 +20,7 @@
 //#
 //# @author Ger van Diepen <diepen AT astron nl>
 //#
-//# $Id: tstartdproc.cc 14231 2009-10-09 13:55:41Z diepen $
+//# $Id$
 
 #include <unistd.h>
 #include <iostream>

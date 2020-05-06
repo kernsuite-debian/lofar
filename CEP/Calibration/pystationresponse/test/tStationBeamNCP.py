@@ -1,5 +1,5 @@
 "Test the Station Beam at the NCP. Rationale: when pointing at the NCP all stations should have (almost) the same beam"
-from __future__ import print_function
+
 
 import sys
 

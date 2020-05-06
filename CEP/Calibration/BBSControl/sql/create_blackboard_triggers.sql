@@ -18,7 +18,7 @@
 -- You should have received a copy of the GNU General Public License along
 -- with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 --
--- $Id: create_blackboard_triggers.sql 14091 2009-09-24 06:11:35Z diepen $
+-- $Id$
 
 CREATE OR REPLACE FUNCTION blackboard.notify_client() RETURNS TRIGGER AS
 $$

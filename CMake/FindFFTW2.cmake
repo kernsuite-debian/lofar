@@ -35,7 +35,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindFFTW2.cmake 15228 2010-03-16 09:27:26Z loose $
+# $Id$
 
 set(_usage_msg 
   "Usage: find_package(FFTW [COMPONENTS [real] [double|single] [mpi|threads]]")

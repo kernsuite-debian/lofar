@@ -18,7 +18,7 @@
 //# along with this program; if not, write to the Free Software
 //# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//# $Id: Resampler.h 30919 2015-02-05 15:26:22Z amesfoort $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_RESAMPLER_H
 #define LOFAR_BBSKERNEL_EXPR_RESAMPLER_H
@@ -28,7 +28,7 @@
 
 #include <BBSKernel/Expr/Expr.h>
 
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 #include <iterator>
 
 namespace LOFAR
@@ -84,8 +84,8 @@ void Resampler::makeAxisMap(const Axis::ShPtr &from, const Axis::ShPtr &to,
     // is guaranteed because the domains of the two grid has to be the same) and
     // they should contain at least a single cell.
     DBGASSERT(from->size() > 0 && to->size() > 0);
-    DBGASSERT(casa::near(from->lower(0), to->lower(0)));
-    DBGASSERT(casa::near(from->upper(from->size() - 1),
+    DBGASSERT(casacore::near(from->lower(0), to->lower(0)));
+    DBGASSERT(casacore::near(from->upper(from->size() - 1),
         to->upper(to->size() - 1)));
 
     const size_t nFrom = from->size();
@@ -99,7 +99,7 @@ void Resampler::makeAxisMap(const Axis::ShPtr &from, const Axis::ShPtr &to,
         span.src = i;
         span.dst = j;
 
-        if(casa::near(from->upper(i), to->upper(j)))
+        if(casacore::near(from->upper(i), to->upper(j)))
         {
             span.weight = (to->upper(j) - lower) / from->width(i);
             lower = to->upper(j);

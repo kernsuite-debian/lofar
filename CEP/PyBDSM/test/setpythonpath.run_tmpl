@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Set the python path to the path set at configure time
+PYTHONPATH=@BDSF_ROOT_DIR@:$PYTHONPATH

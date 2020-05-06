@@ -1,0 +1,539 @@
+<spec:specification xmlns:base="http://www.astron.nl/LofarBase" xmlns:spec="http://www.astron.nl/LofarSpecification" xmlns:trigger="http://www.astron.nl/LofarTrigger" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="
+                 http://www.astron.nl/LofarSpecification ../../../XSD/SAS/LofarSpecification.xsd
+                 http://www.astron.nl/LofarBase ../../../XSD/SAS/LofarBase.xsd
+                 ">
+
+  <version>2.20</version>
+  <projectReference>
+    <ProjectCode>test-lofar</ProjectCode>
+  </projectReference>
+  <userName>veen</userName>
+  <comment>comment</comment>
+  <generatorName>Jan David Mol</generatorName>
+  <generatorVersion>0.0</generatorVersion>
+
+  <!-- folders -->
+  <container>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>100</identifier>
+    </temporaryIdentifier>
+    <addToExistingContainer>true</addToExistingContainer>
+    <folder>
+      <name>BF-trigger</name>
+      <description>Responsive Telescope Beamformed Trigger</description>
+      <topology>0</topology>
+    </folder>
+  </container>
+
+  <container>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>101</identifier>
+    </temporaryIdentifier>
+    <addToExistingContainer>false</addToExistingContainer>
+    <folder>
+      <name>XXYY_Target</name>
+      <description>Triggered target, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)
+      </description>
+      <topology>0</topology>
+    </folder>
+  </container>
+
+  <container>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>110</identifier>
+    </temporaryIdentifier>
+    <addToExistingContainer>false</addToExistingContainer>
+    <folder>
+      <name>XXYY_calibrator</name>
+      <description>Calibrator, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)</description>
+      <topology>0</topology>
+    </folder>
+  </container>
+
+  <!-- Target -->
+  <!-- observation -->
+  <activity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>200</identifier>
+      <description>0</description>
+    </temporaryIdentifier>
+    <observation>
+      <name>B0809+74/1/TO</name>
+      <description>B0809+74/1/TO (Target Observation)</description>
+      <instrument>Beam Observation</instrument>
+      <defaultTemplate>BeamObservation</defaultTemplate>
+      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+      <correlatedData>false</correlatedData>
+      <coherentStokesData>true</coherentStokesData>
+      <incoherentStokesData>false</incoherentStokesData>
+      <antenna>HBA Dual</antenna>
+      <clock units="MHz">200</clock>
+      <instrumentFilter>110-190 MHz</instrumentFilter>
+      <integrationInterval>1.0</integrationInterval>
+      <channelsPerSubband>16</channelsPerSubband>
+      <!--<coherentDedisperseChannels>false</coherentDedisperseChannels>
+      <tiedArrayBeams>
+        <flyseye>false</flyseye>
+      </tiedArrayBeams>
+      <stokes>
+        <integrateChannels>false</integrateChannels>
+        <subbandsPerFileCS>20</subbandsPerFileCS>
+        <numberCollapsedChannelsCS>1</numberCollapsedChannelsCS>
+        <stokesDownsamplingStepsCS>1</stokesDownsamplingStepsCS>
+        <whichCS>XXYY</whichCS>
+        <!- todo: check (just added to XSD, anything else?) ->
+        <subbandsPerFileIS>512</subbandsPerFileIS>
+        <numberCollapsedChannelsIS>16</numberCollapsedChannelsIS>
+        <stokesDownsamplingStepsIS>128</stokesDownsamplingStepsIS>
+        <whichIS>I</whichIS>
+      </stokes>
+      <bypassPff>false</bypassPff>-->
+      <flysEye>false</flysEye>
+      <enableSuperterp>false</enableSuperterp>
+      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+      <stationSelectionSpecification>
+        <stationSelection>
+          <stationSet>Custom</stationSet>
+          <stations>
+            <station>
+              <name>CS001</name>
+            </station>
+            <station>
+              <name>CS002</name>
+            </station>
+            <station>
+              <name>CS003</name>
+            </station>
+            <station>
+              <name>CS004</name>
+            </station>
+            <station>
+              <name>CS005</name>
+            </station>
+            <station>
+              <name>CS006</name>
+            </station>
+            <station>
+              <name>CS007</name>
+            </station>
+            <station>
+              <name>CS011</name>
+            </station>
+            <station>
+              <name>CS013</name>
+            </station>
+            <station>
+              <name>CS017</name>
+            </station>
+            <station>
+              <name>CS021</name>
+            </station>
+            <station>
+              <name>CS024</name>
+            </station>
+            <station>
+              <name>CS026</name>
+            </station>
+            <station>
+              <name>CS028</name>
+            </station>
+            <station>
+              <name>CS030</name>
+            </station>
+            <station>
+              <name>CS031</name>
+            </station>
+            <station>
+              <name>CS032</name>
+            </station>
+            <station>
+              <name>CS101</name>
+            </station>
+            <station>
+              <name>CS103</name>
+            </station>
+            <station>
+              <name>CS201</name>
+            </station>
+            <station>
+              <name>CS301</name>
+            </station>
+            <station>
+              <name>CS302</name>
+            </station>
+            <station>
+              <name>CS401</name>
+            </station>
+            <station>
+              <name>CS501</name>
+            </station>
+          </stations>
+        </stationSelection>
+      </stationSelectionSpecification>
+      <timeWindowSpecification>
+        <timeFrame>UT</timeFrame>
+        <startTime>2017-07-17T16:17:29</startTime>
+        <duration>
+          <duration>PT300S</duration>
+        </duration>
+      </timeWindowSpecification>
+    </observation>
+    <status>opened</status>
+    <qualityOfService>LATENCY</qualityOfService>
+    <priority>1010</priority>
+    <triggerId>
+      <source>MoM</source>
+      <identifier>1</identifier>
+    </triggerId>
+  </activity>
+
+  <activity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>300</identifier>
+      <description>0</description>
+    </temporaryIdentifier>
+    <measurement xsi:type="base:SAPMeasurement">
+      <name>B0809+74</name>
+      <description>B0809+74</description>
+      <ra>123.747916667</ra>
+      <dec>74.4849166667</dec>
+      <equinox>J2000</equinox>
+      <subbandsSpecification>
+        <subbands>54..453</subbands>
+      </subbandsSpecification>
+      <tiedArrayBeams>
+        <!--<flyseye>false</flyseye>-->
+        <nrTabRings>0</nrTabRings>
+        <!--<tabRingSize></tabRingSize>-->
+        <tiedArrayBeamList>
+          <tiedArrayBeam>
+            <coherent>true</coherent>
+            <angle1>2.15980858832</angle1>
+            <angle2>1.30000703891</angle2>
+          </tiedArrayBeam>
+        </tiedArrayBeamList>
+      </tiedArrayBeams>
+      <measurementType>Target</measurementType>
+    </measurement>
+
+    <status>opened</status>
+    <qualityOfService>LATENCY</qualityOfService>
+    <priority>1010</priority>
+    <triggerId>
+      <source>MoM</source>
+      <identifier>1</identifier>
+    </triggerId>
+  </activity>
+
+  <!-- Calibrator-->
+  <!-- observation -->
+  <activity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>210</identifier>
+      <description>0</description>
+    </temporaryIdentifier>
+    <observation>
+      <name>B0809+74/1/TO</name>
+      <description>B0809+74/1/TO (Target Observation)</description>
+      <instrument>Beam Observation</instrument>
+      <defaultTemplate>BeamObservation</defaultTemplate>
+      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+      <correlatedData>false</correlatedData>
+      <coherentStokesData>true</coherentStokesData>
+      <incoherentStokesData>false</incoherentStokesData>
+      <antenna>HBA Dual</antenna>
+      <clock units="MHz">200</clock>
+      <instrumentFilter>110-190 MHz</instrumentFilter>
+      <integrationInterval>1.0</integrationInterval>
+      <channelsPerSubband>16</channelsPerSubband>
+      <flysEye>false</flysEye>
+      <enableSuperterp>false</enableSuperterp>
+      <numberOfBitsPerSample>8</numberOfBitsPerSample>
+      <stationSelectionSpecification>
+        <stationSelection>
+          <stationSet>Custom</stationSet>
+          <stations>
+            <station>
+              <name>CS001</name>
+            </station>
+            <station>
+              <name>CS002</name>
+            </station>
+            <station>
+              <name>CS003</name>
+            </station>
+            <station>
+              <name>CS004</name>
+            </station>
+            <station>
+              <name>CS005</name>
+            </station>
+            <station>
+              <name>CS006</name>
+            </station>
+            <station>
+              <name>CS007</name>
+            </station>
+            <station>
+              <name>CS011</name>
+            </station>
+            <station>
+              <name>CS013</name>
+            </station>
+            <station>
+              <name>CS017</name>
+            </station>
+            <station>
+              <name>CS021</name>
+            </station>
+            <station>
+              <name>CS024</name>
+            </station>
+            <station>
+              <name>CS026</name>
+            </station>
+            <station>
+              <name>CS028</name>
+            </station>
+            <station>
+              <name>CS030</name>
+            </station>
+            <station>
+              <name>CS031</name>
+            </station>
+            <station>
+              <name>CS032</name>
+            </station>
+            <station>
+              <name>CS101</name>
+            </station>
+            <station>
+              <name>CS103</name>
+            </station>
+            <station>
+              <name>CS201</name>
+            </station>
+            <station>
+              <name>CS301</name>
+            </station>
+            <station>
+              <name>CS302</name>
+            </station>
+            <station>
+              <name>CS401</name>
+            </station>
+            <station>
+              <name>CS501</name>
+            </station>
+          </stations>
+        </stationSelection>
+      </stationSelectionSpecification>
+      <timeWindowSpecification>
+        <timeFrame>UT</timeFrame>
+        <startTime>2017-07-17T16:17:29</startTime>
+        <duration>
+          <duration>PT300S</duration>
+        </duration>
+      </timeWindowSpecification>
+    </observation>
+    <status>opened</status>
+    <qualityOfService>LATENCY</qualityOfService>
+    <priority>1010</priority>
+    <triggerId>
+      <source>MoM</source>
+      <identifier>1</identifier>
+    </triggerId>
+  </activity>
+
+  <activity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>310</identifier>
+      <description>0</description>
+    </temporaryIdentifier>
+    <measurement xsi:type="base:SAPMeasurement">
+      <name>B0809+74</name>
+      <description>B0809+74</description>
+      <ra>123.747916667</ra>
+      <dec>74.4849166667</dec>
+      <equinox>J2000</equinox>
+      <subbandsSpecification>
+        <subbands>54..453</subbands>
+      </subbandsSpecification>
+      <tiedArrayBeams>
+        <nrTabRings>0</nrTabRings>
+        <!--<tabRingSize></tabRingSize>-->
+        <tiedArrayBeamList>
+          <tiedArrayBeam>
+            <coherent>true</coherent>
+            <angle1>2.15980858832</angle1>
+            <angle2>1.30000703891</angle2>
+          </tiedArrayBeam>
+        </tiedArrayBeamList>
+      </tiedArrayBeams>
+      <measurementType>Target</measurementType>
+    </measurement>
+
+    <status>opened</status>
+    <qualityOfService>LATENCY</qualityOfService>
+    <priority>1010</priority>
+    <triggerId>
+      <source>MoM</source>
+      <identifier>1</identifier>
+    </triggerId>
+  </activity>
+
+  <!-- Target measurement dataproducts -->
+  <entity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>400</identifier>
+    </temporaryIdentifier>
+    <dataproductType>BFDataProduct_CoherentStokes</dataproductType>
+    <storageCluster>
+
+      <name>CEP4</name>
+      <partition>/data/projects/</partition>
+    </storageCluster>
+  </entity>
+
+  <!-- Calibrator measurement dataproducts -->
+  <entity>
+    <temporaryIdentifier>
+      <source>0</source>
+      <identifier>410</identifier>
+    </temporaryIdentifier>
+    <dataproductType>BFDataProduct_CoherentStokes</dataproductType>
+    <storageCluster>
+      <name>CEP4</name>
+      <partition>/data/projects/</partition>
+    </storageCluster>
+  </entity>
+
+  <!-- folder 101 is child of folder 100 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>100</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>101</identifier>
+    </child>
+    <type>folder-folder</type>
+  </relation>
+
+  <!-- folder 110 is child of folder 100 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>100</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>110</identifier>
+    </child>
+    <type>folder-folder</type>
+  </relation>
+
+  <!-- observation 200 is child of folder 101 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>101</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>200</identifier>
+    </child>
+    <type>folder-activity</type>
+  </relation>
+
+  <!-- measurements 300 is a child of observation 200 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>200</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>300</identifier>
+    </child>
+    <type>observation-measurement</type>
+  </relation>
+
+  <!-- observation 210 is child of folder 110 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>110</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>210</identifier>
+    </child>
+    <type>folder-activity</type>
+  </relation>
+
+  <!-- measurements 310 is a child of observation 210 -->
+  <relation xsi:type="spec:ChildRelation">
+    <parent>
+      <source>0</source>
+      <identifier>210</identifier>
+    </parent>
+    <child>
+      <source>0</source>
+      <identifier>310</identifier>
+    </child>
+    <type>observation-measurement</type>
+  </relation>
+
+  <!-- dataproducts 400 are output of measurement 300 -->
+  <relation xsi:type="spec:ActivityEntityRelation">
+    <entity>
+      <source>0</source>
+      <identifier>400</identifier>
+    </entity>
+    <activity>
+      <source>0</source>
+      <identifier>300</identifier>
+    </activity>
+    <type>producer</type>
+  </relation>
+
+  <!-- dataproducts 410 are output of measurement 310 -->
+  <relation xsi:type="spec:ActivityEntityRelation">
+    <entity>
+      <source>0</source>
+      <identifier>410</identifier>
+    </entity>
+    <activity>
+      <source>0</source>
+      <identifier>310</identifier>
+    </activity>
+    <type>producer</type>
+  </relation>
+
+  <!-- Calibrator measurement is the calibrator for Target measurement -->
+  <relation xsi:type="spec:TwinRelation">
+    <first>
+      <source>0</source>
+      <identifier>310</identifier>
+    </first>
+    <second>
+      <source>0</source>
+      <identifier>300</identifier>
+    </second>
+    <type>calibrator-target</type>
+  </relation>
+
+</spec:specification>

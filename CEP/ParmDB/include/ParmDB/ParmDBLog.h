@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmDBLog.h 17917 2011-05-01 00:20:25Z duscha $
+//# $Id$
 
 // @file
 // @brief Class to log results when solving parameters
@@ -28,11 +28,13 @@
 #define LOFAR_PARMDB_PARMDBLOG_H
 
 //# Includes
-#include <casa/Containers/Map.h>
-#include <casa/Arrays/Array.h>
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
+#include <string>
+#include <vector>
+#include <casacore/casa/Containers/Map.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
 
 #include <Common/lofar_map.h>
 #include <ParmDB/ParmDBLogLevel.h>
@@ -64,7 +66,7 @@ namespace BBS {
     // If <src>lock=true</src> a write lock is acquired. In this way no
     // implcit locks have to be acquired on each access.
     // The default logging level is PERSOLUTION
-    explicit ParmDBLog (const string &tableName, ParmDBLoglevel::LoggingLevel LogLevel=ParmDBLoglevel::PERSOLUTION, bool forceNew=true, bool lock=true);
+    explicit ParmDBLog (const std::string &tableName, ParmDBLoglevel::LoggingLevel LogLevel=ParmDBLoglevel::PERSOLUTION, bool forceNew=true, bool lock=true);
 
     // Writelock and unlock the table.
     // It is not necessary to do this, but it can be useful if many
@@ -80,7 +82,7 @@ namespace BBS {
               uint iter, bool lastIter,
               uint rank, uint rankDeficiency,
               double chiSquare, double lmFactor,
-              const vector<double>& solution, const string& message);
+              const std::vector<double>& solution, const std::string& message);
 
     // Add a solve entry (with correlation matrix).
     void add (double startFreq, double endFreq,
@@ -88,8 +90,8 @@ namespace BBS {
               uint iter, bool lastIter,
               uint rank, uint rankDeficiency,
               double chiSquare, double lmFactor,
-              const vector<double>& solution, const string& message,
-              const casa::Array<double>& correlationMatrix);
+              const std::vector<double>& solution, const std::string& message,
+              const casacore::Array<double>& correlationMatrix);
 
     // Get or set the logging level of solver parameters
     // <group>
@@ -100,7 +102,7 @@ namespace BBS {
     // </group>
 
     // Set the index range corresponding to the specified parameter.
-    void setCoeffIndex (const string &parm, unsigned int start,
+    void setCoeffIndex (const std::string &parm, unsigned int start,
                         unsigned int end);
 
     // Set the initial LSQ solver configuration.
@@ -110,7 +112,7 @@ namespace BBS {
 
   private:
     // Create the tables.
-    void createTables (const string& tableName);
+    void createTables (const std::string& tableName);
 
     // Add a row and write the values.
     void doAdd (double startFreq, double endFreq,
@@ -118,24 +120,24 @@ namespace BBS {
                 uint iter, bool lastIter,
                 uint rank, uint rankDeficiency,
                 double chiSquare, double lmFactor,
-                const vector<double>& solution, const string& message);
+                const std::vector<double>& solution, const std::string& message);
 
     //# Data members
     ParmDBLoglevel::LoggingLevel itsLoggingLevel;
-    casa::Table itsTable;
-    casa::ScalarColumn<casa::Double> itsStartFreq;
-    casa::ScalarColumn<casa::Double> itsEndFreq;
-    casa::ScalarColumn<casa::Double> itsStartTime;
-    casa::ScalarColumn<casa::Double> itsEndTime;
-    casa::ScalarColumn<casa::uInt>   itsIter;
-    casa::ScalarColumn<casa::Bool>   itsLastIter;
-    casa::ScalarColumn<casa::uInt>   itsRank;
-    casa::ScalarColumn<casa::uInt>   itsRankDef;
-    casa::ScalarColumn<casa::Double> itsChiSqr;
-    casa::ScalarColumn<casa::Double> itsLMFactor;
-    casa::ScalarColumn<casa::String> itsMessage;
-    casa::ArrayColumn<casa::Double>  itsSolution;
-    casa::ArrayColumn<casa::Double>  itsCorrMat;
+    casacore::Table itsTable;
+    casacore::ScalarColumn<casacore::Double> itsStartFreq;
+    casacore::ScalarColumn<casacore::Double> itsEndFreq;
+    casacore::ScalarColumn<casacore::Double> itsStartTime;
+    casacore::ScalarColumn<casacore::Double> itsEndTime;
+    casacore::ScalarColumn<casacore::uInt>   itsIter;
+    casacore::ScalarColumn<casacore::Bool>   itsLastIter;
+    casacore::ScalarColumn<casacore::uInt>   itsRank;
+    casacore::ScalarColumn<casacore::uInt>   itsRankDef;
+    casacore::ScalarColumn<casacore::Double> itsChiSqr;
+    casacore::ScalarColumn<casacore::Double> itsLMFactor;
+    casacore::ScalarColumn<casacore::String> itsMessage;
+    casacore::ArrayColumn<casacore::Double>  itsSolution;
+    casacore::ArrayColumn<casacore::Double>  itsCorrMat;
   };
 
   // @}

@@ -27,8 +27,8 @@
 #include <iostream>
 #include <Common/ParameterSet.h>
 
-#include <casa/BasicMath/Math.h> // nearAbs
-#include <casa/Arrays/ArrayLogical.h> // anyTrue
+#include <casacore/casa/BasicMath/Math.h> // nearAbs
+#include <casacore/casa/Arrays/ArrayLogical.h> // anyTrue
 
 #include <iomanip>
 #include <stddef.h>

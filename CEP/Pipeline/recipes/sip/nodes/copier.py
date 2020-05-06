@@ -4,7 +4,7 @@
 #                                                            Wouter Klijn, 2012
 #                                                               klijn@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os
 import sys
 import subprocess
@@ -15,6 +15,8 @@ from lofarpipe.support.pipelinelogging import log_time
 from lofarpipe.support.utilities import create_directory
 from lofarpipe.support.group_data import load_data_map
 from lofarpipe.support.lofarexceptions import PipelineException
+from lofar.common.subprocess_utils import communicate_returning_strings
+
 
 
 class copier(LOFARnodeTCP):
@@ -37,7 +39,7 @@ class copier(LOFARnodeTCP):
         # If not existing try to create dir catch no permission
         try:
             create_directory(os.path.dirname(target_path))
-        except OSError, e:
+        except OSError as e:
             if e.errno == 13:  # No permision
                 self.logger.error(message)
                 raise IOError(message)
@@ -70,7 +72,7 @@ class copier(LOFARnodeTCP):
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE)
 
-        (stdoutdata, stderrdata) = copy_process.communicate()
+        (stdoutdata, stderrdata) = communicate_returning_strings(copy_process)
         exit_status = copy_process.returncode
         #if copy failed log the missing file
         if  exit_status != 0:

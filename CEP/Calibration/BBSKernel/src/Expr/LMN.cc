@@ -18,15 +18,15 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: LMN.cc 17229 2011-01-28 13:44:36Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/Expr/LMN.h>
 #include <Common/lofar_math.h>
 
-#include <measures/Measures/MeasConvert.h>
-#include <measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MeasConvert.h>
+#include <casacore/measures/Measures/MCDirection.h>
 
 namespace LOFAR
 {
@@ -35,18 +35,18 @@ namespace BBS
 using LOFAR::sin;
 using LOFAR::cos;
 
-LMN::LMN(const casa::MDirection &reference,
+LMN::LMN(const casacore::MDirection &reference,
     const Expr<Vector<2> >::ConstPtr &direction)
     :   BasicUnaryExpr<Vector<2>, Vector<3> >(direction),
-        itsPhaseReference(casa::MDirection::Convert(reference,
-            casa::MDirection::J2000)())
+        itsPhaseReference(casacore::MDirection::Convert(reference,
+            casacore::MDirection::J2000)())
 {
 }
 
 const Vector<3>::View LMN::evaluateImpl(const Grid&,
     const Vector<2>::View &direction) const
 {
-    casa::Quantum<casa::Vector<casa::Double> > angles =
+    casacore::Quantum<casacore::Vector<casacore::Double> > angles =
         itsPhaseReference.getAngle();
     const double refRa = angles.getBaseValue()(0);
     const double refDec = angles.getBaseValue()(1);

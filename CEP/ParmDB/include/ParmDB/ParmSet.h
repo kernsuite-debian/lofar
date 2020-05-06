@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmSet.h 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 // @file
 // @brief Set of parameters to be used
@@ -31,7 +31,7 @@
 #include <Common/lofar_string.h>
 #include <Common/lofar_vector.h>
 #include <Common/lofar_map.h>
-#include <casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Matrix.h>
 
 namespace LOFAR {
 namespace BBS {

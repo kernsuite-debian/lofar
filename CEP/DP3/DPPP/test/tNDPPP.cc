@@ -17,23 +17,23 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tNDPPP.cc 31423 2015-04-03 14:06:21Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #include <lofar_config.h>
 #include <DPPP/DPRun.h>
-#include <tables/Tables.h>
-#include <tables/Tables/TableIter.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayPartMath.h>
+#include <casacore/tables/Tables.h>
+#include <casacore/tables/Tables/TableIter.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayPartMath.h>
 #include <Common/LofarLogger.h>
 #include <iostream>
 #include <stdexcept>
 
 using namespace LOFAR::DPPP;
-using namespace casa;
+using namespace casacore;
 
 // This test program uses the MS in tNDPPP.in_MS.tgz.
 // The MS contains 4 corr, 16 freq, 6 baselines, 18 time slots of 30 sec.

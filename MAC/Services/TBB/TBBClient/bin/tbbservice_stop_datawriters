@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+import logging
+from optparse import OptionParser
+from lofar.mac.tbbservice.config import DEFAULT_BROKER, DEFAULT_BUSNAME
+from lofar.mac.tbbservice.client import stop_datawriters_and_wait_until_finished
+
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+
+    # Check the invocation arguments
+    parser = OptionParser('%prog', description='issue a command to the tbb service to stop the datawriters, and wait until they are done.')
+
+    (options, args) = parser.parse_args()
+
+    stop_datawriters_and_wait_until_finished()

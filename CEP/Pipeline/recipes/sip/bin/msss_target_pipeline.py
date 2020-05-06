@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                     LOFAR CALIBRATION PIPELINE
 #
 #                                          Target Pre-Processing Pipeline recipe

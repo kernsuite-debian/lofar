@@ -7,7 +7,6 @@ import shutil
 from lofarpipe.recipes.helpers.WritableParmDB import WritableParmDB, list_stations
 from lofarpipe.recipes.helpers.ComplexArray import ComplexArray, RealImagArray, AmplPhaseArray
 
-
 def compare_two_parmdb(infile_1, infile_2, max_delta):
         """
         """
@@ -25,7 +24,7 @@ def compare_two_parmdb(infile_1, infile_2, max_delta):
             self.logger.error(message)
             raise Exception(message)
 
-        # copy both instrument tables (might not be needed, allows reuse of 
+        # copy both instrument tables (might not be needed, allows reuse of
         # existing code
         shutil.copytree(infile_1, infile_1 + "_copy")
         shutil.copytree(infile_2, infile_2 + "_copy")
@@ -34,26 +33,26 @@ def compare_two_parmdb(infile_1, infile_2, max_delta):
         parmdb_1 = WritableParmDB(infile_1)
         parmdb_2 = WritableParmDB(infile_2)
 
-        #get all stations in the parmdb
+        # get all stations in the parmdb
         stations_1 = list_stations(parmdb_1)
         stations_2 = list_stations(parmdb_2)
 
         try:
             if len(stations_1) != len(stations_2):
-                print "the number of stations found in the parmdb are different!!"
-                print "stations_1: {0}".format(stations_1)
-                print "stations_2: {0}".format(stations_2)
+                print("the number of stations found in the parmdb are different!!")
+                print("stations_1: {0}".format(stations_1))
+                print("stations_2: {0}".format(stations_2))
                 return False
-            print "Number of stations in the parmdb: {0}".format(len(stations_1))
+            print("Number of stations in the parmdb: {0}".format(len(stations_1)))
             for station_1, station_2 in zip(stations_1, stations_2):
                 # compare the station names
                 if station_1 != station_2:
-                    print  "the station found in the parmdb are not the same!\n"
-                    print "{0} != {1}".format(station_1, station_2)
+                    print("the station found in the parmdb are not the same!\n")
+                    print("{0} != {1}".format(station_1, station_2))
 
                     return False
 
-                print "Processing station {0}".format(station_1)
+                print("Processing station {0}".format(station_1))
 
                 # till here implemented
                 polarization_data_1, type_pair_1 = \
@@ -63,12 +62,12 @@ def compare_two_parmdb(infile_1, infile_2, max_delta):
                    _read_polarisation_data_and_type_from_db(parmdb_2, station_1)
 
                 if type_pair_1 != type_pair_2:
-                    print  "the types found in the parmdb for station {0}are not the same!\n".format(stations_1)
-                    print "{0} != {1}".format(type_pair_1, type_pair_2)
+                    print("the types found in the parmdb for station {0}are not the same!\n".format(stations_1))
+                    print("{0} != {1}".format(type_pair_1, type_pair_2))
                     return False
 
-                for (pol1, data1), (pol2, data2) in zip(polarization_data_1.iteritems(),
-                                     polarization_data_2.iteritems()):
+                for (pol1, data1), (pol2, data2) in zip(iter(polarization_data_1.items()),
+                                     iter(polarization_data_2.items())):
                     # Convert the raw data to the correct complex array type
                     complex_array_1 = _convert_data_to_ComplexArray(
                                 data1, type_pair_1)
@@ -82,11 +81,11 @@ def compare_two_parmdb(infile_1, infile_2, max_delta):
 
                     for val_1, val_2 in zip(amplitudes_1, amplitudes_1):
                         if numpy.abs(val_1 - val_2) > max_delta:
-                            print "Warning found different gains in the instrument table!"
-                            print "station: {0}".format(station_1)
-                            print "{0} != {1}".format(val_1, val_2)
-                            print amplitudes_1
-                            print amplitudes_2
+                            print("Warning found different gains in the instrument table!")
+                            print("station: {0}".format(station_1))
+                            print("{0} != {1}".format(val_1, val_2))
+                            print(amplitudes_1)
+                            print(amplitudes_2)
                             return False
 
         finally:
@@ -94,7 +93,6 @@ def compare_two_parmdb(infile_1, infile_2, max_delta):
             shutil.rmtree(infile_1 + "_copy")
             shutil.rmtree(infile_2 + "_copy")
         return True
-
 
 def _read_polarisation_data_and_type_from_db(parmdb, station):
         all_matching_names = parmdb.getNames("Gain:*:*:*:{0}".format(station))
@@ -108,30 +106,30 @@ def _read_polarisation_data_and_type_from_db(parmdb, station):
         # Get the im or re name, eg: real. Sort for we need a known order
         type_pair = sorted(set(x[3] for x in  (x.split(":") for x in all_matching_names)))
 
-        #Check if the retrieved types are valid
+        # Check if the retrieved types are valid
         sorted_valid_type_pairs = [sorted(RealImagArray.keys),
                                     sorted(AmplPhaseArray.keys)]
 
         if not type_pair in sorted_valid_type_pairs:
-            print "The parsed parmdb contained an invalid array_type:"
-            print "{0}".format(type_pair)
-            print "valid data pairs are: {0}".format(
-                                                    sorted_valid_type_pairs)
+            print("The parsed parmdb contained an invalid array_type:")
+            print("{0}".format(type_pair))
+            print("valid data pairs are: {0}".format(
+                                                    sorted_valid_type_pairs))
             raise Exception(
                     "Invalid data type retrieved from parmdb: {0}".format(
                                                 type_pair))
         polarisation_data = dict()
-        #for all polarisation_data in the parmdb (2 times 2)
+        # for all polarisation_data in the parmdb (2 times 2)
         for polarization in pols:
             data = []
-            #for the two types
+            # for the two types
             for key in type_pair:
                 query = "Gain:{0}:{1}:{2}".format(polarization, key, station)
-                #append the retrieved data (resulting in dict to arrays
+                # append the retrieved data (resulting in dict to arrays
                 data.append(parmdb.getValuesGrid(query)[query])
             polarisation_data[polarization] = data
 
-        #return the raw data and the type of the data
+        # return the raw data and the type of the data
         return polarisation_data, type_pair
 
 def _convert_data_to_ComplexArray(data, type_pair):
@@ -145,24 +143,23 @@ def _convert_data_to_ComplexArray(data, type_pair):
         elif sorted(type_pair) == sorted(AmplPhaseArray.keys):
             complex_array = AmplPhaseArray(data[0]["values"], data[1]["values"])
         else:
-            print "Incorrect data type pair provided: {0}".format(
-                                            type_pair)
+            print("Incorrect data type pair provided: {0}".format(
+                                            type_pair))
             raise Exception(
                 "Invalid data type retrieved from parmdb: {0}".format(type_pair))
         return complex_array
-
 
 if __name__ == "__main__":
     parmdb_1, parmdb_2, max_delta = None, None, None
     # Parse parameters from command line
     error = False
-    print sys.argv
+    print(sys.argv)
     try:
         parmdb_1, parmdb_2, max_delta = sys.argv[1:4]
-    except Exception, e:
-        print e
-        print "usage: python {0} parmdb_1_path "\
-            " parmdb_2_path [max_delta (type=float)]".format(sys.argv[0])
+    except Exception as e:
+        print(e)
+        print("usage: python3 {0} parmdb_1_path "\
+            " parmdb_2_path [max_delta (type=float)]".format(sys.argv[0]))
         sys.exit(1)
 
     max_delta = None
@@ -171,21 +168,17 @@ if __name__ == "__main__":
     except:
         max_delta = 0.0001
 
-    print "using max delta: {0}".format(max_delta)
+    print("using max delta: {0}".format(max_delta))
 
     if not error:
-        print "regression test:"
+        print("regression test:")
         data_equality = compare_two_parmdb(parmdb_1, parmdb_2, max_delta)
 
         if not data_equality:
-            print "Regression test failed: exiting with exitstatus 1"
-            print " parmdb data equality = : {0}".format(data_equality)
+            print("Regression test failed: exiting with exitstatus 1")
+            print(" parmdb data equality = : {0}".format(data_equality))
             sys.exit(1)
 
-        print "Regression test Succeed!!"
+        print("Regression test Succeed!!")
         sys.exit(0)
-
-
-
-
 

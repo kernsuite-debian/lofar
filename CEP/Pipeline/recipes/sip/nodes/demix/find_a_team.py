@@ -45,11 +45,11 @@ def getAteamList(MSname, innerDistance=21., outerDistance=35.,refFreq=58.,elLimi
         innerDistance *= freqFactor
         outerDistance *= freqFactor
         if verbose:
-                print 'At frequency %f MHz:'%(msFreq/1.e6)
-                print 'Frequency-corrected inner radius: %f'%innerDistance
-                print 'Frequency-corrected outer radius: %f'%outerDistance
-                print '  (or %f for CasA,CygA)'%(outerDistance*2.)
-                print ''
+                print('At frequency %f MHz:'%(msFreq/1.e6))
+                print('Frequency-corrected inner radius: %f'%innerDistance)
+                print('Frequency-corrected outer radius: %f'%outerDistance)
+                print('  (or %f for CasA,CygA)'%(outerDistance*2.))
+                print('')
         
         # Get location of the first station
         ant_table = pt.table(ms.getkeyword('ANTENNA'),ack=False)
@@ -89,7 +89,7 @@ def getAteamList(MSname, innerDistance=21., outerDistance=35.,refFreq=58.,elLimi
                 me.doframe(t1)
 
                 # calculate the sun and jupiter positions specially
-                if 'ra' in target.keys():
+                if 'ra' in list(target.keys()):
                         ra_qa  = qa.quantity( target['ra'], 'rad' )
                         dec_qa = qa.quantity( target['dec'], 'rad' )
                         direction =  me.direction('j2000', ra_qa, dec_qa)
@@ -106,9 +106,9 @@ def getAteamList(MSname, innerDistance=21., outerDistance=35.,refFreq=58.,elLimi
 
                 # print if verbose
                 if verbose:
-                        print 'Source: %s' % target['name']
-                        print 'Separation: %f' % aTeamDistance
-                        print 'Elevation: %f' % elDeg
+                        print('Source: %s' % target['name'])
+                        print('Separation: %f' % aTeamDistance)
+                        print('Elevation: %f' % elDeg)
                 
                 # Does it need to be demixed?
                 if target['name'] == 'CygA' or target['name'] == 'CasA':
@@ -117,8 +117,8 @@ def getAteamList(MSname, innerDistance=21., outerDistance=35.,refFreq=58.,elLimi
                         odFact = 1.
                 if aTeamDistance > innerDistance and aTeamDistance < outerDistance*odFact and elDeg > elLimit:
                         aTeamList.append(target['name'])
-                        if verbose: print 'DEMIX\n'
-                elif verbose: print 'DO NOT DEMIX\n'
+                        if verbose: print('DEMIX\n')
+                elif verbose: print('DO NOT DEMIX\n')
 
         return aTeamList
 

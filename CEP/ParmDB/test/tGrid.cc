@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tGrid.cc 23243 2012-12-10 12:39:14Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Grid.h>

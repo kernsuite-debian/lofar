@@ -18,22 +18,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParm.cc 22819 2012-11-16 11:02:55Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Parm.h>
 #include <ParmDB/ParmCache.h>
 #include <ParmDB/ParmDB.h>
 #include <Common/LofarLogger.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/ArrayMath.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/ArrayMath.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
 #include <iostream>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 // Test the basic functionality.
@@ -117,7 +117,7 @@ void testResultCoeff()
                     (coeff(0,1) + coeff(1,1)*x)*y +
                     (coeff(0,2) + coeff(1,2)*x)*y*y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
+        ASSERT (casacore::near (result(i,j), v));
       }
     }
   }
@@ -159,7 +159,7 @@ void testResultCoeff()
                     (coeff(0,1) + coeffadd + (coeff(1,1) + coeffadd)*x)*y +
                     (coeff(0,2) + coeffadd + (coeff(1,2) + coeffadd)*x)*y*y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
+        ASSERT (casacore::near (result(i,j), v));
       }
     }
   }
@@ -204,7 +204,7 @@ void testResultCoeff()
                     (coeff(0,1) + coeffadd + (coeff(1,1) + coeffadd)*x)*y +
                     (coeff(0,2) + coeffadd + (coeff(1,2) + coeffadd)*x)*y*y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result.data()[i+j*3], v));
+        ASSERT (casacore::near (result.data()[i+j*3], v));
       }
     }
     // Check the perturbed values.
@@ -224,7 +224,7 @@ void testResultCoeff()
                       (coeff(0,1) + coeffadd + (coeff(1,1) + coeffadd)*x)*y +
                       (coeff(0,2) + coeffadd + (coeff(1,2) + coeffadd)*x)*y*y);
           //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-          ASSERT (casa::near (result.data()[i+j*3], v));
+          ASSERT (casacore::near (result.data()[i+j*3], v));
         }
       }
       coeff(ip%2, ip/2) -= pertc[ip];
@@ -258,7 +258,7 @@ void testResultOneScalar()
         int x = i/2;
         double v = scalars(x,y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
+        ASSERT (casacore::near (result(i,j), v));
       }
     }
   }
@@ -276,7 +276,7 @@ void testResultOneScalar()
         int x = i/3;
         double v = scalars(x,y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
+        ASSERT (casacore::near (result(i,j), v));
       }
     }
   }
@@ -335,7 +335,7 @@ void testResultMultiScalar (bool setErrors)
         int x = ((1+ix)%6) / 3;       // x-value in ParmValue
         double v = x + 10*pvx + y + 40*pvy;
         //cout << result(ix,iy) << ' ' << v << ' '<<pvx<<' '<<x<<' '<<pvy<<' '<<y<<endl;
-        ASSERT (casa::near (result(ix,iy), v));
+        ASSERT (casacore::near (result(ix,iy), v));
       }
     }
   }
@@ -357,7 +357,7 @@ void testResultMultiScalar (bool setErrors)
         int x = ((ix)%6) / 3;        // x-value in ParmValue
         double v = x + 10*pvx + y + 40*pvy;
         //cout << result(ix,iy) << ' ' << v << ' '<<pvx<<' '<<x<<' '<<pvy<<' '<<y<<endl;
-        ASSERT (casa::near (result(ix,iy), v));
+        ASSERT (casacore::near (result(ix,iy), v));
       }
     }
   }
@@ -423,12 +423,12 @@ void testSetGetCoeff1()
     vector<double> coeffdc = parmdc.getCoeff (Location(0,0));
     ASSERT (coeffdc.size() == coeff.size()-1);
     for (uint i=0; i<coeffdc.size(); ++i) {
-      ASSERT (casa::near(coeffdc[i], i+10.));
+      ASSERT (casacore::near(coeffdc[i], i+10.));
     }
     coeffdc = parmd2.getCoeff (Location(0,0), false);
     ASSERT (coeffdc.size() == coeff.size());
     for (uint i=0; i<coeffdc.size(); ++i) {
-      ASSERT (casa::near(coeffdc[i], i+10.));
+      ASSERT (casacore::near(coeffdc[i], i+10.));
     }
   }
   // Set coefficients 
@@ -442,12 +442,12 @@ void testSetGetCoeff1()
   vector<double> coeffdc = parmdc.getCoeff (Location(0,0));
   ASSERT (coeffdc.size() == newCoeff.size());
   for (uint i=0; i<coeffdc.size(); ++i) {
-    ASSERT (casa::near(coeffdc[i], (i+1)*0.1));
+    ASSERT (casacore::near(coeffdc[i], (i+1)*0.1));
   }
   vector<double> errordc = parmdc.getErrors (Location(0,0));
   ASSERT (errordc.size() == newError.size());
   for (uint i=0; i<errordc.size(); ++i) {
-    ASSERT (casa::near(errordc[i], (i+2)*0.001));
+    ASSERT (casacore::near(errordc[i], (i+2)*0.001));
   }
   parmCache.flush();
 }
@@ -475,7 +475,7 @@ void testSetGetCoeff2()
     vector<double> coeffdc = parmdc.getCoeff (Location(1,1));
     ASSERT (coeffdc.size() == 5);
     for (uint i=0; i<coeffdc.size(); ++i) {
-      ASSERT (casa::near(coeffdc[i], i+10.));
+      ASSERT (casacore::near(coeffdc[i], i+10.));
     }
     vector<double> errordc = parmdc.getErrors (Location(1,1));
     ASSERT (errordc.size() == 0);
@@ -483,12 +483,12 @@ void testSetGetCoeff2()
     coeffdc = parmdc.getCoeff (Location(0,0));
     ASSERT (coeffdc.size() == 5);
     for (uint i=0; i<coeffdc.size(); ++i) {
-      ASSERT (casa::near(coeffdc[i], (i+1)*0.1));
+      ASSERT (casacore::near(coeffdc[i], (i+1)*0.1));
     }
     errordc = parmdc.getErrors (Location(0,0));
     ASSERT (errordc.size() == 5);
     for (uint i=0; i<errordc.size(); ++i) {
-      ASSERT (casa::near(errordc[i], (i+2)*0.001));
+      ASSERT (casacore::near(errordc[i], (i+2)*0.001));
     }
   }
 }
@@ -554,7 +554,7 @@ void testScalarPert()
         int x = i/2;
         double v = scalars(x,y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
+        ASSERT (casacore::near (result(i,j), v));
       }
     }
   }
@@ -575,8 +575,8 @@ void testScalarPert()
         int x = i/3;
         double v = scalars(x,y);
         //cout << result(i,j) << ' ' << v << ' '<<x<<' '<<y<<endl;
-        ASSERT (casa::near (result(i,j), v));
-        ASSERT (casa::near (pert(i,j), v + scalars(0,0)*1e-6));
+        ASSERT (casacore::near (result(i,j), v));
+        ASSERT (casacore::near (pert(i,j), v + scalars(0,0)*1e-6));
       }
     }
   }

@@ -1,0 +1,4 @@
+#!/bin/bash
+export PATH=${PATH}:${INSTALLDIR}/casacore/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/casacore/lib
+export CASACORE_ROOT_DIR=${INSTALLDIR}/casacore/include/casacore/

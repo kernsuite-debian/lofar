@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParmMerge.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 
 #include <BBSKernel/MNS/MeqParmFunklet.h>

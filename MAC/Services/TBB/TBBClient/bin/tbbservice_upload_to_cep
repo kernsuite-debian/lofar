@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import logging
+from lofar.mac.tbbservice.client import TBBRPC
+from lofar.mac.tbb.tbb_upload_to_cep import parse_args
+
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    args = parse_args()
+
+    with TBBRPC.create(timeout=24*60*60) as rpc: # tbb dumps can take a long time.... timeout of 24 hours is ok
+        rpc.upload_data(args.stations, args.dm, args.start_time, args.duration, args.sub_bands, args.wait_time, args.boards)
+

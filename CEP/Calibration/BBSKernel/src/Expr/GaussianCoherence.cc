@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: GaussianCoherence.cc 28893 2014-04-10 10:28:04Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -29,9 +29,9 @@
 #include <Common/lofar_math.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {
@@ -69,13 +69,13 @@ const JonesMatrix::View GaussianCoherence::evaluateImpl(const Grid &grid,
     // Convert orientation from degrees to radians and convert to positive
     // North over East, East is +90 degrees.
     // TODO: Can probably optimize by changing the rotation matrix instead.
-    Matrix phi = -orientation() * (-casa::C::pi/180.0) + casa::C::pi + casa::C::pi_2;
+    Matrix phi = -orientation() * (-casacore::C::pi/180.0) + casacore::C::pi + casacore::C::pi_2;
     Matrix cosPhi(cos(phi));
     Matrix sinPhi(sin(phi));
 
     // Rotate (u, v) by the orientation and scale with the major and minor axis
     // lengths (FWHM). Take care of the conversion of FWHM to sigma.
-    const double arcsec2rad = (casa::C::pi / 3600.0) / 180.0;
+    const double arcsec2rad = (casacore::C::pi / 3600.0) / 180.0;
     const double fwhm2sigma = 1.0 / (2.0 * std::sqrt(2.0 * std::log(2.0)));
 
     Matrix uPrime =
@@ -86,7 +86,7 @@ const JonesMatrix::View GaussianCoherence::evaluateImpl(const Grid &grid,
 
     // Compute uPrime^2 + vPrime^2 and pre-multiply with -2.0 * PI^2 / C^2.
     Matrix uvPrime =
-        (-2.0 * casa::C::pi * casa::C::pi) * (sqr(uPrime) + sqr(vPrime));
+        (-2.0 * casacore::C::pi * casacore::C::pi) * (sqr(uPrime) + sqr(vPrime));
 
     // Compute spatial coherence (2D).
     const unsigned int nFreq = grid[FREQ]->size();
@@ -101,7 +101,7 @@ const JonesMatrix::View GaussianCoherence::evaluateImpl(const Grid &grid,
         const double uv = uvPrime.getDouble(0, ts);
         for(unsigned int ch = 0; ch < nFreq; ++ch)
         {
-            const double lambda_inv = grid[FREQ]->center(ch) / casa::C::c;
+            const double lambda_inv = grid[FREQ]->center(ch) / casacore::C::c;
             *it++ = std::exp(lambda_inv * lambda_inv * uv);
         }
     }

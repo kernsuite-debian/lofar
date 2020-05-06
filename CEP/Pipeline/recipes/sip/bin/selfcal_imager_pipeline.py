@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #                                                        LOFAR IMAGING PIPELINE
 #
 #                                                      selfcal Pipeline recipe
@@ -112,7 +112,7 @@ class selfcal_imager_pipeline(control):
         """
         Display usage information
         """
-        print >> sys.stderr, "Usage: %s <parset-file>  [options]" % sys.argv[0]
+        print("Usage: %s <parset-file>  [options]" % sys.argv[0], file=sys.stderr)
         return 1
 
     def go(self):
@@ -273,10 +273,10 @@ class selfcal_imager_pipeline(control):
 
             # On exception there is the option to output the results of the 
             # last cycle without errors
-            except KeyboardInterrupt, ex:
+            except KeyboardInterrupt as ex:
                 raise ex
 
-            except Exception, ex:
+            except Exception as ex:
                 self.logger.error("Encountered an fatal exception during self"
                                   "calibration. Aborting processing and return"
                                   " the last succesfull cycle results")
@@ -336,7 +336,7 @@ class selfcal_imager_pipeline(control):
         create_directory(mapfile_for_cycle_dir)
 
         saved_mapfiles = {}
-        for (var_name,mapfile_path) in mapfiles.items():
+        for (var_name,mapfile_path) in list(mapfiles.items()):
             shutil.copy(mapfile_path, mapfile_for_cycle_dir)
             # save the newly created file, get the filename, and append it
             # to the directory name
@@ -370,7 +370,7 @@ class selfcal_imager_pipeline(control):
             toplevel_meta_data.writeFile(toplevel_meta_data_path)
             self.logger.info("Wrote meta data to: " + 
                     toplevel_meta_data_path)
-        except RuntimeError, err:
+        except RuntimeError as err:
             self.logger.error(
               "Failed to write toplevel meta information parset: %s" % str(
                                     toplevel_meta_data_path))
@@ -691,7 +691,7 @@ class selfcal_imager_pipeline(control):
                 do_rficonsole = False)
 
         # validate that the prepare phase produced the correct data
-        output_keys = outputs.keys()
+        output_keys = list(outputs.keys())
         if not ('mapfile' in output_keys):
             error_msg = "The imager_prepare master script did not"\
                     "return correct data. missing: {0}".format('mapfile')

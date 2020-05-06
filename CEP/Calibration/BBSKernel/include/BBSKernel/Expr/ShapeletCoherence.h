@@ -31,7 +31,7 @@
 #include <BBSKernel/Expr/BasicExpr.h>
 #include <Common/lofar_complex.h>
 
-#include <casa/Arrays.h>
+#include <casacore/casa/Arrays.h>
 
 namespace LOFAR
 {
@@ -49,7 +49,7 @@ public:
     typedef shared_ptr<const ShapeletCoherence> ConstPtr;
 
     ShapeletCoherence(const Expr<Vector<4> >::ConstPtr stokes, double scaleI,
-        const casa::Array<double> &coeffI,
+        const casacore::Array<double> &coeffI,
         const Expr<Vector<3> >::ConstPtr &uvwA,
         const Expr<Vector<3> >::ConstPtr &uvwB);
 
@@ -60,11 +60,11 @@ protected:
 
     virtual const JonesMatrix::View evaluateImplI(const Grid &grid,
         const Vector<4>::View &stokes, double scaleI,
-        const casa::Array<double> &coeffI, const Vector<3>::View &uvwA,
+        const casacore::Array<double> &coeffI, const Vector<3>::View &uvwA,
         const Vector<3>::View &uvwB) const;
 
     double              itsShapeletScaleI_;
-    casa::Array<double> itsShapeletCoeffI_;
+    casacore::Array<double> itsShapeletCoeffI_;
 };
 
 // @}

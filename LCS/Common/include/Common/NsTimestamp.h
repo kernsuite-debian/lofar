@@ -20,7 +20,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: NsTimestamp.h 31468 2015-04-13 23:26:52Z amesfoort $
+//#  $Id$
 
 #ifndef NSTIMESTAMP_H_
 #define NSTIMESTAMP_H_

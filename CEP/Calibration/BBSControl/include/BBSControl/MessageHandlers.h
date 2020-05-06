@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MessageHandlers.h 16068 2010-07-23 19:53:58Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSCONTROL_MESSAGEHANDLERS_H
 #define LOFAR_BBSCONTROL_MESSAGEHANDLERS_H

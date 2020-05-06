@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tParmDBLog.cc 17917 2011-05-01 00:20:25Z duscha $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmDBLogLevel.h>
@@ -28,7 +28,7 @@
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void fill (bool create)

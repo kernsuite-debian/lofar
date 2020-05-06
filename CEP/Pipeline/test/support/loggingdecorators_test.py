@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 import os
 import errno
 import unittest
@@ -6,7 +6,7 @@ import shutil
 import numpy
 import tempfile
 import xml.dom.minidom as xml
-import mock
+from unittest import mock
 
 from lofarpipe.support.loggingdecorators import xml_node, duration, mail_log_on_exception
 from lofar.common.defaultmailaddresses import PipelineEmailConfig
@@ -100,25 +100,25 @@ class loggingdecoratorsTest(unittest.TestCase):
 
             def test(self):
                 if get_active_stack(tester) is not None:
-                    print "An active stack should only exist when added explicitly"
+                    print("An active stack should only exist when added explicitly")
                     return False
 
                 with duration(self, "a name") as context_object:
                     active_stack = get_active_stack(self)
                     # We should have an active stack in the context
                     if active_stack is None:
-                        print "In duration context the active stack should be added."
+                        print("In duration context the active stack should be added.")
                         return False
 
                     if not get_child(
                         active_stack, "active_stack").hasChildNodes():
-                        print "in the context the active_stack should at least contain one entry"
+                        print("in the context the active_stack should at least contain one entry")
                         return False
                     # Now leave the  context
 
                 if get_child(
                         active_stack, "active_stack").hasChildNodes():
-                        print "After the context the active stack should be left"
+                        print("After the context the active stack should be left")
                         # There is stil an entry in the active stack
                         return False
 
@@ -185,7 +185,7 @@ class loggingdecoratorsTest(unittest.TestCase):
         # init a PipelineEmailConfig with an existing but empty config file so it does not fail on init, but raises an exception on access:
         # (mocking out the PipelineEmailConfig and adding a side_effect to its get() breaks the smtpmock for some reason)
         f = tempfile.NamedTemporaryFile()
-        f.write(""" """)
+        f.write(b""" """)
         f.flush()
         pecmock.return_value = PipelineEmailConfig(filepatterns=[f.name])
 
@@ -221,7 +221,7 @@ class loggingdecoratorsTest(unittest.TestCase):
         # init a PipelineEmailConfig with an existing but empty config file so it does not fail on init, but raises an exception on access:
         # (mocking out the PipelineEmailConfig and adding a side_effect to its get() breaks the smtpmock for some reason)
         f = tempfile.NamedTemporaryFile()
-        f.write("""
+        f.write(b"""
 [Pipeline]
 error-sender = customized@astron.nl
 """)

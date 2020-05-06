@@ -58,7 +58,7 @@ class vdsreader(BaseRecipe):
         # 2. convert al partx.FileName values to ms
         ms_names = [
             gvds.getString("Part%d.FileName" % (part_no,))
-            for part_no in xrange(gvds.getInt("NParts"))
+            for part_no in range(gvds.getInt("NParts"))
         ]
         self.logger.debug(ms_names)
 

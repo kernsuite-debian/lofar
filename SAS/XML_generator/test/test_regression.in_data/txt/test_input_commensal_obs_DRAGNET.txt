@@ -1,0 +1,78 @@
+projectName=test-lofar                  # be careful! Don't make typos here. Or otherwise a non-valid project will be created in mom
+mainFolderName=xmlgen_commensal_test           # the name of the folder that will contain all blocks, if left unspecified no main folder will be created
+mainFolderDescription=Commensal Observation DRAGNET (XMLgenerator test)
+
+BLOCK
+
+cluster=DRAGNET
+split_targets = F                       # true:create a separate target observation for every target (beam) line or false:combine them in a multi-beam observation
+calibration = none                      # internal / external / none
+processing=none                         # can be one of Calibration, Preprocessing, Imaging, Pulsar, LongBaseline, none
+imagingPipeline=none                    # can be one of MSSS, standard, none
+repeat=1                                # the number of repeats of this block
+
+packageName=commensalobs-DRAGNET        # the name that will be given to the package folder that contains this block's observation and pipelines
+packageDescription=Commensal Obs package description
+packageTag=                             # optional tag that will be prepended before every observation and pipeline name/description (Max 8 characters).
+
+antennaMode=HBA Dual
+clock=200 MHz
+instrumentFilter=110-190 MHz
+numberOfBitsPerSample=8
+integrationTime=4.0
+channelsPerSubband=16
+stationList=core                        # comma-separated list of station names and/or the following aliasses: core, superterp, remote, international, all, nl
+tbbPiggybackAllowed=T
+aartfaacPiggybackAllowed=T
+
+###### Which data types should be produced: ######
+correlatedData=T
+coherentStokesData=T
+incoherentStokesData=T
+flysEye=F
+coherentDedisperseChannels=False
+
+###### Coherent Stokes parameters ######
+subbandsPerFileCS=20
+numberCollapsedChannelsCS=16
+stokesDownsamplingStepsCS=6
+whichCS=XXYY
+
+###### Incoherent Stokes parameters ######
+subbandsPerFileIS=40
+numberCollapsedChannelsIS=1
+stokesDownsamplingStepsIS=12
+whichIS=I
+
+#calibratorDuration_s=120                # duration of calibration observations in seconds
+targetDuration_s=600                    # duration of target observations in seconds
+
+###### Globals are used when a target/calibration line does not have its own specific parameter specified for that property ######
+#Global_TAB=
+#Global_TABrings=2;0.1                   # nr of tabrings and tabring size
+#Global_Pulsar=B0329+54;T;T;DSPSR EXTRA OPTIONS;PREPDATA;5.1;-2;F;F;F;F;F;2BF2FITS;4;101;RFI FIND EXTRA OPTIONS;PREPFOLD EXTRA;PREPSUBBAND Extra; 0.6;T;T
+#Global_Subbands=98..297;200
+
+# startTimeUTC, the start time of the first observation. format: yyyy-MM-dd hh:mm:ss
+# un-comment the startTimeUTC to have the observation start times generated
+startTimeUTC=2017-05-09 03:00:00
+# timeStep's in seconds
+timeStep1=0
+#timeStep2=60
+
+#calibratorBeam=
+#19:59:28.35;+40:44:02.0;3C295;;;;;T;60
+
+TAB:
+c;05:34:51.94;+22:00:52.2               # a coherent tab with absolute coordinates 05:34:51.94, +22:00:52.2
+i;05:34:51.94;+22:00:52.2
+c;05:34:52.02;+22:00:52.5
+i;05:34:52.02;+22:00:52.5
+
+# target beams and target pipelines
+# ra ;dec; targetname; subbandList; nrSubbands; nrTABrings; TABringSize; create_pipeline [;pipeline duration seconds]
+# optionally followed by BBS and/or demixing settings
+targetBeams=
+05:34:51.94;+22:00:52.2;Crab pointing 1;98..297;200;2;0.1;F;600
+05:34:52.02;+22:00:52.5;Crab pointing 2;297..396;100;2;0.1;F;600
+

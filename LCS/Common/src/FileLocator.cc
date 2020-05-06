@@ -1,3 +1,4 @@
+/* vim: set tabstop=4:softtabstop=4:shiftwidth=4:noexpandtab */
 //# FileLocator.cc: Tries to locate a file in an earlier defined path.
 //#
 //# Copyright (C) 2006
@@ -18,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: FileLocator.cc 30651 2014-12-19 13:47:36Z mol $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -75,7 +76,7 @@ FileLocator::~FileLocator()
 //
 // addPathAtBack(aPath): bool
 //
-// Adds the given pah(chain) at the back of the search path
+// Adds the given path(chain) at the back of the search path
 //
 void 	FileLocator::addPathAtBack  (const string& aPath)
 {
@@ -229,24 +230,18 @@ string	FileLocator::locate		(const string& aFile)
 	}
 	// Otherwise, search the path chain
 	else {
-		iterator	iter     = itsPaths.begin();
-		iterator	chainEnd = itsPaths.end();
+		iterator iter     = itsPaths.begin();
+		iterator chainEnd = itsPaths.end();
 		while (iter != chainEnd) {
-			// when itsSubdir is filled each test much be performed also with subdir
-			for (int test = 0; test <= (itsSubdir.empty() ? 0 : 1); test++) {
-				string			fullname;
-				fullname = *iter + (*iter != "/" ? "/" : "");
-				if (test == 0) {	// basedir?
-					fullname += aFile;
-				}
-				else {				// test subdir
-					fullname += itsSubdir + "/" + aFile;
-				}
-				result = stat(fullname.c_str(), &fileStat);
-				if (result == 0) { // found?
-					return (fullname);
-				}
+			// When itsSubdir is filled test subdir and basedir, in that order
+			string basedir = *iter + (*iter != "/" ? "/" : "");
+			string file;
+			if (!itsSubdir.empty()) {
+				file = basedir + itsSubdir + "/" + aFile;
+				if (stat(file.c_str(), &fileStat) == 0) return realpath(file);
 			}
+			file = basedir + aFile;
+			if (stat(file.c_str(), &fileStat) == 0) return realpath(file);
 			++iter;
 		}
 		// not found, return empty string.

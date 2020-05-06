@@ -15,7 +15,7 @@
 # Nicolas Vilchez, 2014
 # vilchez@astron.nl
 # -----------------------------------------------------------------------------
-from __future__ import with_statement
+
 import sys
 import shutil
 import os.path
@@ -187,11 +187,11 @@ class selfcal_awimager(LOFARnodeTCP):
                                             logger, usageStats=self.resourceMonitor)
 
             # Thrown by catch_segfault
-            except CalledProcessError, exception:
+            except CalledProcessError as exception:
                 self.logger.error(str(exception))
                 return 1
 
-            except Exception, exception:
+            except Exception as exception:
                 self.logger.error(str(exception))
                 return 1
 
@@ -473,8 +473,8 @@ class selfcal_awimager(LOFARnodeTCP):
         fitsImage	= pyfits.open(fits_image_path) 
         scidata 	= fitsImage[0].data 
 
-        dataRange	= range(fitsImage[0].shape[2])
-        sortedData	=  range(fitsImage[0].shape[2] ** 2)
+        dataRange	= list(range(fitsImage[0].shape[2]))
+        sortedData	=  list(range(fitsImage[0].shape[2] ** 2))
 
         # FIXME We have the sneaking suspicion that this takes very long
         # due to bad coding style... (double for loop with compute in inner loop)
@@ -617,10 +617,10 @@ class selfcal_awimager(LOFARnodeTCP):
                 catch_segfaults(cmd, working_directory, self.environment,
                                         logger)
         # Thrown by catch_segfault
-        except CalledProcessError, exception:
+        except CalledProcessError as exception:
             self.logger.error(str(exception))
             return 1
-        except Exception, exception:
+        except Exception as exception:
             self.logger.error(str(exception))
             return 1
 
@@ -750,8 +750,8 @@ class selfcal_awimager(LOFARnodeTCP):
                 self.logger.info(
                     "WARNING: source {0} falls across map edge".format(source))
 
-            for pixel_x in xrange(xmin, xmax):
-                for pixel_y in xrange(ymin, ymax):
+            for pixel_x in range(xmin, xmax):
+                for pixel_y in range(ymin, ymax):
                     # skip pixels outside the mask field
                     if pixel_x >= xlen or pixel_y >= ylen or\
                        pixel_x < 0 or pixel_y < 0:

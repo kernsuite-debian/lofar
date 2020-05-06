@@ -1,0 +1,4 @@
+lofar_add_package(LTAIngestCommon)
+lofar_add_package(LTAIngestServer)
+lofar_add_package(LTAIngestClient)
+add_subdirectory(test)

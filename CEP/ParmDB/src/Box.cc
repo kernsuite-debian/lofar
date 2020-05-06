@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Box.cc 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/Box.h>
@@ -56,9 +56,9 @@ namespace BBS {
     Point end(min(lhs.upperX(), rhs.upperX()),
               min(lhs.upperY(), rhs.upperY()));
     if(start.first < end.first
-       && !casa::near(start.first, end.first)
+       && !casacore::near(start.first, end.first)
        && start.second < end.second
-       && !casa::near(start.second, end.second))
+       && !casacore::near(start.second, end.second))
       {
         return Box(start, end);
       }

@@ -1,16 +1,16 @@
 # LOFAR IMAGING PIPELINE
 # long basseline master
-# 
+#
 # 1. Create input files for individual nodes based on the  input mapfile
 # 2. Perform basic input parsing and input validation
 # 3. Call the node scripts with correct input
 # 4. validate performance
 #
-# Wouter Klijn 
+# Wouter Klijn
 # 2014
 # klijn@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os
 import sys
 import copy
@@ -26,10 +26,10 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
 
     1. Validate input
     2. Create mapfiles with input for work to be perform on the individual nodes
-       based on the structured input mapfile. The input mapfile contains a list 
-       of measurement sets. 
+       based on the structured input mapfile. The input mapfile contains a list
+       of measurement sets.
        Each node computes a single subband group but needs this for all
-       timeslices. 
+       timeslices.
     3. Call the node scripts with correct input
     4. validate performance
        Only output the measurement nodes that finished succesfull
@@ -37,7 +37,7 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
     **Command Line arguments:**
 
     The only command line argument is the a to a mapfile containing "all"
-    the measurement sets needed for creating the sky images. First ordered on 
+    the measurement sets needed for creating the sky images. First ordered on
     timeslice then on subband group and finaly on index in the frequency
     range.
 
@@ -47,95 +47,95 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
     inputs = {
         'nproc': ingredient.IntField(
             '--nproc',
-            default=1,   # More then one might cause issues when ndppp shares 
+            default = 1,    # More then one might cause issues when ndppp shares
                          # temp files between runs
-            help="Maximum number of simultaneous processes per output node"
+            help = "Maximum number of simultaneous processes per output node"
         ),
         'ndppp_exec': ingredient.ExecField(
             '--ndppp-exec',
-            help="The full path to the ndppp executable"
+            help = "The full path to the ndppp executable"
         ),
         'parset': ingredient.FileField(
             '-p', '--parset',
-            help="The full path to a prepare parset"
+            help = "The full path to a prepare parset"
         ),
         'working_directory': ingredient.StringField(
             '-w', '--working-directory',
-            help="Working directory used by the nodes: local data"
+            help = "Working directory used by the nodes: local data"
         ),
         'nthreads': ingredient.IntField(
             '--nthreads',
-            default=8,
-            help="Number of threads per process"
+            default = 8,
+            help = "Number of threads per process"
         ),
         'target_mapfile': ingredient.StringField(
             '--target-mapfile',
-            help="Contains the node and path to target files, defines"
+            help = "Contains the node and path to target files, defines"
                " the number of nodes the script will start on."
         ),
         'subbandgroups_per_ms': ingredient.IntField(
             '--slices-per-image',
-            help="The number of (time) slices for each output image"
+            help = "The number of (time) slices for each output image"
         ),
         'subbands_per_subbandgroup': ingredient.IntField(
             '--subbands-per-image',
-            help="The number of subbands to be collected in each output image"
+            help = "The number of subbands to be collected in each output image"
         ),
         'asciistat_executable': ingredient.ExecField(
             '--asciistat-executable',
-            help="full path to the ascii stat executable"
+            help = "full path to the ascii stat executable"
         ),
         'statplot_executable': ingredient.ExecField(
             '--statplot-executable',
-            help="The full path to the statplot executable"
+            help = "The full path to the statplot executable"
         ),
         'msselect_executable': ingredient.ExecField(
             '--msselect-executable',
-            help="The full path to the msselect executable "
+            help = "The full path to the msselect executable "
         ),
         'rficonsole_executable': ingredient.ExecField(
             '--rficonsole-executable',
-            help="The full path to the rficonsole executable "
+            help = "The full path to the rficonsole executable "
         ),
         'mapfile': ingredient.StringField(
             '--mapfile',
-            help="Full path of mapfile; contains a list of the "
+            help = "Full path of mapfile; contains a list of the "
                  "successfully generated and concatenated sub-band groups"
         ),
         'slices_mapfile': ingredient.StringField(
             '--slices-mapfile',
-            help="Path to mapfile containing the produced subband groups"
+            help = "Path to mapfile containing the produced subband groups"
         ),
         'ms_per_image_mapfile': ingredient.StringField(
             '--ms-per-image-mapfile',
-            help="Path to mapfile containing the ms for each produced"
+            help = "Path to mapfile containing the ms for each produced"
                 "image"
         ),
         'processed_ms_dir': ingredient.StringField(
             '--processed-ms-dir',
-            help="Path to directory for processed measurment sets"
+            help = "Path to directory for processed measurment sets"
         ),
         'add_beam_tables': ingredient.BoolField(
             '--add_beam_tables',
-            default=False,
-            help="Developer option, adds beamtables to ms"
+            default = False,
+            help = "Developer option, adds beamtables to ms"
         ),
         'output_ms_mapfile': ingredient.StringField(
             '--output-ms-mapfile',
-            help="Path to mapfile which contains the the final output locations"
+            help = "Path to mapfile which contains the the final output locations"
         )
     }
 
     outputs = {
         'mapfile': ingredient.FileField(
-            help="path to a mapfile Which contains a list of the"
+            help = "path to a mapfile Which contains a list of the"
                  "successfully generated and concatenated measurement set"
             ),
         'slices_mapfile': ingredient.FileField(
-            help="Path to mapfile containing the produced subband groups"),
+            help = "Path to mapfile containing the produced subband groups"),
 
         'ms_per_image_mapfile': ingredient.FileField(
-            help="Path to mapfile containing the ms for each produced"
+            help = "Path to mapfile containing the ms for each produced"
                 "image")
     }
 
@@ -147,7 +147,7 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
         self.logger.info("Starting long_baseline run")
 
         # *********************************************************************
-        # input data     
+        # input data
         input_map = DataMap.load(self.inputs['args'][0])
         output_map = DataMap.load(self.inputs['target_mapfile'])
         subbandgroups_per_ms = self.inputs['subbandgroups_per_ms']
@@ -163,9 +163,9 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # *********************************************************************
         # schedule the actual work
-        # TODO: Refactor this function into: load data, perform work, 
+        # TODO: Refactor this function into: load data, perform work,
         # create output
-        node_command = " python %s" % (self.__file__.replace("master", "nodes"))
+        node_command = " python3 %s" % (self.__file__.replace("master", "nodes"))
 
         jobs = []
         paths_to_image_mapfiles = []
@@ -174,9 +174,9 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
         globalfs = self.config.has_option("remote", "globalfs") and self.config.getboolean("remote", "globalfs")
 
         output_map.iterator = final_output_map.iterator = DataMap.SkipIterator
-        for idx_sb_group, (output_item, final_item) in enumerate(zip(output_map, 
+        for idx_sb_group, (output_item, final_item) in enumerate(zip(output_map,
                                                             final_output_map)):
-            #create the input files for this node
+            # create the input files for this node
             self.logger.debug("Creating input data subset for processing"
                               "on: {0}".format(output_item.host))
             inputs_for_image_map = \
@@ -193,7 +193,7 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
             self._store_data_map(inputs_for_image_mapfile_path,
                                 inputs_for_image_map, "inputmap for location")
 
-            #save the (input) ms, as a list of  mapfiles
+            # save the (input) ms, as a list of  mapfiles
             paths_to_image_mapfiles.append(
                 tuple([output_item.host, inputs_for_image_mapfile_path, False]))
 
@@ -218,16 +218,16 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
                          final_item.file]
 
             jobs.append(ComputeJob(output_item.host, node_command, arguments,
-                    resources={
+                    resources = {
                         "cores": self.inputs['nthreads']
                     }))
 
         # Hand over the job(s) to the pipeline scheduler
-        self._schedule_jobs(jobs, max_per_node=self.inputs['nproc'])
+        self._schedule_jobs(jobs, max_per_node = self.inputs['nproc'])
 
         # *********************************************************************
         # validate the output, cleanup, return output
-        if self.error.isSet():   #if one of the nodes failed
+        if self.error.isSet():    # if one of the nodes failed
             self.logger.warn("Failed prepare_imager run detected: Generating "
                              "new output_ms_mapfile_path without failed runs:"
                              " {0}".format(output_ms_mapfile_path))
@@ -237,10 +237,10 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
         finished_runs = 0
         # If we have a skipped item, add the item to the slices with skip set
         jobs_idx = 0
-        for item in concat_ms: 
-            # If this is an item that is skipped via the skip parameter in 
-            # the parset, append a skipped             
-            if item.skip:    
+        for item in concat_ms:
+            # If this is an item that is skipped via the skip parameter in
+            # the parset, append a skipped
+            if item.skip:
                 slices.append(tuple([item.host, [], True]))
                 continue
 
@@ -280,7 +280,7 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
             "Wrote MultiMapfile with produces timeslice: {0}".format(
                 self.inputs['slices_mapfile']))
 
-        #map with actual input mss.
+        # map with actual input mss.
         self._store_data_map(self.inputs["ms_per_image_mapfile"],
             DataMap(paths_to_image_mapfiles),
                 "mapfile containing input ms per image:")
@@ -297,9 +297,9 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
             n_subband_groups, subbands_per_subbandgroup, idx_sb_group, input_mapfile):
         """
         Creates an input mapfile:
-        This is a subset of the complete input_mapfile based on the subband 
+        This is a subset of the complete input_mapfile based on the subband
         details suplied: The input_mapfile is structured: First all subbands for
-        a complete timeslice and the the next timeslice. The result value 
+        a complete timeslice and the the next timeslice. The result value
         contains all the information needed for a single subbandgroup to be
         computed on a single compute node
         """
@@ -312,23 +312,22 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
                 (idx_sb_group * subbands_per_subbandgroup)
             line_idx_end = line_idx_start + subbands_per_subbandgroup
 
-            #extend inputs with the files for the current time slice
+            # extend inputs with the files for the current time slice
             inputs_for_image.extend(input_mapfile[line_idx_start: line_idx_end])
 
         return DataMap(inputs_for_image)
-
 
     def _validate_input_map(self, input_map, output_map, subbandgroups_per_ms,
                             subbands_per_subbandgroup):
         """
         Return False if the inputs supplied are incorrect:
-        the number if inputs and  output does not match. 
-        Return True if correct.              
+        the number if inputs and  output does not match.
+        Return True if correct.
         The number of inputs is correct iff.
-        len(input_map) == 
+        len(input_map) ==
         len(output_map) * subbandgroups_per_ms * subbands_per_subbandgroup
         """
-        # The output_map contains a number of path/node pairs. The final data 
+        # The output_map contains a number of path/node pairs. The final data
         # dataproduct of the prepare phase: The 'input' for each of these pairs
         # is a number of measurement sets: The number of time slices times
         # the number of subbands collected into each of these time slices.
@@ -348,7 +347,6 @@ class long_baseline(BaseRecipe, RemoteCommandRecipeMixIn):
             return False
 
         return True
-
 
 if __name__ == "__main__":
     sys.exit(long_baseline().main())

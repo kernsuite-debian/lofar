@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceData.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/SourceData.h>
@@ -27,11 +27,11 @@
 #include <Blob/BlobOStream.h>
 #include <Common/Exception.h>
 
-#include <casa/Arrays/ArrayIO.h>
-#include <casa/Quanta/MVAngle.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include <casacore/casa/Quanta/MVAngle.h>
 #include <iostream>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR {
@@ -60,7 +60,7 @@ namespace BBS {
       iter = parms.find(name + ':' + itsInfo.getName());
     }
     if (iter != parms.end()) {
-      const casa::Array<double>& arr =
+      const casacore::Array<double>& arr =
         iter->second.getFirstParmValue().getValues();
       ASSERTSTR (arr.size()==1, "Error: value " + name + " of source " +
                  itsInfo.getName() + " has multiple values");

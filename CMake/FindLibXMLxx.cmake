@@ -24,7 +24,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindLibXMLxx.cmake 31845 2015-06-18 10:13:45Z mol $
+# $Id$
 
 if(NOT LIBXMLXX_FOUND)
   include(FindPkgConfig)

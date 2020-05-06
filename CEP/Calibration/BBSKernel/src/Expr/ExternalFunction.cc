@@ -18,14 +18,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ExternalFunction.cc 14632 2009-12-08 21:26:54Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/Expr/ExternalFunction.h>
 #include <BBSKernel/Exceptions.h>
 
-#include <casa/OS/Path.h>
+#include <casacore/casa/OS/Path.h>
 #include <dlfcn.h>
 
 namespace LOFAR
@@ -33,10 +33,10 @@ namespace LOFAR
 namespace BBS
 {
 
-ExternalFunction::ExternalFunction(const casa::Path &module, const string &name)
+ExternalFunction::ExternalFunction(const casacore::Path &module, const string &name)
     :   itsModule(0)
 {
-    casa::String path = module.expandedName();
+    casacore::String path = module.expandedName();
     itsModule = dlopen(path.c_str(), RTLD_LAZY);
     if(!itsModule)
     {

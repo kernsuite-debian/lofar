@@ -23,7 +23,7 @@
 //#                        520 Edgemont Road
 //#                        Charlottesville, VA 22903-2475 USA
 //#
-//# $Id: PycBasicData.h 39709 2018-06-14 12:07:59Z dijkema $
+//# $Id$
 
 #ifndef PYTOOLS_PYCBASICDATA_H
 #define PYTOOLS_PYCBASICDATA_H
@@ -108,6 +108,7 @@ namespace LOFAR { namespace pytools {
     template <typename ContainerType, typename ValueType>
     static void set_value(ContainerType& a, std::size_t i, ValueType const& v)
     {
+      (void)i; //prevent unused var warning in release mode
       assert(a.size() == i);
       a.push_back(v);
     }

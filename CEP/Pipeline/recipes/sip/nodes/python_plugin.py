@@ -5,7 +5,7 @@
 #                                                      s.froehlich@fz-juelich.de
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import os
 #import shutil
@@ -63,7 +63,7 @@ class python_plugin(LOFARnodeTCP):
             if parsetasfile:
                 nodeparset = Parset()
                 parsetname = os.path.join(work_dir, os.path.basename(infile) + '.parset')
-                for k, v in kwargs.items():
+                for k, v in list(kwargs.items()):
                     nodeparset.add(k, v)
                 nodeparset.writeFile(parsetname)
                 args.insert(0, parsetname)
@@ -79,16 +79,16 @@ class python_plugin(LOFARnodeTCP):
                 outdict = plugin.main(*args, **kwargs)
                 os.chdir(pipedir)
 
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 # CalledProcessError isn't properly propagated by IPython
                 self.logger.error(str(err))
                 return 1
-            except Exception, err:
+            except Exception as err:
                 self.logger.error(str(err))
                 return 1
 
         if outdict:
-            for k, v in outdict.items():
+            for k, v in list(outdict.items()):
                 self.outputs[k] = v
         # We need some signal to the master script that the script ran ok.
         self.outputs['ok'] = True

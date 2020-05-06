@@ -18,19 +18,19 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixRealSca.cc 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/MatrixRealSca.h>
 #include <BBSKernel/Expr/MatrixRealArr.h>
 #include <BBSKernel/Expr/MatrixComplexSca.h>
 #include <BBSKernel/Expr/MatrixComplexArr.h>
-#include <casa/BasicMath/Math.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/BasicMath/Math.h>
+#include <casacore/casa/BasicSL/Constants.h>
 #include <Common/lofar_iostream.h>
 #include <Common/lofar_algorithm.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

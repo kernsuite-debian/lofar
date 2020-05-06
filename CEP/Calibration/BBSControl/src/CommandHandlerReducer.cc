@@ -60,7 +60,7 @@ namespace
 
 CommandHandlerReducer::CommandHandlerReducer(const ProcessGroup &group,
   const Measurement::Ptr &measurement, const ParmDB &parmDB,
-  const SourceDB &sourceDB, const casa::Path &logPath)
+  const SourceDB &sourceDB, const casacore::Path &logPath)
   : itsProcessGroup(group),
     itsMeasurement(measurement),
     itsParmDB(parmDB),
@@ -138,9 +138,9 @@ CommandResult CommandHandlerReducer::visit(const NextChunkCommand &command)
     itsMeasurement->grid()[FREQ]->range();
 
   ASSERT((freqRangeObs.first >= freqRangeCmd.first
-    || casa::near(freqRangeObs.first, freqRangeCmd.first))
+    || casacore::near(freqRangeObs.first, freqRangeCmd.first))
     && (freqRangeObs.second <= freqRangeCmd.second
-    || casa::near(freqRangeObs.second, freqRangeCmd.second)));
+    || casacore::near(freqRangeObs.second, freqRangeCmd.second)));
 
   // Update domain.
   const pair<double, double> timeRangeCmd(command.getTimeRange());
@@ -470,7 +470,7 @@ CommandResult CommandHandlerReducer::visit(const SolveStep &command)
     options.setEpsilon(command.epsilon().begin(), command.epsilon().end());
 
     // Open solution log.
-    casa::Path path(itsLogPath);
+    casacore::Path path(itsLogPath);
     path.append(command.logName());
     ParmDBLog log(path.expandedName(), ParmDBLoglevel(command.logLevel()).get(),
       itsChunkCount == 0);

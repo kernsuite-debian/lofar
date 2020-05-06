@@ -20,7 +20,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisSelection.h 28194 2014-02-05 14:41:55Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_VISSELECTION_H
 #define LOFAR_BBSKERNEL_VISSELECTION_H

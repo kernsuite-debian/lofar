@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: AddressTranslator.h 17975 2011-05-10 09:52:51Z mol $
+//# $Id$
 
 #ifndef LOFAR_COMMON_ADDRESSTRANSLATOR_H
 #define LOFAR_COMMON_ADDRESSTRANSLATOR_H

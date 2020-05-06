@@ -78,7 +78,7 @@ class get_metadata(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # ********************************************************************
         # 3. call node side of the recipe
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         data.iterator = DataMap.SkipIterator
         jobs = []
         for inp in data:

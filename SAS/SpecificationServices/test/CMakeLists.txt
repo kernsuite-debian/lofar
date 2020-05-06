@@ -1,0 +1,8 @@
+include(LofarCTest)
+include(FindPythonModule)
+
+lofar_add_test(t_lofarxml_to_momxmlmodel_translator)
+lofar_add_test(t_telescope_model_xml_generator_type1)
+lofar_add_test(t_translation_service)
+lofar_add_test(t_specification_service)
+lofar_add_test(t_validation_service)

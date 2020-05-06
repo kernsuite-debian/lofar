@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TH_Socket.h 14057 2009-09-18 12:26:29Z diepen $
+//# $Id$
 
 #ifndef LOFAR_TRANSPORT_TH_SOCKET_H
 #define LOFAR_TRANSPORT_TH_SOCKET_H

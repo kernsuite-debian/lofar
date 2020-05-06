@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+
+if __name__ == '__main__':
+    import sys
+
+    if len(sys.argv) != 2:
+        print("converts an srm url (used by tools like srmcp, srmrm, etc) to a transfer url (used by tools like globus_url_copy)")
+        print("usage: surl_to_turl <srm_url>")
+        exit(1)
+
+    from lofar.lta.ingest.common.srm import convert_surl_to_turl
+    print(convert_surl_to_turl(sys.argv[1]))

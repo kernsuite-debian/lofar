@@ -20,22 +20,22 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: VisSelection.cc 28194 2014-02-05 14:41:55Z dijkema $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/VisSelection.h>
 #include <Common/lofar_algorithm.h>
 
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVTime.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVTime.h>
 
 namespace LOFAR
 {
 namespace BBS
 {
-using casa::Quantum;
-using casa::MVTime;
-using casa::Double;
+using casacore::Quantum;
+using casacore::MVTime;
+using casacore::Double;
 
 VisSelection::VisSelection()
 {
@@ -165,9 +165,9 @@ bool VisSelection::convertTime(const string &in, double &out) const
 {
     //# TODO: Convert from default epoch to MS epoch (as it may differ from
     //# the default!)
-    casa::Quantity time;
+    casacore::Quantity time;
 
-    if(in.empty() || !casa::MVTime::read(time, in))
+    if(in.empty() || !casacore::MVTime::read(time, in))
         return false;
 
     out = time.getValue("s");

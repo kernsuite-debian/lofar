@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 21245 2012-06-18 10:56:03Z diepen $
+# $Id$
 
 include(LofarCTest)
 

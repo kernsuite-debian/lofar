@@ -22,9 +22,9 @@
 
 #include <lofar_config.h>
 #include <BBSControl/Util.h>
-#include <casa/Quanta/Quantum.h>
-#include <casa/Quanta/MVTime.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/Quanta/Quantum.h>
+#include <casacore/casa/Quanta/MVTime.h>
+#include <casacore/casa/BasicMath/Math.h>
 
 namespace LOFAR
 {
@@ -83,8 +83,8 @@ pair<size_t, size_t> parseTimeRange(const Axis::ShPtr &axis,
   double start = axis->start(), end = axis->end();
   if(range.size() > 0)
   {
-    casa::Quantity time;
-    if(!casa::MVTime::read(time, range[0]))
+    casacore::Quantity time;
+    if(!casacore::MVTime::read(time, range[0]))
     {
       THROW(BBSControlException, errorMessage << range[0]);
     }
@@ -94,8 +94,8 @@ pair<size_t, size_t> parseTimeRange(const Axis::ShPtr &axis,
 
   if(range.size() > 1)
   {
-    casa::Quantity time;
-    if(!casa::MVTime::read(time, range[1]))
+    casacore::Quantity time;
+    if(!casacore::MVTime::read(time, range[1]))
     {
       THROW(BBSControlException, errorMessage << range[1]);
     }
@@ -103,8 +103,8 @@ pair<size_t, size_t> parseTimeRange(const Axis::ShPtr &axis,
     end = time.getValue("s");
   }
 
-  if(axis->size() == 0 || start > axis->end() || casa::near(start, axis->end())
-    || end < axis->start() || casa::near(end, axis->start()))
+  if(axis->size() == 0 || start > axis->end() || casacore::near(start, axis->end())
+    || end < axis->start() || casacore::near(end, axis->start()))
   {
     // Axis and range do not overlap.
     return pair<size_t, size_t>(1, 0);

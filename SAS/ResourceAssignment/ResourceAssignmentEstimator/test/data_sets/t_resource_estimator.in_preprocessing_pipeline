@@ -1,0 +1,56 @@
+{
+  'Observation.DataProducts.Output_InstrumentModel.enabled': False,
+  'Observation.DataProducts.Output_CoherentStokes.storageClusterName': '',
+  'Observation.stopTime': '2016-12-09 16:01:25',
+  'Observation.VirtualInstrument.stationList': [
+  ],
+  'Observation.DataProducts.Input_CoherentStokes.enabled': False,
+  'Observation.DataProducts.Output_CoherentStokes.enabled': False,
+  'Observation.DataProducts.Output_Correlated.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Input_Correlated.identifications': [
+    'mom.G737227.B1.1.T.SAP002.uv.dps'
+  ],
+  'Observation.DataProducts.Output_SkyImage.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Output_InstrumentModel.identifications': [
+  ],
+  'Observation.antennaSet': 'LBA_INNER',
+  'Observation.DataProducts.Output_Pulsar.identifications': [
+  ],
+  'Observation.nrBitsPerSample': '16',
+  'Observation.ObservationControl.PythonControl.LongBaseline.subbandgroups_per_ms': '1',
+  'Observation.DataProducts.Output_IncoherentStokes.enabled': False,
+  'Observation.DataProducts.Input_IncoherentStokes.enabled': False,
+  'Observation.DataProducts.Input_Correlated.enabled': True,
+  'Observation.DataProducts.Output_Pulsar.enabled': False,
+  'Observation.DataProducts.Output_Correlated.identifications': [
+    'mom.G737227.B1.1.PT2.uv.dps'
+  ],
+  'Observation.DataProducts.Input_CoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Output_InstrumentModel.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Input_InstrumentModel.enabled': False,
+  'Observation.DataProducts.Output_SkyImage.enabled': False,
+  'Observation.ObservationControl.PythonControl.DPPP.demixer.freqstep': '4',
+  'Version.number': '33385',
+  'Observation.DataProducts.Output_Pulsar.storageClusterName': 'CEP4',
+  'Observation.momID': '737233',
+  'Observation.DataProducts.Input_InstrumentModel.identifications': [
+  ],
+  'Observation.DataProducts.Output_SkyImage.identifications': [
+  ],
+  'Observation.startTime': '2016-12-09 07:21:25',
+  'Observation.ObservationControl.PythonControl.LongBaseline.subbands_per_subbandgroup': '1',
+  'Observation.nrBeams': '0',
+  'Observation.Scheduler.taskDuration': '31200',
+  'Observation.ObservationControl.PythonControl.DPPP.demixer.timestep': '1',
+  'Observation.DataProducts.Output_IncoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Input_IncoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Output_CoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Output_Correlated.enabled': True,
+  'Observation.DataProducts.Output_IncoherentStokes.storageClusterName': '',
+  'Observation.sampleClock': '200'
+}
+

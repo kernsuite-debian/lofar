@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SystemUtil.h 17606 2011-03-22 12:49:57Z schoenmakers $
+//# $Id$
 
 #ifndef LOFAR_COMMON_SYSTEMUTIL_H
 #define LOFAR_COMMON_SYSTEMUTIL_H
@@ -88,6 +88,13 @@ string basename(const char* path, const char* suffix="");
 // Return the directory portion of a pathname. This implementation closely
 // follows the description in the POSIX standard, IEEE Std 1003.1.
 string dirname(string path);
+
+// Return the canonicalized absolute pathname. It expands all symbolic links and
+// resolves references to /./, /../ and extra '/' characters. If an error occurs
+// an empty string is returned.
+//
+// \note This function wraps the POSIX realpath() function.
+string realpath(const string& path);
 
 } // namespace LOFAR
 

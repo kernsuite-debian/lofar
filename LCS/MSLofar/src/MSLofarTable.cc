@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSLofarTable.cc 17605 2011-03-22 12:21:08Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
@@ -26,20 +26,20 @@
 #include <MSLofar/MSLofarTable.h>
 #include <Common/LofarLogger.h>
 
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableDesc.h>
-#include <tables/Tables/ColDescSet.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <ms/MeasurementSets/MSTableImpl.h>
-#include <measures/TableMeasures/TableMeasRefDesc.h>
-#include <measures/TableMeasures/TableMeasDesc.h>
-#include <measures/TableMeasures/TableQuantumDesc.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MDirection.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableDesc.h>
+#include <casacore/tables/Tables/ColDescSet.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/ms/MeasurementSets/MSTableImpl.h>
+#include <casacore/measures/TableMeasures/TableMeasRefDesc.h>
+#include <casacore/measures/TableMeasures/TableMeasDesc.h>
+#include <casacore/measures/TableMeasures/TableQuantumDesc.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 
@@ -75,11 +75,11 @@ namespace LOFAR {
     return *this;
   }
 
-  void MSLofarTable::addColumn (TableDesc& td, const casa::String& colName,
+  void MSLofarTable::addColumn (TableDesc& td, const casacore::String& colName,
                                 DataType dtype,
-                                const casa::String& comment,
-                                const casa::String& unit,
-                                const casa::String& measure, int measRefType,
+                                const casacore::String& comment,
+                                const casacore::String& unit,
+                                const casacore::String& measure, int measRefType,
                                 int ndim, const IPosition& shape,
                                 int option)
   {

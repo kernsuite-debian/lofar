@@ -5,9 +5,9 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from tempfile import mkstemp
-from cPickle import dump
+from pickle import dump
 import os
 
 import lofarpipe.support.utilities as utilities

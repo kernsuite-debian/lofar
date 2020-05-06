@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: StationConfig.h 29158 2014-05-08 08:34:30Z donker $
+//# $Id$
 
 #ifndef LOFAR_APPLCOMMON_STATION_CONFIG_H
 #define LOFAR_APPLCOMMON_STATION_CONFIG_H

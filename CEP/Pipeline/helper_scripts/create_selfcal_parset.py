@@ -31,9 +31,9 @@ def open_and_parse_config_file(file_location):
 
         new_obs_name = lines[0]  
     except:
-        print "Tried parsing:"
-        print  lines[0]
-        print "this failed"
+        print("Tried parsing:")
+        print(lines[0])
+        print("this failed")
         raise ImportError
 
     config_dict["new_obs_name"] = new_obs_name
@@ -44,9 +44,9 @@ def open_and_parse_config_file(file_location):
     try:
         output_path = lines[1]  # just read as a python list
     except:
-        print "Tried parsing:"
-        print  lines[1]
-        print "this failed"
+        print("Tried parsing:")
+        print(lines[1])
+        print("this failed")
         raise ImportError
 
     config_dict["output_path"] = output_path
@@ -57,13 +57,13 @@ def open_and_parse_config_file(file_location):
     try:
         node_list = eval(lines[2])  # just read as a python list
     except:
-        print "Tried parsing:"
-        print  lines[2]
-        print "this failed"
+        print("Tried parsing:")
+        print(lines[2])
+        print("this failed")
         raise ImportError
 
     if len(node_list) == 0:
-        print "opened node list did not contain any entries!\n\n"  
+        print("opened node list did not contain any entries!\n\n")  
         raise ImportError
 
     config_dict["node_list"] = node_list
@@ -76,9 +76,9 @@ def open_and_parse_config_file(file_location):
     try:
         number_of_major_cycles = int(eval(lines[3]))  
     except:
-        print "tried parsing:"
-        print  lines[3]
-        print "this failed"
+        print("tried parsing:")
+        print(lines[3])
+        print("this failed")
         raise importerror
 
     config_dict["number_of_major_cycles"] = number_of_major_cycles
@@ -182,9 +182,9 @@ def basic_validity_ok(locations, parset_as_dict_of_string_to_string):
 
     # now check if the lenght is the same, if not the config does not match the parset
     if len(skip_list) != len(locations):
-        print "The length of the skip list in the provided parset"
-        print "is not the same as the number of dataproduct specified in the config\n"
-        print "aborting, NO output parset written!"
+        print("The length of the skip list in the provided parset")
+        print("is not the same as the number of dataproduct specified in the config\n")
+        print("aborting, NO output parset written!")
 
         return False
 
@@ -192,7 +192,7 @@ def basic_validity_ok(locations, parset_as_dict_of_string_to_string):
 
 
 def usage():
-    print """"***************************
+    print(""""***************************
     usage: python create_selfcal_parset.py <config_file> <parset_file> <output_parset_path>
 
     create_selfcal_parset is a script which creates a 'new' selfcal parset based on 
@@ -206,7 +206,7 @@ def usage():
 
     output_parset_path will be overwritten without any prompth
     ****************************************
-    """
+    """)
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

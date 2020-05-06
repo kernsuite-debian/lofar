@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# Change directory to the location of this script
+VALIDATION_ROOT_DIR=$(dirname $0)
+cd $VALIDATION_ROOT_DIR
+
+# import helper functions
+source $VALIDATION_ROOT_DIR/validation_utils.sh
+
+# runTest TEST
+#
+# Runs TEST, with elevated privileges if needed.
+#
+function runTest() {
+  TEST=$1
+
+  echo "----------------------------------------------------------------"
+  echo " Running test: $TEST"
+  echo "  Working dir:  `pwd`"
+  echo "         User:  `whoami`"
+  echo "         Host:  `hostname`"
+  echo "         Time:  `date +"%F %T"`"
+  echo "----------------------------------------------------------------"
+
+  # just run the test script and report and return the exit code.
+  # see below how special use case $NEED_ROOT_EXIT_CODE is handled.
+  bash -v $TEST
+  RESULT=$?
+
+  echo "----------------------------------------------------------------"
+  echo " Exit code: $RESULT"
+  echo "----------------------------------------------------------------"
+  return $RESULT
+}
+
+NRTESTS=0
+NRSUCCESS=0
+NRFAILURE=0
+NRAPPLICABLE=0
+NRNOTAPPLICABLE=0
+
+if [ "$LOFARROOT" != "" ]; then
+    LOGDIR="$LOFARROOT/var/log/validation"
+else
+    # assume we are in <some_base_dir>/share/validation
+    # so, go up to <some_base_dir>, and decent into var/log
+    LOGDIR="$VALIDATION_ROOT_DIR/../../var/log/validation"
+    # make sure the logdir is present
+    mkdir -p $LOGDIR
+    # and then convert the relative path into an absolute path
+    LOGDIR="`readlink -f -n $LOGDIR`"
+fi
+
+# add hostname and timestamp for this validation run to each log file
+LOGSUFFIX="`hostname -s`_`date +%FT%T`.log"
+
+# The positional parameters are the test sets to run.
+#
+# Default: all test-suite sub dirs
+TESTSETS=${@:-`find -L .  -maxdepth 1 -type d | sort -u`}
+
+echo "-----------------------------------------------------------------------------"
+echo "------------------------- Running validation tests --------------------------"
+echo "-----------------------------------------------------------------------------"
+echo "               host: `hostname`"
+echo "  working directory: `pwd`"
+echo "      log directory: $LOGDIR"
+echo "         log suffix: $LOGSUFFIX"
+echo "-----------------------------------------------------------------------------"
+echo " Please note that some tests can take a considerable amount of time..."
+echo "-----------------------------------------------------------------------------"
+echo ""
+
+# Run all tests
+for TEST in `find -L $TESTSETS -name '*.test' -type f -a -executable | sort -u`
+do
+  LOGFILE="$LOGDIR/$TEST.$LOGSUFFIX"
+
+  # make sure we can write into the log dir
+  mkdir -p `dirname $LOGFILE`
+
+  printf "%48s : " "$TEST"
+  (cd `dirname $TEST` && runTest ./`basename $TEST`) > $LOGFILE 2>&1
+  RESULT=$?
+
+  NRTESTS=$((NRTESTS + 1))
+
+  case "$RESULT" in
+    0) echo OK
+       NRSUCCESS=$((NRSUCCESS + 1))
+       NRAPPLICABLE=$((NRAPPLICABLE + 1))
+       ;;
+    $NEED_ROOT_EXIT_CODE) echo "NEED ROOT"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    $NEED_NON_ROOT_EXIT_CODE) echo "CANNOT RUN AS ROOT"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    $INVALID_CLUSTER_EXIT_CODE) echo "CANNOT RUN ON THIS CLUSTER"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    $INVALID_NODE_EXIT_CODE) echo "CANNOT RUN ON THIS NODE"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    $NO_GPU_EXIT_CODE) echo "NO GPU ON THIS NODE"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    $NOT_ON_HEAD_EXIT_CODE) echo "CAN ONLY RUN ON HEADNODE"
+       NRNOTAPPLICABLE=$((NRNOTAPPLICABLE + 1))
+       ;;
+    *) echo "ERROR (see $LOGFILE)"
+       NRFAILURE=$((NRFAILURE + 1))
+       NRAPPLICABLE=$((NRAPPLICABLE + 1))
+       ;;
+  esac
+done
+
+# Report statistics
+if [ $NRAPPLICABLE -eq 0 ]; then
+  SUCCESSPERCENTAGE=100
+else
+  SUCCESSPERCENTAGE=$((100 * NRSUCCESS / NRAPPLICABLE))
+fi
+
+echo ""
+echo "********************************************************************"
+echo "********************* Summary of results  **************************"
+echo "********************************************************************"
+
+echo "Skipped ${NRNOTAPPLICABLE} out of ${NRTESTS} tests."
+echo "Ran ${NRAPPLICABLE} out of ${NRTESTS} tests."
+echo "$((100-SUCCESSPERCENTAGE))% or ${NRFAILURE}/${NRAPPLICABLE} of the tests which ran failed."
+echo "${SUCCESSPERCENTAGE}% or ${NRSUCCESS}/${NRAPPLICABLE} of the tests which ran passed."
+echo ""
+
+# Base our exit code on the existence of failed tests
+[ $NRFAILURE -eq 0 ]
+

@@ -21,7 +21,7 @@ import time                   # used for timing query functions
 class SolverQuery:
     # Empty constructor (does not open the table immediately)
     def __init__(self):
-        print "Empty constructor called"
+        print("Empty constructor called")
         # do nothing
 
     # Default constructor, opens the table of name (default: "solver")
@@ -206,19 +206,19 @@ class SolverQuery:
                     parmsDict[iter]=parameter[iter-1]
 
             else:
-                print "readParameter() unknown iteration keyword"
+                print("readParameter() unknown iteration keyword")
                 return False           
 
             # Do timing
             if self.TIMING == True:
                 t2=time.time()
-                print "solverQuery::readParameter(): query took %6.2f ms" % ((t2-t1)*1000)
+                print("solverQuery::readParameter(): query took %6.2f ms" % ((t2-t1)*1000))
 
 
             return parmsDict, starttimes    # return type is Dictionary
 
         else:         # If column_name is ""
-            print "readParameter: wrong parameter name"
+            print("readParameter: wrong parameter name")
             return False
 
 
@@ -245,7 +245,7 @@ class SolverQuery:
     #
     #
     def findLastIterationCell(self, start_time, end_time, start_freq, end_freq):
-         print "findLastIteration(self, start_time, end_time, start_freq, end_freq)"
+         print("findLastIteration(self, start_time, end_time, start_freq, end_freq)")
 
          start_time, end_time=self.fuzzyTime(start_time, end_time)
          start_freq, end_freq=self.fuzzyTime(start_freq, end_freq)
@@ -271,36 +271,36 @@ class SolverQuery:
     # a numpy.ndarray
     #
     def findLastIteration(self, data):
-        print "findLastIteration(self, data)"   # DEBUG
-        print "type(data): ", type(data)        # DEBUG
+        print("findLastIteration(self, data)")   # DEBUG
+        print("type(data): ", type(data))        # DEBUG
 
         # Determine type of paramter intermediate
         if type(data).__name__ == "numpy.ndarray":
-            print "numpy.ndarray"       # DEBUG
+            print("numpy.ndarray")       # DEBUG
             length=len(data)
             return data[length-1]
 
         elif type(data).__name__ == "pyrap.table.table":
-            print "pyrap.table.table"   # DEBUG
+            print("pyrap.table.table")   # DEBUG
             nrows=data.nrows()
             result=data[nrows-1]
             return result
 
         elif type(data).__name__ == "dict":
-            print "dictionary"     # DEBUG
+            print("dictionary")     # DEBUG
 
             # Get the last iteration for each dictionary entry
             # and rearrage them in a new dictionary
             result={}      # create empty new dictionary
 
-            for (key, entry) in data.items():
-                print "key: ", key
+            for (key, entry) in list(data.items()):
+                print("key: ", key)
                 # Get last entry of this array
 
             return result
 
         else:    # unknown type
-            print "findLastIteration(): unknown type"
+            print("findLastIteration(): unknown type")
             return False
 
 
@@ -308,7 +308,7 @@ class SolverQuery:
     # EXPERIMENTAL
     #
     def findUnsolvedSolutions(self, start_time, end_time, start_freq, end_freq):
-        print "solverQuery::findUnsolvedSolutions()"
+        print("solverQuery::findUnsolvedSolutions()")
         
         solutionsDict={}
 
@@ -333,7 +333,7 @@ class SolverQuery:
     # for a particular cell
     #
     def getSolution(self, start_time, end_time, start_freq, end_freq, iteration="all"):
-        print "solverQuery::getSolution() ", "start_time = ", start_time, " end_time = ", end_time
+        print("solverQuery::getSolution() ", "start_time = ", start_time, " end_time = ", end_time)
 
         start_time, end_time=self.fuzzyTime(start_time, end_time)
         start_freq, end_freq=self.fuzzyFreq(start_freq, end_freq)
@@ -347,7 +347,7 @@ class SolverQuery:
             t1=time.time()
 
         if iteration=="all":
-            print "getSolution: get all iterations"    # DEBUG
+            print("getSolution: get all iterations")    # DEBUG
 
             solutionsDict["result"]="all"
 
@@ -361,7 +361,7 @@ class SolverQuery:
                 solutionsDict[iter]=solution[iter-1]
 
         elif iteration=="last":
-            print "getSolution: get last iteration"     # DEBUG
+            print("getSolution: get last iteration")     # DEBUG
 
             solutionsDict["result"]="last"
 
@@ -372,10 +372,10 @@ class SolverQuery:
             selection=pt.taql(taqlcmd)       
             solutionsDict["last"]=selection.getcol("SOLUTION")
             
-            print "getSolution() selection.nrows(): ", selection.nrows()   # DEBUG
+            print("getSolution() selection.nrows(): ", selection.nrows())   # DEBUG
             
         elif type(iteration).__name__ == "int":
-            print "getSolution: iteration ", iteration   # DEBUG
+            print("getSolution: iteration ", iteration)   # DEBUG
 
             solutionsDict["result"]="iteration"
 
@@ -394,13 +394,13 @@ class SolverQuery:
 
         else:
             solutionsDict["result"]="False"
-            print "getSolution: unknown iteration keyword"
+            print("getSolution: unknown iteration keyword")
             return False
 
         # Do timing
         if self.TIMING == True:
             t2=time.time()
-            print "solverQuery::getSolution(): query took %6.2f ms" % ((t2-t1)*1000)
+            print("solverQuery::getSolution(): query took %6.2f ms" % ((t2-t1)*1000))
         
         #print "solverQuery::getSolution() len(solutionsDict['last']) = ", len(solutionsDict['last'])   # DEBUG
 
@@ -412,7 +412,7 @@ class SolverQuery:
     # index             - index in solution vector to return
     #
     def getSolutionParameter(self, start_time, end_time, start_freq, end_freq, index, iteration="all"):
-        print "getSolutionParameter()"      # DEBUG
+        print("getSolutionParameter()")      # DEBUG
 
         parameterDict={}
 
@@ -421,10 +421,10 @@ class SolverQuery:
 
         # Check if index is within range
         if index <= 0:
-            print "solverQuery::getSolutionParameter() index out of range"
+            print("solverQuery::getSolutionParameter() index out of range")
             return False
         if index > len(solutions[1]):
-            print "solverQuery::getSolutionParameter() index out of range"
+            print("solverQuery::getSolutionParameter() index out of range")
             return False
         else:
             parameterDict[0]=iteration
@@ -494,16 +494,16 @@ class SolverQuery:
         #print "selectSolution(): solutions = ", solutions             # DEBUG
 
         if isinstance(solutions, dict) == False:
-            print "selectSolution() solutions have wrong type"
+            print("selectSolution() solutions have wrong type")
         else:
             if result == "all":
                 # TODO: does not work if we have solutions from an interval....
                 if len(solutions)<1:
-                    print "selectSolution() no iterations found"
+                    print("selectSolution() no iterations found")
 
-                print "solutions = ", solutions
+                print("solutions = ", solutions)
                 for iter in range(1, len(solutions)):
-                    print "solutions[iter][selected]", solutions[iter][selected] # DEBUG
+                    print("solutions[iter][selected]", solutions[iter][selected]) # DEBUG
                     #print "solutions[", iter, "][0][selected] = ", solutions[iter][0][selected]
                     solutionsSelect.append(solutions[iter][selected])
             elif result == "last":   
@@ -527,7 +527,7 @@ class SolverQuery:
     # TODO
     #
     def selectSolutionPeriteration(self, solutions, selected):
-        print "selectSolutionPeriteration()"
+        print("selectSolutionPeriteration()")
         solutionsSelect={}
 
 
@@ -556,7 +556,7 @@ class SolverQuery:
         #print "readParameterNIdx(self, lower_index, upper_index)"
 
         if lower_index > upper_index:
-            print "readParameterNIdx: lower_index > upper_index"
+            print("readParameterNIdx: lower_index > upper_index")
             return False
 
         list=[]                       # list of table rows between lower and upper index
@@ -582,7 +582,7 @@ class SolverQuery:
         #print "readCellNIdx(self, lower_index, upper_index):"
 
         if lower_index > upper_index:
-            print "readCellNIdx: lower_index > upper_index"
+            print("readCellNIdx: lower_index > upper_index")
             return False
 
         list=[]                       # list of table rows between lower and upper index
@@ -613,7 +613,7 @@ class SolverQuery:
         if self.solverTableIndex.isunique() == True:
             return True
         else:
-            print "buildIndex(): index is not unique"
+            print("buildIndex(): index is not unique")
             return False
 
 
@@ -625,7 +625,7 @@ class SolverQuery:
     # iteration=Last          - a numpy.ndarray with the last iterations entries
     #
     def readCell(self, start_time, end_time, start_freq, end_freq, iteration="Last"):
-        print "readCell(self, start_time, end_time, start_freq, end_freq, iteration=Last)"  # DEBUG
+        print("readCell(self, start_time, end_time, start_freq, end_freq, iteration=Last)")  # DEBUG
 
         start_time, end_time=self.fuzzyTime(start_time, end_time)
         start_freq, end_freq=self.fuzzyFreq(start_freq, end_freq)
@@ -665,7 +665,7 @@ class SolverQuery:
             return cellDict
 
         else:
-            print "readCell(): unknown iteration"
+            print("readCell(): unknown iteration")
             cellDict["result"]="False"
 
 
@@ -753,7 +753,7 @@ class SolverQuery:
             for iter in range(1, self.getMaxIter()+1):
                 taqlcmd="SELECT DISTINCT STARTFREQ, ENDFREQ, " + parameter + ", ITER FROM " + self.tablename + " WHERE STARTTIME=" + start_time + " AND ENDTIME=" + end_time
                 selection=pt.taql(taqlcmd)           # execute TaQL command
-                print selection                      # DEBUG
+                print(selection)                      # DEBUG
                 parmsDict[str(iter)]=selection.getcol(parameter)    # select column with wanted parameter
             return parmsDict
 
@@ -780,7 +780,7 @@ class SolverQuery:
     # iteration=Last          - a numpy.ndarray with the last iterations entries
     #
     def readTimeColumn(self, parameter, iteration="all"):
-        print "readTimeColumn(self, parameter, iteration=", iteration ,"):"   # DEBUG
+        print("readTimeColumn(self, parameter, iteration=", iteration ,"):")   # DEBUG
         
         # Get first all unique time slots
         if self.timeSlots.nrows()==0:
@@ -788,7 +788,7 @@ class SolverQuery:
 
         # Get MAXITER first
         maxIter=self.getMaxIter()
-        print "maxIter: ", maxIter
+        print("maxIter: ", maxIter)
 
         parmsDict={}
 
@@ -801,7 +801,7 @@ class SolverQuery:
                  taqlcmd="SELECT DISTINCT STARTTIME, ENDTIME, ITER, " + parameter + " FROM " + self.tablename + " WHERE ITER=" + str(iter)
                  selection=pt.taql(taqlcmd)              # execute TaQL command
                  parmIter=selection.getcol(parameter)    # select column with wanted parameter
-                 print "readTimeColumn-type(parmIter): ", type(parmIter)
+                 print("readTimeColumn-type(parmIter): ", type(parmIter))
                  parmsDict[iter]=parmIter
            return parmsDict
 
@@ -834,7 +834,7 @@ class SolverQuery:
     # Default is iteration="last", returning only the last solution
     #
     def readCells(self, start_time, end_time, start_freq, end_freq, iteration="last"):
-        print "readCells(self, start_time, end_time, start_freq, end_freq)"     # DEBUG
+        print("readCells(self, start_time, end_time, start_freq, end_freq)")     # DEBUG
 
         cellsDict={}       # create an empty dictionary
 
@@ -850,7 +850,7 @@ class SolverQuery:
 
         # return the last iteration only
         elif iteration == "Last" or iteration == "last":
-           print "readCells(): last"        # DEBUG
+           print("readCells(): last")        # DEBUG
 
            cellsDict["result"]="last"
 
@@ -861,7 +861,7 @@ class SolverQuery:
 
         # return only a particular iteration
         elif type(iteration).__name__ == "int":
-            print "iteration: ", iteration    # DEBUG
+            print("iteration: ", iteration)    # DEBUG
 
             cellsDict["result"]="iteration"
 
@@ -878,7 +878,7 @@ class SolverQuery:
     #
     # TODO: This is better done in the plotting class
     def histogramConvergedIteration(self):
-        print "histogramConvergedIteration():"
+        print("histogramConvergedIteration():")
 
         # Get all converged solutions
 
@@ -907,7 +907,7 @@ class SolverQuery:
            taqlcmd="SELECT * FROM " + self.tablename + " WHERE STARTTIME>=" + str(start_time) + " AND ENDTIME<=" + str(end_time) + " AND STARTFREQ>=" + str(start_freq) + " AND ENDFREQ<=" + str(end_freq) + " AND LASTITER=TRUE"
            result=pt.taql(taqlcmd)           # execute TaQL command
            
-           print "result.nrows() = ", result.nrows()
+           print("result.nrows() = ", result.nrows())
            
            messagesDict["last"]=result.getcol("MESSAGE")
 
@@ -977,7 +977,7 @@ class SolverQuery:
     # which give all the time slots of the Measurementset
     #
     def setTimeSlots(self):
-        print "SolverQuery::setTimeSlots()"       # DEBUG
+        print("SolverQuery::setTimeSlots()")       # DEBUG
         taqlcmd="SELECT UNIQUE STARTTIME, ENDTIME FROM " + self.tablename       
         self.timeSlots=pt.taql(taqlcmd)
 
@@ -1166,10 +1166,10 @@ class SolverQuery:
     # PERITERATION, PERSOLUTION or (TODO: PERSOLUTION_CORRMATRIX, PERITERATION_CORRMATRIX)
     #
     def setType(self):
-        print "setType()"
+        print("setType()")
 
         tablekeywords=self.solverTable.getkeywords()   # get all the table keywords
-        keys=tablekeywords.keys()
+        keys=list(tablekeywords.keys())
 
         if "Logginglevel" in keys:
             loglevel=self.solverTable.getkeyword("Logginglevel")
@@ -1238,7 +1238,7 @@ class SolverQuery:
 
         taqlcmd="SELECT STARTTIME, ENDTIME, LASTITER, " + parameter + " FROM " + self.tablename + " WHERE STARTTIME>=" + str(start_time) + " AND ENDTIME<=" + str(end_time) + " AND STARTFREQ>=" + str(start_freq) + " AND ENDFREQ<=" + str(end_freq) + " AND LASTITER=TRUE"
 
-        print "taqlcmd = ", taqlcmd          # DEBUG
+        print("taqlcmd = ", taqlcmd)          # DEBUG
         
         result=pt.taql(taqlcmd)              # execute TaQL command
         selection=result.getcol(parameter)   # get parameter column

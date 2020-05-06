@@ -1,4 +1,4 @@
-/* $Id: lofar_config.h.cmake 40029 2018-08-24 06:27:42Z klazema $ */
+/* $Id$ */
 
 /*-------------------------------------------------------------------------*\
 |     Defines for the presence or absence of (system) header files          |

@@ -20,6 +20,7 @@ from lofarpipe.support.remotecommand import ComputeJob
 from lofarpipe.support.data_map import DataMap, validate_data_maps
 from lofarpipe.support.pipelinelogging import log_process_output
 import lofarpipe.support.lofaringredient as ingredient
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 template = """
 create tablename="%s"
@@ -103,9 +104,9 @@ class setupparmdb(BaseRecipe, RemoteCommandRecipeMixIn):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
-            sout, serr = parmdbm_process.communicate(template % pdbfile)
+            sout, serr = communicate_returning_strings(parmdbm_process, input=(template % pdbfile).encode())
             log_process_output("parmdbm", sout, serr, self.logger)
-        except OSError, err:
+        except OSError as err:
             self.logger.error("Failed to spawn parmdbm: %s" % str(err))
             return 1
 
@@ -137,7 +138,7 @@ class setupparmdb(BaseRecipe, RemoteCommandRecipeMixIn):
                         os.path.basename(item.file) + self.inputs['suffix']
                     )
             #  Call the node side   
-            command = "python %s" % (self.__file__.replace('master', 'nodes'))
+            command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
             outdata.iterator = DataMap.SkipIterator
             jobs = []
             for outp in outdata:

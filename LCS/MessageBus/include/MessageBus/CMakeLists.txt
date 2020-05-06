@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 35903 2016-11-04 13:11:40Z loose $
+# $Id$
 
 # Create symbolic link to include directory.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink 
@@ -13,6 +13,7 @@ install(FILES
   MessageBus.h
   NoQpidFallback.h
   ToBus.h
+  Util.h
   XMLDoc.h
   DESTINATION include/${PACKAGE_NAME})
 

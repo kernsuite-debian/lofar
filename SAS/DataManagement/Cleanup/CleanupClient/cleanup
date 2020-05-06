@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+# $Id: radbclient 33373 2016-01-22 11:01:15Z schaap $
+
+'''
+do cleanup actions on cep4 from the commandline
+'''
+
+if __name__ == '__main__':
+    from lofar.sas.datamanagement.cleanup.rpc import main
+    main()

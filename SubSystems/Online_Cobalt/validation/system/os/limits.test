@@ -1,0 +1,8 @@
+#!/bin/bash -ve
+
+# For now, require exact settings for all rtuser's
+egrep 'rtuser\s*(-|hard)\s*memlock\s*unlimited' /etc/security/limits.conf || exit 1
+egrep 'rtuser\s*(-|hard)\s*nice\s*19' /etc/security/limits.conf || exit 1
+egrep 'rtuser\s*(-|hard)\s*rtprio\s*99' /etc/security/limits.conf || exit 1
+
+exit 0

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmDBPostgres.h 14038 2009-09-17 13:59:12Z diepen $
+//# $Id$
 
 #ifndef LOFAR_PARMDB_PARMDBPOSTGRES_H
 #define LOFAR_PARMDB_PARMDBPOSTGRES_H

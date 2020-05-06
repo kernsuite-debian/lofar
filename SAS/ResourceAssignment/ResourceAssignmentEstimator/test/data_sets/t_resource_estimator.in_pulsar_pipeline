@@ -1,0 +1,59 @@
+{
+  'Observation.DataProducts.Output_InstrumentModel.enabled': False,
+  'Observation.DataProducts.Output_CoherentStokes.storageClusterName': '',
+  'Observation.stopTime': '2016-12-12 01:03:00',
+  'Observation.VirtualInstrument.stationList': [
+  ],
+  'Observation.DataProducts.Input_CoherentStokes.enabled': True,
+  'Observation.DataProducts.Output_CoherentStokes.enabled': False,
+  'Observation.DataProducts.Output_Correlated.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Input_Correlated.identifications': [
+  ],
+  'Observation.DataProducts.Output_SkyImage.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Output_InstrumentModel.identifications': [
+  ],
+  'Observation.antennaSet': 'LBA_INNER',
+  'Observation.DataProducts.Output_Pulsar.identifications': [
+    'mom.G735371.LOTAAS-P1296B.1296.pipe.dps'
+  ],
+  'Observation.nrBitsPerSample': '16',
+  'Observation.ObservationControl.PythonControl.LongBaseline.subbandgroups_per_ms': '1',
+  'Observation.DataProducts.Output_IncoherentStokes.enabled': False,
+  'Observation.DataProducts.Input_IncoherentStokes.enabled': True,
+  'Observation.DataProducts.Input_Correlated.enabled': False,
+  'Observation.DataProducts.Output_Pulsar.enabled': True,
+  'Observation.DataProducts.Output_Correlated.identifications': [
+  ],
+  'Observation.DataProducts.Input_CoherentStokes.identifications': [
+    'mom.G735371.LOTAAS-P1296B-SAP0.1296.SAP0.obs.cs',
+    'mom.G735371.LOTAAS-P1296B-SAP1.1296.SAP1.obs.cs',
+    'mom.G735371.LOTAAS-P1296B-SAP2.1296.SAP2.obs.cs'
+  ],
+  'Observation.DataProducts.Output_InstrumentModel.storageClusterName': 'CEP4',
+  'Observation.DataProducts.Input_InstrumentModel.enabled': False,
+  'Observation.DataProducts.Output_SkyImage.enabled': False,
+  'Version.number': '33385',
+  'Observation.DataProducts.Output_Pulsar.storageClusterName': 'CEP4',
+  'Observation.momID': '735376',
+  'Observation.DataProducts.Input_InstrumentModel.identifications': [
+  ],
+  'Observation.DataProducts.Output_SkyImage.identifications': [
+  ],
+  'Observation.startTime': '2016-12-11 18:03:00',
+  'Observation.ObservationControl.PythonControl.LongBaseline.subbands_per_subbandgroup': '1',
+  'Observation.nrBeams': '0',
+  'Observation.Scheduler.taskDuration': '25200',
+  'Observation.DataProducts.Output_IncoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Input_IncoherentStokes.identifications': [
+    'mom.G735371.LOTAAS-P1296B-SAP0.1296.SAP0.obs.is',
+    'mom.G735371.LOTAAS-P1296B-SAP1.1296.SAP1.obs.is',
+    'mom.G735371.LOTAAS-P1296B-SAP2.1296.SAP2.obs.is'
+  ],
+  'Observation.DataProducts.Output_CoherentStokes.identifications': [
+  ],
+  'Observation.DataProducts.Output_Correlated.enabled': False,
+  'Observation.DataProducts.Output_IncoherentStokes.storageClusterName': '',
+  'Observation.sampleClock': '200'
+}
+

@@ -1,0 +1,6 @@
+prefix = LOFAR.
+ObsSW.Observation.momID = 732490
+ObsSW.Observation.processType = Pipeline
+ObsSW.Observation.otdbID = 559779
+ObsSW.Observation.processSubtype = Averaging Pipeline
+ObsSW.Observation.strategy = averaging pipeline

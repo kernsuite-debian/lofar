@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 import sys
 import os
 import subprocess
@@ -17,6 +17,7 @@ from lofarpipe.support.remotecommand import RemoteCommandRecipeMixIn
 from lofarpipe.support.remotecommand import ComputeJob
 from lofarpipe.support.data_map import DataMap
 from lofarpipe.support.pipelinelogging import log_process_output
+from lofar.common.subprocess_utils import communicate_returning_strings
 
 class vdsmaker(BaseRecipe, RemoteCommandRecipeMixIn):
     """
@@ -88,7 +89,7 @@ class vdsmaker(BaseRecipe, RemoteCommandRecipeMixIn):
 
         # *********************************************************************
         # 2. Call vdsmaker 
-        command = "python %s" % (self.__file__.replace('master', 'nodes'))
+        command = "python3 %s" % (self.__file__.replace('master', 'nodes'))
         jobs = []
         for inp, vdsfile in zip(data, vdsnames):
             jobs.append(
@@ -128,7 +129,7 @@ class vdsmaker(BaseRecipe, RemoteCommandRecipeMixIn):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
-            sout, serr = combineproc.communicate()
+            sout, serr = communicate_returning_strings(combineproc)
             log_process_output(executable, sout, serr, self.logger)
             if combineproc.returncode != 0:
                 raise subprocess.CalledProcessError(
@@ -136,12 +137,12 @@ class vdsmaker(BaseRecipe, RemoteCommandRecipeMixIn):
                 )
             self.outputs['gvds'] = gvds_out
             self.logger.info("Wrote combined VDS file: %s" % gvds_out)
-        except subprocess.CalledProcessError, cpe:
+        except subprocess.CalledProcessError as cpe:
             self.logger.exception(
                 "combinevds failed with status %d: %s" % (cpe.returncode, serr)
             )
             failure = True
-        except OSError, err:
+        except OSError as err:
             self.logger.error("Failed to spawn combinevds (%s)" % str(err))
             failure = True
         finally:

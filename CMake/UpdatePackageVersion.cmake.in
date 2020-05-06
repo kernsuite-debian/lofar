@@ -44,6 +44,7 @@ set(_rvers "Unknown")
 set(_grev "Unknown")
 set(_lrev "Unknown")
 set(_nrch "Unknown")
+set(_output "")
 if("@PACKAGE_VERSION@" MATCHES ".+")
   set(_cvers @PACKAGE_VERSION@)
 endif("@PACKAGE_VERSION@" MATCHES ".+")
@@ -105,6 +106,41 @@ if(_result EQUAL 0)
   # Removed temporary file
   file(REMOVE "${_svn_tmp}")
 endif(_result EQUAL 0)
+
+# Let Git find the needed information
+find_package (Git)
+
+if(GIT_FOUND)
+  # Get branch
+  execute_process(COMMAND ${GIT_EXECUTABLE} branch COMMAND grep ^\\* COMMAND cut -d " " -f2
+    RESULT_VARIABLE _result
+    OUTPUT_VARIABLE "_output"
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_VARIABLE _error)
+  if(_result EQUAL 0)
+    set(_branch ${_output})
+  endif(_result EQUAL 0)
+
+  # Set _rvers if we are on a tag
+  execute_process(COMMAND ${GIT_EXECUTABLE} describe --exact-match
+    RESULT_VARIABLE _result
+    OUTPUT_VARIABLE "_output"
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_VARIABLE _error)
+  if(_result EQUAL 0)
+    set(_rvers ${_output})
+  endif(_result EQUAL 0)
+
+  # Set _grev to git commit hash
+  execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+    RESULT_VARIABLE _result
+    OUTPUT_VARIABLE "_output"
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_VARIABLE _error)
+  if(_result EQUAL 0)
+    set(_grev ${_output})
+  endif(_result EQUAL 0)
+endif(GIT_FOUND)
 
 # Create/update Package__Version.h. Avoid unnecessary recompilations:
 # first create a temporary file; only copy it if files are different.

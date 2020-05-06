@@ -3,6 +3,47 @@
 #
 FROM lofar-base:${LOFAR_TAG}
 
+RUN apt-get update && apt-get install -y git python python3 g++ make
+
+#
+# *******************
+#   Blitz
+# *******************
+#
+
+#RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+RUN apt-get update && apt-get install -y git python && \
+    mkdir /src && cd /src && git clone --branch=1.0.1 https://github.com/blitzpp/blitz.git && \
+    cd /src/blitz && ./configure && make install && \
+    rm -rf /src/blitz
+
+#
+# *******************
+#   DAL
+# *******************
+#
+
+ENV DAL_VERSION=v3.3.1
+
+# Run-time dependencies
+RUN aptitude install -y libhdf5-${LIBHDF5_VERSION} python3 && \
+    aptitude clean && \
+    aptitude autoclean
+
+RUN export BUILD_PACKAGES="git cmake g++ swig3.0 python3-setuptools python3-dev libhdf5-dev" && \
+    aptitude install -y ${BUILD_PACKAGES} && \
+    mkdir -p ${INSTALLDIR}/DAL/build && \
+    git clone --branch ${DAL_VERSION//latest/master} https://git.astron.nl/ro/dal2.git ${INSTALLDIR}/DAL/DAL.src && \
+    cd ${INSTALLDIR}/DAL/build && \
+    cmake -DPYTHON_INCLUDE_DIR=/usr/include/python${PYTHON_VERSION} -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython${PYTHON_VERSION}m.so -DBUILD_TESTING=OFF -DCMAKE_CXX_FLAGS="${CXX_FLAGS} -fpermissive" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/DAL ${INSTALLDIR}/DAL/DAL.src && \
+    make -j ${J} && \
+    make install && \
+    bash -c "rm -rf ${INSTALLDIR}/DAL/{DAL.src,build}" && \
+    aptitude purge -y ${BUILD_PACKAGES} && \
+    aptitude clean && \
+    aptitude autoclean
+
 #
 # *******************
 #   LOFAR
@@ -10,19 +51,17 @@ FROM lofar-base:${LOFAR_TAG}
 #
 
 # Run-time dependencies
-RUN apt-get update && apt-get install -y binutils liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.0 libboost-filesystem${BOOST_VERSION}.0 libboost-date-time${BOOST_VERSION}.0 libpng12-0 libsigc++-2.0-dev libxml++2.6-2v5 libboost-regex${BOOST_VERSION}.0
+RUN apt-get update && apt-get install -y binutils liblog4cplus-1.1-9 libxml2 libboost-thread${BOOST_VERSION}.1 libboost-filesystem${BOOST_VERSION}.1 libboost-date-time${BOOST_VERSION}.1 libpng16-16 libsigc++-2.0-dev libxml++2.6-2v5 libboost-regex${BOOST_VERSION}.1
 
 # Tell image build information
-ENV LOFAR_BRANCH=${LOFAR_BRANCH} \
-    LOFAR_REVISION=${LOFAR_REVISION} \
-    LOFAR_BUILDVARIANT=gnucxx11_optarch
+ENV LOFAR_BRANCH=${LOFAR_VERSION} \
+    LOFAR_BUILDVARIANT=gnucxx11_opt
 
 # Install
-RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison flex autogen liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python${BOOST_VERSION}-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libboost-regex${BOOST_VERSION} binutils-dev libopenblas-dev libcfitsio3-dev wcslib-dev && \
+RUN apt-get update && apt-get install -y git cmake g++ gfortran bison flex autogen liblog4cplus-dev libhdf5-dev libboost-dev boost-python${BOOST_VERSION}-dev libxml2-dev pkg-config libpng-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev libboost-regex${BOOST_VERSION}-dev binutils-dev libopenblas-dev libcfitsio-dev wcslib-dev libcap2-bin && \
     mkdir -p ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && \
-    cd ${INSTALLDIR}/lofar && \
-    svn --non-interactive -q co -r ${LOFAR_REVISION} -N ${LOFAR_BRANCH_URL} src; \
-    svn --non-interactive -q up src/CMake && \
+    cd ${INSTALLDIR}/lofar && git clone https://git.astron.nl/ro/lofar.git ${INSTALLDIR}/lofar/src && \
+    cd ${INSTALLDIR}/lofar/src && git checkout ${LOFAR_VERSION} && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && cmake -DBUILD_PACKAGES=Online_OutputProc -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${INSTALLDIR}/lofar/ -DCASACORE_ROOT_DIR=${INSTALLDIR}/casacore/ -DQPID_ROOT_DIR=/opt/qpid/ -DDAL_ROOT_DIR=${INSTALLDIR}/DAL -DUSE_OPENMP=True ${INSTALLDIR}/lofar/src/ && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && sed -i '29,31d' include/ApplCommon/PosixTime.h && \
     cd ${INSTALLDIR}/lofar/build/${LOFAR_BUILDVARIANT} && make -j ${J} && \
@@ -33,6 +72,6 @@ RUN apt-get update && apt-get install -y subversion cmake g++ gfortran bison fle
     bash -c "rm -rf ${INSTALLDIR}/lofar/{build,src}" && \
     setcap cap_sys_nice,cap_sys_admin=ep ${INSTALLDIR}/lofar/bin/outputProc && \
     setcap cap_sys_nice,cap_sys_admin=ep ${INSTALLDIR}/lofar/bin/TBB_Writer && \
-    apt-get purge -y subversion cmake g++ gfortran bison flex autogen liblog4cplus-dev libhdf5-dev libblitz0-dev libboost-dev libboost-python${BOOST_VERSION}-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
+    apt-get purge -y subversion cmake g++ gfortran bison flex autogen liblog4cplus-dev libhdf5-dev libboost-dev libboost-python${BOOST_VERSION}-dev libxml2-dev pkg-config libpng12-dev libfftw3-dev libunittest++-dev libxml++2.6-dev libboost-filesystem${BOOST_VERSION}-dev libboost-date-time${BOOST_VERSION}-dev libboost-thread${BOOST_VERSION}-dev binutils-dev libcfitsio3-dev wcslib-dev libopenblas-dev && \
     apt-get autoremove -y --purge
 

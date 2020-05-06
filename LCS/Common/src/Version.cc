@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Version.cc 33592 2016-02-11 06:48:59Z mol $
+//# $Id$
 
 #include <lofar_config.h>
 

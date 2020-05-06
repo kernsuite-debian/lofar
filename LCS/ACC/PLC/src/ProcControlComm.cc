@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ProcControlComm.cc 26375 2013-09-05 11:38:09Z loose $
+//# $Id$
 
 #include <lofar_config.h>
 

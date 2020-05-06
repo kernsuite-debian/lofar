@@ -15,7 +15,7 @@
 #
 # See also UpdatePackageVersion.cmake.in
 
-#  $Id: LofarPackageVersion.cmake 30919 2015-02-05 15:26:22Z amesfoort $
+#  $Id$
 #
 #  Copyright (C) 2010
 #  ASTRON (Netherlands Foundation for Research in Astronomy)

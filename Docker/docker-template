@@ -26,8 +26,8 @@ function usage() {
   exit 1
 }
 
-# Defaults
-VERSION_DOCKER="versiondocker"
+# Defaults (use "versioncommon" which has fewest dependencies, and works even when cross compiling)
+VERSION_DOCKER="versioncommon"
 
 # Parse options
 while getopts "hv:" opt; do

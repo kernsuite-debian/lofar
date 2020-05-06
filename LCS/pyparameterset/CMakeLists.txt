@@ -1,10 +1,10 @@
-# $Id: CMakeLists.txt 22948 2012-11-23 08:54:47Z loose $
+# $Id$
 
 lofar_package(pyparameterset 1.0 DEPENDS pytools)
 
 include(LofarFindPackage)
-lofar_find_package(Boost REQUIRED COMPONENTS python)
-lofar_find_package(Python 2.6 REQUIRED)
+lofar_find_package(Boost REQUIRED COMPONENTS python3)
+lofar_find_package(Python 3.4 REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(test)

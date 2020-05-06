@@ -26,7 +26,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindBlitz.cmake 16402 2010-09-27 14:50:22Z loose $
+# $Id$
 
 if(NOT BLITZ_FOUND)
 

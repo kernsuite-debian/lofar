@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceDB.cc 21605 2012-07-16 14:40:36Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/SourceDB.h>
@@ -27,10 +27,10 @@
 #include <ParmDB/ParmDB.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/OS/File.h>
+#include <casacore/casa/OS/File.h>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 namespace BBS {

@@ -38,7 +38,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: MWIos.h 30919 2015-02-05 15:26:22Z amesfoort $
+//#  $Id$
 
 #ifndef LOFAR_LMWCOMMON_MWIOSTREAM_H
 #define LOFAR_LMWCOMMON_MWIOSTREAM_H

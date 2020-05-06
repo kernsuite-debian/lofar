@@ -1,0 +1,112 @@
+V 13
+1
+LANG:1 0 
+PANEL,-1 -1 500 400 N "_3DFace" 0
+"main()
+{
+    string query;
+    dyn_dyn_anytype tab;
+    int val;
+    dyn_string skipped;
+    
+    dyn_string distsystems = makeDynString(\"CS001\",\"CS002\",\"CS003\",\"CS004\",\"CS005\",\"CS006\",\"CS007\",
+                               \"CS011\",\"CS013\",\"CS017\",
+                               \"CS021\",\"CS024\",\"CS026\",\"CS028\",
+                               \"CS030\",\"CS031\",\"CS032\",
+                               \"CS101\",\"CS103\",
+                               \"CS201\",
+                               \"CS301\",\"CS302\",
+                               \"CS401\",
+                               \"CS501\",
+                               \"RS106\",
+                               \"RS205\",\"RS208\",\"RS210\",
+                               \"RS305\",\"RS306\",\"RS307\",\"RS310\",
+                               \"RS406\",\"RS407\",\"RS409\",
+                               \"RS503\",\"RS508\",\"RS509\",
+                               \"DE601\",\"DE602\",\"DE603\",\"DE604\",\"DE605\",\"DE609\",\"FR606\",\"PL610\",\"PL611\",\"PL612\",\"SE607\",\"UK608\",
+                               \"MCU001\",\"CCU001\");
+
+    
+    for (int i = 1; i <= dynlen(distsystems); i++) 
+    {  
+
+      if (dpExists(distsystems[i]+\":LOFAR\"))
+      {      
+        query = \"SELECT '_online.._value' FROM '*.**.status.state' REMOTE '\" + distsystems[i] + \"' WHERE '_online.._value' == 56 OR  '_online.._value' == 53 OR  '_online.._value' == 43 OR  '_online.._value' == 46 OR  '_online.._value' == 60\";
+  
+  
+        dpQuery(query,tab);
+  
+        for(int z=2;z<=dynlen(tab);z++)
+        {
+          int oldval = tab[z][2];
+          int newval;
+
+          if  (oldval == 43 || oldval == 46)
+          {
+            newval = 40;
+          }
+          else if  (oldval == 53 || oldval == 56)
+          {
+            newval = 50;
+          }
+          else if  (oldval == 60)
+          {
+            newval = 10;
+          }
+   
+          
+          dpSet(tab[z][1], newval);
+          DebugN(tab[z][1] + \"is set to \" + newval);
+        }
+      }
+      else
+      {
+        DebugN(\"System not online: \"+distsystems[i]);
+        dynAppend(skipped,distsystems[i]);
+      }
+    }
+    DebugN(\"skipped systems: \" + skipped);
+}" 0
+ E E E E 1 -1 -1 0  -1 -1
+""0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 0 
+0
+LAYER, 1 
+1
+LANG:1 0 
+0
+LAYER, 2 
+1
+LANG:1 0 
+0
+LAYER, 3 
+1
+LANG:1 0 
+0
+LAYER, 4 
+1
+LANG:1 0 
+0
+LAYER, 5 
+1
+LANG:1 0 
+0
+LAYER, 6 
+1
+LANG:1 0 
+0
+LAYER, 7 
+1
+LANG:1 0 
+0
+0

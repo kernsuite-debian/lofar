@@ -41,7 +41,7 @@ def shiftphasecenter (msname, targets, N_channel_per_cell, N_time_per_cell):
 
     N_channel = len(freqs)
 
-    print "Number of channels: %i" % N_channel
+    print("Number of channels: %i" % N_channel)
 
     wavelength = c / freqs
 

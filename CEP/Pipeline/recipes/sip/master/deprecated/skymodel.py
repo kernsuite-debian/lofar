@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 from contextlib import closing
 
 import sys
@@ -187,7 +187,7 @@ class skymodel(BaseRecipe):
                     )
                     results = db_cursor.fetchall()
 
-        except db.Error, my_error:
+        except db.Error as my_error:
             self.logger.warn("Failed to build sky model: %s " % (my_error))
             return 1
 
@@ -195,7 +195,7 @@ class skymodel(BaseRecipe):
             with open(self.inputs['skymodel_file'], 'w') as file:
                 file.write(header_line)
                 file.writelines(", ".join(line) + ",\n" for line in results)
-        except Exception, e:
+        except Exception as e:
             self.logger.warn("Failed to write skymodel file")
             self.logger.warn(str(e))
             return 1

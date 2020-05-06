@@ -1,0 +1,195 @@
+<!doctype html>
+<!-- $Id: index.html 38233 2017-08-29 15:23:10Z schoenmakers $ -->
+<html lang='en' ng-app="raeApp">
+    <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>{{title}}</title>
+    <link rel='shortcut icon' href='{{ url_for('static', filename='favicon.ico') }}'>
+    <link href="/static/js/angular-gantt/angular-gantt.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/js/angular-gantt/angular-gantt-plugins.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/js/angular-ui-grid/ui-grid.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/js/angular-ui-layout/angular-ui-layout.css" rel="stylesheet" type="text/css">
+    <link href="/static/js/angular-material/angular-material.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/js/utils/datetimepicker.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css">
+    <script src="/static/js/utils/startswith.js"></script>
+    <script src="/static/js/moment/moment.js"></script>
+    <script src="/static/js/jquery/jquery.min.js"></script>
+    <script src="/static/js/utils/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="/static/js/highcharts/exporting.js"></script>
+    <script src="/static/js/angular/angular.min.js"></script>
+    <script src="/static/js/utils/ui-bootstrap-tpls.min.js"></script>
+    <script src="/static/js/angular-route/angular-route.min.js"></script>
+    <script src="/static/js/angular-touch/angular-touch.js"></script>
+    <script src="/static/js/angular-resource/angular-resource.min.js"></script>
+<!--    <script src="/static/js/utils/ui-grid-edit-datepicker.js"></script>-->
+    <script src="/static/js/angular-ui-grid/ui-grid.js"></script>
+    <script src="/static/js/angular-ui-tree/angular-ui-tree.js"></script>
+    <script src="/static/js/angular-ui-layout/angular-ui-layout.min.js"></script>
+    <script src="/static/js/angular-ui-tabs/angular-ui.bootstrap.tabs.min.js"></script>
+    <script src="/static/js/angular-moment/angular-moment.js"></script>
+    <script src="/static/js/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="/static/js/angular-animate/angular-animate.min.js"></script>
+    <script src="/static/js/angular-aria/angular-aria.min.js"></script>
+    <script src="/static/js/angular-material/angular-material.min.js"></script>
+    <script src="/static/js/utils/datetimepicker.js"></script>
+    <script src="/static/js/jsplumb/jsplumb-2.0.7-min.js"></script>
+    <script src="/static/js/angular-gantt/angular-gantt.js"></script>
+    <script src="/static/js/angular-gantt/angular-gantt-plugins.js"></script>
+    <script type="text/javascript" src="/static/js/highcharts/highcharts-ng.js"></script>
+    <script src="/static/app/app.js"></script>
+    <script src="/static/app/controllers/datacontroller.js"></script>
+    <script src="/static/app/controllers/cleanupcontroller.js"></script>
+    <script src="/static/app/controllers/gridcontroller.js"></script>
+    <script src="/static/app/controllers/eventgridcontroller.js"></script>
+    <script src="/static/app/controllers/ganttresourcecontroller.js"></script>
+    <script src="/static/app/controllers/ganttprojectcontroller.js"></script>
+    <script src="/static/app/gantt-plugins/angular-gantt-contextmenu-plugin.js"></script>
+    <script src="/static/app/controllers/chartresourceusagecontroller.js"></script>
+    </head>
+    <body style="overflow:hidden;">
+    {% raw %}
+    <div ng-controller="DataController as dataCtrl" class="container-fluid" style="float:left; width:100%; height:100%; padding:0px">
+        <div ng-controller="CleanupController as cleanupCtrl" class="container-fluid" style="float:left; width:100%; height:100%; padding:0px" >
+
+        <div style="float:left; width:100%; padding:0px; margin-bottom:-5px;" >
+            <div style="float:left; width:220px;">
+                <label>Time (UTC):</label>
+                <p>
+                    <strong style="font-size:16px">{{dataService.lofarTime | date }}</strong>
+                </p>
+            </div>
+            <div style="float:left; width:300px; padding-right:16px; ">
+                <label>From:</label>
+                <p class="input-group" >
+                    <input type="text" class="form-control" style="min-width:100px" uib-datepicker-popup="yyyy-MM-dd" ng-model="$parent.dataService.viewTimeSpan.from" ng-change="$parent.onViewTimeSpanFromChanged()" is-open="viewFromDatePopupOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" close-on-date-selection="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openViewFromDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <uib-timepicker ng-model="$parent.dataService.viewTimeSpan.from" ng-change="$parent.onViewTimeSpanFromChanged()" hour-step="1" minute-step="5" show-meridian="false" show-spinners="false"></uib-timepicker>
+                </p>
+            </div>
+            <div style="float:left; width:300px; padding-right:16px; ">
+                <label>To:</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" style="min-width:100px" uib-datepicker-popup="yyyy-MM-dd" ng-model="$parent.dataService.viewTimeSpan.to" ng-change="$parent.onViewTimeSpanToChanged()" is-open="viewToDatePopupOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" close-on-date-selection="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openViewToDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <uib-timepicker ng-model="$parent.dataService.viewTimeSpan.to" ng-change="$parent.onViewTimeSpanToChanged()" hour-step="1" minute-step="5" show-meridian="false" show-spinners="false"></uib-timepicker>
+                </p>
+            </div>
+            <div style="float:left; min-width:90px; padding-right:16px; ">
+                <label>Scroll:</label>
+                <p class="input-group">
+                    <label title="Automatically scroll 'From' and 'To' to watch live events" style="padding-right: 4px; vertical-align: top;">Live <input type="checkbox" ng-model="$parent.dataService.autoFollowNow"></label>
+                    <button title="Scroll back in time" type="button" class="btn btn-default" ng-click="scrollBack()"><i class="glyphicon glyphicon-step-backward"></i></button>
+                    <button title="Scroll forward in time" type="button" class="btn btn-default" ng-click="scrollForward()"><i class="glyphicon glyphicon-step-forward"></i></button>
+                </p>
+            </div>
+            <div style="float:left; min-width:190px; padding-right:16px; ">
+                <label>Zoom:</label>
+                <p class="input-group">
+                    <select class="form-control" ng-model="$parent.zoomTimespan" ng-options="option.name for option in $parent.zoomTimespans track by option.value" ng-change="$parent.onZoomTimespanChanged()"></select>
+                </p>
+            </div>
+            <div style="float:left; min-width:50px; padding-right:16px; ">
+                <label>Disk usage:</label>
+                <p class="input-group">
+                    <button title="Show disk usage by project" type="button" class="btn btn-default" ng-click="cleanupCtrl.showAllProjectsDiskUsage()"><i class="glyphicon glyphicon-floppy-disk"></i></button>
+                </p>
+            </div>
+            <div style="float:left; min-width:50px; padding-top:30px; font-size:14px;">
+                <a href="/projects" target="_blank">Projects</a>
+            </div>
+            <div style="float:left; min-width:50px; padding-top:30px; padding-left:16px;  padding-right:16px; font-size:14px;">|</div>
+            <div style="float:left; min-width:50px; padding-top:30px; font-size:14px;">
+                <a href="https://proxy.lofar.eu/qa" target="_blank">QA-plots</a>
+            </div>
+        </div>
+
+        <uib-progress style="float:left; width:100%; height:6px; margin:0px;"
+                         max="$parent.dataService.nrOfLoadableChunks"
+                         animate="false"
+                         title="Task loading progress..."
+                         >
+            <uib-bar value="$parent.$parent.dataService.nrOfLoadedChunks" style="background-color: #337ab7;" title="Task loading progress... (loaded tasks)"></uib-bar>
+            <uib-bar value="$parent.$parent.dataService.nrOfLoadingChunks" style="background-color: #d7e6f4;" title="Task loading progress... (loading tasks)"></uib-bar>
+        </uib-progress>
+
+        <div style="float:left; width:100%; top:70px ;" ui-layout options="{flow: 'column'}">
+            <div ng-controller="GridController as gridCtrl" style="margin-right: 4px;" ui-layout-init-min-width="1175px">
+                <div id="grid"
+                ui-grid="gridOptions"
+                ui-grid-edit ui-grid-selection ui-grid-cellNav ui-grid-resize-columns ui-grid-auto-resize
+                class="grid"></div>
+            </div>
+            <div ui-layout options="{flow: 'row'}" style="height: 100%; margin-right: 4px;">
+                <md-content margin-top='10px' style="overflow: hidden;" >
+                    <md-tabs md-dynamic-height md-border-bottom style="height: 100%; width: 100%;" >
+                        <div ng-controller="GanttProjectController as ganttProjectCtrl" ng-init="enabled=true">
+                            <md-tab label="Tasks" md-on-select="enabled=true" md-on-deselect="enabled=false">
+                                <div gantt data=ganttData
+                                    api=options.api
+                                    show-side='true'
+                                    view-scale="options.viewScale"
+                                    from-date="options.fromDate"
+                                    to-date="options.toDate"
+                                    current-date="options.currentDate"
+                                    current-date-value="options.currentDateValue"
+                                    column-magnet="options.columnMagnet"
+                                    style="height: 75%; max-height:1200px; width: 100%; overflow-x: hidden; overflow-y: auto; margin-left: 8px;">
+                                    <gantt-table enabled="true"></gantt-table>
+                                    <gantt-movable enabled="true"
+                                        allow-moving="true"
+                                        allow-resizing="true"
+                                        allow-row-switching="false">
+                                    </gantt-movable>
+                                    <gantt-tooltips enabled="true" date-format="'YYYY-MM-DD HH:mm'"></gantt-tooltips>
+                                    <gantt-dependencies enabled="options.dependencies"></gantt-dependencies>
+                                    <gantt-contextmenu enabled="true"></gantt-contextmenu>
+                                </div>
+                            </md-tab>
+                        </div>
+
+                        <div ng-controller="GanttResourceController as ganttResourceCtrl" ng-init="enabled=false">
+                            <md-tab label="Resources" md-on-select="enabled=true" md-on-deselect="enabled=false">
+                                <div gantt data=ganttData
+                                    api=options.api
+                                    show-side='true'
+                                    view-scale="options.viewScale"
+                                    from-date="options.fromDate"
+                                    to-date="options.toDate"
+                                    current-date="options.currentDate"
+                                    current-date-value="options.currentDateValue"
+                                    column-magnet="options.columnMagnet"
+                                    style="height: 75%; max-height:800px; width: 100%; overflow-x: hidden; overflow-y: auto; margin-left: 8px;">
+                                    <gantt-tree enabled="true"></gantt-tree>
+                                    <gantt-movable enabled="true"
+                                        allow-moving="true"
+                                        allow-resizing="false"
+                                        allow-row-switching="false"></gantt-movable>
+                                    <gantt-tooltips enabled="true" date-format="'YYYY-MM-DD HH:mm'"></gantt-tooltips>
+                                    <gantt-contextmenu enabled="true"></gantt-contextmenu>
+                                </div>
+                                <div ng-controller="ChartResourceUsageController as chartResourceUsageCtrl" style="height: 25%">
+                                    <highchart id="chart_resource_usage" config="chartConfig" style="margin: 12px;" ></highchart>
+                                </div>
+                            </md-tab>
+                        </div>
+                    </md-tabs>
+                </md-content>
+                <div ng-controller="EventGridController as eventGridCtrl" ui-layout-init-height="250px">
+                    <div id="grid"
+                    ui-grid="gridOptions"
+                    ui-grid-resize-columns ui-grid-auto-resize
+                    class="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endraw %}
+    </body>
+</html>

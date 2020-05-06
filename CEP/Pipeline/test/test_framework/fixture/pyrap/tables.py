@@ -29,7 +29,7 @@ class table():
         """
         if self.exception:
             raise Exception(table.variable_dictionary[keyword])
-        if table.variable_dictionary.has_key(keyword):
+        if keyword in table.variable_dictionary:
             return table.variable_dictionary[keyword]
 
         return default
@@ -41,7 +41,7 @@ class table():
         """
         if self.exception:
             raise Exception(table.variable_dictionary[keyword])
-        if table.variable_dictionary.has_key(keyword):
+        if keyword in table.variable_dictionary:
             cell_data = table.variable_dictionary[keyword]
             if idx < len(cell_data):
                 return cell_data[idx]

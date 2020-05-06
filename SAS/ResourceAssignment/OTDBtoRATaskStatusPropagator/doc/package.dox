@@ -1,0 +1,5 @@
+/**
+\ingroup ResourceAssignment
+\defgroup OTDBtoRATaskStatusPropagator OTDBtoRATaskStatusPropagator
+\ref otdb_to_ra_task_status_propagator module overview
+*/

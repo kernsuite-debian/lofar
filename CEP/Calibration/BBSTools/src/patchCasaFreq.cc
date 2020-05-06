@@ -21,25 +21,25 @@
 #include <boost/lexical_cast.hpp>             // convert string to number
 
 // casacore includes
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ArrColDesc.h>
-#include <tables/Tables/ArrayColumnFunc.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TiledColumnStMan.h>
-#include <tables/Tables/TableRecord.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ArrColDesc.h>
+#include <casacore/tables/Tables/ArrayColumnFunc.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/DataMan/TiledColumnStMan.h>
+#include <casacore/tables/Tables/TableRecord.h>
 
-#include <casa/Arrays/IPosition.h>
-#include <casa/Arrays/Vector.h>
-#include <casa/Arrays/VectorSTLIterator.h>
-#include <coordinates/Coordinates/Coordinate.h>
-#include <coordinates/Coordinates/DirectionCoordinate.h>    // DirectionCoordinate needed for patch direction
-#include <images/Images/PagedImage.h>                       // we need to open the image to determine patch centre direction
-#include <ms/MeasurementSets/MSSpWindowColumns.h>
+#include <casacore/casa/Arrays/IPosition.h>
+#include <casacore/casa/Arrays/Vector.h>
+#include <casacore/casa/Arrays/VectorSTLIterator.h>
+#include <casacore/coordinates/Coordinates/Coordinate.h>
+#include <casacore/coordinates/Coordinates/DirectionCoordinate.h>    // DirectionCoordinate needed for patch direction
+#include <casacore/images/Images/PagedImage.h>                       // we need to open the image to determine patch centre direction
+#include <casacore/ms/MeasurementSets/MSSpWindowColumns.h>
 
-//using namespace casa;
+//using namespace casacore;
 using namespace std;
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 
 // Use a terminate handler that can produce a backtrace.

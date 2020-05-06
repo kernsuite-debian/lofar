@@ -124,7 +124,7 @@ class selfcal_awimager(BaseRecipe, RemoteCommandRecipeMixIn):
         # *********************************************************************
         # 2. Start the node side of the awimager recipe
         # Compile the command to be executed on the remote machine
-        node_command = "python %s" % (self.__file__.replace("master", "nodes"))
+        node_command = "python3 %s" % (self.__file__.replace("master", "nodes"))
         jobs = []
 
         output_map = copy.deepcopy(input_map)        

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmManager.cc 18319 2011-06-22 15:24:02Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -26,8 +26,8 @@
 #include <BBSKernel/Exceptions.h>
 #include <ParmDB/Grid.h>
 
-#include <casa/Utilities/Regex.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Utilities/Regex.h>
+#include <casacore/casa/Exceptions/Error.h>
 
 
 namespace LOFAR
@@ -63,9 +63,9 @@ double ParmManagerImpl::getDefaultValue(unsigned int category,
 
     ParmValueSet valueSet = parmDB.getDefValue(name, ParmValue(value));
     ASSERT(valueSet.empty() && valueSet.getType() == ParmValue::Scalar);
-    const casa::Array<double> &values = valueSet.getDefParmValue().getValues();
+    const casacore::Array<double> &values = valueSet.getDefParmValue().getValues();
     ASSERT(values.size() == 1);
-    return values(casa::IPosition(values.ndim(), 0));
+    return values(casacore::IPosition(values.ndim(), 0));
 }
 
 ParmProxy::Ptr ParmManagerImpl::get(unsigned int category, const string &name)
@@ -142,18 +142,18 @@ void ParmManagerImpl::flush()
 ParmGroup ParmManagerImpl::makeSubset(const vector<string> &include,
     const vector<string> &exclude, const ParmGroup &group) const
 {
-    vector<casa::Regex> includeRegex(include.size());
-    vector<casa::Regex> excludeRegex(exclude.size());
+    vector<casacore::Regex> includeRegex(include.size());
+    vector<casacore::Regex> excludeRegex(exclude.size());
 
     try
     {
         transform(include.begin(), include.end(), includeRegex.begin(),
-            ptr_fun(casa::Regex::fromPattern));
+            ptr_fun(casacore::Regex::fromPattern));
 
         transform(exclude.begin(), exclude.end(), excludeRegex.begin(),
-            ptr_fun(casa::Regex::fromPattern));
+            ptr_fun(casacore::Regex::fromPattern));
     }
-    catch(casa::AipsError &ex)
+    catch(casacore::AipsError &ex)
     {
         THROW(BBSKernelException, "Error parsing include/exclude pattern"
             " (exception: " << ex.what() << ")");
@@ -187,13 +187,13 @@ ParmGroup ParmManagerImpl::makeSubset(const vector<string> &include,
 }
 
 bool ParmManagerImpl::isIncluded(const string &candidate,
-    const vector<casa::Regex> &include, const vector<casa::Regex> &exclude)
+    const vector<casacore::Regex> &include, const vector<casacore::Regex> &exclude)
     const
 {
-    casa::String name(candidate);
+    casacore::String name(candidate);
 
     bool flag = false;
-    vector<casa::Regex>::const_iterator inc_it = include.begin();
+    vector<casacore::Regex>::const_iterator inc_it = include.begin();
     while(inc_it != include.end())
     {
         if(name.matches(*inc_it))
@@ -206,7 +206,7 @@ bool ParmManagerImpl::isIncluded(const string &candidate,
 
     if(flag)
     {
-        vector<casa::Regex>::const_iterator exc_it = exclude.begin();
+        vector<casacore::Regex>::const_iterator exc_it = exclude.begin();
         while(exc_it != exclude.end())
         {
             if(name.matches(*exc_it))

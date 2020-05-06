@@ -45,19 +45,19 @@ $portstr = sprintf "[udp:%s:%d, udp:%s:%d, udp:%s:%d, udp:%s:%d]",
   $host, $baseport + ($board * 6) + 3;
 
 if ($board == 0) {
-  printf "PIC.Core.Station.%sLBA.RSP.ports = %s\n",$station,$portstr;
+  printf "PIC.Core.Station.%sLBA.RSP.sources = %s\n",$station,$portstr;
 
-  printf "PIC.Core.Station.%sHBA.RSP.ports = %s\n",$station,$portstr;
+  printf "PIC.Core.Station.%sHBA.RSP.sources = %s\n",$station,$portstr;
 
   if ($station =~ /^CS/) {
-    printf "PIC.Core.Station.%sHBA0.RSP.ports = %s\n",$station,$portstr;
+    printf "PIC.Core.Station.%sHBA0.RSP.sources = %s\n",$station,$portstr;
   } else {
     print "\n";
   }
 }
 
 if ($board == 1) {
-  printf "PIC.Core.Station.%sHBA1.RSP.ports = %s\n",$station,$portstr;
+  printf "PIC.Core.Station.%sHBA1.RSP.sources = %s\n",$station,$portstr;
   print "\n";
 }
 

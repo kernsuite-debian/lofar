@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: BaselineSelect.h 34753 2016-06-20 10:43:42Z schaap $
+//#  $Id$
 
 #ifndef MS_BASELINESELECT_H
 #define MS_BASELINESELECT_H
@@ -29,12 +29,12 @@
 
 //# Includes
 #include <Common/lofar_string.h>
-#include <ms/MSSel/MSSelectionErrorHandler.h>
+#include <casacore/ms/MSSel/MSSelectionErrorHandler.h>
 #include <ostream>
 
 
 //# Forward Declarations
-namespace casa
+namespace casacore
 {
   template<class T> class Matrix;
   template<class T> class Vector;
@@ -59,7 +59,7 @@ public:
   // Parse the MSSelection baseline string and create a Matrix telling
   // which baselines are selected.
   // Possible messages from the parser are written to the ostream.
-  static casa::Matrix<bool> convert (const string& msName,
+  static casacore::Matrix<bool> convert (const string& msName,
                                      const string& baselineSelection,
                                      std::ostream&);
 
@@ -67,17 +67,17 @@ public:
   // which baselines are selected.
   // The input is a vector of station names and positions.
   // Possible messages from the parser are written to the ostream.
-  static casa::Matrix<bool> convert (const casa::Vector<casa::String>& names,
-                                     const std::vector<casa::MPosition>& pos,
-                                     const casa::Vector<casa::Int>& ant1,
-                                     const casa::Vector<casa::Int>& ant2,
+  static casacore::Matrix<bool> convert (const casacore::Vector<casacore::String>& names,
+                                     const std::vector<casacore::MPosition>& pos,
+                                     const casacore::Vector<casacore::Int>& ant1,
+                                     const casacore::Vector<casacore::Int>& ant2,
                                      const string& baselineSelection,
                                      std::ostream&);
 
 private:
-  static casa::Matrix<bool> convert (casa::Table& anttab,
-                                     casa::TableExprNode& a1,
-                                     casa::TableExprNode& a2,
+  static casacore::Matrix<bool> convert (casacore::Table& anttab,
+                                     casacore::TableExprNode& a1,
+                                     casacore::TableExprNode& a2,
                                      const string& baselineSelection,
                                      std::ostream& os);
 
@@ -87,14 +87,14 @@ private:
 
 // This class handles an error from the Casacore's MSAntennaParse.
 // It adds the message to the message list of the parent BaselineSelect.
-class BaselineSelectErrorHandler : public casa::MSSelectionErrorHandler
+class BaselineSelectErrorHandler : public casacore::MSSelectionErrorHandler
 {
 public:
   BaselineSelectErrorHandler (std::ostream& os)
     : itsStream (os)
   {}
   virtual ~BaselineSelectErrorHandler();
-  virtual void reportError (const char *token, const casa::String message);
+  virtual void reportError (const char *token, const casacore::String message);
 private:
   std::ostream& itsStream;
 };

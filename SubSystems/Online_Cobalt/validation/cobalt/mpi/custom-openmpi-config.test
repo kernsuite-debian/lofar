@@ -1,0 +1,9 @@
+#!/bin/bash -ve
+
+TEST_ROOT_DIR=$(readlink -f -n $(dirname $0)/../..)
+source $TEST_ROOT_DIR/validation_utils.sh
+check_running_on_cobalt2_head
+
+# reuse system/mpi/custom-openmpi-config.test
+# run it via clush on all nodes
+clush -S -g compute $TEST_ROOT_DIR/system/mpi/custom-openmpi-config.test |& sort

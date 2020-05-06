@@ -30,7 +30,7 @@ def add_recipe_inputs(app, what_, name, obj, options, lines):
     """
     from lofarpipe.support.lofaringredient import RecipeIngredients
     def format_ingredient_dict(ingredients):
-        for name, field in sorted(ingredients.iteritems()):
+        for name, field in sorted(ingredients.items()):
             if hasattr(field, "default"):
                 extra = "; default: ``%s``" % field.default
             elif hasattr(field, "optional"):
@@ -102,8 +102,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'LOFAR Pipeline System'
-copyright = u'2009—12, John Swinbank, Wouter Klijn'
+project = 'LOFAR Pipeline System'
+copyright = '2009—12, John Swinbank, Wouter Klijn'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -229,8 +229,8 @@ htmlhelp_basename = 'LOFARStandardImagingPipelinedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'LOFARStandardImagingPipeline.tex', ur'LOFAR Standard Imaging Pipeline Documentation',
-   ur'John Swinbank', 'manual'),
+  ('index', 'LOFARStandardImagingPipeline.tex', r'LOFAR Standard Imaging Pipeline Documentation',
+   r'John Swinbank', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

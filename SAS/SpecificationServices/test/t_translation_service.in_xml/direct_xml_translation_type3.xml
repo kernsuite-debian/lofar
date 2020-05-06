@@ -1,0 +1,281 @@
+<lofar:project xmlns:mom2="http://www.astron.nl/MoM2" xmlns:lofar="http://www.astron.nl/MoM2-Lofar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <version>0.43</version>
+  <template author="Joern Kuensemoeller" changedBy="Joern Kuensemoeller" version="0.43">
+    <description>Translated by lofar.specificationservices.lofarxml_to_momxml_translator version 0.43</description>
+  </template>
+  <name>test-lofar</name>
+  <children>
+    <item index="0">
+      <lofar:folder update_folder="true" topology_parent="false">
+        <topology>0</topology>
+        <name>BF-trigger</name>
+        <description>Responsive Telescope Beamformed Trigger</description>
+        <children>
+          <item index="0">
+            <lofar:folder update_folder="false" topology_parent="true">
+              <topology>0</topology>
+              <name>XXYY_Target</name>
+              <description>Triggered target, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)
+      </description>
+              <children>
+                <item index="0">
+                  <lofar:observation>
+                    <name>B0809+74/1/TO</name>
+                    <description>B0809+74/1/TO (Target Observation)</description>
+                    <topology>B2.1.T</topology>
+                    <!--<coherentDedisperseChannels>false</coherentDedisperseChannels>
+      <tiedArrayBeams>
+        <flyseye>false</flyseye>
+      </tiedArrayBeams>
+      <stokes>
+        <integrateChannels>false</integrateChannels>
+        <subbandsPerFileCS>20</subbandsPerFileCS>
+        <numberCollapsedChannelsCS>1</numberCollapsedChannelsCS>
+        <stokesDownsamplingStepsCS>1</stokesDownsamplingStepsCS>
+        <whichCS>XXYY</whichCS>
+        <!- todo: check (just added to XSD, anything else?) ->
+        <subbandsPerFileIS>512</subbandsPerFileIS>
+        <numberCollapsedChannelsIS>16</numberCollapsedChannelsIS>
+        <stokesDownsamplingStepsIS>128</stokesDownsamplingStepsIS>
+        <whichIS>I</whichIS>
+      </stokes>
+      <bypassPff>false</bypassPff>-->
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+                    <lofar:observationAttributes>
+                      <name>B0809+74/1/TO</name>
+                      <projectName>test-lofar</projectName>
+                      <instrument>Beam Observation</instrument>
+                      <defaultTemplate>BeamObservation</defaultTemplate>
+                      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                      <userSpecification>
+                        <correlatedData>false</correlatedData>
+                        <coherentStokesData>true</coherentStokesData>
+                        <incoherentStokesData>false</incoherentStokesData>
+                        <antenna>HBA Dual</antenna>
+                        <clock mode="200 MHz"/>
+                        <instrumentFilter>110-190 MHz</instrumentFilter>
+                        <integrationInterval>1.0</integrationInterval>
+                        <channelsPerSubband>16</channelsPerSubband>
+                        <tiedArrayBeams>
+                          <flyseye>false</flyseye>
+                        </tiedArrayBeams>
+                        <stationSet>Custom</stationSet>
+                        <stations>
+                          <station name="CS001"/>
+                          <station name="CS002"/>
+                          <station name="CS003"/>
+                          <station name="CS004"/>
+                          <station name="CS005"/>
+                          <station name="CS006"/>
+                          <station name="CS007"/>
+                          <station name="CS011"/>
+                          <station name="CS013"/>
+                          <station name="CS017"/>
+                          <station name="CS021"/>
+                          <station name="CS024"/>
+                          <station name="CS026"/>
+                          <station name="CS028"/>
+                          <station name="CS030"/>
+                          <station name="CS031"/>
+                          <station name="CS032"/>
+                          <station name="CS101"/>
+                          <station name="CS103"/>
+                          <station name="CS201"/>
+                          <station name="CS301"/>
+                          <station name="CS302"/>
+                          <station name="CS401"/>
+                          <station name="CS501"/>
+                        </stations>
+                        <timeFrame>UT</timeFrame>
+                        <startTime>2017-07-17T16:17:29</startTime>
+                        <duration>PT300S</duration>
+                        <enableSuperterp>false</enableSuperterp>
+                        <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                        <misc>{"trigger_id": 1, "priority": 1010, "qualityOfService": "LATENCY", "stationSelection": [{"resourceGroup": "CS001", "min": 1}, {"resourceGroup": "CS002", "min": 1}, {"resourceGroup": "CS003", "min": 1}, {"resourceGroup": "CS004", "min": 1}, {"resourceGroup": "CS005", "min": 1}, {"resourceGroup": "CS006", "min": 1}, {"resourceGroup": "CS007", "min": 1}, {"resourceGroup": "CS011", "min": 1}, {"resourceGroup": "CS013", "min": 1}, {"resourceGroup": "CS017", "min": 1}, {"resourceGroup": "CS021", "min": 1}, {"resourceGroup": "CS024", "min": 1}, {"resourceGroup": "CS026", "min": 1}, {"resourceGroup": "CS028", "min": 1}, {"resourceGroup": "CS030", "min": 1}, {"resourceGroup": "CS031", "min": 1}, {"resourceGroup": "CS032", "min": 1}, {"resourceGroup": "CS101", "min": 1}, {"resourceGroup": "CS103", "min": 1}, {"resourceGroup": "CS201", "min": 1}, {"resourceGroup": "CS301", "min": 1}, {"resourceGroup": "CS302", "min": 1}, {"resourceGroup": "CS401", "min": 1}, {"resourceGroup": "CS501", "min": 1}]}</misc>
+                      </userSpecification>
+                    </lofar:observationAttributes>
+                    <children>
+                      <item index="0">
+                        <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                          <name>B0809+74</name>
+                          <description>B0809+74</description>
+                          <topology>B2.1.T.SAP000</topology>
+                          <currentStatus>
+                            <mom2:openedStatus/>
+                          </currentStatus>
+                          <lofar:bfMeasurementAttributes>
+                            <measurementType>Target</measurementType>
+                            <specification>
+                              <targetName>B0809+74</targetName>
+                              <ra>123.747916667</ra>
+                              <dec>74.4849166667</dec>
+                              <equinox>J2000</equinox>
+                              <duration>PT0S</duration>
+                              <subbandsSpecification>
+                                <subbands>54..453</subbands>
+                              </subbandsSpecification>
+                              <tiedArrayBeams>
+                                <!--<flyseye>false</flyseye>-->
+                                <nrTabRings>0</nrTabRings>
+                                <!--<tabRingSize></tabRingSize>-->
+                                <tiedArrayBeamList>
+                                  <tiedArrayBeam>
+                                    <coherent>true</coherent>
+                                    <angle1>2.15980858832</angle1>
+                                    <angle2>1.30000703891</angle2>
+                                  </tiedArrayBeam>
+                                </tiedArrayBeamList>
+                              </tiedArrayBeams>
+                            </specification>
+                          </lofar:bfMeasurementAttributes>
+                          <resultDataProducts>
+                            <item index="0">
+                              <lofar:bfDataProduct>
+                                <name>B2.1.T.SAP000.dps.cs</name>
+                                <topology>B2.1.T.SAP000.dps.cs</topology>
+                                <status>no_data</status>
+                                <storageCluster>
+                                  <name>CEP4</name>
+                                  <partition>/data/projects/</partition>
+                                </storageCluster>
+                              </lofar:bfDataProduct>
+                            </item>
+                          </resultDataProducts>
+                        </lofar:measurement>
+                      </item>
+                    </children>
+                  </lofar:observation>
+                </item>
+              </children>
+            </lofar:folder>
+          </item>
+          <item index="1">
+            <lofar:folder update_folder="false" topology_parent="true">
+              <topology>0</topology>
+              <name>XXYY_calibrator</name>
+              <description>Calibrator, HBA_DUAL, 16ch/sb, 0.01s, XXYY, Stokes I (none)</description>
+              <children>
+                <item index="0">
+                  <lofar:observation>
+                    <name>B0809+74/1/TO</name>
+                    <description>B0809+74/1/TO (Target Observation)</description>
+                    <topology>B3.2.T</topology>
+                    <currentStatus>
+                      <mom2:openedStatus/>
+                    </currentStatus>
+                    <lofar:observationAttributes>
+                      <name>B0809+74/1/TO</name>
+                      <projectName>test-lofar</projectName>
+                      <instrument>Beam Observation</instrument>
+                      <defaultTemplate>BeamObservation</defaultTemplate>
+                      <tbbPiggybackAllowed>true</tbbPiggybackAllowed>
+                      <aartfaacPiggybackAllowed>true</aartfaacPiggybackAllowed>
+                      <userSpecification>
+                        <correlatedData>false</correlatedData>
+                        <coherentStokesData>true</coherentStokesData>
+                        <incoherentStokesData>false</incoherentStokesData>
+                        <antenna>HBA Dual</antenna>
+                        <clock mode="200 MHz"/>
+                        <instrumentFilter>110-190 MHz</instrumentFilter>
+                        <integrationInterval>1.0</integrationInterval>
+                        <channelsPerSubband>16</channelsPerSubband>
+                        <tiedArrayBeams>
+                          <flyseye>false</flyseye>
+                        </tiedArrayBeams>
+                        <stationSet>Custom</stationSet>
+                        <stations>
+                          <station name="CS001"/>
+                          <station name="CS002"/>
+                          <station name="CS003"/>
+                          <station name="CS004"/>
+                          <station name="CS005"/>
+                          <station name="CS006"/>
+                          <station name="CS007"/>
+                          <station name="CS011"/>
+                          <station name="CS013"/>
+                          <station name="CS017"/>
+                          <station name="CS021"/>
+                          <station name="CS024"/>
+                          <station name="CS026"/>
+                          <station name="CS028"/>
+                          <station name="CS030"/>
+                          <station name="CS031"/>
+                          <station name="CS032"/>
+                          <station name="CS101"/>
+                          <station name="CS103"/>
+                          <station name="CS201"/>
+                          <station name="CS301"/>
+                          <station name="CS302"/>
+                          <station name="CS401"/>
+                          <station name="CS501"/>
+                        </stations>
+                        <timeFrame>UT</timeFrame>
+                        <startTime>2017-07-17T16:17:29</startTime>
+                        <duration>PT300S</duration>
+                        <enableSuperterp>false</enableSuperterp>
+                        <numberOfBitsPerSample>8</numberOfBitsPerSample>
+                        <misc>{"trigger_id": 1, "priority": 1010, "qualityOfService": "LATENCY", "stationSelection": [{"resourceGroup": "CS001", "min": 1}, {"resourceGroup": "CS002", "min": 1}, {"resourceGroup": "CS003", "min": 1}, {"resourceGroup": "CS004", "min": 1}, {"resourceGroup": "CS005", "min": 1}, {"resourceGroup": "CS006", "min": 1}, {"resourceGroup": "CS007", "min": 1}, {"resourceGroup": "CS011", "min": 1}, {"resourceGroup": "CS013", "min": 1}, {"resourceGroup": "CS017", "min": 1}, {"resourceGroup": "CS021", "min": 1}, {"resourceGroup": "CS024", "min": 1}, {"resourceGroup": "CS026", "min": 1}, {"resourceGroup": "CS028", "min": 1}, {"resourceGroup": "CS030", "min": 1}, {"resourceGroup": "CS031", "min": 1}, {"resourceGroup": "CS032", "min": 1}, {"resourceGroup": "CS101", "min": 1}, {"resourceGroup": "CS103", "min": 1}, {"resourceGroup": "CS201", "min": 1}, {"resourceGroup": "CS301", "min": 1}, {"resourceGroup": "CS302", "min": 1}, {"resourceGroup": "CS401", "min": 1}, {"resourceGroup": "CS501", "min": 1}]}</misc>
+                      </userSpecification>
+                    </lofar:observationAttributes>
+                    <children>
+                      <item index="0">
+                        <lofar:measurement xsi:type="lofar:BFMeasurementType">
+                          <name>B0809+74</name>
+                          <description>B0809+74</description>
+                          <topology>B3.2.T.SAP000</topology>
+                          <currentStatus>
+                            <mom2:openedStatus/>
+                          </currentStatus>
+                          <lofar:bfMeasurementAttributes>
+                            <measurementType>Target</measurementType>
+                            <specification>
+                              <targetName>B0809+74</targetName>
+                              <ra>123.747916667</ra>
+                              <dec>74.4849166667</dec>
+                              <equinox>J2000</equinox>
+                              <duration>PT0S</duration>
+                              <subbandsSpecification>
+                                <subbands>54..453</subbands>
+                              </subbandsSpecification>
+                              <tiedArrayBeams>
+                                <nrTabRings>0</nrTabRings>
+                                <!--<tabRingSize></tabRingSize>-->
+                                <tiedArrayBeamList>
+                                  <tiedArrayBeam>
+                                    <coherent>true</coherent>
+                                    <angle1>2.15980858832</angle1>
+                                    <angle2>1.30000703891</angle2>
+                                  </tiedArrayBeam>
+                                </tiedArrayBeamList>
+                              </tiedArrayBeams>
+                            </specification>
+                          </lofar:bfMeasurementAttributes>
+                          <resultDataProducts>
+                            <item index="0">
+                              <lofar:bfDataProduct>
+                                <name>B3.2.T.SAP000.dps.cs</name>
+                                <topology>B3.2.T.SAP000.dps.cs</topology>
+                                <status>no_data</status>
+                                <storageCluster>
+                                  <name>CEP4</name>
+                                  <partition>/data/projects/</partition>
+                                </storageCluster>
+                              </lofar:bfDataProduct>
+                            </item>
+                          </resultDataProducts>
+                        </lofar:measurement>
+                      </item>
+                    </children>
+                  </lofar:observation>
+                </item>
+              </children>
+            </lofar:folder>
+          </item>
+        </children>
+      </lofar:folder>
+    </item>
+  </children>
+</lofar:project>

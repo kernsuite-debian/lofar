@@ -3,12 +3,12 @@ from lofarpipe.support.clusterdesc import ClusterDesc
 from lofarpipe.support.clusterdesc import get_compute_nodes, get_head_node
 import os.path
 
-from ConfigParser import SafeConfigParser as ConfigParser
+from configparser import SafeConfigParser as ConfigParser
 
 # Support function
 def _get_config(filename):
     if not os.path.isfile(filename):
-        raise IOError, "Configuration file not found"
+        raise IOError("Configuration file not found")
     config = ConfigParser()
     config.read(filename)
     return config

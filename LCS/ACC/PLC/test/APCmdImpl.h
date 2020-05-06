@@ -18,7 +18,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: APCmdImpl.h 30919 2015-02-05 15:26:22Z amesfoort $
+//#  $Id$
 
 #ifndef ACC_APCMDIMPL_H
 #define ACC_APCMDIMPL_H
@@ -30,13 +30,11 @@
 #include <Common/ParameterSet.h>
 #include <Common/lofar_tribool.h>
 
-using namespace LOFAR::ACC::PLC;
-
 namespace LOFAR {
   namespace ACC {
 
 //# Description of class.
-class APCmdImpl : public ProcessControl 
+class APCmdImpl : public LOFAR::ACC::PLC::ProcessControl
 {
 public:
 	// Default constructable
@@ -60,7 +58,7 @@ public:
 	string	askInfo   (const string& 	keylist);
 
 	// Make runstate test available
-	bool inRunState() const { return (ProcessControl::inRunState()); };
+	bool inRunState() const { return (LOFAR::ACC::PLC::ProcessControl::inRunState()); };
 
 protected:
 	// Copying is not allowed

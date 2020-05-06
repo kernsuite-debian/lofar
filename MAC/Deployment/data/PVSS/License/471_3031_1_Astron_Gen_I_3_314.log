@@ -1,0 +1,60 @@
+
+---------------------------------------------------
+[license]
+code        = "mcu002.control.lofar 20329200053"
+version     = 31400002
+sn          = "471_3031_1_Astron_Gen_I_3_314/1"
+date        = 2016.09.15;10:04:35,000 
+comment     = "CentOS7 MainCU system MCU002"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 1
+ui          = 15
+para        = 4
+dde         = 5
+event       = 1
+ios         = 100000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 15
+infoserver  = 5000
+comcenter   = 5
+maintenance = 0
+scheduler   = 0
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "mcu199.control.lofar 00033501895"
+version     = 31400002
+sn          = "471_3031_1_Astron_Gen_I_3_314/2"
+date        = 2016.10.12;15:45:33,000 
+comment     = "CentOS7 MainCU system MCU002"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 1
+ui          = 15
+para        = 4
+dde         = 5
+event       = 1
+ios         = 100000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 15
+infoserver  = 5000
+comcenter   = 5
+maintenance = 0
+scheduler   = 0
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+

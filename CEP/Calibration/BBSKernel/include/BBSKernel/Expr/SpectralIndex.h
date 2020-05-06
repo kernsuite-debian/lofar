@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SpectralIndex.h 18775 2011-09-06 13:36:45Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_SPECTRALINDEX_H
 #define LOFAR_BBSKERNEL_EXPR_SPECTRALINDEX_H

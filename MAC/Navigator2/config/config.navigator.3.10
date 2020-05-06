@@ -1,0 +1,29 @@
+[general]
+pvss_path = "D:/Siemens/Automation/WinCC_OA/3.10"
+proj_path = "D:/Data/TRUNK-MCU001"
+proj_path = "D:/Data/TRUNK-Navigator2"
+proj_version = "3.10"
+langs = "en_US.iso88591"
+distributed = 1
+ctrlMaxPendings = 2000
+messageCompression = "zlib-bzip2"
+useValueArchive = 1
+
+
+#local via putty from home or if working with local instantations of mcu/ccc/cs001
+#data = "localhost"
+#event = "localhost"
+
+#mcu001
+#data = "10.149.96.3"
+#event = "10.149.96.3"
+data = "mcu001.control.lofar"
+event = "mcu001.control.lofar"
+
+#mcu099
+#data = "10.149.96.23"
+#event = "10.149.96.23"
+
+#eventPort = 5997
+#dataPort = 5998
+pmonPort = 2025

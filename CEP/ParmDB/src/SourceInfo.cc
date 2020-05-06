@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SourceInfo.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 // @file
 // @brief Info about a source
@@ -32,7 +32,7 @@
 #include <Blob/BlobOStream.h>
 #include <Blob/BlobArray.h>
 
-#include <casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Array.h>
 
 
 namespace LOFAR {
@@ -84,10 +84,10 @@ namespace BBS {
     return *this;
   }
 
-  void SourceInfo::setShapeletCoeff (const casa::Array<double>& I,
-                                     const casa::Array<double>& Q,
-                                     const casa::Array<double>& U,
-                                     const casa::Array<double>& V)
+  void SourceInfo::setShapeletCoeff (const casacore::Array<double>& I,
+                                     const casacore::Array<double>& Q,
+                                     const casacore::Array<double>& U,
+                                     const casacore::Array<double>& V)
   {
     itsShapeletCoeffI.assign (I);
     itsShapeletCoeffQ.assign (Q);

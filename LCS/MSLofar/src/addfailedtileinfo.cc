@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: addfailedtileinfo.cc 22541 2012-10-29 11:11:35Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

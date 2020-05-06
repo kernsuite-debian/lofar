@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PolynomialLayer.cc 17229 2011-01-28 13:44:36Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -158,7 +158,7 @@ const Scalar::View PolynomialLayer::evaluateImpl(const Grid &grid,
     ASSERT(degree >= 1);
 
     // Get reference station position (ITRF).
-    const casa::MVPosition &ref_pos = itsRefStation.getValue();
+    const casacore::MVPosition &ref_pos = itsRefStation.getValue();
 
     // Calculate rotation matrix. Actually we only need to do this once for
     // all PolynomialLayer nodes. Some optimization could be done here.

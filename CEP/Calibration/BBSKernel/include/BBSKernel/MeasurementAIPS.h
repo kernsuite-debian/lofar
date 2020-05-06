@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MeasurementAIPS.h 28194 2014-02-05 14:41:55Z dijkema $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_MEASUREMENTAIPS_H
 #define LOFAR_BBSKERNEL_MEASUREMENTAIPS_H
@@ -28,9 +28,9 @@
 #include <Common/LofarTypes.h>
 #include <Common/ParameterSet.h>
 
-#include <casa/Arrays/Slicer.h>
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <tables/Tables/ExprNodeSet.h>
+#include <casacore/casa/Arrays/Slicer.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/tables/TaQL/ExprNodeSet.h>
 
 namespace LOFAR
 {
@@ -80,17 +80,17 @@ private:
     void createVisibilityColumn(const string &name);
     void createCovarianceColumn(const string &name);
 
-    casa::MDirection getColumnPhaseReference(const string &column) const;
+    casacore::MDirection getColumnPhaseReference(const string &column) const;
 
-    casa::Table getVisSelection(casa::Table table,
+    casacore::Table getVisSelection(casacore::Table table,
         const VisSelection &selection) const;
-    casa::Table getBaselineSelection(const casa::Table &table,
+    casacore::Table getBaselineSelection(const casacore::Table &table,
         const string &pattern) const;
     BaselineMask getBaselineMask(const VisSelection &selection) const;
 
     Interval<size_t> getChannelRange(const VisSelection &selection) const;
-    casa::Slicer getCellSlicer(const VisSelection &selection) const;
-    casa::Slicer getCovarianceSlicer(const VisSelection &selection,
+    casacore::Slicer getCellSlicer(const VisSelection &selection) const;
+    casacore::Slicer getCovarianceSlicer(const VisSelection &selection,
         const string &column) const;
 
     string getLinkedCovarianceColumn(const string &column,
@@ -98,16 +98,16 @@ private:
     void setLinkedCovarianceColumn(const string &column,
         const string &linkedColumn);
 
-    casa::Array<casa::Float>
-    reformatCovarianceArray(const casa::Array<casa::Float> &in,
+    casacore::Array<casacore::Float>
+    reformatCovarianceArray(const casacore::Array<casacore::Float> &in,
         unsigned int nCorrelations, unsigned int nFreq, unsigned int nRows)
         const;
 
-    VisDimensions getDimensionsImpl(const casa::Table &tab_selection,
-        const casa::Slicer &slicer) const;
+    VisDimensions getDimensionsImpl(const casacore::Table &tab_selection,
+        const casacore::Slicer &slicer) const;
 
-    casa::MeasurementSet    itsMS;
-    casa::Table             itsMainTableView;
+    casacore::MeasurementSet    itsMS;
+    casacore::Table             itsMainTableView;
 
     bool                    itsFreqAxisReversed;
 

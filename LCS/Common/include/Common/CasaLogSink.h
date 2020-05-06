@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: CasaLogSink.h 18904 2011-09-28 12:15:43Z diepen $
+//# $Id$
 
 #ifndef LOFAR_COMMON_CASALOGSINK_H
 #define LOFAR_COMMON_CASALOGSINK_H
@@ -31,8 +31,8 @@
 #ifdef HAVE_AIPSPP
 
 //#Includes
-#include <casa/Logging/LogSink.h>
-#include <casa/Logging/LogFilter.h>
+#include <casacore/casa/Logging/LogSink.h>
+#include <casacore/casa/Logging/LogFilter.h>
 
 namespace LOFAR {
 
@@ -46,7 +46,7 @@ namespace LOFAR {
   //   CasaLogSink::attach();
   // @endcode
 
-  class CasaLogSink : public casa::LogSinkInterface
+  class CasaLogSink : public casacore::LogSinkInterface
   {
   public:
     // By default no filtering is done.
@@ -54,8 +54,8 @@ namespace LOFAR {
 
     // Create the sink with the given filter (level).
     // @{
-    explicit CasaLogSink (casa::LogMessage::Priority filter);
-    explicit CasaLogSink (const casa::LogFilterInterface& filter);
+    explicit CasaLogSink (casacore::LogMessage::Priority filter);
+    explicit CasaLogSink (const casacore::LogFilterInterface& filter);
     // @}
 
     ~CasaLogSink();
@@ -64,15 +64,15 @@ namespace LOFAR {
     static void attach();
 
     // If the message passes the filter, write it to the log4cxx sink.
-    virtual casa::Bool postLocally (const casa::LogMessage& message);
+    virtual casacore::Bool postLocally (const casacore::LogMessage& message);
 
     // Clear the local sink (i.e. remove all messages from it).
     virtual void clearLocally();
 
     // Returns the id for this class...
-    static casa::String localId();
+    static casacore::String localId();
     // Returns the id of the LogSink in use...
-    casa::String id() const;
+    casacore::String id() const;
 
   private:
     // Copying is forbidden.

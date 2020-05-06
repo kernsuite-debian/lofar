@@ -1,0 +1,3 @@
+# m h  dom mon dow   command
+* * * * * source /opt/lofar/lofarinit.sh && ping_intl.sh >> $HOME/ping_intl.`hostname`.log 2>&1
+

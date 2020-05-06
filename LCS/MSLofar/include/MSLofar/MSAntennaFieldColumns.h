@@ -17,25 +17,25 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSAntennaFieldColumns.h 22387 2012-10-17 12:53:55Z diepen $
+//# $Id$
 //#
 //# @author Ger van Diepen
 
 #ifndef MSLOFAR_MSANTENNAFIELDCOLUMNS_H
 #define MSLOFAR_MSANTENNAFIELDCOLUMNS_H
 
-#include <casa/aips.h>
-#include <measures/Measures/MPosition.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/TableMeasures/ArrayMeasColumn.h>
-#include <measures/TableMeasures/ArrayQuantColumn.h>
-#include <measures/TableMeasures/ScalarMeasColumn.h>
-#include <measures/TableMeasures/ScalarQuantColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <casa/BasicSL/String.h>
+#include <casacore/casa/aips.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/TableMeasures/ArrayMeasColumn.h>
+#include <casacore/measures/TableMeasures/ArrayQuantColumn.h>
+#include <casacore/measures/TableMeasures/ScalarMeasColumn.h>
+#include <casacore/measures/TableMeasures/ScalarQuantColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/casa/BasicSL/String.h>
 
 namespace LOFAR {
 
@@ -61,41 +61,41 @@ namespace LOFAR {
 
     // Access to columns.
     // <group>
-    const casa::ROScalarColumn<casa::Int>& antennaId() const
+    const casacore::ROScalarColumn<casacore::Int>& antennaId() const
       { return antennaId_p; }
-    const casa::ROScalarColumn<casa::String>& name() const
+    const casacore::ROScalarColumn<casacore::String>& name() const
       { return name_p; }
-    const casa::ROArrayColumn<casa::Double>& position() const
+    const casacore::ROArrayColumn<casacore::Double>& position() const
       { return position_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& positionQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& positionQuant() const 
       { return positionQuant_p; }
-    const casa::ROScalarMeasColumn<casa::MPosition>& positionMeas() const 
+    const casacore::ROScalarMeasColumn<casacore::MPosition>& positionMeas() const 
       { return positionMeas_p; }
-    const casa::ROArrayColumn<casa::Double>& coordinateAxes() const
+    const casacore::ROArrayColumn<casacore::Double>& coordinateAxes() const
       { return coordinateAxes_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& coordinateaxesQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& coordinateaxesQuant() const 
       { return coordinateAxesQuant_p; }
-    const casa::ROArrayColumn<casa::Double>& elementOffset() const
+    const casacore::ROArrayColumn<casacore::Double>& elementOffset() const
       { return elementOffset_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& elementOffsetQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& elementOffsetQuant() const 
       { return elementOffsetQuant_p; }
-    const casa::ROArrayColumn<casa::Int>& elementRCU() const
+    const casacore::ROArrayColumn<casacore::Int>& elementRCU() const
       { return elementRCU_p; }
-    const casa::ROArrayColumn<casa::Bool>& elementFlag() const
+    const casacore::ROArrayColumn<casacore::Bool>& elementFlag() const
       { return elementFlag_p; }
-    const casa::ROScalarColumn<casa::Double>& tileRotation() const
+    const casacore::ROScalarColumn<casacore::Double>& tileRotation() const
       { return tileRotation_p; }
-    const casa::ROScalarQuantColumn<casa::Double>& tileRotationQuant() const 
+    const casacore::ROScalarQuantColumn<casacore::Double>& tileRotationQuant() const 
       { return tileRotationQuant_p; }
-    const casa::ROArrayColumn<casa::Double>& tileElementOffset() const
+    const casacore::ROArrayColumn<casacore::Double>& tileElementOffset() const
       { return tileElementOffset_p; }
-    const casa::ROArrayQuantColumn<casa::Double>& tileElementOffsetQuant() const 
+    const casacore::ROArrayQuantColumn<casacore::Double>& tileElementOffsetQuant() const 
       { return tileElementOffsetQuant_p; }
     // </group>
 
     // Convenience function that returns the number of rows
     // in any of the columns.
-    casa::uInt nrow() const
+    casacore::uInt nrow() const
       { return antennaId_p.nrow(); }
 
   protected:
@@ -113,25 +113,25 @@ namespace LOFAR {
     ROMSAntennaFieldColumns& operator=(const ROMSAntennaFieldColumns&);
 
     //# required columns
-    casa::ROScalarColumn<casa::Int> antennaId_p;
-    casa::ROScalarColumn<casa::String> name_p;
-    casa::ROArrayColumn<casa::Double> position_p;
-    casa::ROArrayColumn<casa::Double> coordinateAxes_p;
-    casa::ROArrayColumn<casa::Double> elementOffset_p;
-    casa::ROArrayColumn<casa::Int> elementRCU_p;
-    casa::ROArrayColumn<casa::Bool> elementFlag_p;
-    casa::ROScalarColumn<casa::Double> tileRotation_p;
-    casa::ROArrayColumn<casa::Double> tileElementOffset_p;
+    casacore::ROScalarColumn<casacore::Int> antennaId_p;
+    casacore::ROScalarColumn<casacore::String> name_p;
+    casacore::ROArrayColumn<casacore::Double> position_p;
+    casacore::ROArrayColumn<casacore::Double> coordinateAxes_p;
+    casacore::ROArrayColumn<casacore::Double> elementOffset_p;
+    casacore::ROArrayColumn<casacore::Int> elementRCU_p;
+    casacore::ROArrayColumn<casacore::Bool> elementFlag_p;
+    casacore::ROScalarColumn<casacore::Double> tileRotation_p;
+    casacore::ROArrayColumn<casacore::Double> tileElementOffset_p;
 
     //# Access to Measure columns
-    casa::ROScalarMeasColumn<casa::MPosition> positionMeas_p;
+    casacore::ROScalarMeasColumn<casacore::MPosition> positionMeas_p;
 
     //# Access to Quantum columns
-    casa::ROArrayQuantColumn<casa::Double> positionQuant_p;
-    casa::ROArrayQuantColumn<casa::Double> coordinateAxesQuant_p;
-    casa::ROArrayQuantColumn<casa::Double> elementOffsetQuant_p;
-    casa::ROScalarQuantColumn<casa::Double> tileRotationQuant_p;
-    casa::ROArrayQuantColumn<casa::Double> tileElementOffsetQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> positionQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> coordinateAxesQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> elementOffsetQuant_p;
+    casacore::ROScalarQuantColumn<casacore::Double> tileRotationQuant_p;
+    casacore::ROArrayQuantColumn<casacore::Double> tileElementOffsetQuant_p;
   };
 
 
@@ -154,35 +154,35 @@ namespace LOFAR {
 
     // Read-write access to required columns.
     // <group>
-    casa::ScalarColumn<casa::Int>& antennaId()
+    casacore::ScalarColumn<casacore::Int>& antennaId()
       { return antennaId_p; }
-    casa::ScalarColumn<casa::String>& name()
+    casacore::ScalarColumn<casacore::String>& name()
       { return name_p; }
-    casa::ArrayColumn<casa::Double>& position()
+    casacore::ArrayColumn<casacore::Double>& position()
       { return position_p; }
-    casa::ArrayQuantColumn<casa::Double>& positionQuant() 
+    casacore::ArrayQuantColumn<casacore::Double>& positionQuant() 
       { return positionQuant_p; }
-    casa::ScalarMeasColumn<casa::MPosition>& positionMeas() 
+    casacore::ScalarMeasColumn<casacore::MPosition>& positionMeas() 
       { return positionMeas_p; }
-    casa::ArrayColumn<casa::Double>& coordinateAxes()
+    casacore::ArrayColumn<casacore::Double>& coordinateAxes()
       { return coordinateAxes_p; }
-    casa::ArrayQuantColumn<casa::Double>& coordinateaxesQuant() 
+    casacore::ArrayQuantColumn<casacore::Double>& coordinateaxesQuant() 
       { return coordinateAxesQuant_p; }
-    casa::ArrayColumn<casa::Double>& elementOffset()
+    casacore::ArrayColumn<casacore::Double>& elementOffset()
       { return elementOffset_p; }
-    casa::ArrayQuantColumn<casa::Double>& elementOffsetQuant()
+    casacore::ArrayQuantColumn<casacore::Double>& elementOffsetQuant()
       { return elementOffsetQuant_p; }
-    casa::ArrayColumn<casa::Int>& elementRCU()
+    casacore::ArrayColumn<casacore::Int>& elementRCU()
       { return elementRCU_p; }
-    casa::ArrayColumn<casa::Bool>& elementFlag()
+    casacore::ArrayColumn<casacore::Bool>& elementFlag()
       { return elementFlag_p; }
-    casa::ScalarColumn<casa::Double>& tileRotation()
+    casacore::ScalarColumn<casacore::Double>& tileRotation()
       { return tileRotation_p; }
-    casa::ScalarQuantColumn<casa::Double>& tileRotationQuant() 
+    casacore::ScalarQuantColumn<casacore::Double>& tileRotationQuant() 
       { return tileRotationQuant_p; }
-    casa::ArrayColumn<casa::Double>& tileElementOffset()
+    casacore::ArrayColumn<casacore::Double>& tileElementOffset()
       { return tileElementOffset_p; }
-    casa::ArrayQuantColumn<casa::Double>& tileElementOffsetQuant() 
+    casacore::ArrayQuantColumn<casacore::Double>& tileElementOffsetQuant() 
       { return tileElementOffsetQuant_p; }
     // </group>
 
@@ -201,25 +201,25 @@ namespace LOFAR {
     MSAntennaFieldColumns& operator=(const MSAntennaFieldColumns&);
 
     //# required columns
-    casa::ScalarColumn<casa::Int> antennaId_p;
-    casa::ScalarColumn<casa::String> name_p;
-    casa::ArrayColumn<casa::Double> position_p;
-    casa::ArrayColumn<casa::Double> coordinateAxes_p;
-    casa::ArrayColumn<casa::Double> elementOffset_p;
-    casa::ArrayColumn<casa::Int> elementRCU_p;
-    casa::ArrayColumn<casa::Bool> elementFlag_p;
-    casa::ScalarColumn<casa::Double> tileRotation_p;
-    casa::ArrayColumn<casa::Double> tileElementOffset_p;
+    casacore::ScalarColumn<casacore::Int> antennaId_p;
+    casacore::ScalarColumn<casacore::String> name_p;
+    casacore::ArrayColumn<casacore::Double> position_p;
+    casacore::ArrayColumn<casacore::Double> coordinateAxes_p;
+    casacore::ArrayColumn<casacore::Double> elementOffset_p;
+    casacore::ArrayColumn<casacore::Int> elementRCU_p;
+    casacore::ArrayColumn<casacore::Bool> elementFlag_p;
+    casacore::ScalarColumn<casacore::Double> tileRotation_p;
+    casacore::ArrayColumn<casacore::Double> tileElementOffset_p;
 
     //# Access to Measure columns
-    casa::ScalarMeasColumn<casa::MPosition> positionMeas_p;
+    casacore::ScalarMeasColumn<casacore::MPosition> positionMeas_p;
 
     //# Access to Quantum columns
-    casa::ArrayQuantColumn<casa::Double> positionQuant_p;
-    casa::ArrayQuantColumn<casa::Double> coordinateAxesQuant_p;
-    casa::ArrayQuantColumn<casa::Double> elementOffsetQuant_p;
-    casa::ScalarQuantColumn<casa::Double> tileRotationQuant_p;
-    casa::ArrayQuantColumn<casa::Double> tileElementOffsetQuant_p;
+    casacore::ArrayQuantColumn<casacore::Double> positionQuant_p;
+    casacore::ArrayQuantColumn<casacore::Double> coordinateAxesQuant_p;
+    casacore::ArrayQuantColumn<casacore::Double> elementOffsetQuant_p;
+    casacore::ScalarQuantColumn<casacore::Double> tileRotationQuant_p;
+    casacore::ArrayQuantColumn<casacore::Double> tileElementOffsetQuant_p;
   };
 
 } //# end namespace

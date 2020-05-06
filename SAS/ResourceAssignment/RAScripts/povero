@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2012-2015  ASTRON (Netherlands Institute for Radio Astronomy)
+# P.O. Box 2, 7990 AA Dwingeloo, The Netherlands
+#
+# This file is part of the LOFAR software suite.
+# The LOFAR software suite is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# The LOFAR software suite is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
+
+# $Id: webservice.py 35176 2016-08-25 10:09:10Z schaap $
+
+'''ResourceAssignmentEditor webservice serves a interactive html5 website for
+viewing and editing lofar resources.'''
+
+import sys
+from optparse import OptionParser
+from datetime import datetime
+import logging
+import subprocess
+
+from lofar.parameterset import parameterset
+from lofar.common.subprocess_utils import communicate_returning_strings
+from lofar.messaging import DEFAULT_BROKER, DEFAULT_BUSNAME
+
+from lofar.sas.resourceassignment.resourceassignmentservice.rpc import RARPC
+
+from lofar.sas.otdb.otdbrpc import OTDBRPC
+from lofar.messaging import setQpidLogLevel
+
+logger = logging.getLogger(__name__)
+
+def getSlurmStats(otdb_id):
+    cmd = ['ssh', 'lofarsys@head.cep4.control.lofar', 'sacct', '-o', 'jobid,cputimeraw,nnodes', '--name=%s' % otdb_id, '-S', '2016-01-01', '-X', '--parsable2', '-n']
+    logger.debug(' '.join(cmd))
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = communicate_returning_strings(proc)
+
+    if proc.returncode == 0:
+        try:
+            logger.debug(out.strip())
+            lines = [l.strip() for l in out.strip().split('\n')]
+            last_job_line = lines[-1]
+            parts = last_job_line.split('|')
+            jobid = int(parts[0])
+            cputimeraw = int(parts[1])
+            nnodes = int(parts[2])
+            clusterusage = nnodes / 50.0
+            return jobid, cputimeraw, nnodes, clusterusage
+        except Exception as e:
+            logger.error(e)
+    else:
+        logger.error(err)
+
+    return 0, 0, 0, 0
+
+def main():
+    # make sure we run in UTC timezone
+    import os
+    os.environ['TZ'] = 'UTC'
+
+    # Check the invocation arguments
+    parser = OptionParser('povero [options] <output_filename.csv>',
+                          description='compute P over O for CEP4 pipelines')
+    parser.add_option('-q', '--broker', dest='broker', type='string', default=DEFAULT_BROKER, help='Address of the qpid broker, default: %default')
+    parser.add_option('--busname', dest='busname', type='string', default=DEFAULT_BUSNAME, help='Name of the bus exchange on the qpid broker on which the services listen, default: %default')
+    parser.add_option('-o', '--otdb_id', dest='otdb_id', type='int', default=None, help='compute P/O for the given pipeline otdb_id')
+    parser.add_option('-V', '--verbose', dest='verbose', action='store_true', help='verbose logging')
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        print parser.usage
+        exit(1)
+
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                        level=logging.DEBUG if options.verbose else logging.INFO)
+    setQpidLogLevel(logging.INFO)
+
+    ra = RARPC(busname=options.busname, broker=options.broker)
+    otdb = OTDBRPC(busname=options.busname, broker=options.broker)
+
+    with ra, otdb:
+        pipelines = [ra.getTask(otdb_id=options.otdb_id)] if options.otdb_id else ra.getTasks(cluster='CEP4', task_type='pipeline', task_status='finished')
+
+        with open(args[0], 'w') as csv_file:
+            line = "Project, OBS otdb_id, OBS name, #demix_always_sources, demix_always_sources, #demix_if_needed_sources, demix_if_needed_sources, antennaArray, antennaSet, OBS starttime (UTC), OBS duration [s], PL slurm_id, PL otdb_id, PL name, #subbands, type, cluster usage [%], PL starttime (UTC), PL duration [s], PL duration_norm [s], P/O"
+            csv_file.write(line + "\n")
+            print line
+
+            for i, pl in enumerate(pipelines):
+                jobid, cputimeraw, nnodes, clusterusage = getSlurmStats(pl['otdb_id'])
+
+                if nnodes == 0:
+                    continue
+
+                pl_full_cluster_duration = int(clusterusage * pl['duration'])
+
+                pl_parset = parameterset(otdb.taskGetSpecification(otdb_id=pl['otdb_id'])['specification'])
+                pl_name = pl_parset.getString('ObsSW.Observation.Scheduler.taskName', 'unknown')
+                pl_sub_type = pl_parset.getString('ObsSW.Observation.processSubtype')
+                dp_types = ['Correlated', 'CoherentStokes', 'IncoherentStokes']
+                dp_type = [dp_type for dp_type in dp_types if pl_parset.getBool('ObsSW.Observation.DataProducts.Input_%s.enabled' % dp_type)][0]
+                pl_nrofsubbands = len(pl_parset.getString('ObsSW.Observation.DataProducts.Input_%s.filenames' % dp_type).split(','))
+
+                pl_demix_always_sources = pl_parset.getString('ObsSW.Observation.ObservationControl.PythonControl.PreProcessing.demix_always', '[]')
+                pl_demix_always_sources = pl_demix_always_sources.replace('[','').replace(']','')
+                pl_demix_always_sources = [x.strip() for x in pl_demix_always_sources.split(',')] if pl_demix_always_sources else []
+
+                pl_demix_if_needed_sources = pl_parset.getString('ObsSW.Observation.ObservationControl.PythonControl.PreProcessing.demix_if_needed', '[]')
+                pl_demix_if_needed_sources = pl_demix_if_needed_sources.replace('[','').replace(']','')
+                pl_demix_if_needed_sources = [x.strip() for x in pl_demix_if_needed_sources.split(',')] if pl_demix_if_needed_sources else []
+
+                pred_observations = ra.getTasks(task_ids=pl['predecessor_ids'], task_type='observation', task_status='finished')
+
+                for pred_obs in pred_observations:
+                    pred_obs_parset = parameterset(otdb.taskGetSpecification(otdb_id=pred_obs['otdb_id'])['specification'])
+
+                    obs_antennaArray = pred_obs_parset.getString('ObsSW.Observation.antennaArray')
+                    obs_antennaSet = pred_obs_parset.getString('ObsSW.Observation.antennaSet')
+                    projectName = pred_obs_parset.getString('ObsSW.Observation.Campaign.name', 'unknown')
+                    obs_name = pred_obs_parset.getString('ObsSW.Observation.Scheduler.taskName', 'unknown')
+
+                    values = [projectName,
+                              pred_obs['otdb_id'],
+                              obs_name,
+                              len(pl_demix_always_sources),
+                              ';'.join(pl_demix_always_sources),
+                              len(pl_demix_if_needed_sources),
+                              ';'.join(pl_demix_if_needed_sources),
+                              obs_antennaArray,
+                              obs_antennaSet,
+                              pred_obs['starttime'],
+                              pred_obs['duration'],
+                              jobid,
+                              pl['otdb_id'],
+                              pl_name,
+                              pl_nrofsubbands,
+                              pl_sub_type,
+                              100.0*clusterusage,
+                              pl['starttime'],
+                              pl['duration'],
+                              pl_full_cluster_duration,
+                              '%.2f' % (pl_full_cluster_duration/pred_obs['duration'])]
+                    line = ', '.join([str(x) for x in values])
+                    csv_file.write(line + '\n')
+                    print '%.1f%%: ' % (100.0*i/len(pipelines)), line
+
+        print "Done!"
+
+if __name__ == '__main__':
+    main()

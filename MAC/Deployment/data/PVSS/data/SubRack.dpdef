@@ -1,0 +1,40 @@
+SPU.status			:ObjectStatus
+SPU.Vhba			float
+SPU.Vlba			float
+SPU.Vspu			float
+SPU.Vdig			float
+SPU.temperature			float
+clockBoard.status		:ObjectStatus
+clockBoard.Vfsp			float
+clockBoard.Vclock		float
+clockBoard.version		string
+clockBoard.freq			int
+clockBoard.lock160		bool
+clockBoard.lock200		bool
+clockBoard.temperature		float
+
+#for trending purpose
+compressed.SPU.avg_Vhba	float
+compressed.SPU.avg_Vlba	float
+compressed.SPU.avg_Vdig	float
+compressed.SPU.avg_temperature	float
+compressed.clockBoard.avg_Vfsp	float
+compressed.clockBoard.avg_Vclock	float
+compressed.clockBoard.avg_freq	float
+compressed.clockBoard.avg_temperature	float
+
+!# DpValue
+!ElementName	TypeName	_original.._value
+!_dt_SubRack.Leaf	_DynamicDatapoints	"_mp_SubRack.SPU.Vhba:_archive", "_mp_SubRack.SPU.Vlba:_archive", "_mp_SubRack.SPU.Vdig:_archive", "_mp_SubRack.SPU.temperature:_archive", "_mp_SubRack.clockBoard.Vfsp:_archive", "_mp_SubRack.clockBoard.Vclock:_archive", "_mp_SubRack.clockBoard.freq:_archive", "_mp_SubRack.clockBoard.temperature:_archive", "_mp_SubRack.compressed.SPU.avg_Vhba:_archive", "_mp_SubRack.compressed.SPU.avg_Vlba:_archive", "_mp_SubRack.compressed.SPU.avg_Vdig:_archive", "_mp_SubRack.compressed.SPU.avg_temperature:_archive", "_mp_SubRack.compressed.clockBoard.avg_Vfsp:_archive", "_mp_SubRack.compressed.clockBoard.avg_Vclock:_archive", "_mp_SubRack.compressed.clockBoard.avg_freq:_archive", "_mp_SubRack.compressed.clockBoard.avg_temperature:_archive", "_mp_SubRack.compressed.SPU.avg_Vhba:_dp_fct", "_mp_SubRack.compressed.SPU.avg_Vlba:_dp_fct", "_mp_SubRack.compressed.SPU.avg_Vdig:_dp_fct", "_mp_SubRack.compressed.SPU.avg_temperature:_dp_fct", "_mp_SubRack.compressed.clockBoard.avg_Vfsp:_dp_fct", "_mp_SubRack.compressed.clockBoard.avg_Vclock:_dp_fct", "_mp_SubRack.compressed.clockBoard.avg_freq:_dp_fct", "_mp_SubRack.compressed.clockBoard.avg_temperature:_dp_fct"
+!_dt_SubRack.DynamicAttribute	_DynamicDatapoints	"_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none", "_da_none"
+
+!# DpFunction
+!ElementName	TypeName	_dp_fct.._type	_dp_fct.._param	_dp_fct.._fct	_dp_fct.._global	_dp_fct.._old_new_compare	_dp_fct.._stat_type	_dp_fct.._interval	_dp_fct.._time	_dp_fct.._day_of_week	_dp_fct.._day	_dp_fct.._month	_dp_fct.._delay	_dp_fct.._read_archive	_dp_fct.._inv_func	_dp_fct.._inv_limit	_dp_fct.._def_func	_dp_fct.._def_limit	_dp_fct.._user1_func	_dp_fct.._user1_limit	_dp_fct.._user2_func	_dp_fct.._user2_limit	_dp_fct.._user3_func	_dp_fct.._user3_limit	_dp_fct.._user4_func	_dp_fct.._user4_limit	_dp_fct.._user5_func	_dp_fct.._user5_limit	_dp_fct.._user6_func	_dp_fct.._user6_limit	_dp_fct.._user7_func	_dp_fct.._user7_limit	_dp_fct.._user8_func	_dp_fct.._user8_limit	_dp_fct.._interm_res	_dp_fct.._interm_res_cyc
+!_mp_SubRack.compressed.SPU.avg_Vhba	SubRack	63	_mp_SubRack.SPU.Vhba:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.SPU.avg_Vlba	SubRack	63	_mp_SubRack.SPU.Vlba:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.SPU.avg_Vdig	SubRack	63	_mp_SubRack.SPU.Vdig:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.SPU.avg_temperature	SubRack	63	_mp_SubRack.SPU.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.clockBoard.avg_Vfsp	SubRack	63	_mp_SubRack.clockBoard.Vfsp:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.clockBoard.avg_Vclock	SubRack	63	_mp_SubRack.clockBoard.Vclock:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.clockBoard.avg_freq	SubRack	63	_mp_SubRack.clockBoard.freq:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10
+!_mp_SubRack.compressed.clockBoard.avg_temperature	SubRack	63	_mp_SubRack.clockBoard.temperature:_original.._value	"p1"		0	8	300	0	-1	-1	-1	0	1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	0	-1	1	10

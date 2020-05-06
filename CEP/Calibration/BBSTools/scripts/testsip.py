@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Python class for End-to-end tests of BBS
 #
@@ -63,16 +63,16 @@ class testsip:
     # Show current Test settings
     #
     def showCommon(self):
-        print "Current test settings"
-        print "MS           = ", self.MS
-        print "Parset       = ", self.parset
-        print "test_MS      = ", self.test_MS
-        print "gds          = ", self.gds
-        print "wd           = ", self.wd
-        print "host         = ", self.host
-        print "clusterdesc  = ", self.clusterdesc
-        print "columns      = ", self.columns
-        print "acceptancelimit = ", self.acceptancelimit
+        print("Current test settings")
+        print("MS           = ", self.MS)
+        print("Parset       = ", self.parset)
+        print("test_MS      = ", self.test_MS)
+        print("gds          = ", self.gds)
+        print("wd           = ", self.wd)
+        print("host         = ", self.host)
+        print("clusterdesc  = ", self.clusterdesc)
+        print("columns      = ", self.columns)
+        print("acceptancelimit = ", self.acceptancelimit)
         
     
     # Get the corresponding clusterdesc file for this host (CEP1 or CEP2)
@@ -86,7 +86,7 @@ class testsip:
             clusterdesc = "/Users/duscha/Cluster/Config/mbp.clusterdesc"
             self.dbserver = "localhost"         # on MBP we also have a different database server
         else:
-            print "test_bbs: unknown host ", self.host, ". No corresponding clusterdesc file found."
+            print("test_bbs: unknown host ", self.host, ". No corresponding clusterdesc file found.")
             exit(0)
         
         return clusterdesc 
@@ -102,27 +102,27 @@ class testsip:
     #
     def checkFiles(self):
         if self.verbose:
-            print bcolors.BLUE + "Checking test files " + bcolors.ENDC + self.MS + ", " + self.parset + ", " + self.skymodel      # DEBUG
+            print(bcolors.BLUE + "Checking test files " + bcolors.ENDC + self.MS + ", " + self.parset + ", " + self.skymodel)      # DEBUG
         
         if os.path.isfile(self.parset) == False:                     # parset
-            print "Fatal: parset ", self.parset, "not found."
+            print("Fatal: parset ", self.parset, "not found.")
             self.end()
         if os.path.isfile(self.skymodel) == False:                   # skymodel
-            print bcolor.FAIL + "Fatal: Skymodel " + self.skymodel + "not found." + bcolor.ENDC
+            print(bcolor.FAIL + "Fatal: Skymodel " + self.skymodel + "not found." + bcolor.ENDC)
             self.end()
         if self.MS.find('.gds') == True:     # If MS was given as a gds
             files = self.parseGDS()
             
             for file in files:
                 if os.path.isdir(file) == False:
-                    print bcolor.FAIL + "Fatal: MS " + file + " not found." + bcolor.ENDC
+                    print(bcolor.FAIL + "Fatal: MS " + file + " not found." + bcolor.ENDC)
                     self.end()
         else:
             if os.path.isdir(MS) == False:                          # MS
-                print "Fatal: MS ", MS, "not found."
+                print("Fatal: MS ", MS, "not found.")
                 exit(0)
         if os.path.isfile(self.clusterdesc) == False:
-            print "Fatal: clusterdesc ", self.clusterdesc, "not found."
+            print("Fatal: clusterdesc ", self.clusterdesc, "not found.")
             self.end()
 
 
@@ -132,9 +132,9 @@ class testsip:
     #
     def copyOriginalFiles(self):
         if self.verbose:
-            print bcolors.OKBLUE + "Copying orignal files." + bcolors.ENDC       
-            print "self.MS = ", self.MS                   # DEBUG
-            print "self.test_MS = ", self.test_MS         # DEBUG
+            print(bcolors.OKBLUE + "Copying orignal files." + bcolors.ENDC)       
+            print("self.MS = ", self.MS)                   # DEBUG
+            print("self.test_MS = ", self.test_MS)         # DEBUG
         
         # Depending on a single MS or given a list of MS
         # copy the/or each MS file (these are directories, so use shutil.copytree)
@@ -146,7 +146,7 @@ class testsip:
                 destname = 'test_' + file 
                 shutil.copytree(file, destname)
         else:
-            print bcolor.FAIL + "Fatal: No MS or gds provided." + bcolor.ENDC
+            print(bcolor.FAIL + "Fatal: No MS or gds provided." + bcolor.ENDC)
             self.end()
                 
      
@@ -170,7 +170,7 @@ class testsip:
     #
     def makeGDS(self):
         if self.verbose:
-            print bcolors.OKBLUE + "Creating GDS file " + self.gds + bcolors.ENDC               # DEBUG
+            print(bcolors.OKBLUE + "Creating GDS file " + self.gds + bcolors.ENDC)               # DEBUG
         
         ret = 0
         vdslist = []        # list of vds files created from self.test_MS
@@ -182,7 +182,7 @@ class testsip:
             os.popen('makevds' + ' ' + arguments)
             #ret=subprocess.call(['makevds', arguments])            
             if ret!=0:
-                print bcolors.WARNING + "Warning: makevds failed for " + self.test_MS + bcolors.ENDC
+                print(bcolors.WARNING + "Warning: makevds failed for " + self.test_MS + bcolors.ENDC)
             else:
                 vdslist.append(self.test_MS + '.vds')
         elif insinstance(self.test_MS, list):
@@ -192,11 +192,11 @@ class testsip:
                 os.popen('makevds ' + arguments) 
                 #ret=subprocess.call(['makevds', arguments])
                 if ret!=0:
-                    print bcolors.WARNING + "Warning: makevds failed for " + self.test_M + bcolors.ENDC
+                    print(bcolors.WARNING + "Warning: makevds failed for " + self.test_M + bcolors.ENDC)
                 else:                
                     vdslist.append(file + '.vds')
         else:
-            print bcolors.FATAL + "Fatal: MS filename is invalid." + bcolors.ENDC
+            print(bcolors.FATAL + "Fatal: MS filename is invalid." + bcolors.ENDC)
 
         # Now create the gds
         self.gds=self.test_MS + ".gds"
@@ -214,7 +214,7 @@ class testsip:
     #
     def parseGDS(self):
         if self.verbose:
-            print "parseGDS()"                  # DEBUG
+            print("parseGDS()")                  # DEBUG
     
         gds_fh = open(self.gds , "r")
         lines = gds_fd.readlines()   
@@ -233,7 +233,7 @@ class testsip:
     # Execute BBS calibration through the calibrate script
     #
     def runBBS(self):    
-        print bcolors.OKBLUE + "Running BBS through calibrate script." + bcolors.ENDC
+        print(bcolors.OKBLUE + "Running BBS through calibrate script." + bcolors.ENDC)
         arguments = '-v -f -n --clean --key bbstest --cluster-desc ' + self.clusterdesc + ' --db ' + self.dbserver + ' --db-user ' + self.dbuser + ' ' + self.gds + ' ' + self.parset + ' ' + self.skymodel + ' ' + self.wd
         command = ['calibrate', arguments] # '-v', '-f', '--clean', '--key bbstest', '--cluster-desc ' + self.clusterdesc, 
 #        '--db ' + self.dbserver, '--db-user ' + self.dbuser, self.gds, self.parset, self.skymodel,  self.wd]
@@ -243,14 +243,14 @@ class testsip:
         
         proc = subprocess.Popen('calibrate ' + arguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in proc.stdout.readlines():
-            print line
+            print(line)
         ret = proc.wait()
  
         #ret=subprocess.call(command)       
         if ret==0:
-            print bcolors.OKBLUE + "BBS calibration exited successfully." + bcolors.ENDC
+            print(bcolors.OKBLUE + "BBS calibration exited successfully." + bcolors.ENDC)
         else:
-            print bcolors.FAIL + "Fatal: BBS terminated with an error." + bcolors.ENDC
+            print(bcolors.FAIL + "Fatal: BBS terminated with an error." + bcolors.ENDC)
             self.passed=False
             self.end()
     
@@ -260,7 +260,7 @@ class testsip:
     #
     def deleteTestFiles(self):
         if self.verbose:
-            print bcolors.OKBLUE + "Deleting test files." + bcolors.ENDC 
+            print(bcolors.OKBLUE + "Deleting test files." + bcolors.ENDC) 
 
         # Depending on a single MS or given a list of MS
         # copy the/or each MS file (these are directories, so use shutil.copytree)
@@ -273,7 +273,7 @@ class testsip:
                 shutil.rmtree(file)
                 os.remove(file + ".vds")
         else:
-            print bcolor.FAIL + "Fatal: Error MS or gds provided." + bcolors.ENDC
+            print(bcolor.FAIL + "Fatal: Error MS or gds provided." + bcolors.ENDC)
             self.end()
 
         os.remove(self.test_MS + ".gds")        # Delete test_<>_.gds file
@@ -289,29 +289,29 @@ class testsip:
     # Display summary of results dictionary
     #
     def printResults(self, results):
-        print bcolors.OKBLUE + "Detailed test results:" + bcolors.ENDC           
+        print(bcolors.OKBLUE + "Detailed test results:" + bcolors.ENDC)           
         
-        keys=results.keys()                 # get keys of dictionary
+        keys=list(results.keys())                 # get keys of dictionary
         for key in keys:
             if results[key]==True:
-                print bcolors.OKGREEN + "Test " + bcolors.WARNING + key + bcolors.OKGREEN + " passed." + bcolors.ENDC 
+                print(bcolors.OKGREEN + "Test " + bcolors.WARNING + key + bcolors.OKGREEN + " passed." + bcolors.ENDC) 
             else:
-                print bcolors.FAIL + "Test " + bcolors.WARNING + key + bcolors.FAIL + " failed." + bcolors.ENDC            
+                print(bcolors.FAIL + "Test " + bcolors.WARNING + key + bcolors.FAIL + " failed." + bcolors.ENDC)            
 
         
     # Display the result of the overall test
     #
     def printResult(self):
         if self.passed:
-            print bcolors.OKGREEN + "Test " + sys.argv[0] + " passed." + bcolors.ENDC 
+            print(bcolors.OKGREEN + "Test " + sys.argv[0] + " passed." + bcolors.ENDC) 
         else:
-            print bcolors.FAIL + "Test " + sys.argv[0] + " failed." + bcolors.ENDC
+            print(bcolors.FAIL + "Test " + sys.argv[0] + " failed." + bcolors.ENDC)
 
     
     # Check individual results and set overall self.passed to True or False accordingly
     #
     def checkResults(self, results):
-        keys=results.keys()                 # get keys of dictionary
+        keys=list(results.keys())                 # get keys of dictionary
         for key in keys:
             if results[key]==True:            
                 self.passed=True
@@ -323,7 +323,7 @@ class testsip:
     #
     def end(self):
         self.printResult()
-        print bcolors.OKBLUE + sys.argv[0] + " exiting." + bcolors.ENDC
+        print(bcolors.OKBLUE + sys.argv[0] + " exiting." + bcolors.ENDC)
         exit(0)
 
 
@@ -358,14 +358,14 @@ class testsip:
     #
     def compareColumn(self, columnname, taql=False):
         if self.verbose:
-            print "Comparing "+  bcolors.OKBLUE + columnname + bcolors.ENDC + " columns." # DEBUG
+            print("Comparing "+  bcolors.OKBLUE + columnname + bcolors.ENDC + " columns.") # DEBUG
 
         passed=False
         errorcount=0                                # counter that counts rows with differying columns
 
         if taql==False:                             # If taql is not to be used for comparison, use numpy difference
           if self.debug:
-            print "compareColumn() using numpy" 
+            print("compareColumn() using numpy") 
 
           reftab=pt.table(self.MS)                # Open reference MS in readonly mode
           testtab=pt.table(self.test_MS)          # Open test MS in readonly mode     
@@ -374,7 +374,7 @@ class testsip:
           tc_test=testtab.col(columnname)         # get column in test table as numpy array
   
           nrows=testtab.nrows()                  
-          for i in progressbar( range(0, nrows-1), "comparing " + columnname + " ", 60):
+          for i in progressbar( list(range(0, nrows-1)), "comparing " + columnname + " ", 60):
               difference = numpy.max(abs(tc_test[i] - tc_ref[i]))    # Use numpy's ability to substract arrays from each other
               #sum=numpy.sum(difference)
               
@@ -388,7 +388,7 @@ class testsip:
           testtab.close()
         else:
             if self.debug:
-              print "compareColumn() using TaQL"          # DEBUG
+              print("compareColumn() using TaQL")          # DEBUG
   
             self.addRefColumnToTesttab(columnname)      # add reference table column as forward column
         
@@ -404,7 +404,7 @@ class testsip:
             errorcount=pt.taql(taqlcmd).nrows()            
             
             if self.verbose or self.debug:
-              print "errorcount = ", errorcount         # display number of errors=No. of rows
+              print("errorcount = ", errorcount)         # display number of errors=No. of rows
 
             # If test_MS COLUMN and reference COLUMN have any discrepancy...            
             if errorcount > 0:
@@ -418,7 +418,7 @@ class testsip:
     #
     def addRefColumnToTesttab(self, columnname):
         if self.verbose:
-            print bcolors.OKBLUE + "Forwarding reference column " + bcolors.WARNING + columnname + bcolors.OKBLUE + " to " + self.test_MS + bcolors.ENDC           # DEBUG
+            print(bcolors.OKBLUE + "Forwarding reference column " + bcolors.WARNING + columnname + bcolors.OKBLUE + " to " + self.test_MS + bcolors.ENDC)           # DEBUG
            
         testtab=pt.table(self.test_MS, readonly=False)          # Open test_MS in readonly mode
         reftab=pt.table(self.MS)                  # Open reference MS in readonly mode
@@ -531,7 +531,7 @@ class testsip:
     #
     def getColumnsFromParset(self):
         if self.verbose:
-            print bcolors.OKBLUE + "Reading columns from parset" + bcolors.ENDC
+            print(bcolors.OKBLUE + "Reading columns from parset" + bcolors.ENDC)
         
         parset_fh=open(self.parset, "r")
         lines=parset_fh.readlines()
@@ -553,7 +553,7 @@ class testsip:
     #
     def cleanUpLogs(self):
       if self.debug:
-        print "cleanUpLogs()"      # DEBUG
+        print("cleanUpLogs()")      # DEBUG
 
       logfiles=self.key + "*log*"
       os.remove(logfiles)

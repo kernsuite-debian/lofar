@@ -38,7 +38,7 @@
 #include <Common/lofar_string.h>
 #include <Common/lofar_vector.h>
 
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -110,8 +110,8 @@ MIMExpr::MIMExpr(const IonosphereConfig &config, Scope &scope)
         << itsCoeff.size());
 }
 
-Expr<JonesMatrix>::Ptr MIMExpr::construct(const casa::MPosition &refPosition,
-    const casa::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
+Expr<JonesMatrix>::Ptr MIMExpr::construct(const casacore::MPosition &refPosition,
+    const casacore::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
     const
 {
     PiercePoint::Ptr piercePoint(new PiercePoint(station, direction, itsHeight));
@@ -165,8 +165,8 @@ ExpIonExpr::ExpIonExpr(const IonosphereConfig&, Scope &scope)
     }
 }
 
-Expr<JonesMatrix>::Ptr ExpIonExpr::construct(const casa::MPosition&,
-    const casa::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
+Expr<JonesMatrix>::Ptr ExpIonExpr::construct(const casacore::MPosition&,
+    const casacore::MPosition &station, const Expr<Vector<3> >::ConstPtr &direction)
     const
 {
     PiercePoint::Ptr piercePoint(new PiercePoint(station, direction, itsHeight));

@@ -1,5 +1,5 @@
 #from message import ErrorLevel, NotifyLevel, VerboseLevel, DebugLevel
-import time, os, select, sys, logging, imp
+import time, os, select, sys, logging, importlib
 from lofarpipe.support.pipelinelogging import getSearchingLogger
 
 class CookError(Exception):
@@ -7,7 +7,7 @@ class CookError(Exception):
     def __init__(self, value):
         self.value = value
     def __str__(self):
-        return `self.value`
+        return repr(self.value)
 
 class WSRTCook(object):
     def __init__(self, task, inputs, outputs, logger):
@@ -24,13 +24,13 @@ class PipelineCook(WSRTCook):
     def __init__(self, task, inputs, outputs, logger, recipe_path):
         super(PipelineCook, self).__init__(task, inputs, outputs, logger)
         # Ensures the recipe to be run can be imported from the recipe path
+        self.logger.warn("Ignoring this recipe_path: " + str(recipe_path))
         try:
             try:
-                module_details = imp.find_module(task, recipe_path)
+                module = importlib.import_module("lofarpipe.recipes.master." + task)
             except ImportError:
                 # ...also support lower-cased file names.
-                module_details = imp.find_module(task.lower(), recipe_path)
-            module = imp.load_module(task, *module_details)
+                module = importlib.import_module("lofarpipe.recipes.master." + task.lower())
             self.recipe = None
             try:
                 self.recipe = getattr(module, task)()
@@ -39,7 +39,7 @@ class PipelineCook(WSRTCook):
                 self.recipe = getattr(module, task.capitalize())()
             self.recipe.logger = getSearchingLogger("%s.%s" % (self.logger.name, task))
             self.recipe.logger.setLevel(self.logger.level)
-        except Exception, e:
+        except Exception as e:
             self.logger.exception("Exception caught: " + str(e))
             self.recipe = None
             raise CookError (task + ' can not be loaded')
@@ -54,7 +54,7 @@ class PipelineCook(WSRTCook):
 
     def copy_inputs(self):
         """Ensure inputs are available to the recipe to be run"""
-        for k in self.inputs.keys():
+        for k in list(self.inputs.keys()):
             self.recipe.inputs[k] = self.inputs[k]
 
     def copy_outputs(self):
@@ -62,7 +62,7 @@ class PipelineCook(WSRTCook):
         if self.recipe.outputs == None:
             raise CookError (self.task + ' has no outputs') ## should it have??
         else:
-            for k in self.recipe.outputs.keys():
+            for k in list(self.recipe.outputs.keys()):
                 self.outputs[k] = self.recipe.outputs[k]
 
     def spawn(self):
@@ -98,7 +98,7 @@ class SystemCook(WSRTCook):
         import pty
         try:
             (self._pid, self._child_fd) = pty.fork()
-        except OSError, e:
+        except OSError as e:
             self.logger.error('Unable to fork:' + str(e))
             raise CookError ('fork failed')
         if self._pid == 0: ## the new client
@@ -244,7 +244,7 @@ class SystemCook(WSRTCook):
 
           else:
               self.logger.warn(self.task + ' was aborted with exitstatus: ' + str(self.exitstatus))
-        except Exception, e:
+        except Exception as e:
           self.logger.exception('Exception caught: ' + str(type(Exception)) + ' ' + str(e))
           raise CookError (self.task + ' critical error' + str(type(Exception)) + ' ' + str(e))
 

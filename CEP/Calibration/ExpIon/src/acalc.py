@@ -7,7 +7,7 @@ from math import pi, atan2, degrees, radians
 from numpy import *
 
 # import user modules
-from error import *
+from .error import *
 try:
   import _acalc
 except:
@@ -28,9 +28,9 @@ def factorial( n ):
     if __acalc:
       fac = _acalc.factorial( nn )
     else:
-      fac = long( 1 )
+      fac = int( 1 )
       while ( nn > 0 ):
-        fac = fac * long( nn )
+        fac = fac * int( nn )
         nn = nn - 1
   return fac
 

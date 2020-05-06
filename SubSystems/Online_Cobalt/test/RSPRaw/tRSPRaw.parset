@@ -1,0 +1,137 @@
+Cobalt.realTime = false
+Observation.ObsID = 102030
+Observation.momID = 88
+Cobalt.commandStream = null:
+Observation.startTime = '2013-12-05 14:15:00'
+Observation.stopTime = '2013-12-05 14:15:02'
+Observation.sampleClock = 200
+Observation.nrBitsPerSample = 16
+Cobalt.correctBandPass = true
+Cobalt.correctClocks = true
+Cobalt.BeamFormer.coherentDedisperseChannels = false
+Cobalt.delayCompensation = true
+Observation.referencePhaseCenter = [3826577.066, 461022.948, 5064892.786]
+Observation.antennaArray = HBA
+Observation.antennaSet = HBA_ZERO
+Observation.bandFilter = HBA_110_190
+Observation.nrPolarisations = 2
+Observation.nrBeams = 2
+
+Observation.Beam[0].TiedArrayBeam[0].angle1 = 0.0
+Observation.Beam[0].TiedArrayBeam[0].angle2 = 0.0
+Observation.Beam[0].TiedArrayBeam[0].coherent = true
+Observation.Beam[0].TiedArrayBeam[0].directionType = J2000
+Observation.Beam[0].TiedArrayBeam[0].dispersionMeasure = 0
+Observation.Beam[0].TiedArrayBeam[0].specificationType = manual
+Observation.Beam[0].TiedArrayBeam[0].stationList = []
+Observation.Beam[0].TiedArrayBeam[1].angle1 = 0.9293449206762021
+Observation.Beam[0].TiedArrayBeam[1].angle2 = 0.9525764650544495
+Observation.Beam[0].TiedArrayBeam[1].coherent = false
+Observation.Beam[0].TiedArrayBeam[1].directionType = J2000
+Observation.Beam[0].TiedArrayBeam[1].dispersionMeasure = 0
+Observation.Beam[0].TiedArrayBeam[1].specificationType = manual
+Observation.Beam[0].TiedArrayBeam[1].stationList = []
+Observation.Beam[0].angle1 = 0.9293449206762021
+Observation.Beam[0].angle2 = 0.9525764650544495
+Observation.Beam[0].beamletList = []
+Observation.Beam[0].directionType = J2000
+Observation.Beam[0].duration = 900
+Observation.Beam[0].maximizeDuration = false
+Observation.Beam[0].momID = 88
+Observation.Beam[0].nrTabRings = 0
+Observation.Beam[0].nrTiedArrayBeams = 2
+Observation.Beam[0].startTime =
+Observation.Beam[0].subbandList = [100..101]
+Observation.Beam[0].tabRingSize = 0.0
+Observation.Beam[0].target = B0329+54
+
+Observation.Beam[1].TiedArrayBeam[0].angle1 = 0.0
+Observation.Beam[1].TiedArrayBeam[0].angle2 = 0.0
+Observation.Beam[1].TiedArrayBeam[0].coherent = true
+Observation.Beam[1].TiedArrayBeam[0].directionType = J2000
+Observation.Beam[1].TiedArrayBeam[0].dispersionMeasure = 0
+Observation.Beam[1].TiedArrayBeam[0].specificationType = manual
+Observation.Beam[1].TiedArrayBeam[0].stationList = []
+Observation.Beam[1].TiedArrayBeam[1].angle1 = 0.8293449206762021
+Observation.Beam[1].TiedArrayBeam[1].angle2 = 0.8525764650544495
+Observation.Beam[1].TiedArrayBeam[1].coherent = false
+Observation.Beam[1].TiedArrayBeam[1].directionType = J2000
+Observation.Beam[1].TiedArrayBeam[1].dispersionMeasure = 0
+Observation.Beam[1].TiedArrayBeam[1].specificationType = manual
+Observation.Beam[1].TiedArrayBeam[1].stationList = []
+Observation.Beam[1].angle1 = 0.8293449206762021
+Observation.Beam[1].angle2 = 0.8525764650544495
+Observation.Beam[1].beamletList = []
+Observation.Beam[1].directionType = J2000
+Observation.Beam[1].duration = 900
+Observation.Beam[1].maximizeDuration = false
+Observation.Beam[1].momID = 88
+Observation.Beam[1].nrTabRings = 0
+Observation.Beam[1].nrTiedArrayBeams = 2
+Observation.Beam[1].startTime =
+Observation.Beam[1].subbandList = [200..201]
+Observation.Beam[1].tabRingSize = 0.0
+Observation.Beam[1].target = "-0.1 test offset from Beam0 (B0329+54)"
+
+Observation.AnaBeam.angle1 = 0.9293449206762021
+Observation.AnaBeam.angle2 = 0.9525764650544495
+Observation.AnaBeam.directionType = J2000
+Observation.AnaBeam.duration = 900
+Observation.AnaBeam.maximizeDuration = false
+Observation.AnaBeam.rank = 1
+Observation.AnaBeam.startTime =
+Observation.AnaBeam.target = B0329+54
+
+Cobalt.blockSize=196608
+Observation.VirtualInstrument.stationList = [CS002, CS501]
+
+PIC.Core.CS002HBA0.HBA_ZERO.HBA_110_190.phase0.X =   0.000000e+00
+PIC.Core.CS002HBA0.HBA_ZERO.HBA_110_190.phase0.Y =   0.000000e+00
+PIC.Core.CS002HBA0.HBA_ZERO.HBA_110_190.delay.X  =   6.875965e-06
+PIC.Core.CS002HBA0.HBA_ZERO.HBA_110_190.delay.Y  =   6.876319e-06
+PIC.Core.CS002HBA0.RSP.sources=[file:tRSPRaw_tmp.raw1.udp] # run script will overwrite
+PIC.Core.CS002HBA0.phaseCenter=[3826600.961, 460953.402, 5064881.136]
+
+PIC.Core.CS501HBA0.HBA_ZERO.HBA_110_190.phase0.X =   0.000000e+00
+PIC.Core.CS501HBA0.HBA_ZERO.HBA_110_190.phase0.Y =   0.000000e+00
+PIC.Core.CS501HBA0.HBA_ZERO.HBA_110_190.delay.X  =   1.649378e-05
+PIC.Core.CS501HBA0.HBA_ZERO.HBA_110_190.delay.Y  =   1.649378e-05
+PIC.Core.CS501HBA0.RSP.sources=[file:tRSPRaw_tmp.raw2.udp] # run script will overwrite
+PIC.Core.CS501HBA0.phaseCenter=[3825568.820, 460647.620, 5065683.028]
+
+Observation.Dataslots.CS002HBA0.DataslotList=[0..19]
+Observation.Dataslots.CS002HBA0.RSPBoardList=[20*0]
+Observation.Dataslots.CS501HBA0.DataslotList=[0..19]
+Observation.Dataslots.CS501HBA0.RSPBoardList=[20*0]
+
+Cobalt.Correlator.nrChannelsPerSubband = 64
+Cobalt.Correlator.nrBlocksPerIntegration = 1
+Cobalt.Correlator.nrIntegrationsPerBlock = 1
+
+Cobalt.BeamFormer.flysEye = false
+Cobalt.BeamFormer.nrDelayCompensationChannels = 256
+Cobalt.BeamFormer.nrHighResolutionChannels = 256
+
+Cobalt.BeamFormer.CoherentStokes.nrChannelsPerSubband = 1
+Cobalt.BeamFormer.CoherentStokes.subbandsPerFile = 20
+Cobalt.BeamFormer.CoherentStokes.timeIntegrationFactor = 2
+Cobalt.BeamFormer.CoherentStokes.which = I
+Cobalt.BeamFormer.IncoherentStokes.nrChannelsPerSubband = 16
+Cobalt.BeamFormer.IncoherentStokes.subbandsPerFile = 512
+Cobalt.BeamFormer.IncoherentStokes.timeIntegrationFactor = 4
+Cobalt.BeamFormer.IncoherentStokes.which = IQUV
+
+Observation.DataProducts.Output_Correlated.enabled = false
+Observation.DataProducts.Output_CoherentStokes.enabled = false
+Observation.DataProducts.Output_IncoherentStokes.enabled = false
+
+Observation.DataProducts.Output_RSPRaw.enabled = true
+Observation.DataProducts.Output_RSPRaw.filenames = [L102030_CS002HBA0_0_rsp.raw, L102030_CS501HBA0_0_rsp.raw]
+Observation.DataProducts.Output_RSPRaw.locations = [2*localhost:.]  # NOTE: .run file from test program overrides this value
+
+Observation.Campaign.name="BLA_000"
+Observation.Campaign.title="BLA: the unsearch for Binary Large Asteroids"
+Observation.Campaign.PI="Maze, Dr. Twisted"
+Observation.Campaign.CO_I="Mace, Dr. Peninsula"
+Observation.Campaign.contact="Maze, Dr. Twisted"
+

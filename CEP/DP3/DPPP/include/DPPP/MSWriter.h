@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MSWriter.h 40690 2018-09-03 20:13:20Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

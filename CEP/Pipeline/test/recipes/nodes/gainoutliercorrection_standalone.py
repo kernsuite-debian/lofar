@@ -72,7 +72,7 @@ reqwidths=[2], times=[2], freqs=[1], timestep=[1]
     
     """
     if len(sys.argv) < 4:
-        print usage
+        print(usage)
         sys.exit()
 
     infile, outfile, sigma = sys.argv[1:4]
@@ -81,8 +81,8 @@ reqwidths=[2], times=[2], freqs=[1], timestep=[1]
     parmdb, corrected_data = parmdb._filter_stations_parmdb(infile, outfile, sigma)
 
     if len(sys.argv) == 5 and sys.argv[4][:2] == "-t":
-        print "***********converted values:*******************"
-        for pol, datapoint in corrected_data.iteritems():
-            print datapoint.real
+        print("***********converted values:*******************")
+        for pol, datapoint in corrected_data.items():
+            print(datapoint.real)
 
     sys.exit()

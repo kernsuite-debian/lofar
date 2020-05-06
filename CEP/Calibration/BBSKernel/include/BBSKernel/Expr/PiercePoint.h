@@ -22,7 +22,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PiercePoint.h 26696 2013-09-25 21:24:32Z vdtol $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_PIERCEPOINT_H
 #define LOFAR_BBSKERNEL_EXPR_PIERCEPOINT_H
@@ -35,7 +35,7 @@
 
 #include <BBSKernel/Expr/BasicExpr.h>
 
-#include <measures/Measures/MPosition.h>
+#include <casacore/measures/Measures/MPosition.h>
 
 namespace LOFAR
 {
@@ -51,7 +51,7 @@ public:
     typedef shared_ptr<PiercePoint>         Ptr;
     typedef shared_ptr<const PiercePoint>   ConstPtr;
 
-    PiercePoint(const casa::MPosition &position,
+    PiercePoint(const casacore::MPosition &position,
         const Expr<Vector<3> >::ConstPtr &direction,
         const Expr<Scalar>::ConstPtr &height);
 
@@ -61,7 +61,7 @@ protected:
 
 private:
     // Station position in ITRF coordinates.
-    casa::MPosition     itsPosition;
+    casacore::MPosition     itsPosition;
     // Geodetic longitude (rad), geodetic latittude (rad), and height above the
     // ellipsoid (m) (WGS84) of the station.
     double              itsLon, itsLat, itsHeight;

@@ -5,7 +5,7 @@
 #                                                      s.froehlich@fz-juelich.de
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import os
 import shutil
@@ -137,7 +137,7 @@ class calibrate_stand_alone(LOFARnodeTCP):
             if parsetasfile:
                 nodeparset = Parset()
                 parsetname = os.path.join(work_dir, os.path.basename(infile) + '.parset')
-                for k, v in kwargs.items():
+                for k, v in list(kwargs.items()):
                     nodeparset.add(k, v)
                 nodeparset.writeFile(parsetname)
                 #args.insert(0, parsetname)
@@ -159,11 +159,11 @@ class calibrate_stand_alone(LOFARnodeTCP):
                     catch_segfaults(
                         cmd, work_dir, self.environment, logger
                     )
-            except CalledProcessError, err:
+            except CalledProcessError as err:
                 # CalledProcessError isn't properly propagated by IPython
                 self.logger.error(str(err))
                 return 1
-            except Exception, err:
+            except Exception as err:
                 self.logger.error(str(err))
                 return 1
         # We need some signal to the master script that the script ran ok.
@@ -248,11 +248,11 @@ class calibrate_stand_alone(LOFARnodeTCP):
                 catch_segfaults(
                     cmd, self.work_dir, self.environment, logger
                 )
-        except CalledProcessError, err:
+        except CalledProcessError as err:
             # CalledProcessError isn't properly propagated by IPython
             self.logger.error(str(err))
             return 1
-        except Exception, err:
+        except Exception as err:
             self.logger.error(str(err))
             return 1
 

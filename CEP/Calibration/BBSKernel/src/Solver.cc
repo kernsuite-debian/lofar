@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Solver.cc 17466 2011-02-24 16:41:05Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Solver.h>
@@ -91,7 +91,7 @@ void Solver::reset(const SolverOptions &options)
 
 void Solver::setCoeffIndex(size_t kernelId, const CoeffIndex &local)
 {
-    vector<casa::uInt> &mapping = itsCoeffMapping[kernelId];
+    vector<casacore::uInt> &mapping = itsCoeffMapping[kernelId];
     mapping.resize(local.getCoeffCount());
     for(CoeffIndex::const_iterator it = local.begin(), end = local.end();
         it != end; ++it)

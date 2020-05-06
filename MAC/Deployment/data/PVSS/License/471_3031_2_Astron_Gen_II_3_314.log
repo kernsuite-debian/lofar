@@ -1,0 +1,1674 @@
+
+---------------------------------------------------
+[license]
+code        = "ccu002.control.lofar 60371410767"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/1"
+date        = 2016.09.26;13:29:09,000 
+comment     = "CentOS7 CepCU system CCU002"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS302N.control.lofar 20356783426"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/2"
+date        = 2016.09.29;16:32:35,000 
+comment     = "Core Station CS302N"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "ccu199.control.lofar 20392303325"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/3"
+date        = 2016.10.12;15:24:28,000 
+comment     = "CentOS7 CepCU Test system CCU199"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS001C 40487401365"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/4"
+date        = 2016.11.14;14:52:05,000 
+comment     = "Core Station CS001"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS002C 80413701181"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/5"
+date        = 2016.11.14;14:52:16,000 
+comment     = "Core Station CS002"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS003C 00048188214"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/6"
+date        = 2016.11.14;14:52:23,000 
+comment     = "Core Station CS003"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS004C 70407380971"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/7"
+date        = 2016.11.14;14:52:32,000 
+comment     = "Core Station CS004"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS005C 50385183724"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/8"
+date        = 2016.11.14;14:52:44,000 
+comment     = "Core Station CS005"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS006C 10398981388"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/9"
+date        = 2016.11.14;14:52:52,000 
+comment     = "Core Station CS006"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS017C 20384863330"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/10"
+date        = 2016.11.14;14:53:10,000 
+comment     = "Core Station CS017"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS021C 70351890643"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/11"
+date        = 2016.11.14;14:53:20,000 
+comment     = "Core Station CS021"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS024C 30174117402"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/12"
+date        = 2016.11.14;14:53:30,000 
+comment     = "Core Station CS024"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS026C 30382355968"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/13"
+date        = 2016.11.14;14:53:39,000 
+comment     = "Core Station CS026"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS028C 60609576683"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/14"
+date        = 2016.11.14;14:53:48,000 
+comment     = "Core Station CS028"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS030C 00024204093"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/15"
+date        = 2016.11.14;14:53:59,000 
+comment     = "Core Station CS030"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS031C 90025831567"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/16"
+date        = 2016.11.14;14:54:08,000 
+comment     = "Core Station CS031"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS032C 90005829258"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/17"
+date        = 2016.11.14;14:54:16,000 
+comment     = "Core Station CS032"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS101C 20219032337"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/18"
+date        = 2016.11.14;14:54:33,000 
+comment     = "Core Station CS101"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS007C 10141244340"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/19"
+date        = 2016.11.14;16:55:45,000 
+comment     = "Core Station CS007"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS011C 30196101850"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/20"
+date        = 2016.11.14;16:55:54,000 
+comment     = "Core Station CS011"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS013C 50435732652"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/21"
+date        = 2016.11.14;16:56:01,000 
+comment     = "Core Station CS013"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS103C 60559531459"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/22"
+date        = 2016.11.14;16:56:12,000 
+comment     = "Core Station CS103"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS201C 40232323906"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/23"
+date        = 2016.11.14;16:58:42,000 
+comment     = "Core Station CS201"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS301C 30396902015"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/24"
+date        = 2016.11.14;16:58:49,000 
+comment     = "Core Station CS301"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS401C 30510700066"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/25"
+date        = 2016.11.14;16:58:56,000 
+comment     = "Core Station CS401"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS501C 40243723397"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/26"
+date        = 2016.11.14;16:59:06,000 
+comment     = "Core Station CS501"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS106C 50391158833"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/27"
+date        = 2016.11.15;15:49:50,000 
+comment     = "Remote Station RS106"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS205C 80230454941"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/28"
+date        = 2016.11.15;15:50:10,000 
+comment     = "Remote Station RS205"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS305C 40346811362"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/29"
+date        = 2016.11.15;15:50:19,000 
+comment     = "Remote Station RS305"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS306C 20562393486"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/30"
+date        = 2016.11.15;15:50:26,000 
+comment     = "Remote Station RS306"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS307C 40518933076"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/31"
+date        = 2016.11.15;15:50:34,000 
+comment     = "Remote Station RS307"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS406C 20117778269"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/32"
+date        = 2016.11.15;15:50:47,000 
+comment     = "Remote Station RS406"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS503C 10087888378"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/33"
+date        = 2016.11.15;15:51:01,000 
+comment     = "Remote Station RS503"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "CS302C 40088597708"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/34"
+date        = 2016.11.16;09:50:56,000 
+comment     = "Core Station CS302"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS409C 40165037181"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/35"
+date        = 2016.11.16;10:04:03,000 
+comment     = "Remote Station RS409"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS508C 00600184038"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/36"
+date        = 2016.11.16;10:04:13,000 
+comment     = "Remote Station RS508"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS310C 40078423206"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/37"
+date        = 2016.11.16;10:54:04,000 
+comment     = "Remote Station RS310"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS509C 80318741819"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/38"
+date        = 2016.11.16;11:21:55,000 
+comment     = "Remote Station RS509"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS407C 30006981720"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/39"
+date        = 2016.11.16;13:09:07,000 
+comment     = "Remote Station RS407"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS210C 10541896240"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/40"
+date        = 2016.11.16;13:18:57,000 
+comment     = "Remote Station RS210"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "RS208C 20341226783"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/41"
+date        = 2016.11.16;15:01:05,000 
+comment     = "Remote Station RS208"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE601C 80363394541"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/42"
+date        = 2016.12.01;09:29:48,000 
+comment     = "International Station DE601"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE602C 50280351923"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/43"
+date        = 2016.12.01;10:00:01,000 
+comment     = "International Station DE602"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE603C 80008197942"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/44"
+date        = 2016.12.01;10:00:46,000 
+comment     = "International Station DE603"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE604C 40214548415"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/45"
+date        = 2016.12.01;10:01:26,000 
+comment     = "International Station DE604"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE605C 80000189686"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/46"
+date        = 2016.12.01;10:02:15,000 
+comment     = "International Station DE605"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "FR606C 50591001801"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/47"
+date        = 2016.12.01;10:03:02,000 
+comment     = "International Station FR606"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "SE607C 70292178606"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/48"
+date        = 2016.12.01;10:03:53,000 
+comment     = "International Station SE607"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "SE607C 30484415803"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/49"
+date        = 2016.12.01;10:05:37,000 
+comment     = "International Station SE607"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "UK608C 60029677092"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/50"
+date        = 2016.12.01;10:06:52,000 
+comment     = "International Station UK608"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "DE609C 30297639650"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/51"
+date        = 2016.12.01;10:07:40,000 
+comment     = "International Station DE609"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "PL610C 90587287781"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/52"
+date        = 2016.12.01;10:08:34,000 
+comment     = "International Station PL610"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "PL611C 30098655051"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/53"
+date        = 2016.12.01;10:09:14,000 
+comment     = "International Station PL611"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+
+
+---------------------------------------------------
+[license]
+code        = "PL612C 30213328208"
+version     = 31400002
+sn          = "471_3031_2_Astron_Gen_II_3_314/54"
+date        = 2016.12.01;10:09:58,000 
+comment     = "International Station PL612"
+expire      = 0000.00.00;00:00:00,000 
+redundancy  = 0
+ui          = 2
+para        = 1
+dde         = 5
+event       = 1
+ios         = 4000
+ssi         = 0
+api         = 80
+excelreport = 5
+http        = 0
+infoserver  = 1000
+comcenter   = 5
+maintenance = 1
+scheduler   = 1
+recipe      = 1
+distributed = 255
+uifix       = 0
+parafix     = 0
+pararemote  = 0
+ctrlext     = 1
+update      = 0
+

@@ -22,20 +22,20 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PiercePoint.cc 26696 2013-09-25 21:24:32Z vdtol $
+//# $Id$
 
 #include <lofar_config.h>
 
 #include <BBSKernel/Expr/PiercePoint.h>
 
-#include <casa/BasicSL/Constants.h>
-#include <measures/Measures/MCPosition.h>
-#include <measures/Measures/MeasConvert.h>
+#include <casacore/casa/BasicSL/Constants.h>
+#include <casacore/measures/Measures/MCPosition.h>
+#include <casacore/measures/Measures/MeasConvert.h>
 
-#include <measures/Measures/MDirection.h>
-#include <measures/Measures/MCDirection.h>
-#include <measures/Measures/MEpoch.h>
-#include <measures/Measures/MeasFrame.h>
+#include <casacore/measures/Measures/MDirection.h>
+#include <casacore/measures/Measures/MCDirection.h>
+#include <casacore/measures/Measures/MEpoch.h>
+#include <casacore/measures/Measures/MeasFrame.h>
 
 #include <Common/lofar_iomanip.h>
 
@@ -51,12 +51,12 @@ const double earth_ellipsoid_b2 = earth_ellipsoid_b*earth_ellipsoid_b;
 const double earth_ellipsoid_e2 = (earth_ellipsoid_a2 - earth_ellipsoid_b2) / earth_ellipsoid_a2;
 
 
-PiercePoint::PiercePoint(const casa::MPosition &position,
+PiercePoint::PiercePoint(const casacore::MPosition &position,
     const Expr<Vector<3> >::ConstPtr &direction,
     const Expr<Scalar>::ConstPtr &height)
     :   BasicBinaryExpr<Vector<3>, Scalar, Vector<4> >(direction, height),
-        itsPosition(casa::MPosition::Convert(position,
-            casa::MPosition::ITRF)())
+        itsPosition(casacore::MPosition::Convert(position,
+            casacore::MPosition::ITRF)())
 {
 }
 
@@ -81,7 +81,7 @@ const Vector<4>::View PiercePoint::evaluateImpl(const Grid &grid,
     double h = height().getDouble();
 
     // Get station position in ITRF coordinates.
-    const casa::MVPosition &mPosition = itsPosition.getValue();
+    const casacore::MVPosition &mPosition = itsPosition.getValue();
     double stationX = mPosition(0);
     double stationY = mPosition(1);
     double stationZ = mPosition(2);

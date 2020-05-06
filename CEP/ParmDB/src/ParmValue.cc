@@ -18,14 +18,14 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmValue.cc 29042 2014-04-23 08:48:38Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmValue.h>
 #include <Common/LofarTypes.h>
-#include <casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Matrix.h>
 
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 namespace LOFAR {
@@ -76,13 +76,13 @@ namespace BBS {
     itsValues = value;
   }
 
-  void ParmValue::setCoeff (const casa::Array<double>& values)
+  void ParmValue::setCoeff (const casacore::Array<double>& values)
   {
     itsValues.assign (values);
   }
 
   void ParmValue::setScalars (const Grid& grid,
-                              const casa::Array<double>& values)
+                              const casacore::Array<double>& values)
   {
     ASSERT (int(grid.nx()) == values.shape()[0]  &&
             int(grid.ny()) == values.shape()[1]);
@@ -90,7 +90,7 @@ namespace BBS {
     itsGrid = grid;
   }
 
-  void ParmValue::setErrors (const casa::Array<double>& errors)
+  void ParmValue::setErrors (const casacore::Array<double>& errors)
   {
     // Check that the errors have the same shape as the values.
     ASSERT (errors.shape().isEqual (itsValues.shape()));
@@ -106,7 +106,7 @@ namespace BBS {
   {
     // No need to rescale if polynomial did not have a domain
     // or if the axes have length 1 and others match.
-    casa::Matrix<double> coeff(getValues());
+    casacore::Matrix<double> coeff(getValues());
     if (oldDomain.empty()  ||  coeff.size() == 1  ||
         (coeff.nrow() == 1  &&  sy == oldDomain.lowerY()  &&
          ey == oldDomain.upperY())  ||
@@ -139,12 +139,12 @@ namespace BBS {
   // So for each i,j,p,q each new coeff(p,q) gets terms
   //  a[i,j] * (i p) * sx**p * ox**(i-p)) * (j q) * sy**q * oy**(j-q))
   // The factors sx**p and sy**q are independent of i,j and are applied later.
-  casa::Matrix<double> ParmValue::scale2 (const casa::Matrix<double>& coeff,
+  casacore::Matrix<double> ParmValue::scale2 (const casacore::Matrix<double>& coeff,
                                           double offx, double offy,
                                           double scalex, double scaley)
   {
     // Fill the Pascal triangle (till order 10) if not done yet.
-    static casa::Matrix<double> pascal;
+    static casacore::Matrix<double> pascal;
     if (pascal.empty()) {
       fillPascal (pascal, 10);
     }
@@ -152,7 +152,7 @@ namespace BBS {
     int nx = coeff.shape()[0];
     int ny = coeff.shape()[1];
     ASSERT (nx<int(pascal.nrow()) && ny<int(pascal.nrow()));
-    casa::Matrix<double> scoeff(coeff.shape(), 0.);
+    casacore::Matrix<double> scoeff(coeff.shape(), 0.);
     for (int iy=0; iy<ny; ++iy) {
       for (int ix=0; ix<nx; ++ix) {
         double offpy= coeff(ix,iy);
@@ -178,7 +178,7 @@ namespace BBS {
     return scoeff;
   }
 
-  void ParmValue::fillPascal (casa::Matrix<double>& pascal, int order)
+  void ParmValue::fillPascal (casacore::Matrix<double>& pascal, int order)
   {
     // pascal(j,i) gives (i over j).
     pascal.resize (order, order);

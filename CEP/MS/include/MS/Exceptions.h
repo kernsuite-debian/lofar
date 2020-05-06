@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Exceptions.h 21558 2012-07-12 09:35:39Z loose $
+//# $Id$
 
 #ifndef LOFAR_MS_EXCEPTIONS_H
 #define LOFAR_MS_EXCEPTIONS_H

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tSystemUtil.cc 16281 2010-09-06 11:06:20Z loose $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -31,6 +31,7 @@
 #include <Common/lofar_iomanip.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <climits>
 
 #define CHECK(cond)                      \
   do {                                   \
@@ -109,15 +110,48 @@ void testDirnameBasename()
   for(size_t i = 0; i < sizeof(tests)/sizeof(test); i++) {
     test& t = tests[i];
     CHECK_STR(dirname(t.path) == t.dir,
-              "dirname(\"" << t.path << "\") == " << t.dir);
+              "dirname(\"" << t.path << "\") == \"" << t.dir << "\"");
     CHECK_STR(basename(t.path, t.suffix) == t.base,
               "basename(\"" << t.path << "\", \"" << t.suffix << 
-              "\") == " << t.base);
+              "\") == \"" << t.base << "\"");
 //     cout << "echo \"dirname(\\\"" << t.path 
 //          << "\\\") == `dirname " << t.path << "`\"" << endl;
 //     cout << "echo \"basename(\\\"" << t.path << "\\\", \\\"" << t.suffix 
 //          << "\\\")" << " == `basename " << t.path << " " << t.suffix << "`\""
 //          << endl;
+  }
+}
+
+void testRealPath()
+{
+  struct test {
+    string path;
+    string realpath;
+  };
+
+  char buf[PATH_MAX+1];
+  string dot(::realpath(".", buf));
+  string dotdot(::realpath("..", buf));
+  
+  test tests [] = {
+    //     path               realpath
+    { ""              , ""                   },
+    { "/"             , "/"                  },
+    { "//"            , "/"                  },
+    { "///"           , "/"                  },
+    { "//usr//lib//"  , "/usr/lib"           },
+    { "foo/bar"       , ""                   }, 
+    { "/foo/bar"      , ""                   },
+    { "."             , dot                  },
+    { ".."            , dotdot               },
+    { "Makefile"      , dot + "/Makefile"    },
+    { "/proc/self/exe", dot + "/tSystemUtil" },
+  };
+
+  for(size_t i = 0; i < sizeof(tests)/sizeof(test); i++) {
+    test& t = tests[i];
+    CHECK_STR(realpath(t.path) == t.realpath,
+              "realpath(\"" << t.path << "\") == \"" << t.realpath << "\"");
   }
 }
 
@@ -129,9 +163,14 @@ int main()
     testIP();
     testGetExePath();
     testDirnameBasename();
-  } catch(Exception& e) {
-    cerr << e << endl;
+    testRealPath();
+  } catch(Exception& err) {
+    cerr << "FATAL ERROR. TESTS ABORTED!" << endl << err << endl;
     return 1;
   }
-  return (0);
+  if (errors) {
+    cerr << "Total number of errors: " << errors << endl;
+    return 1;
+  }
+  return 0;
 }

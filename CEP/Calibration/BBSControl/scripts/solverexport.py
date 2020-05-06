@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Script that generates ASCII output from solver statistics table
 #
@@ -18,7 +18,7 @@ filename="solverstat.txt"
 
 # parse command arguments
 if len(sys.argv)==1:
-  print "No MS filename given"
+  print("No MS filename given")
   sys.exit(0)
 elif len(sys.argv)==2:
   MSfilename=sys.argv[1]
@@ -30,14 +30,14 @@ elif len(sys.argv)==3:
 # open MS through solverquery
 
 # solverquery object
-print "MSfilename = ", MSfilename
+print("MSfilename = ", MSfilename)
 solverstat=sq.SolverQuery()
 solverstat=solverstat.open(MSfilename)   # open the solver statistics table
 
-print "tableType = ", solverstat.getType()
+print("tableType = ", solverstat.getType())
 
 # get unique timeslots
-print "numTimeslots = ", solverstat.getNumTimeSlots()
+print("numTimeslots = ", solverstat.getNumTimeSlots())
 timeslots=[]
 timeslots=solverstat.getTimeSlots()   #.getcol("STARTTIME")
 
@@ -48,8 +48,8 @@ outfile=open(filename, "w")
 startfreq=solverstat.getStartFreqs()[0]
 endfreq=solverstat.getEndFreqs()[0]
 
-print "startfreq = ", startfreq     # DEBUG
-print "endfreq = ", endfreq         # DEBUG
+print("startfreq = ", startfreq)     # DEBUG
+print("endfreq = ", endfreq)         # DEBUG
 #print "timeslots.nrows() = ", timeslots.nrows()
 
 for i in range(0, timeslots.nrows()):   # loop over time slots
@@ -72,8 +72,8 @@ for i in range(0, timeslots.nrows()):   # loop over time slots
     # put values to together
     for j in range(0, len(solutions[iter]), 2):
       #print "len(solutions[iter]) = ", len(solutions[iter])
-      print "iter = ", iter    # DEBUG
-      print "j = ", j          # DEBUG
+      print("iter = ", iter)    # DEBUG
+      print("j = ", j)          # DEBUG
       line += "\t" + str(solutions[iter][j]) + "\t" + str(solutions[iter][j+1])
 
     #print "len(chiSqr) = ", len(chiSqr)    
@@ -83,7 +83,7 @@ for i in range(0, timeslots.nrows()):   # loop over time slots
     line=""
     
 
-print "Closing ASCII file ", filename
+print("Closing ASCII file ", filename)
 outfile.close()
-print "Closing MS solver statistics file ", MSfilename
+print("Closing MS solver statistics file ", MSfilename)
 #solverstat.close()

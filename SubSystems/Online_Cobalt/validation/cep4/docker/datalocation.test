@@ -1,0 +1,14 @@
+#!/bin/bash -ve
+
+source $(dirname $0)/../../validation_utils.sh
+check_running_on_cep4
+
+# Test for location of Docker's data: head nodes need to use /localdata/docker
+
+[[ `hostname` =~ "head" ]] || exit 0
+
+# Docker startup line must contain "--graph=/localdata/docker"
+fgrep "ExecStart" /usr/lib/systemd/system/docker.service | fgrep -- "--graph=/localdata/docker" || exit 1
+
+
+exit 0

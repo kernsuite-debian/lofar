@@ -1,0 +1,58 @@
+V 13
+4
+LANG:1 8 (NoName)
+LANG:10000 8 (NoName)
+LANG:10001 8 (NoName)
+LANG:10027 18 (БезИмени)
+PANEL,-1 -1 1086 89 N "_3DFace" 1
+"$AESREGDOLLAR_SCREENTYPE"
+E E E E E 1 -1 -1 0  -1 -1
+"objects_parampanels/STD_PANELS/AS_ES_Conf_para.pnl"0  1
+E E 3
+"CBRef" "1"
+"EClose" E
+"dpi" "96"
+0 0 0
+""
+NC
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:1 6 Layer1
+1 1 0 "" 18
+0
+0
+LAYER, 1 
+1
+LANG:1 6 Layer2
+0
+LAYER, 2 
+1
+LANG:1 6 Layer3
+0
+LAYER, 3 
+1
+LANG:1 6 Layer4
+0
+LAYER, 4 
+1
+LANG:1 6 Layer5
+0
+LAYER, 5 
+1
+LANG:1 6 Layer6
+0
+LAYER, 6 
+1
+LANG:1 6 Layer7
+0
+LAYER, 7 
+1
+LANG:1 6 Layer8
+0
+3 0 "" -1
+"" ""
+"vision/aes/AESRow.pnl" 5 15 T 1 1 0 1 63 1235
+1
+"$SCREENTYPE""$AESREGDOLLAR_SCREENTYPE"
+0

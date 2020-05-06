@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmFacadeDistr.cc 27747 2013-12-12 11:09:58Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmFacadeDistr.h>
@@ -26,15 +26,15 @@
 #include <Blob/BlobArray.h>
 #include <Blob/BlobAipsIO.h>
 #include <Common/LofarLogger.h>
-#include <casa/IO/AipsIO.h>
-#include <casa/Containers/Record.h>
-#include <casa/Arrays/ArrayLogical.h>
-#include <casa/Arrays/ArrayIO.h>
-#include<casa/Utilities/GenSort.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/Containers/Record.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
+#include <casacore/casa/Arrays/ArrayIO.h>
+#include<casacore/casa/Utilities/GenSort.h>
 #include <Common/lofar_iostream.h>
 
 using namespace LOFAR::CEP;
-using namespace casa;
+using namespace casacore;
 
 
 namespace LOFAR {
@@ -664,14 +664,14 @@ namespace LOFAR {
     void ParmFacadeDistr::getRecord (BlobIStream& bis, Record& rec)
     {
       BlobAipsIO baio(bis);
-      casa::AipsIO aio(&baio);
+      casacore::AipsIO aio(&baio);
       aio >> rec;
     }
 
     void ParmFacadeDistr::putRecord (BlobOStream& bos, const Record& rec)
     {
       BlobAipsIO baio(bos);
-      casa::AipsIO aio(&baio);
+      casacore::AipsIO aio(&baio);
       aio << rec;
     }
 

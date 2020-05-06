@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: Coordinates.h 26359 2013-09-04 13:58:06Z loose $
+//# $Id$
 
 #ifndef LOFAR_COMMON_TEST_COORDINATES_H
 #define LOFAR_COMMON_TEST_COORDINATES_H

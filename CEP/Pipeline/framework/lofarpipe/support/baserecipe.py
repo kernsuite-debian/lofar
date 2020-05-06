@@ -5,8 +5,8 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from ConfigParser import NoOptionError, NoSectionError
-from ConfigParser import SafeConfigParser as ConfigParser
+from configparser import NoOptionError, NoSectionError
+from configparser import SafeConfigParser as ConfigParser
 from threading import Event
 
 import os
@@ -44,7 +44,7 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
         self.error.clear()
         # Environment variables we like to pass on to the node script.
         self.environment = dict(
-            (k, v) for (k, v) in os.environ.iteritems()
+            (k, v) for (k, v) in os.environ.items()
                 if k.endswith('PATH') or k.endswith('ROOT') or k in ['QUEUE_PREFIX', 'LOFARENV']
         )
 
@@ -88,7 +88,7 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
 
         try:
             os.makedirs(os.path.dirname(logfile))
-        except OSError, failure:
+        except OSError as failure:
             if failure.errno != errno.EEXIST:
                 raise
 
@@ -132,7 +132,7 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
         # DEFAULT config.
         parameters = dict(self.task_definitions.items(configblock))
         del parameters['recipe']
-        for key in dict(self.config.items("DEFAULT")).keys():
+        for key in list(dict(self.config.items("DEFAULT")).keys()):
             del parameters[key]
         inputs.update(parameters)
 
@@ -162,7 +162,7 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
 
     def _read_config(self):
         # If a config file hasn't been specified, use the default
-        if not self.inputs.has_key("config"):
+        if "config" not in self.inputs:
             # Possible config files, in order of preference:
             conf_locations = (
                 os.path.join(sys.path[0], 'pipeline.cfg'),
@@ -172,7 +172,7 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
                 if os.access(path, os.R_OK):
                     self.inputs["config"] = path
                     break
-            if not self.inputs.has_key("config"):
+            if "config" not in self.inputs:
                 raise PipelineException("Configuration file not found")
 
         config = ConfigParser({
@@ -180,8 +180,8 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
             "start_time": self.inputs["start_time"],
             "cwd": os.getcwd()
         })
-        print >> sys.stderr, "Reading configuration file: %s" % \
-                              self.inputs["config"]
+        print("Reading configuration file: %s" % \
+                              self.inputs["config"], file=sys.stderr)
         config.read(self.inputs["config"])
         return config
 
@@ -192,10 +192,10 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
         this one to perform necessary initialisation.
         """
         # Every recipe needs a job identifier
-        if not self.inputs.has_key("job_name"):
+        if "job_name" not in self.inputs:
             raise PipelineException("Job undefined")
 
-        if not self.inputs.has_key("start_time"):
+        if "start_time" not in self.inputs:
             import datetime
             self.inputs["start_time"] = datetime.datetime.utcnow().replace(microsecond=0).isoformat()
 
@@ -205,17 +205,17 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
             self.config = self._read_config()
 
         # Ensure we have a runtime directory
-        if not self.inputs.has_key('runtime_directory'):
+        if 'runtime_directory' not in self.inputs:
             self.inputs["runtime_directory"] = self.config.get(
                 "DEFAULT", "runtime_directory"
             )
         else:
             self.config.set('DEFAULT', 'runtime_directory', self.inputs['runtime_directory'])
         if not os.access(self.inputs['runtime_directory'], os.F_OK):
-            raise IOError, "Runtime directory doesn't exist"
+            raise IOError("Runtime directory doesn't exist")
 
         # ...and task files, if applicable
-        if not self.inputs.has_key("task_files"):
+        if "task_files" not in self.inputs:
             try:
                 self.inputs["task_files"] = utilities.string_to_list(
                     self.config.get('DEFAULT', "task_files")
@@ -223,12 +223,12 @@ class BaseRecipe(RecipeIngredients, WSRTrecipe):
             except NoOptionError:
                 self.inputs["task_files"] = []
         self.task_definitions = ConfigParser(self.config.defaults())
-        print >> sys.stderr, "Reading task definition file(s): %s" % \
-                             ",".join(self.inputs["task_files"])
+        print("Reading task definition file(s): %s" % \
+                             ",".join(self.inputs["task_files"]), file=sys.stderr)
         self.task_definitions.read(self.inputs["task_files"])
 
         # Specify the working directory on the compute nodes
-        if not self.inputs.has_key('working_directory'):
+        if 'working_directory' not in self.inputs:
             self.inputs['working_directory'] = self.config.get(
                 "DEFAULT", "working_directory"
             )

@@ -1,6 +1,6 @@
 # Definitions file for the GNU compiler suite.
 #
-# $Id: GNU_JUROPA.cmake 35155 2016-08-22 13:25:44Z amesfoort $
+# $Id$
 
 
 # Compiler suite

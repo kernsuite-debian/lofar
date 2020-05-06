@@ -16,7 +16,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SPWCombine.h 14046 2009-09-18 07:54:49Z diepen $
+//# $Id$
 //#
 //# @author Adriaan Renting
 
@@ -29,16 +29,16 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include <ms/MeasurementSets.h>
-#include <casa/Arrays.h>
-#include <tables/Tables.h>
-#include <tables/Tables/TableIter.h>
+#include <casacore/ms/MeasurementSets.h>
+#include <casacore/casa/Arrays.h>
+#include <casacore/tables/Tables.h>
+#include <casacore/tables/Tables/TableIter.h>
 
 namespace LOFAR
 {
   namespace CS1
   {
-    using namespace casa;
+    using namespace casacore;
 
     class SPWCombine
     {

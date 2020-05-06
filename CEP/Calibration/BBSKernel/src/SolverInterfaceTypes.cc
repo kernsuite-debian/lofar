@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SolverInterfaceTypes.cc 17466 2011-02-24 16:41:05Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -32,9 +32,9 @@
 #include <Blob/BlobAipsIO.h>
 #include <Blob/BlobSTL.h>
 
-#include <casa/IO/AipsIO.h>
-#include <casa/BasicSL/String.h>
-#include <casa/Containers/Record.h>
+#include <casacore/casa/IO/AipsIO.h>
+#include <casacore/casa/BasicSL/String.h>
+#include <casacore/casa/Containers/Record.h>
 
 
 namespace LOFAR
@@ -157,9 +157,9 @@ BlobIStream &operator>>(BlobIStream &in, CellEquation &obj)
     in >> obj.id;
 
     BlobAipsIO aipsBuffer(in);
-    casa::AipsIO aipsStream(&aipsBuffer);
-    casa::String aipsErrorMessage;
-    casa::Record aipsRecord;
+    casacore::AipsIO aipsStream(&aipsBuffer);
+    casacore::String aipsErrorMessage;
+    casacore::Record aipsRecord;
 
     aipsStream >> aipsRecord;
     if(!obj.equation.fromRecord(aipsErrorMessage, aipsRecord))
@@ -177,9 +177,9 @@ BlobOStream &operator<<(BlobOStream &out, const CellEquation &obj)
     out << obj.id;
 
     BlobAipsIO aipsBuffer(out);
-    casa::AipsIO aipsStream(&aipsBuffer);
-    casa::String aipsErrorMessage;
-    casa::Record aipsRecord;
+    casacore::AipsIO aipsStream(&aipsBuffer);
+    casacore::String aipsErrorMessage;
+    casacore::Record aipsRecord;
 
     if(!obj.equation.toRecord(aipsErrorMessage, aipsRecord))
     {

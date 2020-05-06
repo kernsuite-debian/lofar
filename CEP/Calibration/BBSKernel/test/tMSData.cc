@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: tMSData.cc 14061 2009-09-18 12:55:15Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Prediffer.h>
@@ -27,20 +27,20 @@
 #include <Blob/BlobIBufStream.h>
 #include <Common/LofarLogger.h>
 
-#include <tables/Tables/Table.h>
-#include <tables/Tables/ExprNode.h>
-#include <tables/Tables/TableIter.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ArrayColumn.h>
-#include <casa/Arrays/Array.h>
-#include <casa/Arrays/Slicer.h>
-#include <casa/Arrays/ArrayLogical.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/TaQL/ExprNode.h>
+#include <casacore/tables/Tables/TableIter.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ArrayColumn.h>
+#include <casacore/casa/Arrays/Array.h>
+#include <casacore/casa/Arrays/Slicer.h>
+#include <casacore/casa/Arrays/ArrayLogical.h>
 #include <fstream>
 #include <sstream>
 
 using namespace LOFAR;
 using namespace LOFAR::BBS;
-using namespace casa;
+using namespace casacore;
 using namespace std;
 
 void doIt (const string& msName, Prediffer& prediff, const string& column,

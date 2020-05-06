@@ -18,36 +18,36 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//#  $Id: BaselineSelect.cc 34753 2016-06-20 10:43:42Z schaap $
+//#  $Id$
 
 //# Includes
 #include <MS/BaselineSelect.h>
 #include <Common/LofarLogger.h>
 
-#include <ms/MeasurementSets/MeasurementSet.h>
-#include <ms/MeasurementSets/MSAntenna.h>
-#include <ms/MeasurementSets/MSAntennaColumns.h>
-#if defined(casacore)
-#include <ms/MSSel/MSSelection.h>
-#include <ms/MSSel/MSAntennaParse.h>
-#include <ms/MSSel/MSAntennaGram.h>
+#include <casacore/ms/MeasurementSets/MeasurementSet.h>
+#include <casacore/ms/MeasurementSets/MSAntenna.h>
+#include <casacore/ms/MeasurementSets/MSAntennaColumns.h>
+#if defined(HAVE_CASACORE)
+#include <casacore/ms/MSSel/MSSelection.h>
+#include <casacore/ms/MSSel/MSAntennaParse.h>
+#include <casacore/ms/MSSel/MSAntennaGram.h>
 #else
-#include <ms/MeasurementSets/MSSelection.h>
-#include <ms/MeasurementSets/MSAntennaParse.h>
-#include <ms/MeasurementSets/MSAntennaGram.h>
+#include <casacore/ms/MSSel/MSSelection.h>
+#include <casacore/ms/MSSel/MSAntennaParse.h>
+#include <casacore/ms/MSSel/MSAntennaGram.h>
 #endif
-#include <tables/Tables/Table.h>
-#include <tables/Tables/SetupNewTab.h>
-#include <tables/Tables/TableRecord.h>
-#include <tables/Tables/TableParse.h>
-#include <tables/Tables/ScalarColumn.h>
-#include <tables/Tables/ScaColDesc.h>
-#include <measures/Measures/MPosition.h>
-#include <casa/Arrays/Matrix.h>
-#include <casa/Arrays/Vector.h>
+#include <casacore/tables/Tables/Table.h>
+#include <casacore/tables/Tables/SetupNewTab.h>
+#include <casacore/tables/Tables/TableRecord.h>
+#include <casacore/tables/TaQL/TableParse.h>
+#include <casacore/tables/Tables/ScalarColumn.h>
+#include <casacore/tables/Tables/ScaColDesc.h>
+#include <casacore/measures/Measures/MPosition.h>
+#include <casacore/casa/Arrays/Matrix.h>
+#include <casacore/casa/Arrays/Vector.h>
 
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 
@@ -81,7 +81,7 @@ namespace LOFAR {
     return convert (anttab, a1, a2, baselineSelection, os);
   }
 
-  casa::Matrix<bool> BaselineSelect::convert (const Vector<String>& names,
+  casacore::Matrix<bool> BaselineSelect::convert (const Vector<String>& names,
                                               const vector<MPosition>& pos,
                                               const Vector<Int>& ant1,
                                               const Vector<Int>& ant2,

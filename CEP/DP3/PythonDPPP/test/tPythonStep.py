@@ -19,7 +19,7 @@
 #
 # $Id: __init__.py 23074 2012-12-03 07:51:29Z diepen $
 
-from __future__ import print_function
+
 
 from lofar.pythondppp import DPStep
 from lofar.parameterset import parameterset

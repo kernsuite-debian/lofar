@@ -59,7 +59,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindCasacore.cmake 39709 2018-06-14 12:07:59Z dijkema $
+# $Id$
 
 # - casacore_resolve_dependencies(_result)
 #

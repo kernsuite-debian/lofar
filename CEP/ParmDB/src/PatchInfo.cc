@@ -31,9 +31,9 @@
 #include <Blob/BlobOStream.h>
 #include <Common/LofarLogger.h>
 
-#include <casa/Quanta/MVAngle.h>
+#include <casacore/casa/Quanta/MVAngle.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR {
 namespace BBS {

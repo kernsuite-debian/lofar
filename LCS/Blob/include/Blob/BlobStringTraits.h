@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobStringTraits.h 20543 2012-03-23 13:30:50Z mol $
+//# $Id$
 
 #ifndef LOFAR_BLOB_BLOBSTRINGTRAITS_H
 #define LOFAR_BLOB_BLOBSTRINGTRAITS_H

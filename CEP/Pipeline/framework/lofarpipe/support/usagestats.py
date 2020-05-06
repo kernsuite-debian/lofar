@@ -39,6 +39,7 @@ import os
 import tempfile
 
 from lofarpipe.support.xmllogging import add_child
+from lofar.common.subprocess_utils import communicate_returning_strings
 import xml.dom.minidom as xml
 
 
@@ -149,7 +150,7 @@ class UsageStats(threading.Thread):
                 pps = subprocess.Popen(["bash", self.temp_path, str(pid)],
                             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-                out, err = pps.communicate()
+                out, err = communicate_returning_strings(pps)
                 # Store pids that are not active anymore (process has closed)
                 if not pps.returncode == 0:
                     pid_out.append(pid)
@@ -194,12 +195,12 @@ class UsageStats(threading.Thread):
 
         if not self.pid_stats:  # if there are no entries in the stats dict
             resource_stat_xml.setAttribute("noStatsRecorded", "true")
-            return resource_stat_xml.toxml(encoding = "ascii")
+            return resource_stat_xml.toxml(encoding = "ascii").decode('ascii')
         
         try:
             # TODO: The returned values are not in order and the owner PID
             # might not be printed with idx 0. Maybee print seperately
-            for idx,(key,value) in enumerate(self.pid_stats.iteritems()):
+            for idx,(key,value) in enumerate(self.pid_stats.items()):
                 # if there are entries
                 if value:  
                     child_pid = add_child(resource_stat_xml, "process")
@@ -225,7 +226,7 @@ class UsageStats(threading.Thread):
             self.logger.warn("monitoring statistic recording failed")
             resource_stat_xml.setAttribute("noStatsRecorded", "Exception")
             # TODO: coalesce these two returns in one "finally:"
-            return resource_stat_xml.toxml(encoding = "ascii")
+            return resource_stat_xml.toxml(encoding = "ascii").decode('ascii')
 
-        return resource_stat_xml.toxml(encoding = "ascii")
+        return resource_stat_xml.toxml(encoding = "ascii").decode('ascii')
 

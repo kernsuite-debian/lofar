@@ -19,7 +19,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: SolverProcessControl.cc 20277 2012-02-28 15:21:58Z zwieten $
+//# $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>

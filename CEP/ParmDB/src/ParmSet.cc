@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmSet.cc 16977 2010-12-20 08:40:36Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 #include <ParmDB/ParmSet.h>

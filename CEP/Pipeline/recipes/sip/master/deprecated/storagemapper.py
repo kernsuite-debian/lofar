@@ -50,7 +50,7 @@ class storagemapper(BaseRecipe):
         #                                 Dump the generated mapping to a parset
         # ----------------------------------------------------------------------
         parset = Parset()
-        for host, filenames in data.iteritems():
+        for host, filenames in data.items():
             parset.addStringVector(host, filenames)
 
         create_directory(os.path.dirname(self.inputs['mapfile']))

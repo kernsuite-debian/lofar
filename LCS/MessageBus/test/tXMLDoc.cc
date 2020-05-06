@@ -16,7 +16,7 @@
 //#  along with this program; if not, write to the Free Software
 //#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //#
-//#  $Id: tXMLDoc.cc 31882 2015-06-22 07:50:04Z mol $
+//#  $Id$
 
 //# Always #include <lofar_config.h> first!
 #include <lofar_config.h>
@@ -33,16 +33,6 @@ SUITE(Parsing) {
   TEST(ValidXML) {
     XMLDoc doc("<foo></foo>");
   }
-
-#ifdef HAVE_LIBXMLXX
-  TEST(EmptyXML) {
-    CHECK_THROW(XMLDoc(""), XMLException);
-  }
-
-  TEST(InvalidXML) {
-    CHECK_THROW(XMLDoc("<foo>"), XMLException);
-  }
-#endif
 
   TEST(Subdocument) {
     XMLDoc base("<foo><bar>x</bar></foo>");
@@ -75,9 +65,6 @@ TEST(insertXML) {
   CHECK_EQUAL("y",          doc.getXMLvalue("foo/bar/baz"));
 
   CHECK_THROW(doc.insertXML("invalid", "<baz>y</baz>"), XMLException);
-#ifdef HAVE_LIBXMLXX
-  CHECK_THROW(doc.insertXML("foo/bar", "<invalid>"),    XMLException);
-#endif
 }
 
 TEST(getContent) {

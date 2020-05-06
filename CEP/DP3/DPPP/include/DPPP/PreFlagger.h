@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: PreFlagger.h 37169 2017-04-19 12:41:21Z dijkema $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

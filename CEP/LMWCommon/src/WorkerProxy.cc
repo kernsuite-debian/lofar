@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: WorkerProxy.cc 16886 2010-12-08 10:43:17Z diepen $
+//# $Id$
 
 #include <lofar_config.h>
 
@@ -75,7 +75,7 @@ namespace LOFAR { namespace CEP {
       // The process function can reset the operation.
       // Do timings of the process functions and put them into the blob.
       MWBlobOut bout(out, operation, bin.getStreamId(), itsWorkerId);
-      casa::Timer timer;
+      casacore::Timer timer;
       LOFAR::NSTimer precTimer;
       precTimer.start();
       int oper = operation;

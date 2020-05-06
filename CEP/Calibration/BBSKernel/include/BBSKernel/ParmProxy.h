@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: ParmProxy.h 14741 2009-12-30 15:07:42Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_PARMPROXY_H
 #define LOFAR_BBSKERNEL_PARMPROXY_H
@@ -79,10 +79,10 @@ public:
     void setGrid(const Grid &grid)
     { itsParm.setSolveGrid(grid); }
 
-    void getResult(casa::Array<double> &result, const Grid &grid) const
+    void getResult(casacore::Array<double> &result, const Grid &grid) const
     { itsParm.getResult(result, grid); }
 
-    void getResult(vector<casa::Array<double> > &result, const Grid &grid,
+    void getResult(vector<casacore::Array<double> > &result, const Grid &grid,
         bool perturbed = false) const
     { itsParm.getResult(result, grid, perturbed); }
 

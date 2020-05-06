@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: BlobArray.tcc 29040 2014-04-23 08:45:54Z diepen $
+//# $Id$
 
 #ifndef COMMON_BLOBARRAY_TCC
 #define COMMON_BLOBARRAY_TCC
@@ -159,28 +159,28 @@ BlobIStream& operator>> (BlobIStream& bs, blitz::Array<T,NDIM>& arr)
 
 #if defined(HAVE_AIPSPP) 
 template<typename T>
-BlobOStream& operator<< (BlobOStream& bs, const casa::Array<T>& arr)
+BlobOStream& operator<< (BlobOStream& bs, const casacore::Array<T>& arr)
 {
   bool deleteIt;
   const T* data = arr.getStorage(deleteIt);
-  const casa::IPosition& shape = arr.shape();
-  vector<uint64> shp(shape.begin(), shape.end());
+  const casacore::IPosition& shape = arr.shape();
+  std::vector<uint64> shp(shape.begin(), shape.end());
   putBlobArray (bs, data, shp.empty() ? 0 : &shp[0], arr.ndim(), true);
   arr.freeStorage (data, deleteIt);
   return bs;
 }
 
 template<typename T>
-BlobIStream& operator>> (BlobIStream& bs, casa::Array<T>& arr)
+BlobIStream& operator>> (BlobIStream& bs, casacore::Array<T>& arr)
 {
   bs.getStart (LOFAR::typeName((const T**)0));
   bool fortranOrder;
   uint16 ndim;
   uint nalign = getBlobArrayStart (bs, fortranOrder, ndim);
-  vector<uint64> shp(ndim);
+  std::vector<uint64> shp(ndim);
   getBlobArrayShape (bs, ndim==0 ? 0 : &shp[0], ndim,
                      !fortranOrder, nalign);
-  casa::IPosition shape(ndim);
+  casacore::IPosition shape(ndim);
   for (uint i=0; i<ndim; i++) {
     shape[i] = shp[i];
   }

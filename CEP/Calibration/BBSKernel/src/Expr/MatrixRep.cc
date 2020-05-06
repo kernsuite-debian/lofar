@@ -18,13 +18,13 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixRep.cc 14789 2010-01-13 12:39:15Z zwieten $
+//# $Id$
 
 #include <lofar_config.h>
 #include <BBSKernel/Expr/MatrixRep.h>
-#include <casa/Exceptions/Error.h>
+#include <casacore/casa/Exceptions/Error.h>
 
-using namespace casa;
+using namespace casacore;
 
 namespace LOFAR
 {

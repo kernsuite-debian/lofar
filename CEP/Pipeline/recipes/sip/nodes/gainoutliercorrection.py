@@ -5,7 +5,7 @@
 #                                                             Marcel Loose, 2011
 #                                                                loose@astron.nl
 # ------------------------------------------------------------------------------
-from __future__ import with_statement
+
 import os
 import shutil
 import sys
@@ -92,7 +92,7 @@ class gainoutliercorrection(LOFARnodeTCP):
                     self.environment,
                     logger
                 )
-        except Exception, excp:
+        except Exception as excp:
             self.logger.error(str(excp))
             return 1
         finally:
@@ -194,7 +194,7 @@ class gainoutliercorrection(LOFARnodeTCP):
         2d arrays are converted to complex value array of 1 d
         """
         corrected_polarization_data = dict()
-        for pol, data in polarization_data.iteritems():
+        for pol, data in polarization_data.items():
             # Convert the raw data to the correct complex array type
             complex_array = self._convert_data_to_ComplexArray(data, type_pair)
 
@@ -238,16 +238,16 @@ class gainoutliercorrection(LOFARnodeTCP):
         """
         Use pyparmdb to write (now corrected) data to the parmdb
         """
-        for pol, data in polarization_data.iteritems():
+        for pol, data in polarization_data.items():
             if not pol in corrected_data:
                 error_message = "Requested polarisation type is unknown:" \
-                        "{0} \n valid polarisations: {1}".format(pol, corrected_data.keys())
+                        "{0} \n valid polarisations: {1}".format(pol, list(corrected_data.keys()))
                 self.logger.error(error_message)
                 raise PipelineRecipeFailed(error_message)
 
             corrected_data_pol = corrected_data[pol]
             #get the "complex" converted data from the complex array
-            for component, value in corrected_data_pol.writeable.iteritems():
+            for component, value in corrected_data_pol.writeable.items():
                 #Collect all the data needed to write an array 
                 name = "Gain:{0}:{1}:{2}".format(pol, component, station)
                 freqscale = data[0]['freqs'][0]

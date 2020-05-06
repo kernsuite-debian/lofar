@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 34547 2016-05-27 13:39:59Z mol $
+# $Id$
 
 lofar_package(ApplCommon 3.1 DEPENDS Common)
 

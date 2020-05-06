@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: MatrixTmp.h 16372 2010-09-22 12:59:37Z zwieten $
+//# $Id$
 
 #ifndef LOFAR_BBSKERNEL_EXPR_MATRIXTMP_H
 #define LOFAR_BBSKERNEL_EXPR_MATRIXTMP_H

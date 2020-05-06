@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: TaskFeedbackState.h 35890 2016-11-03 13:16:09Z schoenmakers $
+//# $Id$
 
 #ifndef LOFAR_MESSAGEBUS_TASK_FEEDBACK_STATUS_H
 #define LOFAR_MESSAGEBUS_TASK_FEEDBACK_STATUS_H

@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 20277 2012-02-28 15:21:58Z zwieten $
+# $Id$
 
 # Create symbolic link to include directory.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink

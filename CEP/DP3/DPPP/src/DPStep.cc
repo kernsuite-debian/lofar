@@ -17,7 +17,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: DPStep.cc 32169 2015-08-12 18:59:29Z schoenmakers $
+//# $Id$
 //#
 //# @author Ger van Diepen
 

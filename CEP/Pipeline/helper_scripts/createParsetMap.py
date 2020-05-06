@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 #
 # Create a ''map'' file using a parste input and MSes on the CEP2 system
 # This make use of exisiting pipeline functionality and thsu requires
@@ -25,4 +25,4 @@ output_data = DataMap([
 
 output_data.save(outputfile)
 
-print "Done!"
+print("Done!")

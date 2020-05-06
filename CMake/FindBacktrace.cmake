@@ -35,7 +35,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: FindBacktrace.cmake 17093 2011-01-14 14:58:41Z loose $
+# $Id$
 
 include(CheckIncludeFile)
 include(CheckFunctionExists)

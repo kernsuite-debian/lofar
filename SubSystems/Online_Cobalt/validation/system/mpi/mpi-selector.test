@@ -1,0 +1,18 @@
+#!/bin/bash -ve
+
+#example output of mpi-selector
+#$ mpi-selector --query
+#default:openmpi-4.0.0rc5
+#level:system
+
+#check if any selection has been made system wide
+mpi-selector --query | egrep "default|level:system" | wc -l | grep '^2$'
+
+# check if selection is our preferred version
+mpi-selector --query | grep "default" | grep "openmpi-4.0"
+
+# test if both mpicc and mpirun can be called
+which mpicc || exit 1
+which mpirun || exit 1
+
+exit 0

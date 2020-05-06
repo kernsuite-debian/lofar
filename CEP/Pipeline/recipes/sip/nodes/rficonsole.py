@@ -5,7 +5,7 @@
 #                                                      swinbank@transientskp.org
 # ------------------------------------------------------------------------------
 
-from __future__ import with_statement
+
 from subprocess import CalledProcessError
 import sys
 import os.path
@@ -45,13 +45,13 @@ class rficonsole(LOFARnodeTCP):
                     os.path.basename(executable)
                 ) as logger:
                     catch_segfaults(cmd, working_dir, None, logger)
-            except ExecutableMissing, e:
+            except ExecutableMissing as e:
                 self.logger.error("%s not found" % (e.args[0]))
                 return 1
-            except CalledProcessError, e:
+            except CalledProcessError as e:
                 self.logger.error(str(e))
                 return 1
-            except Exception, e:
+            except Exception as e:
                 self.logger.exception(e)
                 return 1
             finally:

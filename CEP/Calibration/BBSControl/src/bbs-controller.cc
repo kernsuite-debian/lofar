@@ -35,7 +35,7 @@
 #include <Common/LofarLogger.h>
 #include <Common/StreamUtil.h>
 #include <Common/SystemUtil.h>
-#include <casa/BasicMath/Math.h>
+#include <casacore/casa/BasicMath/Math.h>
 #include <unistd.h>
 
 using namespace LOFAR;
@@ -45,7 +45,7 @@ using LOFAR::operator<<;
 // Use a terminate handler that can produce a backtrace.
 Exception::TerminateHandler handler(Exception::terminate);
 
-// Compare two axes for equality within tolerance (using casa::near()).
+// Compare two axes for equality within tolerance (using casacore::near()).
 bool equal(const Axis::ShPtr &lhs, const Axis::ShPtr &rhs);
 
 // Try to combine the time axes of all the reducer processes into a single
@@ -337,13 +337,13 @@ bool equal(const Axis::ShPtr &lhs, const Axis::ShPtr &rhs)
 
   if(lhs->isRegular() && rhs->isRegular())
   {
-    return casa::near(lhs->start(), rhs->start()) && casa::near(lhs->end(),
+    return casacore::near(lhs->start(), rhs->start()) && casacore::near(lhs->end(),
       rhs->end());
   }
 
   for(size_t i = 0, end = lhs->size(); i < end; ++i)
   {
-    if(casa::near(lhs->center(i), rhs->center(i)) && casa::near(lhs->width(i),
+    if(casacore::near(lhs->center(i), rhs->center(i)) && casacore::near(lhs->width(i),
       rhs->width(i)))
     {
       continue;

@@ -18,7 +18,7 @@
 //# You should have received a copy of the GNU General Public License along
 //# with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 //#
-//# $Id: makesourcedb.cc 37340 2017-05-11 12:39:06Z dijkema $
+//# $Id$
 
 // This program writes patch and source information into a SourceDB.
 // The input is read from an ASCII file that can be formatted in various ways.
@@ -133,13 +133,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <casa/OS/Path.h>
-#include <casa/Quanta/MVAngle.h>
-#include <casa/Inputs/Input.h>
-#include <casa/BasicSL/Constants.h>
+#include <casacore/casa/OS/Path.h>
+#include <casacore/casa/Quanta/MVAngle.h>
+#include <casacore/casa/Inputs/Input.h>
+#include <casacore/casa/BasicSL/Constants.h>
 
 using namespace std;
-using namespace casa;
+using namespace casacore;
 using namespace LOFAR;
 using namespace BBS;
 
@@ -1020,7 +1020,7 @@ void make (const string& in, const string& out, const string& outType,
   if (! in.empty()) {
     ifstream infile(in.c_str());
     ASSERTSTR (infile, "File " << in << " could not be opened");
-    casa::Regex regexf("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=.*");
+    casacore::Regex regexf("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=.*");
     string line;
     // Read first line.
     getInLine (infile, line);
@@ -1092,9 +1092,9 @@ string readFormat (string file, const string& catFile)
              << " containing format string could not be opened");
   string line;
   getInLine (infile, line);
-  casa::Regex regex("^[ \t]*#[ \t]*\\([ \t]*.*\\)[ \t]*=[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*$");
-  casa::Regex regexs1("^[ \t]*#[ \t]*\\([ \t]*");
-  casa::Regex regexs2("\\)[ \t]*=[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*$");
+  casacore::Regex regex("^[ \t]*#[ \t]*\\([ \t]*.*\\)[ \t]*=[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*$");
+  casacore::Regex regexs1("^[ \t]*#[ \t]*\\([ \t]*");
+  casacore::Regex regexs2("\\)[ \t]*=[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*$");
   while (infile) {
     uInt st=0;
     st = lskipws(line, st, line.size());   // skip whitespace
@@ -1102,7 +1102,7 @@ string readFormat (string file, const string& catFile)
       if (line[st] != '#') {
         break;                             // data line
       }
-      casa::String sline(line);
+      casacore::String sline(line);
       if (sline.matches (regex)) {
         sline.gsub (regexs1, String());
         sline.gsub (regexs2, String());
@@ -1112,9 +1112,9 @@ string readFormat (string file, const string& catFile)
     getInLine (infile, line);
   }
   // See if a format line is given as "format=".
-  casa::Regex regexf("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=.*$");
-  casa::Regex regexf1("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=[ \t]*");
-  casa::String sline(line);
+  casacore::Regex regexf("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=.*$");
+  casacore::Regex regexf1("^[ \t]*[fF][oO][rR][mM][aA][tT][ \t]*=[ \t]*");
+  casacore::String sline(line);
   if (sline.matches (regexf)) {
     sline.gsub (regexf1, String());
     return sline;

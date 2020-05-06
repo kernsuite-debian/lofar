@@ -21,7 +21,7 @@
 # You should have received a copy of the GNU General Public License along
 # with the LOFAR software suite. If not, see <http://www.gnu.org/licenses/>.
 #
-# $Id: lofarinit.csh.in 40029 2018-08-24 06:27:42Z klazema $
+# $Id$
 
 # Define root here.
 # This is a placeholder, so do NOT change the line.

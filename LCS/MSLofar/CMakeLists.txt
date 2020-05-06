@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 17574 2011-03-18 09:07:29Z diepen $
+# $Id$
 
 lofar_package(MSLofar 0.1 DEPENDS ApplCommon Common)
 

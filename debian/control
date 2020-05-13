@@ -42,12 +42,8 @@ Build-Depends: debhelper (>= 8.0.0),
  libgtkmm-3.0-dev,
  libpython3-dev,
  binutils-dev
-#libblitz0-dev,
-# libcasasynthesis-dev,
-# casarest,
-Standards-Version: 3.9.7
+Standards-Version: 4.5.0
 Homepage: http://www.lofar.org
-X-Python-Version: 2.7
 
 Package: lofar
 Architecture: any
@@ -88,25 +84,13 @@ Depends: libapplcommon3 (= ${binary:Version}),
          libblob3 (= ${binary:Version}),
          libcommon3 (= ${binary:Version}),
          libdocker3 (= ${binary:Version}),
-         libdppp3 (= ${binary:Version}),
-         libdppp-aoflag3 (= ${binary:Version}),
-         libdppp-ddecal3 (= ${binary:Version}),
-         libdppp-pythondppp3 (= ${binary:Version}),
-         libelementresponse3 (= ${binary:Version}),
          liblmwcommon3 (= ${binary:Version}),
          liblofar-pyparameterset3 (= ${binary:Version}),
          liblofar-pyparmdb3 (= ${binary:Version}),
-         liblofar-pystationresponse3 (= ${binary:Version}),
          liblofar-pytools3 (= ${binary:Version}),
-         liblofarstman3 (= ${binary:Version}),
          libmessagebus3 (= ${binary:Version}),
-         libms3 (= ${binary:Version}),
          libmslofar3 (= ${binary:Version}),
          libparmdb3 (= ${binary:Version}),
-         libplc3 (= ${binary:Version}),
-         libspwcombine3 (= ${binary:Version}),
-         libstationresponse3 (= ${binary:Version}),
-         libtransport3 (= ${binary:Version}),
          ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Description: LOFAR telescope development files

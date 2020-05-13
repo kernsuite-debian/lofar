@@ -1,15 +1,13 @@
 usr/bin/*
-usr/etc/*
-usr/etc/StaticMetaData/*
 usr/share/pipeline/*
 usr/share/pipeline/skymodels/*
 usr/share/pipeline/demixing/*
-usr/share/rfistrategies/*
 #usr/etc/supervisord.d/*
 usr/lofarinit.csh
 usr/lofarinit.sh
 usr/sbin/*
 usr/share/*.clusterdesc
+usr/share/pipeline
 usr/share/docker/*
 usr/share/docker/dynspec/*
 usr/share/docker/lofar-base/*

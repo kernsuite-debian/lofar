@@ -1,7 +1,7 @@
-Description: set so version
+Description: Set the SO version for shared libraries
 
---- lofar-2.20.2.orig/CMake/LofarMacros.cmake
-+++ lofar-2.20.2/CMake/LofarMacros.cmake
+--- lofar-4.0.17.orig/CMake/LofarMacros.cmake
++++ lofar-4.0.17/CMake/LofarMacros.cmake
 @@ -131,10 +131,12 @@ if(NOT DEFINED LOFAR_MACROS_INCLUDED)
        target_link_libraries(${_name} LINK_INTERFACE_LIBRARIES
          ${${PACKAGE_NAME}_LINK_LIBRARIES})
@@ -12,7 +12,7 @@ Description: set so version
 -    install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    if(NOT "${ARGN}" MATCHES "^MODULE")
 +       set_target_properties(${_name} PROPERTIES
-+         VERSION 2 # Quick hack for Gijs. We'll think about versioning later.
++         VERSION 3 # Quick hack for Gijs. We'll think about versioning later.
 +         OUTPUT_NAME ${_name})
 +       install(TARGETS ${_name} DESTINATION ${LOFAR_LIBDIR})
 +    endif(NOT "${ARGN}" MATCHES "^MODULE")

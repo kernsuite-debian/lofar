@@ -5,17 +5,16 @@ Maintainer: KERN packaging <packaging@kernsuite.info>
 Build-Depends: debhelper (>= 8.0.0),
  dh-python,
  cmake,
- casarest,
  bison,
  flex,
  gfortran,
  python-all,
+ pps-tools,
  aoflagger-dev,
  wcslib-dev,
  casacore-dev,
  libboost-dev,
  libreadline-dev,
- libblitz0-dev,
  libcfitsio-dev | libcfitsio3-dev,
  libboost-thread-dev,
  libfftw3-dev,
@@ -31,19 +30,21 @@ Build-Depends: debhelper (>= 8.0.0),
  libboost-program-options-dev,
  libboost-date-time-dev,
  liblog4cplus-dev,
- libcasasynthesis-dev,
  libblas-dev,
  liblapack-dev,
  libarmadillo-dev,
- python-casacore,
- python-numpy,
- python-pywcs (>= 1.11) | python-astropy, 
- python-xmlrunner,
+ python3-casacore,
+ python3-numpy,
+ python3-astropy, 
+ python3-psycopg2,
+ python3-xmlrunner,
  libglibmm-2.4-dev,
  libgtkmm-3.0-dev,
- libpython2.7-dev,
- binutils-dev,
- python-psycopg2
+ libpython3-dev,
+ binutils-dev
+#libblitz0-dev,
+# libcasasynthesis-dev,
+# casarest,
 Standards-Version: 3.9.7
 Homepage: http://www.lofar.org
 X-Python-Version: 2.7
@@ -58,17 +59,17 @@ Depends: ${shlibs:Depends},
 Conflicts: makems
 Description: LOFAR telescope user software
 
-Package: python-lofar
+Package: python3-lofar
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          ${python:Depends},
-         ipython,
-         python-pyfits,
-         python-scipy,
-         python-casacore,
-         python-sip,
-         python-matplotlib
+         ipython3,
+         python3-pyfits,
+         python3-scipy,
+         python3-casacore,
+         python3-sip,
+         python3-matplotlib
 Recommends: python-qt4
 Description: LOFAR Python packages
  
@@ -83,36 +84,34 @@ Description: LOFAR telescope user software (documentation)
 Package: lofar-dev
 Section: libdevel
 Architecture: any
-Depends: libapplcommon2 (= ${binary:Version}),
-         libbbscontrol2 (= ${binary:Version}),
-         libbbskernel2 (= ${binary:Version}),
-         libblob2 (= ${binary:Version}),
-         libcommon2 (= ${binary:Version}),
-         libdocker2 (= ${binary:Version}),
-         libdppp2 (= ${binary:Version}),
-         libdppp-aoflag2 (= ${binary:Version}),
-         libdppp-ddecal2 (= ${binary:Version}),
-         libdppp-pythondppp2 (= ${binary:Version}),
-         libelementresponse2 (= ${binary:Version}),
-         liblmwcommon2 (= ${binary:Version}),
-         liblofar-pyparameterset2 (= ${binary:Version}),
-         liblofar-pyparmdb2 (= ${binary:Version}),
-         liblofar-pystationresponse2 (= ${binary:Version}),
-         liblofar-pytools2 (= ${binary:Version}),
-         liblofarstman2 (= ${binary:Version}),
-         libmessagebus2 (= ${binary:Version}),
-         libms2 (= ${binary:Version}),
-         libmslofar2 (= ${binary:Version}),
-         libparmdb2 (= ${binary:Version}),
-         libplc2 (= ${binary:Version}),
-         libspwcombine2 (= ${binary:Version}),
-         libstationresponse2 (= ${binary:Version}),
-         libtransport2 (= ${binary:Version}),
+Depends: libapplcommon3 (= ${binary:Version}),
+         libblob3 (= ${binary:Version}),
+         libcommon3 (= ${binary:Version}),
+         libdocker3 (= ${binary:Version}),
+         libdppp3 (= ${binary:Version}),
+         libdppp-aoflag3 (= ${binary:Version}),
+         libdppp-ddecal3 (= ${binary:Version}),
+         libdppp-pythondppp3 (= ${binary:Version}),
+         libelementresponse3 (= ${binary:Version}),
+         liblmwcommon3 (= ${binary:Version}),
+         liblofar-pyparameterset3 (= ${binary:Version}),
+         liblofar-pyparmdb3 (= ${binary:Version}),
+         liblofar-pystationresponse3 (= ${binary:Version}),
+         liblofar-pytools3 (= ${binary:Version}),
+         liblofarstman3 (= ${binary:Version}),
+         libmessagebus3 (= ${binary:Version}),
+         libms3 (= ${binary:Version}),
+         libmslofar3 (= ${binary:Version}),
+         libparmdb3 (= ${binary:Version}),
+         libplc3 (= ${binary:Version}),
+         libspwcombine3 (= ${binary:Version}),
+         libstationresponse3 (= ${binary:Version}),
+         libtransport3 (= ${binary:Version}),
          ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
 Description: LOFAR telescope development files
 
-Package: libapplcommon2
+Package: libapplcommon3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -122,27 +121,7 @@ Replaces: libapplcommon ( << 3.0.3 )
 Breaks: libapplcommon ( << 3.0.3 )
 Description: a lofar lib
 
-Package: libbbscontrol2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libbbscontrol ( << 3.0.3 )
-Breaks: libbbscontrol ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libbbskernel2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libbbskernel ( << 3.0.3 )
-Breaks: libbbskernel ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libblob2
+Package: libblob3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -152,7 +131,7 @@ Replaces: libblob ( << 3.0.3 )
 Breaks: libblob ( << 3.0.3 )
 Description: a lofar lib
 
-Package: libcommon2
+Package: libcommon3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -161,7 +140,7 @@ Multi-Arch: same
 replaces: libcommon
 Description: a lofar lib
 
-Package: libdocker2
+Package: libdocker3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -171,56 +150,7 @@ Replaces: libdocker ( << 3.0.3 )
 Breaks: libdocker ( << 3.0.3 )
 Description: a lofar lib
 
-Package: libdppp2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libdppp ( << 3.0.3 )
-Breaks: libdppp ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libdppp-aoflag2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-replaces: libdppp-aoflag
-Description: a lofar lib
-
-Package: libdppp-ddecal2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libdppp-ddecal ( << 3.0.3 )
-Breaks: libdppp-ddecal ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libdppp-pythondppp2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libdppp-pythondppp ( << 3.0.3 )
-Breaks: libdppp-pythondppp ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libelementresponse2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libelementresponse ( << 3.0.3 )
-Breaks: libelementresponse ( << 3.0.3 )
-Description: a lofar lib
-
-Package: liblmwcommon2
+Package: liblmwcommon3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -230,7 +160,7 @@ Replaces: liblmwcommon ( << 3.0.3 )
 Breaks: liblmwcommon ( << 3.0.3 )
 Description: a lofar lib
 
-Package: liblofar-pyparameterset2
+Package: liblofar-pyparameterset3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -240,7 +170,7 @@ Replaces: liblofar-pyparameterset ( << 3.0.3 )
 Breaks: liblofar-pyparameterset ( << 3.0.3 )
 Description: a lofar lib
 
-Package: liblofar-pyparmdb2
+Package: liblofar-pyparmdb3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -250,17 +180,7 @@ Replaces: liblofar-pyparmdb ( << 3.0.3 )
 Breaks: liblofar-pyparmdb ( << 3.0.3 )
 Description: a lofar lib
 
-Package: liblofar-pystationresponse2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: liblofar-pystationresponse ( << 3.0.3 )
-Breaks: liblofar-pystationresponse ( << 3.0.3 )
-Description: a lofar lib
-
-Package: liblofar-pytools2
+Package: liblofar-pytools3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -270,17 +190,7 @@ Replaces: liblofar-pytools ( << 3.0.3 )
 Breaks: liblofar-pytools ( << 3.0.3 )
 Description: a lofar lib
 
-Package: liblofarstman2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: liblofarstman ( << 3.0.3 )
-Breaks: liblofarstman ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libmessagebus2
+Package: libmessagebus3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -290,17 +200,7 @@ Replaces: libmessagebus ( << 3.0.3 )
 Breaks: libmessagebus ( << 3.0.3 )
 Description: a lofar lib
 
-Package: libms2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libms ( << 3.0.3 )
-Breaks: libms ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libmslofar2
+Package: libmslofar3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -310,7 +210,7 @@ Replaces: libmslofar ( << 3.0.3 )
 Breaks: libmslofar ( << 3.0.3 )
 Description: a lofar lib
 
-Package: libparmdb2
+Package: libparmdb3
 Section: libs
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -319,44 +219,3 @@ Multi-Arch: same
 Replaces: libparmdb ( << 3.0.3 )
 Breaks: libparmdb ( << 3.0.3 )
 Description: a lofar lib
-
-Package: libplc2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libplc ( << 3.0.3 )
-Breaks: libplc ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libspwcombine2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libspwcombine ( << 3.0.3 )
-Breaks: libspwcombine ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libstationresponse2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libstationresponse ( << 3.0.3 )
-Breaks: libstationresponse ( << 3.0.3 )
-Description: a lofar lib
-
-Package: libtransport2
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Replaces: libtransport ( << 3.0.3 )
-Breaks: libtransport ( << 3.0.3 )
-Description: a lofar lib
-

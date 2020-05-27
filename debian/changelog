@@ -1,3 +1,11 @@
+lofar (4.0.17-1kern1) bionic; urgency=medium
+
+  [ Gijs Molenaar ]
+  * minor improvements
+  * trying to fix watch file
+
+ -- KERN packaging <packaging@kernsuite.info>  Wed, 27 May 2020 16:01:21 +0200
+
 lofar (4.0.17-1) bionic; urgency=medium
 
   [ Gijs Molenaar ]

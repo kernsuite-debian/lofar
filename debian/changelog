@@ -1,3 +1,11 @@
+lofar (4.0.17-1kern2) bionic; urgency=medium
+
+  [ Athanaseus Javas Ramaila ]
+  * Support only py3
+
+ -- KERN packaging <packaging@kernsuite.info>  Wed, 08 Jul 2020 11:59:47 +0200
+
+
 lofar (4.0.17-1kern1) bionic; urgency=medium
 
   [ Gijs Molenaar ]

@@ -17,6 +17,6 @@ override_dh_auto_configure:
 %:
 	dh $@ \
 		--parallel \
-		--with python2 \
+		--with python3 \
 		--builddirectory=build/gnucxx11_opt  \
 		--buildsystem=cmake
